@@ -18,7 +18,7 @@ const reviews = [
     platform: 'instagram',
     rating: 5,
     text: 'Memories for a lifetime!',
-    link: '#',
+    link: 'https://www.instagram.com/p/DHLTB7Ey0B5/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
   },
   {
     id: 2,
@@ -28,7 +28,7 @@ const reviews = [
     platform: 'instagram',
     rating: 5,
     text: "Can't wait for the next one",
-    link: '#',
+    link: 'https://www.instagram.com/p/DHNplicyl_i/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const reviews = [
     platform: 'instagram',
     rating: 5,
     text: 'Highly recommended!',
-    link: '#',
+    link: 'https://www.instagram.com/p/DHgRKyiyM5I/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
   },
   {
     id: 4,
@@ -48,7 +48,7 @@ const reviews = [
     platform: 'instagram',
     rating: 5,
     text: 'Amazing experience',
-    link: '#',
+    link: 'https://www.instagram.com/reel/DBDQytIS26R/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
   },
 ];
 
@@ -90,7 +90,7 @@ const Testimonials = () => {
       <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="container mx-auto px-4 lg:px-8">
+      <div className="mx-auto">
         {/* Header */}
         <div className="text-center mb-12 relative z-10">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight mb-6 drop-shadow-xl">
@@ -135,7 +135,7 @@ const Testimonials = () => {
         </div>
 
         {/* Carousel */}
-        <div className="relative pb-8 -mx-4 sm:mx-0">
+        <div className="relative pb-8">
           <Swiper
             modules={[Navigation, Autoplay]}
             spaceBetween={24}
@@ -143,13 +143,13 @@ const Testimonials = () => {
             centeredSlides={true}
             initialSlide={0}
             breakpoints={{
-              640: { slidesPerView: 2.2, centeredSlides: false },
-              768: { slidesPerView: 3.2, centeredSlides: false },
-              1024: { slidesPerView: 4, centeredSlides: false },
+              640: { slidesPerView: 2.5, centeredSlides: false },
+              768: { slidesPerView: 4, centeredSlides: false },
+              1024: { slidesPerView: 6, centeredSlides: false },
             }}
             autoplay={{ delay: 3500, disableOnInteraction: false }}
             loop
-            className="px-4 sm:px-0 overflow-visible"
+            className="overflow-visible"
           >
             {[...reviews, ...reviews, ...reviews].map((review, index) => (
               <SwiperSlide key={`${review.id}-${index}`} className="h-auto">

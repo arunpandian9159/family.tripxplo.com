@@ -1,3 +1,4 @@
+import Navbar from '@/app/components/Navbar';
 import Hero from '@/app/section/Hero';
 import WhyEMI from '@/app/section/WhyEMI';
 import Testimonials from '@/app/section/Testimonials';
@@ -7,6 +8,9 @@ import Footer from '@/app/section/Footer';
 export default function Home() {
   return (
     <main className="min-h-screen">
+      {/* Navigation Bar */}
+      <Navbar />
+
       {/* Hero Section - 3D Carousel + Headlines + Booking Form */}
       <Hero />
 

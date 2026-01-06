@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Instagram,
   Facebook,
@@ -10,7 +11,6 @@ import {
   Phone,
   MapPin,
   ArrowUpRight,
-  CreditCard,
   X,
   Shield,
   Clock,
@@ -93,15 +93,13 @@ const Footer = () => {
             {/* Brand Section */}
             <div className="lg:col-span-2">
               <Link href="/" className="inline-block mb-6">
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-linear-to-br from-[#15ab8b] to-[#1ec9a5] rounded-xl flex items-center justify-center">
-                    <CreditCard className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-white">Family Tripxplo</h2>
-                    <p className="text-xs text-slate-400">EMI Travel Packages</p>
-                  </div>
-                </div>
+                <Image
+                  src="/logo.png"
+                  alt="TripXplo Logo"
+                  width={140}
+                  height={45}
+                  className="w-auto h-10 brightness-0 invert opacity-90"
+                />
               </Link>
               <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
                 Family Tripxplo, a product of Tripmilestone Tours Pvt. Ltd, makes your dream family
