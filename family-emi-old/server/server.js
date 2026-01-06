@@ -15,7 +15,7 @@ import crypto from 'crypto';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -59,13 +59,13 @@ app.use(
 );
 app.use(express.json());
 
-// Serve static files from parent directory (the website files)
-app.use(express.static('../'));
-app.use(express.static('public'));
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, '../public')));
+app.use('/client', express.static(path.join(__dirname, '../client')));
 
 // Serve index.html for root route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // Database connection test endpoint
@@ -1999,7 +1999,10 @@ app.post('/api/process-payment', async (req, res) => {
     nextEmiDueDate.setMonth(nextEmiDueDate.getMonth() + 1);
 
     // Generate booking reference
-    const bookingReference = `TXP${Date.now()}${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+    const bookingReference = `TXP${Date.now()}${Math.random()
+      .toString(36)
+      .substr(2, 4)
+      .toUpperCase()}`;
 
     console.log('💰 Payment calculation:', {
       totalEmiAmount,
@@ -2152,7 +2155,9 @@ app.post('/api/process-payment', async (req, res) => {
       gateway_reference: gateway_reference || null,
       late_fee_amount: 0,
       discount_applied: 0,
-      notes: `First prepaid EMI payment for ${package_data?.destination || 'travel package'} - No processing fee`,
+      notes: `First prepaid EMI payment for ${
+        package_data?.destination || 'travel package'
+      } - No processing fee`,
     };
 
     console.log('📝 Creating payment history:', paymentHistoryData);
@@ -3403,7 +3408,9 @@ app.post('/api/check-user', async (req, res) => {
     const userExists = !!userData;
 
     console.log(
-      `${userExists ? '✅' : '❌'} User ${userExists ? 'exists' : 'does not exist'} for mobile: ${mobileNumber}`
+      `${userExists ? '✅' : '❌'} User ${
+        userExists ? 'exists' : 'does not exist'
+      } for mobile: ${mobileNumber}`
     );
 
     res.json({
