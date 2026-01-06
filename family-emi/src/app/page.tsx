@@ -1,8 +1,8 @@
-import Hero from '@/components/Hero';
-import WhyEMI from '@/components/WhyEMI';
-import Testimonials from '@/components/Testimonials';
-import Packages from '@/components/Packages';
-import Footer from '@/components/Footer';
+import Hero from '@/app/section/Hero';
+import WhyEMI from '@/app/section/WhyEMI';
+import Testimonials from '@/app/section/Testimonials';
+import Packages from '@/app/section/Packages';
+import Footer from '@/app/section/Footer';
 
 export default function Home() {
   return (
@@ -13,11 +13,11 @@ export default function Home() {
       {/* Why Family EMI Packages Section */}
       <WhyEMI />
 
-      {/* Testimonials Section - TripXplo Diaries */}
-      <Testimonials />
-
       {/* Top EMI Packages Section */}
       <Packages />
+
+      {/* Testimonials Section - TripXplo Diaries */}
+      <Testimonials />
 
       {/* Footer */}
       <Footer />

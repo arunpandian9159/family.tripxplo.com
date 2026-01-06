@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { MapPin, Calendar, Users, Search, ChevronDown } from 'lucide-react';
-import DestinationCarousel from './DestinationCarousel';
+import DestinationCarousel from '../components/DestinationCarousel';
 
 const Hero = () => {
   return (

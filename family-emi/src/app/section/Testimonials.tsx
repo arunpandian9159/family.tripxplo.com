@@ -149,7 +149,7 @@ const Testimonials = () => {
             }}
             autoplay={{ delay: 3500, disableOnInteraction: false }}
             loop
-            className="px-4 sm:px-0 !overflow-visible"
+            className="px-4 sm:px-0 overflow-visible"
           >
             {[...reviews, ...reviews, ...reviews].map((review, index) => (
               <SwiperSlide key={`${review.id}-${index}`} className="h-auto">
@@ -157,7 +157,7 @@ const Testimonials = () => {
                   href={review.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block h-full relative aspect-[9/16] rounded-[2rem] overflow-hidden group cursor-pointer border-4 border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 shadow-2xl shadow-black/50"
+                  className="block h-full relative aspect-9/16 rounded-4xl overflow-hidden group cursor-pointer border-4 border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 shadow-2xl shadow-black/50"
                 >
                   <Image
                     src={review.image}
@@ -168,7 +168,7 @@ const Testimonials = () => {
                   />
 
                   {/* Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
 
                   {/* Play Button Overlay (Instagram style) */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 delay-100">

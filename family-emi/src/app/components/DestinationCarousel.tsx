@@ -48,7 +48,7 @@ const DestinationCarousel = () => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[600px] aspect-[16/10] mx-auto">
+    <div className="relative w-full max-w-[600px] aspect-16/10 mx-auto">
       {/* Background Glow */}
       <div className="absolute inset-0 bg-[#15ab8b]/20 blur-[60px] rounded-full scale-75 animate-pulse pointer-events-none" />
 
