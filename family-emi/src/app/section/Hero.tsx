@@ -6,7 +6,7 @@ import DestinationCarousel from '../components/DestinationCarousel';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden gradient-hero">
+    <section className="relative min-h-screen flex items-center overflow-hidden gradient-hero pt-20 lg:pt-24">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Gradient Orbs */}
@@ -25,80 +25,83 @@ const Hero = () => {
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 py-12 lg:py-0">
-          {/* Left Side - 3D Destination Carousel */}
-          <div className="flex-1 w-full max-w-lg lg:max-w-none order-2 lg:order-1">
+          {/* Left Side - Headlines + 3D Destination Carousel */}
+          <div className="flex-1 w-full max-w-2xl order-2 lg:order-1">
+            {/* Text Content */}
+            <div className="text-center lg:text-left mb-8 lg:mb-10">
+              {/* Main Heading */}
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight mb-6 animate-slide-up">
+                Small Monthly Payments
+                <br />
+                <span className="relative inline-block">
+                  <span className="bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] bg-clip-text text-transparent">
+                    Massive Memories
+                  </span>
+                  <svg
+                    className="absolute -bottom-2 left-0 w-full h-4 text-[#d1fbd2]"
+                    viewBox="0 0 300 12"
+                    fill="none"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M2 9C50 3 100 2 150 6C200 10 250 8 298 4"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+              </h1>
+
+              {/* Quote */}
+              <div className="relative mb-6 animate-slide-up delay-100">
+                <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 italic">
+                  Luxury shouldn't be a lump sum. We’ve redesigned travel to fit into your monthly
+                  budget.
+                </p>
+              </div>
+
+              {/* Subtext */}
+              <p className="text-base lg:text-lg text-slate-500 max-w-lg mx-auto lg:mx-0 mb-8 animate-slide-up delay-200">
+                Choose your destination, pick your plan, and pay in 3, 6, or 12 easy installments.
+              </p>
+            </div>
+
+            {/* 3D Destination Carousel */}
             <div className="animate-float-slow">
               <DestinationCarousel />
             </div>
           </div>
 
-          {/* Right Side - Headlines + Booking Form */}
-          <div className="flex-1 text-center lg:text-left order-1 lg:order-2">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#d1fbd2] border border-[#15ab8b]/20 rounded-full text-[#0f8a6f] text-sm font-medium mb-6 animate-fade-in">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#15ab8b] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#15ab8b]"></span>
-              </span>
-              Easy EMI Options Available
-            </div>
+          {/* Right Side - Search Form */}
+          <div className="flex-1 w-full max-w-xl order-1 lg:order-2 animate-slide-up">
+            {/* Search Card */}
+            <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 lg:p-10">
+              {/* Heading */}
+              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-2">
+                Find Your Next
+              </h2>
+              <h2 className="text-3xl lg:text-4xl font-bold bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] bg-clip-text text-transparent mb-4">
+                Adventure
+              </h2>
+              <p className="text-slate-500 text-base mb-8">
+                Plan your perfect getaway. Discover the best hotels, flights, and experiences at
+                unbeatable prices.
+              </p>
 
-            {/* Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight mb-4 animate-slide-up">
-              Family Trips on
-              <br />
-              <span className="relative inline-block">
-                <span className="relative z-10 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] bg-clip-text text-transparent">
-                  Easy EMI
-                </span>
-                <svg
-                  className="absolute -bottom-2 left-0 w-full h-3 text-[#d1fbd2]"
-                  viewBox="0 0 200 12"
-                  fill="none"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d="M1 8.5C32 2.5 62 1 101 5.5C140 10 170 9 199 3"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-            </h1>
-
-            {/* Description */}
-            <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8 animate-slide-up delay-100">
-              Plan your dream family vacation with flexible payment options.
-              <span className="text-[#15ab8b] font-semibold"> No stress, just memories!</span>
-            </p>
-
-            {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center lg:justify-start items-center gap-6 mb-8 animate-slide-up delay-200">
-              {[
-                { icon: MapPin, label: '100+ Destinations' },
-                { icon: Calendar, label: 'Flexible Dates' },
-                { icon: Users, label: 'Family Friendly' },
-              ].map((item, index) => (
-                <div key={index} className="flex items-center gap-2 text-slate-600">
-                  <item.icon className="w-5 h-5 text-[#15ab8b]" />
-                  <span className="text-sm font-medium">{item.label}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Booking Search Box */}
-            <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 lg:p-8 animate-slide-up delay-300">
-              <h3 className="text-lg font-bold text-slate-800 mb-4">Start Planning Your Trip</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              {/* Search Fields */}
+              <div className="space-y-4">
                 {/* Destination */}
-                <div className="relative">
-                  <label className="block text-sm font-medium text-slate-600 mb-2">Where to?</label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#15ab8b]" />
-                    <select className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#15ab8b]/20 focus:border-[#15ab8b] appearance-none cursor-pointer transition-all">
-                      <option value="">Select Destination</option>
+                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                  <div className="w-12 h-12 bg-[#e8f8f5] rounded-full flex items-center justify-center shrink-0 group-hover:bg-[#d1fbd2] transition-colors">
+                    <MapPin className="w-5 h-5 text-[#15ab8b]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+                      Destination
+                    </p>
+                    <select className="w-full bg-transparent text-slate-700 font-medium focus:outline-none appearance-none cursor-pointer">
+                      <option value="">Where are you going?</option>
                       <option value="bali">Bali, Indonesia</option>
                       <option value="manali">Manali, India</option>
                       <option value="andaman">Andaman Islands</option>
@@ -106,52 +109,57 @@ const Hero = () => {
                       <option value="kashmir">Kashmir, India</option>
                       <option value="vietnam">Vietnam</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
                   </div>
+                  <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
                 </div>
 
-                {/* Date */}
-                <div className="relative">
-                  <label className="block text-sm font-medium text-slate-600 mb-2">
-                    Select Date
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#15ab8b]" />
+                {/* Dates */}
+                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                  <div className="w-12 h-12 bg-[#e8f8f5] rounded-full flex items-center justify-center shrink-0 group-hover:bg-[#d1fbd2] transition-colors">
+                    <Calendar className="w-5 h-5 text-[#15ab8b]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+                      Dates
+                    </p>
                     <input
-                      type="date"
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#15ab8b]/20 focus:border-[#15ab8b] transition-all"
+                      type="text"
+                      placeholder="Check-in - Check-out"
+                      className="w-full bg-transparent text-slate-700 font-medium focus:outline-none placeholder:text-slate-500"
                     />
                   </div>
                 </div>
-              </div>
 
-              {/* Guests & Rooms */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-slate-600 mb-2">
-                  Guests & Rooms
-                </label>
-                <div className="relative">
-                  <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#15ab8b]" />
-                  <select className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#15ab8b]/20 focus:border-[#15ab8b] appearance-none cursor-pointer transition-all">
-                    <option value="">Select Guests & Rooms</option>
-                    <option value="2-1">2 Adults, 1 Room</option>
-                    <option value="2-1-1">2 Adults, 1 Child, 1 Room</option>
-                    <option value="4-2">4 Adults, 2 Rooms</option>
-                    <option value="4-2-2">4 Adults, 2 Children, 2 Rooms</option>
-                    <option value="6-3">6 Adults, 3 Rooms</option>
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                {/* Guests & Rooms */}
+                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                  <div className="w-12 h-12 bg-[#e8f8f5] rounded-full flex items-center justify-center shrink-0 group-hover:bg-[#d1fbd2] transition-colors">
+                    <Users className="w-5 h-5 text-[#15ab8b]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+                      Guests & Rooms
+                    </p>
+                    <select className="w-full bg-transparent text-slate-700 font-medium focus:outline-none appearance-none cursor-pointer">
+                      <option value="">2 adults, 1 room</option>
+                      <option value="2-1">2 Adults, 1 Room</option>
+                      <option value="2-1-1">2 Adults, 1 Child, 1 Room</option>
+                      <option value="4-2">4 Adults, 2 Rooms</option>
+                      <option value="4-2-2">4 Adults, 2 Children, 2 Rooms</option>
+                      <option value="6-3">6 Adults, 3 Rooms</option>
+                    </select>
+                  </div>
+                  <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
                 </div>
               </div>
 
               {/* Search Button */}
-              <button className="w-full py-4 gradient-primary text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 animate-pulse-glow">
+              <button className="w-full mt-6 py-4 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white font-bold text-lg rounded-2xl shadow-lg shadow-[#15ab8b]/30 hover:shadow-xl hover:shadow-[#15ab8b]/40 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3">
                 <Search className="w-5 h-5" />
-                Search EMI Packages
+                Search Flights & Hotels
               </button>
 
               {/* EMI Note */}
-              <p className="mt-4 text-center text-sm text-slate-500">
+              <p className="mt-5 text-center text-sm text-slate-500">
                 💳 EMI starting from <span className="font-bold text-[#15ab8b]">₹2,999/month</span>
               </p>
             </div>
