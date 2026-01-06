@@ -9,10 +9,8 @@ const CONFIG = {
   QUOTE_DB_URL: 'https://lkqbrlrmrsnbtkoryazq.supabase.co',
 
   // Supabase Anon Keys (From your existing environment)
-  CRM_ANON_KEY:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsZndjbmlrZGx3b2xpcXphdnhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4NTcwMjgsImV4cCI6MjA2MDQzMzAyOH0.fCaJNbHL6VwKxTbt3vYl2F5O2gRoMFuUO1bhqEtSWpI',
-  QUOTE_ANON_KEY:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrcWJybHJtcnNuYnRrb3J5YXpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0MDA2ODYsImV4cCI6MjA2MDk3NjY4Nn0.0E4Z87L9j32k3jKa15n4LpmFsVx8YCJuwovi-mSw4SE',
+  VITE_SUPABASE_ANON_KEY_QUOTE: import.meta.env.VITE_SUPABASE_ANON_KEY_QUOTE,
+  VITE_SUPABASE_ANON_KEY_CRM: import.meta.env.VITE_SUPABASE_ANON_KEY_CRM,
 
   // API Configuration
   API_TIMEOUT: 30000, // 30 seconds
