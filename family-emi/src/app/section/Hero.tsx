@@ -1,10 +1,40 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { MapPin, Calendar, Users, Search, ChevronDown } from 'lucide-react';
 import DestinationCarousel from '../components/DestinationCarousel';
+import SearchDestination from '../components/SearchDestination';
+import DateBox from '../components/DateBox';
+import OptionsBox from '../components/OptionsBox';
 
 const Hero = () => {
+  const [selectedDestination, setSelectedDestination] = useState('');
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [guestOptions, setGuestOptions] = useState({ adults: 2, children: 0, rooms: 1 });
+
+  // State to control which dropdown is open
+  const [dateOpen, setDateOpen] = useState(false);
+  const [guestOpen, setGuestOpen] = useState(false);
+
+  // Handler to open date picker after destination selection
+  const handleDestinationSelect = () => {
+    setDateOpen(true);
+  };
+
+  // Handler to open guest selector after date selection
+  const handleDateSelect = () => {
+    setGuestOpen(true);
+  };
+
+  const handleSearch = () => {
+    // Handle search logic here
+    console.log('Searching with:', {
+      destination: selectedDestination,
+      date: selectedDate,
+      guests: guestOptions,
+    });
+  };
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden gradient-hero pt-15">
       {/* Background Decorations */}
@@ -75,9 +105,9 @@ const Hero = () => {
             {/* Quick Stats */}
             <div className="hidden lg:flex items-center gap-8 animate-slide-up stagger-2">
               {[
-                { icon: MapPin, label: "200+ Destinations" },
-                { icon: Calendar, label: "Flexible EMI" },
-                { icon: Users, label: "No Cost EMI" },
+                { icon: MapPin, label: '200+ Destinations' },
+                { icon: Calendar, label: 'Flexible EMI' },
+                { icon: Users, label: 'No Cost EMI' },
               ].map((item, index) => (
                 <div key={index} className="flex items-center gap-2 text-slate-600">
                   <item.icon className="w-5 h-5 text-[#15ab8b]" />
@@ -107,7 +137,7 @@ const Hero = () => {
               {/* Search Fields */}
               <div className="space-y-4">
                 {/* Destination */}
-                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 group">
                   <div className="w-12 h-12 bg-[#e8f8f5] rounded-full flex items-center justify-center shrink-0 group-hover:bg-[#d1fbd2] transition-colors">
                     <MapPin className="w-5 h-5 text-[#15ab8b]" />
                   </div>
@@ -115,38 +145,37 @@ const Hero = () => {
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
                       Destination
                     </p>
-                    <select className="w-full bg-transparent text-slate-700 font-medium focus:outline-none appearance-none cursor-pointer">
-                      <option value="">Where are you going?</option>
-                      <option value="bali">Bali, Indonesia</option>
-                      <option value="manali">Manali, India</option>
-                      <option value="andaman">Andaman Islands</option>
-                      <option value="goa">Goa, India</option>
-                      <option value="kashmir">Kashmir, India</option>
-                      <option value="vietnam">Vietnam</option>
-                    </select>
+                    <SearchDestination
+                      selectedDestination={selectedDestination}
+                      onDestinationChange={setSelectedDestination}
+                      onDestinationSelect={handleDestinationSelect}
+                    />
                   </div>
                   <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
                 </div>
 
                 {/* Dates */}
-                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 group">
                   <div className="w-12 h-12 bg-[#e8f8f5] rounded-full flex items-center justify-center shrink-0 group-hover:bg-[#d1fbd2] transition-colors">
                     <Calendar className="w-5 h-5 text-[#15ab8b]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
-                      Dates
+                      Travel Date
                     </p>
-                    <input
-                      type="text"
-                      placeholder="Check-in - Check-out"
-                      className="w-full bg-transparent text-slate-700 font-medium focus:outline-none placeholder:text-slate-500"
+                    <DateBox
+                      selectedDate={selectedDate}
+                      onDateChange={setSelectedDate}
+                      isOpen={dateOpen}
+                      onOpenChange={setDateOpen}
+                      onDateSelect={handleDateSelect}
                     />
                   </div>
+                  <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
                 </div>
 
                 {/* Guests & Rooms */}
-                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 cursor-pointer group">
+                <div className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#15ab8b]/50 hover:shadow-md transition-all duration-300 group">
                   <div className="w-12 h-12 bg-[#e8f8f5] rounded-full flex items-center justify-center shrink-0 group-hover:bg-[#d1fbd2] transition-colors">
                     <Users className="w-5 h-5 text-[#15ab8b]" />
                   </div>
@@ -154,23 +183,23 @@ const Hero = () => {
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
                       Guests & Rooms
                     </p>
-                    <select className="w-full bg-transparent text-slate-700 font-medium focus:outline-none appearance-none cursor-pointer">
-                      <option value="">2 adults, 1 room</option>
-                      <option value="2-1">2 Adults, 1 Room</option>
-                      <option value="2-1-1">2 Adults, 1 Child, 1 Room</option>
-                      <option value="4-2">4 Adults, 2 Rooms</option>
-                      <option value="4-2-2">4 Adults, 2 Children, 2 Rooms</option>
-                      <option value="6-3">6 Adults, 3 Rooms</option>
-                    </select>
+                    <OptionsBox
+                      isOpen={guestOpen}
+                      onOpenChange={setGuestOpen}
+                      onOptionsChange={setGuestOptions}
+                    />
                   </div>
                   <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
                 </div>
               </div>
 
               {/* Search Button */}
-              <button className="w-full mt-6 py-4 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white font-bold text-lg rounded-2xl shadow-lg shadow-[#15ab8b]/30 hover:shadow-xl hover:shadow-[#15ab8b]/40 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3">
+              <button
+                onClick={handleSearch}
+                className="w-full mt-6 py-4 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white font-bold text-lg rounded-2xl shadow-lg shadow-[#15ab8b]/30 hover:shadow-xl hover:shadow-[#15ab8b]/40 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3"
+              >
                 <Search className="w-5 h-5" />
-                Search Flights & Hotels
+                Search
               </button>
 
               {/* EMI Note */}

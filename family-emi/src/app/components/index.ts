@@ -5,3 +5,7 @@ export { default as Packages } from '../section/Packages';
 export { default as Footer } from '../section/Footer';
 export { default as DestinationCarousel } from './DestinationCarousel';
 export { default as Navbar } from './Navbar';
+export { default as DateBox } from './DateBox';
+export { default as SearchDestination } from './SearchDestination';
+export { default as OptionsBox } from './OptionsBox';
+export { HolidayCalendar } from './HolidayCalendar';
