@@ -28,12 +28,13 @@ const Hero = () => {
           {/* Left Side - Headlines + 3D Destination Carousel */}
           <div className="flex-1 w-full max-w-2xl order-2 lg:order-1">
             {/* Text Content */}
-            <div className="text-center lg:text-left mb-8 lg:mb-10">
-            {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#d1fbd2] border border-[#15ab8b]/20 rounded-full text-[#0f8a6f] text-sm font-semibold mb-6 animate-fade-in">
-                <span className="relative flex h-2 w-2">
+            <div className="text-center lg:text-left mb-3 lg:mb-4">
+              {/* Badge with Shimmer Effect */}
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-[#d1fbd2] to-[#e8fde9] border border-[#15ab8b]/20 rounded-full text-[#0f8a6f] text-sm font-semibold mb-6 animate-fade-in shadow-lg shadow-[#15ab8b]/10 relative overflow-hidden group">
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-linear-to-r from-transparent via-white/50 to-transparent transition-transform duration-1000" />
+                <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#15ab8b] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#15ab8b]"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#15ab8b]"></span>
                 </span>
                 No-Cost EMI • Zero Down Payment
               </div>
@@ -42,7 +43,7 @@ const Hero = () => {
                 Small Payments
                 <br />
                 <span className="relative inline-block">
-                  <span className="bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] bg-clip-text text-transparent">
+                  <span className="bg-linear-to-r from-[#15ab8b] via-[#1ec9a5] to-[#15ab8b] bg-size-[200%_auto] bg-clip-text text-transparent animate-gradient">
                     Massive Memories
                   </span>
                   <svg
@@ -62,10 +63,12 @@ const Hero = () => {
               </h1>
 
               {/* Quote */}
-              <div className="relative mb-6 animate-slide-up delay-100">
-                <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 italic">
-                  Luxury shouldn't be a lump sum. We’ve redesigned travel to fit into your monthly
-                  budget.
+              <div className="relative mb-2 animate-slide-up delay-100">
+                <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                  <span className="font-medium text-slate-700">"</span>
+                  Luxury shouldn't be a lump sum. We've redesigned travel to fit into your
+                  <span className="text-[#15ab8b] font-semibold"> monthly budget</span>.
+                  <span className="font-medium text-slate-700">"</span>
                 </p>
               </div>
             </div>
@@ -100,10 +103,6 @@ const Hero = () => {
               <h2 className="text-3xl lg:text-4xl font-bold bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] bg-clip-text text-transparent mb-4">
                 Adventure
               </h2>
-              <p className="text-slate-500 text-base mb-8">
-                Plan your perfect getaway. Discover the best hotels, flights, and experiences at
-                unbeatable prices.
-              </p>
 
               {/* Search Fields */}
               <div className="space-y-4">
