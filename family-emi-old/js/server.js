@@ -23,33 +23,40 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 const corsOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
-  : ['http://localhost:8080', 'http://localhost:3000', 'http://127.0.0.1:3000', 'http://127.0.0.1:8080'];
+  : [
+      'http://localhost:8080',
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:8080',
+    ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    console.log('CORS Origin:', origin); // Debug log
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      console.log('CORS Origin:', origin); // Debug log
 
-    // Allow requests with no origin (like mobile apps, curl requests, or file:// protocol)
-    if (!origin || origin === 'null') return callback(null, true);
+      // Allow requests with no origin (like mobile apps, curl requests, or file:// protocol)
+      if (!origin || origin === 'null') return callback(null, true);
 
-    // Allow file:// protocol for local HTML files
-    if (origin && origin.startsWith('file://')) return callback(null, true);
+      // Allow file:// protocol for local HTML files
+      if (origin && origin.startsWith('file://')) return callback(null, true);
 
-    // Check if origin is in allowed list
-    if (corsOrigins.indexOf(origin) !== -1) {
-      return callback(null, true);
-    }
+      // Check if origin is in allowed list
+      if (corsOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      }
 
-    // Allow localhost on any port for development
-    if (origin && (origin.includes('localhost') || origin.includes('127.0.0.1'))) {
-      return callback(null, true);
-    }
+      // Allow localhost on any port for development
+      if (origin && (origin.includes('localhost') || origin.includes('127.0.0.1'))) {
+        return callback(null, true);
+      }
 
-    console.log('CORS rejected origin:', origin);
-    return callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true
-}));
+      console.log('CORS rejected origin:', origin);
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Serve static files from parent directory (the website files)
@@ -69,7 +76,7 @@ app.get('/api/test-db', async (req, res) => {
     const results = {
       timestamp: new Date().toISOString(),
       environment: process.env.NODE_ENV || 'development',
-      tests: {}
+      tests: {},
     };
 
     // Test CRM database
@@ -83,14 +90,14 @@ app.get('/api/test-db', async (req, res) => {
         status: crmError ? 'failed' : 'success',
         error: crmError?.message || null,
         url: process.env.CRM_DB_URL || 'https://tlfwcnikdlwoliqzavxj.supabase.co',
-        keyPresent: !!process.env.CRM_ANON_KEY
+        keyPresent: !!process.env.CRM_ANON_KEY,
       };
     } catch (error) {
       results.tests.crm = {
         status: 'failed',
         error: error.message,
         url: process.env.CRM_DB_URL || 'https://tlfwcnikdlwoliqzavxj.supabase.co',
-        keyPresent: !!process.env.CRM_ANON_KEY
+        keyPresent: !!process.env.CRM_ANON_KEY,
       };
     }
 
@@ -105,14 +112,14 @@ app.get('/api/test-db', async (req, res) => {
         status: quoteError ? 'failed' : 'success',
         error: quoteError?.message || null,
         url: process.env.QUOTE_DB_URL || 'https://lkqbrlrmrsnbtkoryazq.supabase.co',
-        keyPresent: !!process.env.QUOTE_ANON_KEY
+        keyPresent: !!process.env.QUOTE_ANON_KEY,
       };
     } catch (error) {
       results.tests.quote = {
         status: 'failed',
         error: error.message,
         url: process.env.QUOTE_DB_URL || 'https://lkqbrlrmrsnbtkoryazq.supabase.co',
-        keyPresent: !!process.env.QUOTE_ANON_KEY
+        keyPresent: !!process.env.QUOTE_ANON_KEY,
       };
     }
 
@@ -127,14 +134,14 @@ app.get('/api/test-db', async (req, res) => {
         status: mappingsError ? 'failed' : 'success',
         error: mappingsError?.message || null,
         recordCount: mappingsTest?.length || 0,
-        sampleData: mappingsTest?.slice(0, 2) || []
+        sampleData: mappingsTest?.slice(0, 2) || [],
       };
     } catch (error) {
       results.tests.quoteMappings = {
         status: 'failed',
         error: error.message,
         recordCount: 0,
-        sampleData: []
+        sampleData: [],
       };
     }
 
@@ -142,16 +149,17 @@ app.get('/api/test-db', async (req, res) => {
 
     res.status(allPassed ? 200 : 500).json({
       success: allPassed,
-      message: allPassed ? 'All database connections successful' : 'Some database connections failed',
-      ...results
+      message: allPassed
+        ? 'All database connections successful'
+        : 'Some database connections failed',
+      ...results,
     });
-
   } catch (error) {
     console.error('❌ Database test endpoint error:', error);
     res.status(500).json({
       success: false,
       error: error.message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 });
@@ -169,14 +177,14 @@ const quoteDB = createClient(
 
 // Utility Functions
 function generateUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0;
-    const v = c == 'x' ? r : (r & 0x3 | 0x8);
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c == 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
 
-const extractUuidFromEmiId = (emiId) => {
+const extractUuidFromEmiId = emiId => {
   if (!emiId) return null;
 
   console.log('🔍 Extracting UUID from EMI ID:', emiId);
@@ -216,7 +224,7 @@ const extractUuidFromEmiId = (emiId) => {
   return null;
 };
 
-const formatTravelDate = (dateString) => {
+const formatTravelDate = dateString => {
   if (!dateString) return null;
 
   // If it's already a valid date format, return as is
@@ -244,33 +252,29 @@ const formatTravelDate = (dateString) => {
 
 const detectFamilyType = async (adults, children, infants) => {
   try {
-    const { data: familyTypes, error } = await crmDB
-      .from('family_type')
-      .select('*');
-    
+    const { data: familyTypes, error } = await crmDB.from('family_type').select('*');
+
     if (error) throw error;
-    
+
     // Find exact match first
-    let match = familyTypes.find(ft => 
-      ft.no_of_adults === adults && 
-      ft.no_of_children === children && 
-      ft.no_of_infants === infants
+    let match = familyTypes.find(
+      ft =>
+        ft.no_of_adults === adults && ft.no_of_children === children && ft.no_of_infants === infants
     );
-    
+
     // If no exact match, find closest match
     if (!match) {
-      match = familyTypes.find(ft => 
-        ft.no_of_adults === adults && 
-        ft.no_of_children >= children && 
-        ft.no_of_infants >= infants
+      match = familyTypes.find(
+        ft =>
+          ft.no_of_adults === adults && ft.no_of_children >= children && ft.no_of_infants >= infants
       );
     }
-    
+
     // Default to Stellar Duo if no match
     if (!match) {
       match = familyTypes.find(ft => ft.family_id === 'SD') || familyTypes[0];
     }
-    
+
     return match;
   } catch (error) {
     console.error('Error detecting family type:', error);
@@ -281,12 +285,12 @@ const detectFamilyType = async (adults, children, infants) => {
       no_of_adults: 2,
       no_of_children: 0,
       no_of_infants: 0,
-      composition: '2 Adults'
+      composition: '2 Adults',
     };
   }
 };
 
-const formatPackageForFrontend = (packageData) => {
+const formatPackageForFrontend = packageData => {
   return {
     id: packageData.id,
     title: packageData.package_title || `${packageData.destination} Package`,
@@ -294,18 +298,19 @@ const formatPackageForFrontend = (packageData) => {
     duration_days: packageData.package_duration_days || 5,
     total_price: packageData.total_price,
     family_type: packageData.family_type_name,
-    emi_options: packageData.family_type_emi_plans?.map(emi => ({
-      id: emi.id,
-      months: emi.emi_months,
-      monthly_amount: emi.monthly_amount,
-      total_amount: emi.total_amount,
-      processing_fee: emi.processing_fee,
-      label: emi.marketing_label || `${emi.emi_months} Months`,
-      is_featured: emi.is_featured
-    })) || [],
+    emi_options:
+      packageData.family_type_emi_plans?.map(emi => ({
+        id: emi.id,
+        months: emi.emi_months,
+        monthly_amount: emi.monthly_amount,
+        total_amount: emi.total_amount,
+        processing_fee: emi.processing_fee,
+        label: emi.marketing_label || `${emi.emi_months} Months`,
+        is_featured: emi.is_featured,
+      })) || [],
     inclusions: ['Flights', 'Hotels', 'Meals', 'Sightseeing'],
     images: [`/img/rectangle-14.png`], // Default image
-    offer_badge: packageData.total_price > 40000 ? '15% OFF' : 'Best Value'
+    offer_badge: packageData.total_price > 40000 ? '15% OFF' : 'Best Value',
   };
 };
 
@@ -318,7 +323,9 @@ async function formatPackageDetailsForFrontend(packageData) {
     try {
       const { data: quoteData, error: quoteError } = await quoteDB
         .from('quotes')
-        .select('destination, package_name, total_cost, customer_name, family_type, no_of_persons, children, infants, extra_adults, trip_duration')
+        .select(
+          'destination, package_name, total_cost, customer_name, family_type, no_of_persons, children, infants, extra_adults, trip_duration'
+        )
         .eq('id', packageData.quote_id)
         .single();
 
@@ -330,7 +337,7 @@ async function formatPackageDetailsForFrontend(packageData) {
           quote_total_cost: quoteData.total_cost,
           quote_customer_name: quoteData.customer_name,
           quote_family_type: quoteData.family_type,
-          quote_duration: quoteData.trip_duration
+          quote_duration: quoteData.trip_duration,
         };
         console.log('✅ Enriched package data with quote information');
       }
@@ -352,10 +359,15 @@ async function formatPackageDetailsForFrontend(packageData) {
   return {
     ...basePackage,
     // Enhanced package information
-    package_name: enrichedPackageData.package_name || enrichedPackageData.quote_name || basePackage.title,
+    package_name:
+      enrichedPackageData.package_name || enrichedPackageData.quote_name || basePackage.title,
     hotel_name: hotelInfo.name,
     hotel_category: hotelInfo.category,
-    nights: enrichedPackageData.package_duration_days || enrichedPackageData.quote_duration || enrichedPackageData.duration_days || 5,
+    nights:
+      enrichedPackageData.package_duration_days ||
+      enrichedPackageData.quote_duration ||
+      enrichedPackageData.duration_days ||
+      5,
     meal_plan: mealPlanInfo.plan,
     meal_details: mealPlanInfo.details,
 
@@ -381,7 +393,7 @@ async function formatPackageDetailsForFrontend(packageData) {
     // Package metadata
     data_source: enrichedPackageData.data_source || 'quote_generator',
     last_updated: enrichedPackageData.updated_at || enrichedPackageData.created_at,
-    validity: getPackageValidity(enrichedPackageData)
+    validity: getPackageValidity(enrichedPackageData),
   };
 }
 
@@ -422,7 +434,7 @@ function extractHotelDetails(packageData) {
 
   return {
     name: hotelName,
-    category: hotelCategory
+    category: hotelCategory,
   };
 }
 
@@ -464,7 +476,7 @@ function extractMealPlanDetails(packageData) {
 
   return {
     plan: mealPlan,
-    details: mealDetails
+    details: mealDetails,
   };
 }
 
@@ -475,7 +487,10 @@ function extractDetailedInclusions(packageData) {
   inclusions.push('Accommodation as per itinerary');
 
   // Transportation
-  if (packageData.vehicle_cost > 0 || (packageData.quote_mapping_data && packageData.quote_mapping_data.vehicle_mappings)) {
+  if (
+    packageData.vehicle_cost > 0 ||
+    (packageData.quote_mapping_data && packageData.quote_mapping_data.vehicle_mappings)
+  ) {
     inclusions.push('Private vehicle for all transfers and sightseeing');
   } else {
     inclusions.push('Airport transfers');
@@ -533,7 +548,7 @@ function extractDetailedExclusions(packageData) {
     'Camera fees at monuments',
     'Medical expenses',
     'Any expenses arising due to unforeseen circumstances',
-    'Anything not mentioned in inclusions'
+    'Anything not mentioned in inclusions',
   ];
 
   // Add specific exclusions based on package type
@@ -552,9 +567,11 @@ function isFerryIncluded(packageData) {
   if (packageData.additional_costs && packageData.additional_costs.ferry_cost > 0) {
     return true;
   }
-  if (packageData.quote_mapping_data &&
-      packageData.quote_mapping_data.additional_costs &&
-      packageData.quote_mapping_data.additional_costs.ferry_cost > 0) {
+  if (
+    packageData.quote_mapping_data &&
+    packageData.quote_mapping_data.additional_costs &&
+    packageData.quote_mapping_data.additional_costs.ferry_cost > 0
+  ) {
     return true;
   }
   return false;
@@ -564,9 +581,11 @@ function isGuideIncluded(packageData) {
   if (packageData.additional_costs && packageData.additional_costs.guide_cost_per_day > 0) {
     return true;
   }
-  if (packageData.quote_mapping_data &&
-      packageData.quote_mapping_data.additional_costs &&
-      packageData.quote_mapping_data.additional_costs.guide_cost_per_day > 0) {
+  if (
+    packageData.quote_mapping_data &&
+    packageData.quote_mapping_data.additional_costs &&
+    packageData.quote_mapping_data.additional_costs.guide_cost_per_day > 0
+  ) {
     return true;
   }
   return packageData.total_price > 60000; // Include guide for premium packages
@@ -606,16 +625,21 @@ function generatePackageDescription(packageData) {
   // Add destination-specific description
   const dest = destination.toLowerCase();
   if (dest.includes('kashmir')) {
-    description += 'Explore the paradise on earth with its pristine lakes, snow-capped mountains, and beautiful gardens. ';
+    description +=
+      'Explore the paradise on earth with its pristine lakes, snow-capped mountains, and beautiful gardens. ';
   } else if (dest.includes('goa')) {
-    description += 'Enjoy the sun, sand, and sea with beautiful beaches, vibrant nightlife, and Portuguese heritage. ';
+    description +=
+      'Enjoy the sun, sand, and sea with beautiful beaches, vibrant nightlife, and Portuguese heritage. ';
   } else if (dest.includes('manali')) {
-    description += 'Discover the hill station beauty with adventure activities, scenic landscapes, and pleasant weather. ';
+    description +=
+      'Discover the hill station beauty with adventure activities, scenic landscapes, and pleasant weather. ';
   } else if (dest.includes('kerala')) {
-    description += 'Experience God\'s own country with backwaters, spice plantations, and cultural heritage. ';
+    description +=
+      "Experience God's own country with backwaters, spice plantations, and cultural heritage. ";
   }
 
-  description += 'All arrangements are made to ensure a memorable and hassle-free vacation for your family.';
+  description +=
+    'All arrangements are made to ensure a memorable and hassle-free vacation for your family.';
 
   return description;
 }
@@ -629,7 +653,7 @@ function generateDetailedItinerary(packageData) {
   itinerary.push({
     day: 1,
     title: `Arrival in ${destination}`,
-    description: `Arrive at ${destination} airport/railway station. Meet and greet by our representative. Transfer to hotel and check-in. Rest of the day at leisure. Overnight stay at hotel.`
+    description: `Arrive at ${destination} airport/railway station. Meet and greet by our representative. Transfer to hotel and check-in. Rest of the day at leisure. Overnight stay at hotel.`,
   });
 
   // Middle days - Sightseeing
@@ -644,24 +668,30 @@ function generateDetailedItinerary(packageData) {
     if (dest.includes('kashmir')) {
       if (day === 2) {
         dayTitle = 'Srinagar Local Sightseeing';
-        dayDescription = 'After breakfast, visit Mughal Gardens - Nishat Bagh, Shalimar Bagh, and Chashme Shahi. Enjoy Shikara ride in Dal Lake. Visit local markets. Overnight stay at hotel.';
+        dayDescription =
+          'After breakfast, visit Mughal Gardens - Nishat Bagh, Shalimar Bagh, and Chashme Shahi. Enjoy Shikara ride in Dal Lake. Visit local markets. Overnight stay at hotel.';
       } else if (day === 3) {
         dayTitle = 'Srinagar to Gulmarg';
-        dayDescription = 'After breakfast, drive to Gulmarg (2 hours). Enjoy Gondola ride (Phase 1 & 2). Experience snow activities. Return to Srinagar. Overnight stay at hotel.';
+        dayDescription =
+          'After breakfast, drive to Gulmarg (2 hours). Enjoy Gondola ride (Phase 1 & 2). Experience snow activities. Return to Srinagar. Overnight stay at hotel.';
       } else {
         dayTitle = 'Pahalgam Excursion';
-        dayDescription = 'After breakfast, full day excursion to Pahalgam. Visit Betaab Valley, Aru Valley, and Chandanwari. Return to Srinagar. Overnight stay at hotel.';
+        dayDescription =
+          'After breakfast, full day excursion to Pahalgam. Visit Betaab Valley, Aru Valley, and Chandanwari. Return to Srinagar. Overnight stay at hotel.';
       }
     } else if (dest.includes('goa')) {
       if (day === 2) {
         dayTitle = 'North Goa Sightseeing';
-        dayDescription = 'After breakfast, visit North Goa beaches - Calangute, Baga, Anjuna. Visit Fort Aguada. Enjoy water sports. Overnight stay at hotel.';
+        dayDescription =
+          'After breakfast, visit North Goa beaches - Calangute, Baga, Anjuna. Visit Fort Aguada. Enjoy water sports. Overnight stay at hotel.';
       } else if (day === 3) {
         dayTitle = 'South Goa Sightseeing';
-        dayDescription = 'After breakfast, visit South Goa beaches - Colva, Benaulim. Visit Old Goa churches. Spice plantation tour. Overnight stay at hotel.';
+        dayDescription =
+          'After breakfast, visit South Goa beaches - Colva, Benaulim. Visit Old Goa churches. Spice plantation tour. Overnight stay at hotel.';
       } else {
         dayTitle = 'Leisure Day';
-        dayDescription = 'Day at leisure. Enjoy beach activities, shopping, or optional tours. Overnight stay at hotel.';
+        dayDescription =
+          'Day at leisure. Enjoy beach activities, shopping, or optional tours. Overnight stay at hotel.';
       }
     } else {
       dayTitle = `${destination} Sightseeing - Day ${day - 1}`;
@@ -671,7 +701,7 @@ function generateDetailedItinerary(packageData) {
     itinerary.push({
       day: day,
       title: dayTitle,
-      description: dayDescription
+      description: dayDescription,
     });
   }
 
@@ -679,7 +709,7 @@ function generateDetailedItinerary(packageData) {
   itinerary.push({
     day: nights + 1,
     title: 'Departure',
-    description: `After breakfast, check-out from hotel. Transfer to airport/railway station for onward journey. Tour ends with sweet memories.`
+    description: `After breakfast, check-out from hotel. Transfer to airport/railway station for onward journey. Tour ends with sweet memories.`,
   });
 
   return itinerary;
@@ -692,7 +722,7 @@ function generateCostBreakdown(packageData) {
     breakdown.push({
       item: 'Accommodation',
       cost: packageData.hotel_cost,
-      description: `${packageData.package_duration_days || 5} nights hotel stay`
+      description: `${packageData.package_duration_days || 5} nights hotel stay`,
     });
   }
 
@@ -700,7 +730,7 @@ function generateCostBreakdown(packageData) {
     breakdown.push({
       item: 'Transportation',
       cost: packageData.vehicle_cost,
-      description: 'Private vehicle for transfers and sightseeing'
+      description: 'Private vehicle for transfers and sightseeing',
     });
   }
 
@@ -712,16 +742,19 @@ function generateCostBreakdown(packageData) {
       breakdown.push({
         item: 'Meals',
         cost: costs.meal_cost_per_person * familyCount,
-        description: `Meals for ${familyCount} persons`
+        description: `Meals for ${familyCount} persons`,
       });
     }
 
     if (costs.ferry_cost > 0) {
-      const ferryPersons = (packageData.no_of_adults || 2) + (packageData.no_of_children || 0) + (packageData.no_of_child || 0);
+      const ferryPersons =
+        (packageData.no_of_adults || 2) +
+        (packageData.no_of_children || 0) +
+        (packageData.no_of_child || 0);
       breakdown.push({
         item: 'Ferry',
         cost: costs.ferry_cost * ferryPersons,
-        description: `Ferry tickets for ${ferryPersons} persons (excluding infants)`
+        description: `Ferry tickets for ${ferryPersons} persons (excluding infants)`,
       });
     }
 
@@ -730,7 +763,7 @@ function generateCostBreakdown(packageData) {
       breakdown.push({
         item: 'Activities',
         cost: costs.activity_cost_per_person * familyCount,
-        description: `Activities for ${familyCount} persons`
+        description: `Activities for ${familyCount} persons`,
       });
     }
 
@@ -739,7 +772,7 @@ function generateCostBreakdown(packageData) {
       breakdown.push({
         item: 'Guide',
         cost: costs.guide_cost_per_day * days,
-        description: `Professional guide for ${days} days`
+        description: `Professional guide for ${days} days`,
       });
     }
   }
@@ -750,7 +783,7 @@ function generateCostBreakdown(packageData) {
     breakdown.push({
       item: 'Other charges',
       cost: (packageData.total_price || 0) - total,
-      description: 'Taxes, service charges, and other fees'
+      description: 'Taxes, service charges, and other fees',
     });
   }
 
@@ -776,7 +809,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     success: true,
     message: 'Family EMI API is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -790,9 +823,9 @@ app.post('/api/create-all-emi-plans', async (req, res) => {
 
     // Generate proper UUIDs for EMI plans
     const generateUUID = () => {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c == 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
     };
@@ -807,7 +840,7 @@ app.post('/api/create-all-emi-plans', async (req, res) => {
         total_amount: basePrice,
         total_interest: 0,
         marketing_label: 'Quick Pay',
-        is_featured: false
+        is_featured: false,
       },
       {
         id: generateUUID(),
@@ -818,7 +851,7 @@ app.post('/api/create-all-emi-plans', async (req, res) => {
         total_amount: basePrice,
         total_interest: 0,
         marketing_label: 'Best Value',
-        is_featured: true
+        is_featured: true,
       },
       {
         id: generateUUID(),
@@ -829,8 +862,8 @@ app.post('/api/create-all-emi-plans', async (req, res) => {
         total_amount: basePrice,
         total_interest: 0,
         marketing_label: 'Low Monthly',
-        is_featured: false
-      }
+        is_featured: false,
+      },
     ];
 
     const results = [];
@@ -862,22 +895,21 @@ app.post('/api/create-all-emi-plans', async (req, res) => {
         success: false,
         message: 'Some EMI plans failed to create',
         results: results,
-        errors: errors
+        errors: errors,
       });
     } else {
       res.json({
         success: true,
         message: 'All EMI plans created successfully',
         data: results,
-        count: results.length
+        count: results.length,
       });
     }
-
   } catch (error) {
     console.error('❌ Error creating EMI plans:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -894,7 +926,7 @@ app.post('/api/create-emi-plan', async (req, res) => {
       monthly_amount: 4675,
       processing_fee: 842,
       total_amount: 28050,
-      total_interest: 0 // No interest for now
+      total_interest: 0, // No interest for now
     };
 
     const { data, error } = await quoteDB
@@ -908,22 +940,21 @@ app.post('/api/create-emi-plan', async (req, res) => {
       res.status(500).json({
         success: false,
         error: error.message,
-        details: error
+        details: error,
       });
     } else {
       console.log('✅ EMI plan created:', data);
       res.json({
         success: true,
         message: 'EMI plan created successfully',
-        data: data
+        data: data,
       });
     }
-
   } catch (error) {
     console.error('❌ Error creating EMI plan:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -945,7 +976,7 @@ app.delete('/api/remove-duplicate-emi-plans', async (req, res) => {
       res.status(500).json({
         success: false,
         error: error.message,
-        details: error
+        details: error,
       });
     } else {
       console.log('✅ Duplicate EMI plan removed:', data);
@@ -953,15 +984,14 @@ app.delete('/api/remove-duplicate-emi-plans', async (req, res) => {
         success: true,
         message: 'Duplicate EMI plan removed successfully',
         removed_plan_id: '874e424f-05da-4114-883f-37e4ad36aab1',
-        data: data
+        data: data,
       });
     }
-
   } catch (error) {
     console.error('❌ Error removing duplicate EMI plan:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -989,21 +1019,20 @@ app.get('/api/check-family-prices', async (req, res) => {
         exists: true,
         columns: columns,
         sample_records: pricesData,
-        record_count: pricesData?.length || 0
+        record_count: pricesData?.length || 0,
       });
     } else {
       res.json({
         success: false,
         error: pricesError.message,
-        table: 'family_type_prices'
+        table: 'family_type_prices',
       });
     }
-
   } catch (error) {
     console.error('❌ Error checking family prices table:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1024,7 +1053,7 @@ app.post('/api/cleanup-emi-plans', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Failed to fetch existing EMI plans',
-        details: fetchError.message
+        details: fetchError.message,
       });
     }
 
@@ -1038,14 +1067,12 @@ app.post('/api/cleanup-emi-plans', async (req, res) => {
       return acc;
     }, {});
 
-    const plansToKeep = [
-      plansByMonths[3],
-      plansByMonths[6],
-      plansByMonths[12]
-    ].filter(Boolean); // Remove any undefined plans
+    const plansToKeep = [plansByMonths[3], plansByMonths[6], plansByMonths[12]].filter(Boolean); // Remove any undefined plans
 
-    console.log(`🎯 Keeping ${plansToKeep.length} representative plans:`,
-      plansToKeep.map(p => `${p.emi_months} months (${p.id})`));
+    console.log(
+      `🎯 Keeping ${plansToKeep.length} representative plans:`,
+      plansToKeep.map(p => `${p.emi_months} months (${p.id})`)
+    );
 
     // Get IDs of plans to keep
     const idsToKeep = plansToKeep.map(p => p.id);
@@ -1061,7 +1088,7 @@ app.post('/api/cleanup-emi-plans', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Failed to delete excess EMI plans',
-        details: deleteError.message
+        details: deleteError.message,
       });
     }
 
@@ -1076,7 +1103,7 @@ app.post('/api/cleanup-emi-plans', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Failed to verify cleanup',
-        details: verifyError.message
+        details: verifyError.message,
       });
     }
 
@@ -1088,14 +1115,13 @@ app.post('/api/cleanup-emi-plans', async (req, res) => {
       message: 'EMI plans cleaned up successfully - kept only essential plans',
       original_count: allPlans.length,
       remaining_count: remainingPlans.length,
-      remaining_plans: remainingPlans
+      remaining_plans: remainingPlans,
     });
-
   } catch (error) {
     console.error('❌ Error cleaning up EMI plans:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1106,9 +1132,9 @@ app.post('/api/create-essential-emi-plans', async (req, res) => {
     console.log('🔧 Creating 3 essential EMI plans...');
 
     const generateUUID = () => {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c == 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
     };
@@ -1124,14 +1150,16 @@ app.post('/api/create-essential-emi-plans', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Could not fetch sample family price data',
-        details: priceError?.message
+        details: priceError?.message,
       });
     }
 
     const referencePriceRecord = samplePrice[0];
     const basePrice = referencePriceRecord.total_price || 30000;
 
-    console.log(`📊 Using reference price record: ${referencePriceRecord.id} with price ₹${basePrice}`);
+    console.log(
+      `📊 Using reference price record: ${referencePriceRecord.id} with price ₹${basePrice}`
+    );
 
     const essentialEMIPlans = [
       {
@@ -1155,7 +1183,7 @@ app.post('/api/create-essential-emi-plans', async (req, res) => {
         advance_payment_required: 0,
         advance_payment_percent: 20,
         selected_emi_plan_id: null,
-        emi_plan_id: null
+        emi_plan_id: null,
       },
       {
         id: generateUUID(),
@@ -1178,7 +1206,7 @@ app.post('/api/create-essential-emi-plans', async (req, res) => {
         advance_payment_required: 0,
         advance_payment_percent: 20,
         selected_emi_plan_id: null,
-        emi_plan_id: null
+        emi_plan_id: null,
       },
       {
         id: generateUUID(),
@@ -1201,8 +1229,8 @@ app.post('/api/create-essential-emi-plans', async (req, res) => {
         advance_payment_required: 0,
         advance_payment_percent: 20,
         selected_emi_plan_id: null,
-        emi_plan_id: null
-      }
+        emi_plan_id: null,
+      },
     ];
 
     console.log('🔧 Creating 3 essential EMI plans...');
@@ -1218,7 +1246,7 @@ app.post('/api/create-essential-emi-plans', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Failed to create essential EMI plans',
-        details: insertError.message
+        details: insertError.message,
       });
     }
 
@@ -1228,14 +1256,13 @@ app.post('/api/create-essential-emi-plans', async (req, res) => {
       success: true,
       message: 'Essential EMI plans created successfully',
       created_count: insertedPlans?.length || 0,
-      plans: insertedPlans || []
+      plans: insertedPlans || [],
     });
-
   } catch (error) {
     console.error('❌ Error creating essential EMI plans:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1255,7 +1282,7 @@ app.post('/api/create-emi-plans-from-prices', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Could not fetch family prices data',
-        details: pricesError?.message
+        details: pricesError?.message,
       });
     }
 
@@ -1263,9 +1290,9 @@ app.post('/api/create-emi-plans-from-prices', async (req, res) => {
 
     const emiPlansToCreate = [];
     const generateUUID = () => {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c == 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       });
     };
@@ -1285,7 +1312,7 @@ app.post('/api/create-emi-plans-from-prices', async (req, res) => {
           processing_fee: Math.round(basePrice * 0.02),
           total_interest: 0,
           marketing_label: 'Quick Pay',
-          is_featured: false
+          is_featured: false,
         },
         {
           id: generateUUID(),
@@ -1296,7 +1323,7 @@ app.post('/api/create-emi-plans-from-prices', async (req, res) => {
           processing_fee: Math.round(basePrice * 0.03),
           total_interest: 0,
           marketing_label: 'Best Value',
-          is_featured: true
+          is_featured: true,
         },
         {
           id: generateUUID(),
@@ -1307,8 +1334,8 @@ app.post('/api/create-emi-plans-from-prices', async (req, res) => {
           processing_fee: Math.round(basePrice * 0.05),
           total_interest: 0,
           marketing_label: 'Low Monthly',
-          is_featured: false
-        }
+          is_featured: false,
+        },
       ];
 
       emiPlansToCreate.push(...plans);
@@ -1327,7 +1354,7 @@ app.post('/api/create-emi-plans-from-prices', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Failed to create EMI plans',
-        details: insertError.message
+        details: insertError.message,
       });
     }
 
@@ -1337,14 +1364,13 @@ app.post('/api/create-emi-plans-from-prices', async (req, res) => {
       success: true,
       message: 'EMI plans created successfully from family prices',
       created_count: insertedPlans?.length || 0,
-      sample_plans: insertedPlans?.slice(0, 5) || []
+      sample_plans: insertedPlans?.slice(0, 5) || [],
     });
-
   } catch (error) {
     console.error('❌ Error creating EMI plans from prices:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1372,21 +1398,20 @@ app.get('/api/check-emi-plans', async (req, res) => {
         exists: true,
         columns: columns,
         sample_records: emiPlansData,
-        record_count: emiPlansData?.length || 0
+        record_count: emiPlansData?.length || 0,
       });
     } else {
       res.json({
         success: false,
         error: emiPlansError.message,
-        table: 'family_type_emi_plans'
+        table: 'family_type_emi_plans',
       });
     }
-
   } catch (error) {
     console.error('❌ Error checking EMI plans table:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1404,8 +1429,12 @@ app.get('/api/check-emi-table', async (req, res) => {
 
     if (!emiError) {
       const columns = emiData && emiData.length > 0 ? Object.keys(emiData[0]) : [];
-      const statusValues = emiData ? [...new Set(emiData.map(record => record.payment_status))] : [];
-      const advanceStatusValues = emiData ? [...new Set(emiData.map(record => record.advance_payment_status))] : [];
+      const statusValues = emiData
+        ? [...new Set(emiData.map(record => record.payment_status))]
+        : [];
+      const advanceStatusValues = emiData
+        ? [...new Set(emiData.map(record => record.advance_payment_status))]
+        : [];
 
       console.log('📋 EMI transactions table columns:', columns);
       console.log('📊 Existing payment_status values:', statusValues);
@@ -1419,21 +1448,20 @@ app.get('/api/check-emi-table', async (req, res) => {
         sample_records: emiData,
         record_count: emiData?.length || 0,
         existing_payment_status_values: statusValues,
-        existing_advance_payment_status_values: advanceStatusValues
+        existing_advance_payment_status_values: advanceStatusValues,
       });
     } else {
       res.json({
         success: false,
         error: emiError.message,
-        table: 'prepaid_emi_transactions'
+        table: 'prepaid_emi_transactions',
       });
     }
-
   } catch (error) {
     console.error('❌ Error checking EMI table:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1458,21 +1486,20 @@ app.get('/api/check-payments-table', async (req, res) => {
         exists: true,
         columns: columns,
         sample_records: paymentsData,
-        record_count: paymentsData?.length || 0
+        record_count: paymentsData?.length || 0,
       });
     } else {
       res.json({
         success: false,
         error: paymentsError.message,
-        table: 'payments'
+        table: 'payments',
       });
     }
-
   } catch (error) {
     console.error('❌ Error checking payments table:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1494,17 +1521,14 @@ app.get('/api/check-crm-tables', async (req, res) => {
       'emi_transactions',
       'payment_history',
       'transactions',
-      'payments'
+      'payments',
     ];
 
     for (const tableName of possibleTables) {
       try {
         console.log(`🔍 Checking table: ${tableName}`);
 
-        const { data, error } = await crmDB
-          .from(tableName)
-          .select('*')
-          .limit(1);
+        const { data, error } = await crmDB.from(tableName).select('*').limit(1);
 
         if (!error) {
           const columns = data && data.length > 0 ? Object.keys(data[0]) : [];
@@ -1514,7 +1538,7 @@ app.get('/api/check-crm-tables', async (req, res) => {
             accessible: true,
             columns: columns,
             record_count: data?.length || 0,
-            sample_record: data?.[0] || null
+            sample_record: data?.[0] || null,
           });
           console.log(`✅ Table ${tableName} exists and is accessible`);
         } else {
@@ -1523,7 +1547,7 @@ app.get('/api/check-crm-tables', async (req, res) => {
             exists: false,
             accessible: false,
             error: error.message,
-            error_code: error.code
+            error_code: error.code,
           });
           console.log(`❌ Table ${tableName} error:`, error.code, error.message);
         }
@@ -1533,7 +1557,7 @@ app.get('/api/check-crm-tables', async (req, res) => {
           exists: false,
           accessible: false,
           error: err.message,
-          error_type: 'exception'
+          error_type: 'exception',
         });
         console.log(`❌ Exception checking ${tableName}:`, err.message);
       }
@@ -1554,24 +1578,24 @@ app.get('/api/check-crm-tables', async (req, res) => {
         'payment',
         'transaction',
         'emi',
-        'plan'
+        'plan',
       ];
 
       for (const pattern of commonPatterns) {
         try {
-          const { data, error } = await crmDB
-            .from(pattern)
-            .select('*')
-            .limit(1);
+          const { data, error } = await crmDB.from(pattern).select('*').limit(1);
 
           if (!error) {
             availableTables.push({
               table: pattern,
               exists: true,
               columns: data && data.length > 0 ? Object.keys(data[0]) : [],
-              sample_record: data?.[0] || null
+              sample_record: data?.[0] || null,
             });
-            console.log(`✅ Found table: ${pattern} with columns:`, data && data.length > 0 ? Object.keys(data[0]) : []);
+            console.log(
+              `✅ Found table: ${pattern} with columns:`,
+              data && data.length > 0 ? Object.keys(data[0]) : []
+            );
           }
         } catch (err) {
           // Ignore errors for pattern matching
@@ -1586,24 +1610,24 @@ app.get('/api/check-crm-tables', async (req, res) => {
         'bookings',
         'customers',
         'quotes',
-        'orders'
+        'orders',
       ];
 
       for (const tableName of additionalTables) {
         try {
-          const { data, error } = await crmDB
-            .from(tableName)
-            .select('*')
-            .limit(1);
+          const { data, error } = await crmDB.from(tableName).select('*').limit(1);
 
           if (!error) {
             availableTables.push({
               table: tableName,
               exists: true,
               columns: data && data.length > 0 ? Object.keys(data[0]) : [],
-              sample_record: data?.[0] || null
+              sample_record: data?.[0] || null,
             });
-            console.log(`✅ Found additional table: ${tableName} with columns:`, data && data.length > 0 ? Object.keys(data[0]) : []);
+            console.log(
+              `✅ Found additional table: ${tableName} with columns:`,
+              data && data.length > 0 ? Object.keys(data[0]) : []
+            );
           }
         } catch (err) {
           // Ignore errors
@@ -1616,19 +1640,20 @@ app.get('/api/check-crm-tables', async (req, res) => {
     res.json({
       success: true,
       message: 'CRM database table check completed',
-      database_url: process.env.CRM_SUPABASE_URL ? process.env.CRM_SUPABASE_URL.substring(0, 30) + '...' : 'Not configured',
+      database_url: process.env.CRM_SUPABASE_URL
+        ? process.env.CRM_SUPABASE_URL.substring(0, 30) + '...'
+        : 'Not configured',
       table_checks: tableChecks,
       available_tables: availableTables,
       existing_tables: tableChecks.filter(t => t.exists),
-      accessible_tables: tableChecks.filter(t => t.accessible)
+      accessible_tables: tableChecks.filter(t => t.accessible),
     });
-
   } catch (error) {
     console.error('❌ Error checking CRM tables:', error);
     res.status(500).json({
       success: false,
       error: error.message,
-      details: 'Failed to check CRM database tables'
+      details: 'Failed to check CRM database tables',
     });
   }
 });
@@ -1652,21 +1677,20 @@ app.get('/api/check-table-structure', async (req, res) => {
         success: true,
         table: 'public_family_quotes',
         columns: columns,
-        sample_record: sampleData[0]
+        sample_record: sampleData[0],
       });
     } else {
       res.json({
         success: false,
         error: 'No data found in table',
-        details: sampleError
+        details: sampleError,
       });
     }
-
   } catch (error) {
     console.error('❌ Error checking table structure:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1689,7 +1713,7 @@ app.get('/api/emi-transactions', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Failed to fetch EMI transactions',
-        details: transactionError.message
+        details: transactionError.message,
       });
     }
 
@@ -1716,7 +1740,7 @@ app.get('/api/emi-transactions', async (req, res) => {
 
       transactionsWithCustomerData.push({
         ...transaction,
-        customer_data: customerData
+        customer_data: customerData,
       });
     }
 
@@ -1727,8 +1751,9 @@ app.get('/api/emi-transactions', async (req, res) => {
       customer_name: transaction.customer_data?.customer_name || `Customer ${index + 1}`,
       customer_phone: transaction.customer_data?.customer_phone || '+91 XXXXXXXXXX',
       customer_email: transaction.customer_data?.customer_email || 'customer@example.com',
-      package_name: transaction.customer_data?.destination ?
-        `${transaction.customer_data.destination} Package` : 'Travel Package',
+      package_name: transaction.customer_data?.destination
+        ? `${transaction.customer_data.destination} Package`
+        : 'Travel Package',
       advance_payment_amount: transaction.advance_payment_amount,
       advance_payment_status: transaction.advance_payment_status,
       advance_payment_date: transaction.advance_payment_date,
@@ -1741,7 +1766,7 @@ app.get('/api/emi-transactions', async (req, res) => {
       payment_status: transaction.payment_status,
       auto_debit_enabled: transaction.auto_debit_enabled,
       payment_method: transaction.payment_method,
-      created_at: transaction.created_at
+      created_at: transaction.created_at,
     }));
 
     console.log(`✅ Successfully fetched ${formattedTransactions.length} EMI transactions`);
@@ -1749,14 +1774,13 @@ app.get('/api/emi-transactions', async (req, res) => {
     res.json({
       success: true,
       transactions: formattedTransactions,
-      count: formattedTransactions.length
+      count: formattedTransactions.length,
     });
-
   } catch (error) {
     console.error('❌ Error in EMI transactions endpoint:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1805,7 +1829,7 @@ app.get('/api/test-db', async (req, res) => {
           error: emiError?.message,
           error_code: emiError?.code,
           data_count: emiTest?.length || 0,
-          location: 'quote_database'
+          location: 'quote_database',
         },
         emi_payment_history: {
           exists: historyTableExists,
@@ -1813,26 +1837,25 @@ app.get('/api/test-db', async (req, res) => {
           error: historyError?.message,
           error_code: historyError?.code,
           data_count: historyTest?.length || 0,
-          location: 'quote_database'
-        }
+          location: 'quote_database',
+        },
       },
       quote_db: {
         connected: !quoteError,
         error: quoteError?.message,
-        data_count: quoteTest?.length || 0
+        data_count: quoteTest?.length || 0,
       },
       diagnosis: {
         tables_exist: emiTableExists && historyTableExists,
         tables_accessible: emiTableAccessible && historyTableAccessible,
-        ready_for_payments: emiTableAccessible && historyTableAccessible
-      }
+        ready_for_payments: emiTableAccessible && historyTableAccessible,
+      },
     });
-
   } catch (error) {
     console.error('❌ Database test error:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1854,7 +1877,7 @@ app.post('/api/create-payment-tables', async (req, res) => {
         monthly_emi_amount: 0,
         total_emi_amount: 0,
         remaining_emi_months: 0,
-        payment_method: 'test'
+        payment_method: 'test',
       };
 
       console.log('🧪 Attempting to insert test data:', testData);
@@ -1877,16 +1900,16 @@ app.post('/api/create-payment-tables', async (req, res) => {
               step1: 'Go to your Supabase CRM project',
               step2: 'Open SQL Editor',
               step3: 'Run the SQL script from setup-payment-tables.sql',
-              step4: 'Test again using /api/test-db endpoint'
+              step4: 'Test again using /api/test-db endpoint',
             },
-            sql_script_url: '/setup-payment-tables.sql'
+            sql_script_url: '/setup-payment-tables.sql',
           });
         } else {
           return res.json({
             success: false,
             error: 'Table exists but insert failed',
             details: insertError,
-            message: 'Tables might exist but have permission issues'
+            message: 'Tables might exist but have permission issues',
           });
         }
       } else {
@@ -1901,24 +1924,22 @@ app.post('/api/create-payment-tables', async (req, res) => {
         return res.json({
           success: true,
           message: 'Tables exist and are working!',
-          test_result: insertResult
+          test_result: insertResult,
         });
       }
-
     } catch (error) {
       console.error('❌ Error during table test:', error);
       return res.status(500).json({
         success: false,
         error: 'Failed to test tables',
-        details: error.message
+        details: error.message,
       });
     }
-
   } catch (error) {
     console.error('❌ Error in create-payment-tables:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -1928,7 +1949,7 @@ app.post('/api/process-payment', async (req, res) => {
   try {
     console.log('💳 Payment processing request received:', {
       body: req.body,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
     const {
@@ -1940,14 +1961,14 @@ app.post('/api/process-payment', async (req, res) => {
       package_data,
       payment_reference,
       gateway_reference,
-      test_status
+      test_status,
     } = req.body;
 
     // Validate required fields
     if (!quote_id || !payment_method || !payment_amount || !emi_plan) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required payment fields'
+        error: 'Missing required payment fields',
       });
     }
 
@@ -1962,7 +1983,7 @@ app.post('/api/process-payment', async (req, res) => {
       console.error('❌ Error fetching quote:', quoteError);
       return res.status(404).json({
         success: false,
-        error: 'Quote not found'
+        error: 'Quote not found',
       });
     }
 
@@ -1987,11 +2008,17 @@ app.post('/api/process-payment', async (req, res) => {
       paymentAmount: payment_amount,
       remainingAmount,
       remainingMonths,
-      nextEmiDueDate: nextEmiDueDate.toISOString().split('T')[0]
+      nextEmiDueDate: nextEmiDueDate.toISOString().split('T')[0],
     });
 
     // Find the correct EMI plan ID from the database based on package and months
-    console.log('🔍 Finding EMI plan for package:', package_data.id, 'with', emi_plan.months, 'months...');
+    console.log(
+      '🔍 Finding EMI plan for package:',
+      package_data.id,
+      'with',
+      emi_plan.months,
+      'months...'
+    );
 
     // First, try to find EMI plan for the specific package
     let { data: emiPlanData, error: emiPlanError } = await quoteDB
@@ -2003,7 +2030,11 @@ app.post('/api/process-payment', async (req, res) => {
 
     // If no plan found for specific package, try to find any plan with the requested months
     if (emiPlanError || !emiPlanData || emiPlanData.length === 0) {
-      console.log('⚠️ No EMI plan found for specific package, trying any plan with', emi_plan.months, 'months...');
+      console.log(
+        '⚠️ No EMI plan found for specific package, trying any plan with',
+        emi_plan.months,
+        'months...'
+      );
 
       const { data: fallbackEmiPlanData, error: fallbackEmiPlanError } = await quoteDB
         .from('family_type_emi_plans')
@@ -2018,7 +2049,7 @@ app.post('/api/process-payment', async (req, res) => {
           error: 'EMI plan not found',
           details: `No EMI plan found for ${emi_plan.months} months`,
           requested_months: emi_plan.months,
-          package_id: package_data.id
+          package_id: package_data.id,
         });
       }
 
@@ -2047,7 +2078,7 @@ app.post('/api/process-payment', async (req, res) => {
       auto_debit_enabled: false,
       payment_method: payment_method,
       reminder_sent_count: 0,
-      last_reminder_sent: null
+      last_reminder_sent: null,
     };
 
     console.log('💾 Creating EMI transaction:', emiTransactionData);
@@ -2066,7 +2097,7 @@ app.post('/api/process-payment', async (req, res) => {
         success: false,
         error: 'Failed to create EMI transaction',
         details: transactionError?.message || 'Unknown database error',
-        code: transactionError?.code
+        code: transactionError?.code,
       });
     }
 
@@ -2076,21 +2107,25 @@ app.post('/api/process-payment', async (req, res) => {
         message: transactionError?.message,
         details: transactionError?.details,
         hint: transactionError?.hint,
-        code: transactionError?.code
+        code: transactionError?.code,
       });
 
       // Check if it's a table not found error
-      if (transactionError?.code === '42P01' || transactionError?.message?.includes('does not exist')) {
+      if (
+        transactionError?.code === '42P01' ||
+        transactionError?.message?.includes('does not exist')
+      ) {
         return res.status(500).json({
           success: false,
           error: 'Payment tables not found',
-          details: 'The required payment tables (prepaid_emi_transactions, emi_payment_history) do not exist in the database. Please run the setup script first.',
+          details:
+            'The required payment tables (prepaid_emi_transactions, emi_payment_history) do not exist in the database. Please run the setup script first.',
           setup_required: true,
           setup_instructions: {
             message: 'Run the SQL script in your Supabase CRM database',
             script_location: '/setup-payment-tables.sql',
-            tables_needed: ['prepaid_emi_transactions', 'emi_payment_history']
-          }
+            tables_needed: ['prepaid_emi_transactions', 'emi_payment_history'],
+          },
         });
       }
 
@@ -2098,7 +2133,7 @@ app.post('/api/process-payment', async (req, res) => {
         success: false,
         error: 'Failed to create EMI transaction',
         details: transactionError?.message || 'Unknown database error',
-        code: transactionError?.code
+        code: transactionError?.code,
       });
     }
 
@@ -2117,7 +2152,7 @@ app.post('/api/process-payment', async (req, res) => {
       gateway_reference: gateway_reference || null,
       late_fee_amount: 0,
       discount_applied: 0,
-      notes: `First prepaid EMI payment for ${package_data?.destination || 'travel package'} - No processing fee`
+      notes: `First prepaid EMI payment for ${package_data?.destination || 'travel package'} - No processing fee`,
     };
 
     console.log('📝 Creating payment history:', paymentHistoryData);
@@ -2140,7 +2175,7 @@ app.post('/api/process-payment', async (req, res) => {
       .from('public_family_quotes')
       .update({
         quote_status: 'payment_initiated',
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
       .eq('id', quote_id);
 
@@ -2161,16 +2196,15 @@ app.post('/api/process-payment', async (req, res) => {
         remaining_months: remainingMonths,
         payment_history_id: historyData?.id,
         customer_name: quoteData.customer_name,
-        customer_email: quoteData.customer_email
-      }
+        customer_email: quoteData.customer_email,
+      },
     });
-
   } catch (error) {
     console.error('❌ Error processing payment:', error);
     res.status(500).json({
       success: false,
       error: 'Internal server error during payment processing',
-      details: error.message
+      details: error.message,
     });
   }
 });
@@ -2178,22 +2212,23 @@ app.post('/api/process-payment', async (req, res) => {
 // Get all family types
 app.get('/api/family-types', async (req, res) => {
   try {
-    const { data, error } = await crmDB
-      .from('family_type')
-      .select('*')
-      .order('family_type');
-    
+    const { data, error } = await crmDB.from('family_type').select('*').order('family_type');
+
     if (error) throw error;
-    
+
     const formattedData = data.map(ft => ({
       ...ft,
       composition: `${ft.no_of_adults} Adult${ft.no_of_adults > 1 ? 's' : ''}${
-        ft.no_of_children > 0 ? ` + ${ft.no_of_children} Child${ft.no_of_children > 1 ? 'ren' : ''}` : ''
+        ft.no_of_children > 0
+          ? ` + ${ft.no_of_children} Child${ft.no_of_children > 1 ? 'ren' : ''}`
+          : ''
       }${
-        ft.no_of_infants > 0 ? ` + ${ft.no_of_infants} Infant${ft.no_of_infants > 1 ? 's' : ''}` : ''
-      }`
+        ft.no_of_infants > 0
+          ? ` + ${ft.no_of_infants} Infant${ft.no_of_infants > 1 ? 's' : ''}`
+          : ''
+      }`,
     }));
-    
+
     res.json({ success: true, data: formattedData });
   } catch (error) {
     console.error('Error fetching family types:', error);
@@ -2221,15 +2256,16 @@ app.get('/api/destinations', async (req, res) => {
             destinationMap.set(dest, {
               destination: dest,
               category: dest,
-              packages_available: 0
+              packages_available: 0,
             });
           }
           destinationMap.get(dest).packages_available++;
         }
       });
 
-      const destinations = Array.from(destinationMap.values())
-        .sort((a, b) => a.destination.localeCompare(b.destination));
+      const destinations = Array.from(destinationMap.values()).sort((a, b) =>
+        a.destination.localeCompare(b.destination)
+      );
 
       return res.json({ success: true, data: destinations });
     }
@@ -2249,15 +2285,16 @@ app.get('/api/destinations', async (req, res) => {
             destinationMap.set(dest, {
               destination: dest,
               category: 'Available',
-              packages_available: 0
+              packages_available: 0,
             });
           }
           destinationMap.get(dest).packages_available++;
         }
       });
 
-      const destinations = Array.from(destinationMap.values())
-        .sort((a, b) => a.destination.localeCompare(b.destination));
+      const destinations = Array.from(destinationMap.values()).sort((a, b) =>
+        a.destination.localeCompare(b.destination)
+      );
 
       return res.json({ success: true, data: destinations });
     }
@@ -2268,7 +2305,7 @@ app.get('/api/destinations', async (req, res) => {
       { destination: 'Goa', category: 'Beach', packages_available: 0 },
       { destination: 'Manali', category: 'Hill Station', packages_available: 0 },
       { destination: 'Kerala', category: 'Backwaters', packages_available: 0 },
-      { destination: 'Rajasthan', category: 'Desert', packages_available: 0 }
+      { destination: 'Rajasthan', category: 'Desert', packages_available: 0 },
     ];
 
     res.json({ success: true, data: fallbackDestinations });
@@ -2282,46 +2319,52 @@ app.get('/api/destinations', async (req, res) => {
 app.post('/api/search-packages', async (req, res) => {
   try {
     const { destination, travel_date, adults, children, infants } = req.body;
-    
+
     // Validate input
     if (!destination || !adults) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Destination and number of adults are required' 
+      return res.status(400).json({
+        success: false,
+        error: 'Destination and number of adults are required',
       });
     }
-    
+
     // Detect family type
     const familyType = await detectFamilyType(adults, children || 0, infants || 0);
-    
+
     // Search packages
     const { data: packages, error } = await quoteDB
       .from('family_type_prices')
-      .select(`
+      .select(
+        `
         *,
         family_type_emi_plans(*)
-      `)
+      `
+      )
       .ilike('destination', `%${destination}%`)
       .eq('is_public_visible', true)
       .limit(10);
-    
+
     if (error) throw error;
-    
+
     // Format packages for frontend
     const formattedPackages = packages.map(formatPackageForFrontend);
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       matched_family_type: {
         ...familyType,
         composition: `${familyType.no_of_adults} Adult${familyType.no_of_adults > 1 ? 's' : ''}${
-          familyType.no_of_children > 0 ? ` + ${familyType.no_of_children} Child${familyType.no_of_children > 1 ? 'ren' : ''}` : ''
+          familyType.no_of_children > 0
+            ? ` + ${familyType.no_of_children} Child${familyType.no_of_children > 1 ? 'ren' : ''}`
+            : ''
         }${
-          familyType.no_of_infants > 0 ? ` + ${familyType.no_of_infants} Infant${familyType.no_of_infants > 1 ? 's' : ''}` : ''
-        }`
+          familyType.no_of_infants > 0
+            ? ` + ${familyType.no_of_infants} Infant${familyType.no_of_infants > 1 ? 's' : ''}`
+            : ''
+        }`,
       },
       packages: formattedPackages,
-      search_params: { destination, travel_date, adults, children, infants }
+      search_params: { destination, travel_date, adults, children, infants },
     });
   } catch (error) {
     console.error('Error searching packages:', error);
@@ -2341,10 +2384,12 @@ app.get('/api/packages/:id', async (req, res) => {
     try {
       const { data: priceData, error: priceError } = await quoteDB
         .from('family_type_prices')
-        .select(`
+        .select(
+          `
           *,
           family_type_emi_plans(*)
-        `)
+        `
+        )
         .eq('id', id)
         .single();
 
@@ -2404,7 +2449,7 @@ app.get('/api/packages/:id', async (req, res) => {
 
     res.json({
       success: true,
-      package: formattedPackage
+      package: formattedPackage,
     });
   } catch (error) {
     console.error('Error fetching package details:', error);
@@ -2417,7 +2462,7 @@ app.post('/api/submit-contact-details', async (req, res) => {
   try {
     console.log('📝 Contact form submission received:', {
       body: req.body,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
     const {
@@ -2430,7 +2475,7 @@ app.post('/api/submit-contact-details', async (req, res) => {
       searchParams,
       selectedEmiPlan,
       utm_source,
-      session_id
+      session_id,
     } = req.body;
 
     console.log('🔍 Selected EMI Plan:', selectedEmiPlan);
@@ -2439,7 +2484,7 @@ app.post('/api/submit-contact-details', async (req, res) => {
     if (!firstName || !lastName || !mobileNumber || !emailId || !packageId) {
       return res.status(400).json({
         success: false,
-        error: 'All contact fields are required'
+        error: 'All contact fields are required',
       });
     }
 
@@ -2450,7 +2495,7 @@ app.post('/api/submit-contact-details', async (req, res) => {
         console.log('🔍 Looking up EMI plan for:', {
           months: selectedEmiPlan.months,
           monthlyAmount: selectedEmiPlan.monthlyAmount,
-          packageId: packageId
+          packageId: packageId,
         });
 
         // Try to find matching EMI plan
@@ -2476,7 +2521,7 @@ app.post('/api/submit-contact-details', async (req, res) => {
     if (!emailRegex.test(emailId)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid email format'
+        error: 'Invalid email format',
       });
     }
 
@@ -2485,7 +2530,7 @@ app.post('/api/submit-contact-details', async (req, res) => {
     if (cleanMobile.length !== 10 || !/^[6-9]/.test(cleanMobile)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid mobile number format'
+        error: 'Invalid mobile number format',
       });
     }
 
@@ -2498,10 +2543,12 @@ app.post('/api/submit-contact-details', async (req, res) => {
       try {
         const { data: pkgData, error: pkgError } = await quoteDB
           .from('family_type_prices')
-          .select(`
+          .select(
+            `
             *,
             family_type_emi_plans(*)
-          `)
+          `
+          )
           .eq('id', packageId)
           .single();
 
@@ -2529,11 +2576,13 @@ app.post('/api/submit-contact-details', async (req, res) => {
       selected_emi_months: selectedEmiPlan?.months || null,
       monthly_emi_amount: selectedEmiPlan?.monthly_amount || null,
       // Store original EMI plan info in notes for reference
-      notes: selectedEmiPlan?.id ? `Original EMI Plan ID: ${selectedEmiPlan.id}, Months: ${selectedEmiPlan.months}, Monthly: ${selectedEmiPlan.monthly_amount}` : null,
+      notes: selectedEmiPlan?.id
+        ? `Original EMI Plan ID: ${selectedEmiPlan.id}, Months: ${selectedEmiPlan.months}, Monthly: ${selectedEmiPlan.monthly_amount}`
+        : null,
       estimated_total_cost: packageInfo?.total_price || null,
       utm_source: utm_source || 'family_website_contact_form',
       session_id: session_id || `sess_${Date.now()}`,
-      quote_status: 'contact_submitted'
+      quote_status: 'contact_submitted',
     };
 
     // Only add matched_price_id if it's a valid UUID and exists in the database
@@ -2550,7 +2599,10 @@ app.post('/api/submit-contact-details', async (req, res) => {
           insertData.matched_price_id = packageId;
         }
       } catch (error) {
-        console.warn('Package ID not found in database, proceeding without matched_price_id:', packageId);
+        console.warn(
+          'Package ID not found in database, proceeding without matched_price_id:',
+          packageId
+        );
       }
     }
 
@@ -2567,20 +2619,20 @@ app.post('/api/submit-contact-details', async (req, res) => {
       quote_id: data.id,
       customer_name,
       destination: insertData.destination,
-      package_id: packageId
+      package_id: packageId,
     });
 
     res.json({
       success: true,
       quote_id: data.id,
       customer_name,
-      message: `Thank you ${firstName}! Your contact details have been submitted successfully. Our team will contact you soon to finalize your ${insertData.destination} package.`
+      message: `Thank you ${firstName}! Your contact details have been submitted successfully. Our team will contact you soon to finalize your ${insertData.destination} package.`,
     });
   } catch (error) {
     console.error('Error submitting contact details:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to submit contact details. Please try again.'
+      error: 'Failed to submit contact details. Please try again.',
     });
   }
 });
@@ -2600,14 +2652,14 @@ app.post('/api/quote-request', async (req, res) => {
       selected_package_id,
       selected_emi_plan_id,
       utm_source,
-      session_id
+      session_id,
     } = req.body;
 
     // Validate required fields
     if (!customer_email || !destination || !adults) {
       return res.status(400).json({
         success: false,
-        error: 'Email, destination, and number of adults are required'
+        error: 'Email, destination, and number of adults are required',
       });
     }
 
@@ -2627,7 +2679,7 @@ app.post('/api/quote-request', async (req, res) => {
         selected_emi_plan_id,
         utm_source: utm_source || 'direct',
         session_id: session_id || `sess_${Date.now()}`,
-        lead_source: 'family_website'
+        lead_source: 'family_website',
       })
       .select()
       .single();
@@ -2637,7 +2689,7 @@ app.post('/api/quote-request', async (req, res) => {
     res.json({
       success: true,
       quote_id: data.id,
-      message: 'Quote request submitted successfully. Our team will contact you soon!'
+      message: 'Quote request submitted successfully. Our team will contact you soon!',
     });
   } catch (error) {
     console.error('Error submitting quote request:', error);
@@ -2653,14 +2705,16 @@ app.get('/api/investigate-emi-data', async (req, res) => {
     // Check public_family_quotes table
     const { data: quotesData, error: quotesError } = await quoteDB
       .from('public_family_quotes')
-      .select(`
+      .select(
+        `
         id,
         customer_name,
         selected_emi_plan_id,
         selected_emi_months,
         monthly_emi_amount,
         estimated_total_cost
-      `)
+      `
+      )
       .limit(20);
 
     if (quotesError) {
@@ -2670,13 +2724,15 @@ app.get('/api/investigate-emi-data', async (req, res) => {
     // Check family_type_emi_plans table
     const { data: emiPlansData, error: emiPlansError } = await quoteDB
       .from('family_type_emi_plans')
-      .select(`
+      .select(
+        `
         id,
         family_price_id,
         emi_months,
         monthly_amount,
         total_amount
-      `)
+      `
+      )
       .limit(20);
 
     if (emiPlansError) {
@@ -2702,19 +2758,18 @@ app.get('/api/investigate-emi-data', async (req, res) => {
         null_emi_plan_ids: nullEmiPlanIds.length,
         with_emi_data: withEmiData.length,
         with_valid_emi_plan_id: withValidEmiPlanId.length,
-        total_emi_plans: emiPlansData.length
+        total_emi_plans: emiPlansData.length,
       },
       sample_quotes: quotesData.slice(0, 5),
       sample_emi_plans: emiPlansData.slice(0, 5),
       quotes_with_null_emi_plan_id: nullEmiPlanIds.slice(0, 5),
-      quotes_with_emi_data: withEmiData.slice(0, 5)
+      quotes_with_emi_data: withEmiData.slice(0, 5),
     });
-
   } catch (error) {
     console.error('❌ Error investigating EMI data:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -2727,7 +2782,8 @@ app.post('/api/repair-emi-plan-relationships', async (req, res) => {
     // Get all quotes with NULL selected_emi_plan_id but with EMI data
     const { data: quotesToRepair, error: quotesError } = await quoteDB
       .from('public_family_quotes')
-      .select(`
+      .select(
+        `
         id,
         customer_name,
         selected_emi_plan_id,
@@ -2735,7 +2791,8 @@ app.post('/api/repair-emi-plan-relationships', async (req, res) => {
         monthly_emi_amount,
         estimated_total_cost,
         matched_price_id
-      `)
+      `
+      )
       .is('selected_emi_plan_id', null)
       .not('selected_emi_months', 'is', null)
       .not('monthly_emi_amount', 'is', null);
@@ -2747,8 +2804,7 @@ app.post('/api/repair-emi-plan-relationships', async (req, res) => {
     console.log(`📋 Found ${quotesToRepair.length} quotes to repair`);
 
     // Get all available EMI plans
-    const { data: emiPlans, error: emiPlansError } = await quoteDB
-      .from('family_type_emi_plans')
+    const { data: emiPlans, error: emiPlansError } = await quoteDB.from('family_type_emi_plans')
       .select(`
         id,
         family_price_id,
@@ -2770,23 +2826,23 @@ app.post('/api/repair-emi-plan-relationships', async (req, res) => {
     for (const quote of quotesToRepair) {
       try {
         // Find matching EMI plan based on months and amount
-        let matchingPlan = emiPlans.find(plan =>
-          plan.emi_months === quote.selected_emi_months &&
-          Math.abs(plan.monthly_amount - quote.monthly_emi_amount) < 100 // Allow small variance
+        let matchingPlan = emiPlans.find(
+          plan =>
+            plan.emi_months === quote.selected_emi_months &&
+            Math.abs(plan.monthly_amount - quote.monthly_emi_amount) < 100 // Allow small variance
         );
 
         // If no exact match, try to find by months only
         if (!matchingPlan) {
-          matchingPlan = emiPlans.find(plan =>
-            plan.emi_months === quote.selected_emi_months
-          );
+          matchingPlan = emiPlans.find(plan => plan.emi_months === quote.selected_emi_months);
         }
 
         // If still no match and we have a matched_price_id, try to find plan for that package
         if (!matchingPlan && quote.matched_price_id) {
-          matchingPlan = emiPlans.find(plan =>
-            plan.family_price_id === quote.matched_price_id &&
-            plan.emi_months === quote.selected_emi_months
+          matchingPlan = emiPlans.find(
+            plan =>
+              plan.family_price_id === quote.matched_price_id &&
+              plan.emi_months === quote.selected_emi_months
           );
         }
 
@@ -2808,7 +2864,7 @@ app.post('/api/repair-emi-plan-relationships', async (req, res) => {
             matched_emi_plan_id: matchingPlan.id,
             emi_months: quote.selected_emi_months,
             monthly_amount: quote.monthly_emi_amount,
-            matched_plan_amount: matchingPlan.monthly_amount
+            matched_plan_amount: matchingPlan.monthly_amount,
           });
 
           successCount++;
@@ -2820,7 +2876,7 @@ app.post('/api/repair-emi-plan-relationships', async (req, res) => {
             status: 'no_match',
             emi_months: quote.selected_emi_months,
             monthly_amount: quote.monthly_emi_amount,
-            reason: 'No matching EMI plan found'
+            reason: 'No matching EMI plan found',
           });
 
           failureCount++;
@@ -2831,7 +2887,7 @@ app.post('/api/repair-emi-plan-relationships', async (req, res) => {
           quote_id: quote.id,
           customer_name: quote.customer_name,
           status: 'error',
-          error: error.message
+          error: error.message,
         });
 
         failureCount++;
@@ -2848,16 +2904,15 @@ app.post('/api/repair-emi-plan-relationships', async (req, res) => {
         total_quotes_processed: quotesToRepair.length,
         successful_repairs: successCount,
         failed_repairs: failureCount,
-        available_emi_plans: emiPlans.length
+        available_emi_plans: emiPlans.length,
       },
-      results: repairResults
+      results: repairResults,
     });
-
   } catch (error) {
     console.error('❌ Error in EMI plan repair:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -2882,7 +2937,7 @@ app.post('/api/test-emi-relationship', async (req, res) => {
       estimated_total_cost: 35860, // Use actual total amount
       utm_source: 'test',
       session_id: `test_${Date.now()}`,
-      quote_status: 'test'
+      quote_status: 'test',
     };
 
     // Find matching EMI plan
@@ -2893,8 +2948,8 @@ app.post('/api/test-emi-relationship', async (req, res) => {
 
     if (emiError) throw emiError;
 
-    const matchingPlan = emiPlans.find(plan =>
-      Math.abs(plan.monthly_amount - testQuoteData.monthly_emi_amount) < 100
+    const matchingPlan = emiPlans.find(
+      plan => Math.abs(plan.monthly_amount - testQuoteData.monthly_emi_amount) < 100
     );
 
     if (matchingPlan) {
@@ -2913,13 +2968,15 @@ app.post('/api/test-emi-relationship', async (req, res) => {
     // Test 2: Verify the relationship works
     const { data: verifyData, error: verifyError } = await quoteDB
       .from('public_family_quotes')
-      .select(`
+      .select(
+        `
         id,
         customer_name,
         selected_emi_plan_id,
         selected_emi_months,
         monthly_emi_amount
-      `)
+      `
+      )
       .eq('id', newQuote.id)
       .single();
 
@@ -2940,10 +2997,7 @@ app.post('/api/test-emi-relationship', async (req, res) => {
     }
 
     // Clean up test data
-    await quoteDB
-      .from('public_family_quotes')
-      .delete()
-      .eq('id', newQuote.id);
+    await quoteDB.from('public_family_quotes').delete().eq('id', newQuote.id);
 
     console.log('✅ EMI relationship integrity test completed successfully');
 
@@ -2955,16 +3009,19 @@ app.post('/api/test-emi-relationship', async (req, res) => {
         emi_plan_id_stored: !!verifyData.selected_emi_plan_id,
         emi_plan_details_fetched: !!emiPlanDetails,
         relationship_working: !!(verifyData.selected_emi_plan_id && emiPlanDetails),
-        data_integrity_score: '100%'
+        data_integrity_score: '100%',
       },
       test_data: {
         created_quote: verifyData,
         matched_emi_plan: emiPlanDetails,
-        months_match: emiPlanDetails ? verifyData.selected_emi_months === emiPlanDetails.emi_months : false,
-        amount_match: emiPlanDetails ? Math.abs(verifyData.monthly_emi_amount - emiPlanDetails.monthly_amount) < 100 : false
-      }
+        months_match: emiPlanDetails
+          ? verifyData.selected_emi_months === emiPlanDetails.emi_months
+          : false,
+        amount_match: emiPlanDetails
+          ? Math.abs(verifyData.monthly_emi_amount - emiPlanDetails.monthly_amount) < 100
+          : false,
+      },
     });
-
   } catch (error) {
     console.error('❌ Error in EMI relationship test:', error);
     res.status(500).json({
@@ -2972,8 +3029,8 @@ app.post('/api/test-emi-relationship', async (req, res) => {
       error: error.message,
       test_results: {
         relationship_working: false,
-        data_integrity_score: 'Failed'
-      }
+        data_integrity_score: 'Failed',
+      },
     });
   }
 });
@@ -2994,7 +3051,9 @@ app.get('/api/debug-emi-customer-mapping', async (req, res) => {
     // Get all quotes
     const { data: allQuotes, error: quotesError } = await quoteDB
       .from('public_family_quotes')
-      .select('id, customer_name, customer_email, customer_phone, destination, selected_emi_months, monthly_emi_amount')
+      .select(
+        'id, customer_name, customer_email, customer_phone, destination, selected_emi_months, monthly_emi_amount'
+      )
       .limit(20);
 
     if (quotesError) throw quotesError;
@@ -3005,8 +3064,9 @@ app.get('/api/debug-emi-customer-mapping', async (req, res) => {
       const directMatch = allQuotes.find(quote => quote.id === transaction.customer_id);
 
       // EMI amount match
-      const emiAmountMatches = allQuotes.filter(quote =>
-        Math.abs((quote.monthly_emi_amount || 0) - (transaction.monthly_emi_amount || 0)) < 100
+      const emiAmountMatches = allQuotes.filter(
+        quote =>
+          Math.abs((quote.monthly_emi_amount || 0) - (transaction.monthly_emi_amount || 0)) < 100
       );
 
       return {
@@ -3014,18 +3074,22 @@ app.get('/api/debug-emi-customer-mapping', async (req, res) => {
         customer_id: transaction.customer_id,
         booking_reference: transaction.booking_reference,
         transaction_monthly_amount: transaction.monthly_emi_amount,
-        direct_match: directMatch ? {
-          quote_id: directMatch.id,
-          customer_name: directMatch.customer_name,
-          customer_email: directMatch.customer_email
-        } : null,
+        direct_match: directMatch
+          ? {
+              quote_id: directMatch.id,
+              customer_name: directMatch.customer_name,
+              customer_email: directMatch.customer_email,
+            }
+          : null,
         potential_emi_matches: emiAmountMatches.map(quote => ({
           quote_id: quote.id,
           customer_name: quote.customer_name,
           customer_email: quote.customer_email,
           quote_monthly_amount: quote.monthly_emi_amount,
-          amount_difference: Math.abs((quote.monthly_emi_amount || 0) - (transaction.monthly_emi_amount || 0))
-        }))
+          amount_difference: Math.abs(
+            (quote.monthly_emi_amount || 0) - (transaction.monthly_emi_amount || 0)
+          ),
+        })),
       };
     });
 
@@ -3035,18 +3099,19 @@ app.get('/api/debug-emi-customer-mapping', async (req, res) => {
         total_emi_transactions: emiTransactions.length,
         total_quotes: allQuotes.length,
         direct_matches: mappingAnalysis.filter(m => m.direct_match).length,
-        transactions_with_potential_matches: mappingAnalysis.filter(m => m.potential_emi_matches.length > 0).length
+        transactions_with_potential_matches: mappingAnalysis.filter(
+          m => m.potential_emi_matches.length > 0
+        ).length,
       },
       mapping_details: mappingAnalysis,
       all_quotes: allQuotes,
-      all_transactions: emiTransactions
+      all_transactions: emiTransactions,
     });
-
   } catch (error) {
     console.error('❌ Error debugging EMI customer mapping:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -3066,7 +3131,9 @@ app.post('/api/fix-emi-customer-mapping', async (req, res) => {
     // Get all quotes
     const { data: allQuotes, error: quotesError } = await quoteDB
       .from('public_family_quotes')
-      .select('id, customer_name, customer_email, customer_phone, destination, selected_emi_months, monthly_emi_amount, selected_emi_plan_id');
+      .select(
+        'id, customer_name, customer_email, customer_phone, destination, selected_emi_months, monthly_emi_amount, selected_emi_plan_id'
+      );
 
     if (quotesError) throw quotesError;
 
@@ -3081,15 +3148,17 @@ app.post('/api/fix-emi-customer-mapping', async (req, res) => {
 
         // First, try to match by EMI plan ID
         if (transaction.emi_plan_id) {
-          matchingQuote = allQuotes.find(quote =>
-            quote.selected_emi_plan_id === transaction.emi_plan_id
+          matchingQuote = allQuotes.find(
+            quote => quote.selected_emi_plan_id === transaction.emi_plan_id
           );
         }
 
         // If no EMI plan match, try to match by monthly amount
         if (!matchingQuote && transaction.monthly_emi_amount) {
-          matchingQuote = allQuotes.find(quote =>
-            Math.abs((quote.monthly_emi_amount || 0) - (transaction.monthly_emi_amount || 0)) < 100
+          matchingQuote = allQuotes.find(
+            quote =>
+              Math.abs((quote.monthly_emi_amount || 0) - (transaction.monthly_emi_amount || 0)) <
+              100
           );
         }
 
@@ -3111,18 +3180,23 @@ app.post('/api/fix-emi-customer-mapping', async (req, res) => {
             new_customer_id: matchingQuote.id,
             matched_customer: matchingQuote.customer_name,
             status: 'success',
-            match_method: transaction.emi_plan_id === matchingQuote.selected_emi_plan_id ? 'emi_plan_id' : 'monthly_amount'
+            match_method:
+              transaction.emi_plan_id === matchingQuote.selected_emi_plan_id
+                ? 'emi_plan_id'
+                : 'monthly_amount',
           });
 
           successCount++;
-          console.log(`✅ Fixed transaction ${transaction.id} -> quote ${matchingQuote.id} (${matchingQuote.customer_name})`);
+          console.log(
+            `✅ Fixed transaction ${transaction.id} -> quote ${matchingQuote.id} (${matchingQuote.customer_name})`
+          );
         } else {
           fixResults.push({
             transaction_id: transaction.id,
             booking_reference: transaction.booking_reference,
             old_customer_id: transaction.customer_id,
             status: 'no_match',
-            reason: 'No matching quote found'
+            reason: 'No matching quote found',
           });
 
           failureCount++;
@@ -3132,7 +3206,7 @@ app.post('/api/fix-emi-customer-mapping', async (req, res) => {
         fixResults.push({
           transaction_id: transaction.id,
           status: 'error',
-          error: error.message
+          error: error.message,
         });
 
         failureCount++;
@@ -3148,16 +3222,15 @@ app.post('/api/fix-emi-customer-mapping', async (req, res) => {
       summary: {
         total_transactions_processed: emiTransactions.length,
         successful_fixes: successCount,
-        failed_fixes: failureCount
+        failed_fixes: failureCount,
       },
-      results: fixResults
+      results: fixResults,
     });
-
   } catch (error) {
     console.error('❌ Error in EMI customer mapping fix:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -3170,7 +3243,8 @@ app.get('/api/visited-customers', async (req, res) => {
     // First, fetch the quotes
     const { data: quotesData, error: quotesError } = await quoteDB
       .from('public_family_quotes')
-      .select(`
+      .select(
+        `
         id,
         customer_email,
         customer_phone,
@@ -3183,7 +3257,8 @@ app.get('/api/visited-customers', async (req, res) => {
         selected_emi_plan_id,
         created_at,
         quote_status
-      `)
+      `
+      )
       .order('created_at', { ascending: false })
       .limit(100); // Limit to recent 100 records for performance
 
@@ -3193,10 +3268,9 @@ app.get('/api/visited-customers', async (req, res) => {
     }
 
     // Get all unique EMI plan IDs from the quotes
-    const emiPlanIds = [...new Set(quotesData
-      .map(quote => quote.selected_emi_plan_id)
-      .filter(id => id !== null)
-    )];
+    const emiPlanIds = [
+      ...new Set(quotesData.map(quote => quote.selected_emi_plan_id).filter(id => id !== null)),
+    ];
 
     console.log(`📋 Found ${emiPlanIds.length} unique EMI plan IDs to fetch details for`);
 
@@ -3205,14 +3279,16 @@ app.get('/api/visited-customers', async (req, res) => {
     if (emiPlanIds.length > 0) {
       const { data: plansData, error: plansError } = await quoteDB
         .from('family_type_emi_plans')
-        .select(`
+        .select(
+          `
           id,
           emi_months,
           monthly_amount,
           total_amount,
           processing_fee,
           family_price_id
-        `)
+        `
+        )
         .in('id', emiPlanIds);
 
       if (plansError) {
@@ -3229,11 +3305,15 @@ app.get('/api/visited-customers', async (req, res) => {
 
     const data = quotesData;
 
-    console.log(`✅ Successfully fetched ${data?.length || 0} visited customers with EMI plan details`);
+    console.log(
+      `✅ Successfully fetched ${data?.length || 0} visited customers with EMI plan details`
+    );
 
     // Format the data for frontend consumption with EMI plan details
     const formattedData = data.map(customer => {
-      const emiPlan = customer.selected_emi_plan_id ? emiPlansMap.get(customer.selected_emi_plan_id) : null;
+      const emiPlan = customer.selected_emi_plan_id
+        ? emiPlansMap.get(customer.selected_emi_plan_id)
+        : null;
 
       return {
         id: customer.id,
@@ -3249,37 +3329,41 @@ app.get('/api/visited-customers', async (req, res) => {
         created_at: customer.created_at,
         quote_status: customer.quote_status || 'generated',
         // EMI Plan details from the lookup
-        emi_plan_details: emiPlan ? {
-          id: emiPlan.id,
-          emi_months: emiPlan.emi_months,
-          monthly_amount: emiPlan.monthly_amount,
-          total_amount: emiPlan.total_amount,
-          processing_fee: emiPlan.processing_fee,
-          family_price_id: emiPlan.family_price_id,
-          // Validation flags
-          months_match: customer.selected_emi_months === emiPlan.emi_months,
-          amount_match: Math.abs((customer.monthly_emi_amount || 0) - (emiPlan.monthly_amount || 0)) < 100,
-          // Data integrity status
-          has_valid_relationship: true
-        } : {
-          // No EMI plan found - data integrity issue
-          has_valid_relationship: false,
-          reason: customer.selected_emi_plan_id ? 'EMI plan ID exists but plan not found' : 'No EMI plan selected'
-        }
+        emi_plan_details: emiPlan
+          ? {
+              id: emiPlan.id,
+              emi_months: emiPlan.emi_months,
+              monthly_amount: emiPlan.monthly_amount,
+              total_amount: emiPlan.total_amount,
+              processing_fee: emiPlan.processing_fee,
+              family_price_id: emiPlan.family_price_id,
+              // Validation flags
+              months_match: customer.selected_emi_months === emiPlan.emi_months,
+              amount_match:
+                Math.abs((customer.monthly_emi_amount || 0) - (emiPlan.monthly_amount || 0)) < 100,
+              // Data integrity status
+              has_valid_relationship: true,
+            }
+          : {
+              // No EMI plan found - data integrity issue
+              has_valid_relationship: false,
+              reason: customer.selected_emi_plan_id
+                ? 'EMI plan ID exists but plan not found'
+                : 'No EMI plan selected',
+            },
       };
     });
 
     res.json({
       success: true,
       data: formattedData,
-      total: formattedData.length
+      total: formattedData.length,
     });
-
   } catch (error) {
     console.error('❌ Error in visited customers endpoint:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Failed to fetch visited customers'
+      error: error.message || 'Failed to fetch visited customers',
     });
   }
 });
@@ -3297,7 +3381,7 @@ app.post('/api/check-user', async (req, res) => {
     if (!mobileNumber || !/^[6-9]\d{9}$/.test(mobileNumber)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid mobile number format'
+        error: 'Invalid mobile number format',
       });
     }
 
@@ -3310,31 +3394,35 @@ app.post('/api/check-user', async (req, res) => {
       .eq('mobile_number', mobileNumber)
       .single();
 
-    if (userError && userError.code !== 'PGRST116') { // PGRST116 = no rows returned
+    if (userError && userError.code !== 'PGRST116') {
+      // PGRST116 = no rows returned
       console.error('❌ Error checking user:', userError);
       throw userError;
     }
 
     const userExists = !!userData;
 
-    console.log(`${userExists ? '✅' : '❌'} User ${userExists ? 'exists' : 'does not exist'} for mobile: ${mobileNumber}`);
+    console.log(
+      `${userExists ? '✅' : '❌'} User ${userExists ? 'exists' : 'does not exist'} for mobile: ${mobileNumber}`
+    );
 
     res.json({
       success: true,
       userExists,
-      user: userExists ? {
-        id: userData.id,
-        mobile: userData.mobile_number,
-        isActive: userData.is_active,
-        isVerified: userData.is_verified
-      } : null
+      user: userExists
+        ? {
+            id: userData.id,
+            mobile: userData.mobile_number,
+            isActive: userData.is_active,
+            isVerified: userData.is_verified,
+          }
+        : null,
     });
-
   } catch (error) {
     console.error('❌ Error in check-user endpoint:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to check user existence'
+      error: 'Failed to check user existence',
     });
   }
 });
@@ -3348,28 +3436,28 @@ app.post('/api/signup', async (req, res) => {
     if (!name || name.trim().length < 2) {
       return res.status(400).json({
         success: false,
-        error: 'Name must be at least 2 characters long'
+        error: 'Name must be at least 2 characters long',
       });
     }
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid email address format'
+        error: 'Invalid email address format',
       });
     }
 
     if (!mobileNumber || !/^[6-9]\d{9}$/.test(mobileNumber)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid mobile number format'
+        error: 'Invalid mobile number format',
       });
     }
 
     if (!pin || !/^\d{4}$/.test(pin)) {
       return res.status(400).json({
         success: false,
-        error: 'PIN must be exactly 4 digits'
+        error: 'PIN must be exactly 4 digits',
       });
     }
 
@@ -3389,7 +3477,7 @@ app.post('/api/signup', async (req, res) => {
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        error: 'User already exists with this mobile number'
+        error: 'User already exists with this mobile number',
       });
     }
 
@@ -3419,7 +3507,7 @@ app.post('/api/signup', async (req, res) => {
         is_verified: true, // Auto-verify for now
         current_session_token: sessionToken,
         session_expires_at: sessionExpiry.toISOString(),
-        last_successful_login: new Date().toISOString()
+        last_successful_login: new Date().toISOString(),
       })
       .select('id, mobile_number, first_name, last_name, email, created_at')
       .single();
@@ -3430,16 +3518,14 @@ app.post('/api/signup', async (req, res) => {
     }
 
     // Log the signup event
-    await quoteDB
-      .from('auth_logs')
-      .insert({
-        user_id: newUser.id,
-        mobile_number: mobileNumber,
-        event_type: 'signup',
-        event_description: 'New user account created',
-        ip_address: req.ip,
-        user_agent: req.get('User-Agent')
-      });
+    await quoteDB.from('auth_logs').insert({
+      user_id: newUser.id,
+      mobile_number: mobileNumber,
+      event_type: 'signup',
+      event_description: 'New user account created',
+      ip_address: req.ip,
+      user_agent: req.get('User-Agent'),
+    });
 
     console.log(`✅ User account created successfully for mobile: ${mobileNumber}`);
 
@@ -3452,15 +3538,14 @@ app.post('/api/signup', async (req, res) => {
         name: `${newUser.first_name} ${newUser.last_name}`.trim(),
         email: newUser.email,
         sessionToken,
-        sessionExpiry: sessionExpiry.toISOString()
-      }
+        sessionExpiry: sessionExpiry.toISOString(),
+      },
     });
-
   } catch (error) {
     console.error('❌ Error in signup endpoint:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to create account'
+      error: 'Failed to create account',
     });
   }
 });
@@ -3474,14 +3559,14 @@ app.post('/api/login', async (req, res) => {
     if (!mobileNumber || !/^[6-9]\d{9}$/.test(mobileNumber)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid mobile number format'
+        error: 'Invalid mobile number format',
       });
     }
 
     if (!pin || !/^\d{4}$/.test(pin)) {
       return res.status(400).json({
         success: false,
-        error: 'PIN must be exactly 4 digits'
+        error: 'PIN must be exactly 4 digits',
       });
     }
 
@@ -3490,26 +3575,26 @@ app.post('/api/login', async (req, res) => {
     // Get user data
     const { data: userData, error: userError } = await quoteDB
       .from('mobile_users')
-      .select('id, mobile_number, first_name, last_name, email, pin_hash, is_active, failed_login_attempts, account_locked_until')
+      .select(
+        'id, mobile_number, first_name, last_name, email, pin_hash, is_active, failed_login_attempts, account_locked_until'
+      )
       .eq('mobile_number', mobileNumber)
       .single();
 
     if (userError) {
       if (userError.code === 'PGRST116') {
         // Log failed attempt
-        await quoteDB
-          .from('auth_logs')
-          .insert({
-            mobile_number: mobileNumber,
-            event_type: 'login_failed',
-            event_description: 'User not found',
-            ip_address: req.ip,
-            user_agent: req.get('User-Agent')
-          });
+        await quoteDB.from('auth_logs').insert({
+          mobile_number: mobileNumber,
+          event_type: 'login_failed',
+          event_description: 'User not found',
+          ip_address: req.ip,
+          user_agent: req.get('User-Agent'),
+        });
 
         return res.status(401).json({
           success: false,
-          error: 'User not found. Please check your mobile number or sign up first.'
+          error: 'User not found. Please check your mobile number or sign up first.',
         });
       }
       throw userError;
@@ -3517,20 +3602,18 @@ app.post('/api/login', async (req, res) => {
 
     // Check if account is locked
     if (userData.account_locked_until && new Date(userData.account_locked_until) > new Date()) {
-      await quoteDB
-        .from('auth_logs')
-        .insert({
-          user_id: userData.id,
-          mobile_number: mobileNumber,
-          event_type: 'login_failed',
-          event_description: 'Account locked',
-          ip_address: req.ip,
-          user_agent: req.get('User-Agent')
-        });
+      await quoteDB.from('auth_logs').insert({
+        user_id: userData.id,
+        mobile_number: mobileNumber,
+        event_type: 'login_failed',
+        event_description: 'Account locked',
+        ip_address: req.ip,
+        user_agent: req.get('User-Agent'),
+      });
 
       return res.status(423).json({
         success: false,
-        error: 'Account is temporarily locked. Please try again later.'
+        error: 'Account is temporarily locked. Please try again later.',
       });
     }
 
@@ -3538,7 +3621,7 @@ app.post('/api/login', async (req, res) => {
     if (!userData.is_active) {
       return res.status(403).json({
         success: false,
-        error: 'Account is deactivated'
+        error: 'Account is deactivated',
       });
     }
 
@@ -3550,7 +3633,7 @@ app.post('/api/login', async (req, res) => {
       const newFailedAttempts = (userData.failed_login_attempts || 0) + 1;
       const updateData = {
         failed_login_attempts: newFailedAttempts,
-        last_login_attempt: new Date().toISOString()
+        last_login_attempt: new Date().toISOString(),
       };
 
       // Lock account after 5 failed attempts
@@ -3558,28 +3641,24 @@ app.post('/api/login', async (req, res) => {
         updateData.account_locked_until = new Date(Date.now() + 30 * 60 * 1000).toISOString(); // 30 minutes
       }
 
-      await quoteDB
-        .from('mobile_users')
-        .update(updateData)
-        .eq('id', userData.id);
+      await quoteDB.from('mobile_users').update(updateData).eq('id', userData.id);
 
       // Log failed attempt
-      await quoteDB
-        .from('auth_logs')
-        .insert({
-          user_id: userData.id,
-          mobile_number: mobileNumber,
-          event_type: 'login_failed',
-          event_description: `Invalid PIN (attempt ${newFailedAttempts})`,
-          ip_address: req.ip,
-          user_agent: req.get('User-Agent')
-        });
+      await quoteDB.from('auth_logs').insert({
+        user_id: userData.id,
+        mobile_number: mobileNumber,
+        event_type: 'login_failed',
+        event_description: `Invalid PIN (attempt ${newFailedAttempts})`,
+        ip_address: req.ip,
+        user_agent: req.get('User-Agent'),
+      });
 
       return res.status(401).json({
         success: false,
-        error: newFailedAttempts >= 5
-          ? 'Account locked due to multiple failed attempts. Please try again in 30 minutes.'
-          : 'Incorrect PIN. Please check and try again.'
+        error:
+          newFailedAttempts >= 5
+            ? 'Account locked due to multiple failed attempts. Please try again in 30 minutes.'
+            : 'Incorrect PIN. Please check and try again.',
       });
     }
 
@@ -3595,21 +3674,19 @@ app.post('/api/login', async (req, res) => {
         last_successful_login: new Date().toISOString(),
         current_session_token: sessionToken,
         session_expires_at: sessionExpiry.toISOString(),
-        account_locked_until: null
+        account_locked_until: null,
       })
       .eq('id', userData.id);
 
     // Log successful login
-    await quoteDB
-      .from('auth_logs')
-      .insert({
-        user_id: userData.id,
-        mobile_number: mobileNumber,
-        event_type: 'login_success',
-        event_description: 'Successful login',
-        ip_address: req.ip,
-        user_agent: req.get('User-Agent')
-      });
+    await quoteDB.from('auth_logs').insert({
+      user_id: userData.id,
+      mobile_number: mobileNumber,
+      event_type: 'login_success',
+      event_description: 'Successful login',
+      ip_address: req.ip,
+      user_agent: req.get('User-Agent'),
+    });
 
     console.log(`✅ Login successful for mobile: ${mobileNumber}`);
 
@@ -3622,15 +3699,14 @@ app.post('/api/login', async (req, res) => {
         name: `${userData.first_name || ''} ${userData.last_name || ''}`.trim() || 'User',
         email: userData.email,
         sessionToken,
-        sessionExpiry: sessionExpiry.toISOString()
-      }
+        sessionExpiry: sessionExpiry.toISOString(),
+      },
     });
-
   } catch (error) {
     console.error('❌ Error in login endpoint:', error);
     res.status(500).json({
       success: false,
-      error: 'Login failed'
+      error: 'Login failed',
     });
   }
 });
@@ -3640,7 +3716,7 @@ app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
   res.status(500).json({
     success: false,
-    error: 'Internal server error'
+    error: 'Internal server error',
   });
 });
 
@@ -3674,16 +3750,15 @@ app.get('/api/debug/users', async (req, res) => {
         errors: {
           crmError,
           quotesError,
-          transError
-        }
-      }
+          transError,
+        },
+      },
     });
-
   } catch (error) {
     console.error('Debug endpoint error:', error);
     res.status(500).json({
       success: false,
-      error: 'Debug endpoint failed'
+      error: 'Debug endpoint failed',
     });
   }
 });
@@ -3697,7 +3772,7 @@ app.post('/api/emi-transactions', async (req, res) => {
     if (!mobileNumber || !/^[6-9]\d{9}$/.test(mobileNumber)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid mobile number format'
+        error: 'Invalid mobile number format',
       });
     }
 
@@ -3723,17 +3798,20 @@ app.post('/api/emi-transactions', async (req, res) => {
         console.log('❌ No quotes found for mobile:', mobileNumber);
         return res.json({
           success: true,
-          transactions: []
+          transactions: [],
         });
       }
 
       // Use the first quote ID as customer_id for EMI transactions
-      console.log('✅ Found quotes for mobile, using quote IDs as customer_ids:', quoteData.map(q => q.id));
+      console.log(
+        '✅ Found quotes for mobile, using quote IDs as customer_ids:',
+        quoteData.map(q => q.id)
+      );
       userData = {
         id: quoteData[0].id,
         name: quoteData[0].customer_name,
         email: quoteData[0].customer_email,
-        allQuoteIds: quoteData.map(q => q.id)
+        allQuoteIds: quoteData.map(q => q.id),
       };
     }
 
@@ -3743,7 +3821,8 @@ app.post('/api/emi-transactions', async (req, res) => {
 
     const { data: transactions, error: transactionsError } = await quoteDB
       .from('prepaid_emi_transactions')
-      .select(`
+      .select(
+        `
         id,
         booking_reference,
         advance_payment_amount,
@@ -3755,7 +3834,8 @@ app.post('/api/emi-transactions', async (req, res) => {
         next_emi_due_date,
         remaining_emi_months,
         created_at
-      `)
+      `
+      )
       .in('customer_id', customerIds)
       .order('created_at', { ascending: false });
 
@@ -3765,13 +3845,13 @@ app.post('/api/emi-transactions', async (req, res) => {
       console.error('Error fetching EMI transactions:', transactionsError);
       return res.status(500).json({
         success: false,
-        error: 'Failed to fetch EMI transaction data'
+        error: 'Failed to fetch EMI transaction data',
       });
     }
 
     // For each transaction, try to get additional details from public_family_quotes
     const enrichedTransactions = await Promise.all(
-      (transactions || []).map(async (transaction) => {
+      (transactions || []).map(async transaction => {
         // Try to find matching quote by customer phone
         const { data: quoteData } = await quoteDB
           .from('public_family_quotes')
@@ -3786,21 +3866,20 @@ app.post('/api/emi-transactions', async (req, res) => {
           travel_date: quoteData?.travel_date || null,
           customer_name: quoteData?.customer_name || null,
           customer_email: quoteData?.customer_email || null,
-          customer_phone: quoteData?.customer_phone || mobileNumber
+          customer_phone: quoteData?.customer_phone || mobileNumber,
         };
       })
     );
 
     res.json({
       success: true,
-      transactions: enrichedTransactions || []
+      transactions: enrichedTransactions || [],
     });
-
   } catch (error) {
     console.error('Error in emi-transactions endpoint:', error);
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: 'Internal server error',
     });
   }
 });
@@ -3814,14 +3893,15 @@ app.post('/api/user-bookings', async (req, res) => {
     if (!mobileNumber || !/^[6-9]\d{9}$/.test(mobileNumber)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid mobile number format'
+        error: 'Invalid mobile number format',
       });
     }
 
     // Get user's bookings from public_family_quotes table
     const { data: quotes, error: quotesError } = await quoteDB
       .from('public_family_quotes')
-      .select(`
+      .select(
+        `
         id,
         customer_name,
         customer_email,
@@ -3833,7 +3913,8 @@ app.post('/api/user-bookings', async (req, res) => {
         monthly_emi_amount,
         created_at,
         selected_emi_plan_id
-      `)
+      `
+      )
       .eq('customer_phone', mobileNumber)
       .order('created_at', { ascending: false });
 
@@ -3841,7 +3922,7 @@ app.post('/api/user-bookings', async (req, res) => {
       console.error('Error fetching quotes:', quotesError);
       return res.status(500).json({
         success: false,
-        error: 'Failed to fetch booking data'
+        error: 'Failed to fetch booking data',
       });
     }
 
@@ -3870,29 +3951,28 @@ app.post('/api/user-bookings', async (req, res) => {
         status: 'active',
         created_at: quote.created_at,
         next_due_date: nextDueDate.toISOString(),
-        travel_date: quote.travel_date
+        travel_date: quote.travel_date,
       };
     });
 
     res.json({
       success: true,
-      bookings: bookings
+      bookings: bookings,
     });
-
   } catch (error) {
     console.error('Error in user-bookings endpoint:', error);
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: 'Internal server error',
     });
   }
 });
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    error: 'Endpoint not found' 
+  res.status(404).json({
+    success: false,
+    error: 'Endpoint not found',
   });
 });
 

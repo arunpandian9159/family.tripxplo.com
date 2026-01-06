@@ -12,7 +12,7 @@ class PackageCardGenerator {
     this.canvas.width = this.cardWidth;
     this.canvas.height = this.cardHeight;
     this.ctx = this.canvas.getContext('2d');
-    
+
     // Enable high DPI rendering
     const dpr = window.devicePixelRatio || 1;
     this.canvas.width = this.cardWidth * dpr;
@@ -33,7 +33,7 @@ class PackageCardGenerator {
       }
 
       img.onload = () => resolve(img);
-      img.onerror = (error) => {
+      img.onerror = error => {
         console.warn('Failed to load image:', src, error);
         reject(error);
       };
@@ -62,7 +62,7 @@ class PackageCardGenerator {
     gradient.addColorStop(0, '#FFD700');
     gradient.addColorStop(0.3, '#FFA500');
     gradient.addColorStop(1, '#FF8C00');
-    
+
     this.drawRoundedRect(0, 0, this.cardWidth, this.cardHeight, 20);
     this.ctx.fillStyle = gradient;
     this.ctx.fill();
@@ -182,7 +182,7 @@ class PackageCardGenerator {
     this.ctx.lineTo(25, 45);
     this.ctx.closePath();
     this.ctx.fill();
-    
+
     // Gold badge text
     this.ctx.fillStyle = '#8B4513';
     this.ctx.font = 'bold 12px Arial';
@@ -196,7 +196,12 @@ class PackageCardGenerator {
     this.ctx.save();
 
     // Enhanced duration badge with gradient
-    const badgeGradient = this.ctx.createLinearGradient(this.cardWidth - 90, 25, this.cardWidth - 90, 55);
+    const badgeGradient = this.ctx.createLinearGradient(
+      this.cardWidth - 90,
+      25,
+      this.cardWidth - 90,
+      55
+    );
     badgeGradient.addColorStop(0, 'rgba(0,0,0,0.8)');
     badgeGradient.addColorStop(1, 'rgba(0,0,0,0.6)');
     this.ctx.fillStyle = badgeGradient;
@@ -507,7 +512,7 @@ class PackageCardGenerator {
   // Generate complete package card
   async generatePackageCard(packageData) {
     this.initCanvas();
-    
+
     // Draw all elements
     this.drawGradientBackground();
     await this.drawDestinationImage(packageData.image, packageData.destination);
@@ -520,7 +525,7 @@ class PackageCardGenerator {
     this.drawFamilyTypeSection(packageData.family);
     this.drawEMISection(packageData.emi);
     this.drawPriceSection(packageData.price);
-    
+
     return this.canvas;
   }
 
@@ -536,17 +541,23 @@ class PackageCardGenerator {
   async shareCard(canvas, packageData) {
     if (navigator.share && navigator.canShare) {
       try {
-        canvas.toBlob(async (blob) => {
-          const file = new File([blob], `${packageData.destination}-package.png`, { type: 'image/png' });
-          
-          if (navigator.canShare({ files: [file] })) {
-            await navigator.share({
-              title: `${packageData.destination} Family Package`,
-              text: `Check out this amazing ${packageData.destination} package for ₹${packageData.price.toLocaleString()}!`,
-              files: [file]
+        canvas.toBlob(
+          async blob => {
+            const file = new File([blob], `${packageData.destination}-package.png`, {
+              type: 'image/png',
             });
-          }
-        }, 'image/png', 1.0);
+
+            if (navigator.canShare({ files: [file] })) {
+              await navigator.share({
+                title: `${packageData.destination} Family Package`,
+                text: `Check out this amazing ${packageData.destination} package for ₹${packageData.price.toLocaleString()}!`,
+                files: [file],
+              });
+            }
+          },
+          'image/png',
+          1.0
+        );
       } catch (error) {
         console.log('Error sharing:', error);
         // Fallback to download
