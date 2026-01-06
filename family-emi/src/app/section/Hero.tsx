@@ -6,7 +6,7 @@ import DestinationCarousel from '../components/DestinationCarousel';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden gradient-hero pt-20 lg:pt-24">
+    <section className="relative min-h-screen flex items-center overflow-hidden gradient-hero pt-15">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Gradient Orbs */}
@@ -29,9 +29,17 @@ const Hero = () => {
           <div className="flex-1 w-full max-w-2xl order-2 lg:order-1">
             {/* Text Content */}
             <div className="text-center lg:text-left mb-8 lg:mb-10">
+            {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#d1fbd2] border border-[#15ab8b]/20 rounded-full text-[#0f8a6f] text-sm font-semibold mb-6 animate-fade-in">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#15ab8b] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#15ab8b]"></span>
+                </span>
+                No-Cost EMI • Zero Down Payment
+              </div>
               {/* Main Heading */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight mb-6 animate-slide-up">
-                Small Monthly Payments
+                Small Payments
                 <br />
                 <span className="relative inline-block">
                   <span className="bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] bg-clip-text text-transparent">
@@ -60,11 +68,19 @@ const Hero = () => {
                   budget.
                 </p>
               </div>
-
-              {/* Subtext */}
-              <p className="text-base lg:text-lg text-slate-500 max-w-lg mx-auto lg:mx-0 mb-8 animate-slide-up delay-200">
-                Choose your destination, pick your plan, and pay in 3, 6, or 12 easy installments.
-              </p>
+            </div>
+            {/* Quick Stats */}
+            <div className="hidden lg:flex items-center gap-8 animate-slide-up stagger-2">
+              {[
+                { icon: MapPin, label: "200+ Destinations" },
+                { icon: Calendar, label: "Flexible EMI" },
+                { icon: Users, label: "No Cost EMI" },
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-2 text-slate-600">
+                  <item.icon className="w-5 h-5 text-[#15ab8b]" />
+                  <span className="text-sm font-medium">{item.label}</span>
+                </div>
+              ))}
             </div>
 
             {/* 3D Destination Carousel */}
