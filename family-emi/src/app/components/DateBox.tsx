@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { format } from 'date-fns';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { HolidayCalendar } from './search/HolidayCalendar';
+import { HolidayCalendar } from './HolidayCalendar';
 
 interface DateBoxProps {
   className?: string;

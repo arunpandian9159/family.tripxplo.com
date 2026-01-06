@@ -95,10 +95,8 @@ const Hero = () => {
               {/* Quote */}
               <div className="relative mb-2 animate-slide-up delay-100">
                 <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                  <span className="font-medium text-slate-700">"</span>
                   Luxury shouldn't be a lump sum. We've redesigned travel to fit into your
                   <span className="text-[#15ab8b] font-semibold"> monthly budget</span>.
-                  <span className="font-medium text-slate-700">"</span>
                 </p>
               </div>
             </div>
