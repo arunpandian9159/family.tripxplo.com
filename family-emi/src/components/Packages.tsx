@@ -1,53 +1,53 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { MapPin, Calendar, CreditCard, Star, ArrowRight } from "lucide-react";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { MapPin, Calendar, CreditCard, Star, ArrowRight } from 'lucide-react';
 
 const packages = [
   {
     id: 1,
-    name: "Bali Paradise",
-    location: "Indonesia",
-    duration: "5N/6D",
+    name: 'Bali Paradise',
+    location: 'Indonesia',
+    duration: '5N/6D',
     price: 45999,
     emi: 3833,
     rating: 4.9,
-    gradient: "from-orange-400 to-pink-500",
-    tag: "Bestseller",
+    gradient: 'from-orange-400 to-pink-500',
+    tag: 'Bestseller',
   },
   {
     id: 2,
-    name: "Magical Manali",
-    location: "Himachal Pradesh",
-    duration: "4N/5D",
+    name: 'Magical Manali',
+    location: 'Himachal Pradesh',
+    duration: '4N/5D',
     price: 18999,
     emi: 1583,
     rating: 4.8,
-    gradient: "from-blue-400 to-cyan-500",
-    tag: "Family Favorite",
+    gradient: 'from-blue-400 to-cyan-500',
+    tag: 'Family Favorite',
   },
   {
     id: 3,
-    name: "Andaman Escape",
-    location: "Andaman Islands",
-    duration: "5N/6D",
+    name: 'Andaman Escape',
+    location: 'Andaman Islands',
+    duration: '5N/6D',
     price: 32999,
     emi: 2750,
     rating: 4.9,
-    gradient: "from-teal-400 to-emerald-500",
-    tag: "Adventure",
+    gradient: 'from-teal-400 to-emerald-500',
+    tag: 'Adventure',
   },
   {
     id: 4,
-    name: "Kashmir Dreams",
-    location: "Jammu & Kashmir",
-    duration: "6N/7D",
+    name: 'Kashmir Dreams',
+    location: 'Jammu & Kashmir',
+    duration: '6N/7D',
     price: 28999,
     emi: 2416,
     rating: 4.8,
-    gradient: "from-purple-400 to-indigo-500",
-    tag: "Romantic",
+    gradient: 'from-purple-400 to-indigo-500',
+    tag: 'Romantic',
   },
 ];
 
@@ -104,15 +104,13 @@ const Packages = () => {
               className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
             >
               {/* Image Placeholder */}
-              <div
-                className={`relative h-48 bg-gradient-to-br ${pkg.gradient} overflow-hidden`}
-              >
+              <div className={`relative h-48 bg-gradient-to-br ${pkg.gradient} overflow-hidden`}>
                 {/* Pattern overlay */}
                 <div
                   className="absolute inset-0 opacity-20"
                   style={{
                     backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-                    backgroundSize: "20px 20px",
+                    backgroundSize: '20px 20px',
                   }}
                 />
 
@@ -126,9 +124,7 @@ const Packages = () => {
                 {/* Rating */}
                 <div className="absolute top-4 right-4 flex items-center gap-1 px-2 py-1 bg-black/30 backdrop-blur-sm rounded-full">
                   <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                  <span className="text-white text-xs font-semibold">
-                    {pkg.rating}
-                  </span>
+                  <span className="text-white text-xs font-semibold">{pkg.rating}</span>
                 </div>
 
                 {/* Destination Icon */}
@@ -160,9 +156,7 @@ const Packages = () => {
                 <div className="bg-slate-50 rounded-xl p-3 mb-4">
                   <div className="flex items-baseline justify-between">
                     <div>
-                      <span className="text-xs text-slate-500">
-                        Starting from
-                      </span>
+                      <span className="text-xs text-slate-500">Starting from</span>
                       <div className="text-2xl font-bold text-slate-800">
                         ₹{pkg.price.toLocaleString()}
                       </div>

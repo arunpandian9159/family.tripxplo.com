@@ -1,54 +1,54 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import { Star, PlayCircle, Users } from "lucide-react";
-import { FaGoogle, FaInstagram } from "react-icons/fa6";
+import React from 'react';
+import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Star, PlayCircle, Users } from 'lucide-react';
+import { FaGoogle, FaInstagram } from 'react-icons/fa6';
 
 const reviews = [
   {
     id: 1,
-    name: "Happy New Year",
-    location: "Memories for a lifetime!",
-    image: "/stories/story-1.jpg",
-    platform: "instagram",
+    name: 'Happy New Year',
+    location: 'Memories for a lifetime!',
+    image: '/stories/story-1.jpg',
+    platform: 'instagram',
     rating: 5,
-    text: "Memories for a lifetime!",
-    link: "#",
+    text: 'Memories for a lifetime!',
+    link: '#',
   },
   {
     id: 2,
-    name: "Shimla & Manali",
-    location: "Honeymoon",
-    image: "/stories/story-2.jpg",
-    platform: "instagram",
+    name: 'Shimla & Manali',
+    location: 'Honeymoon',
+    image: '/stories/story-2.jpg',
+    platform: 'instagram',
     rating: 5,
     text: "Can't wait for the next one",
-    link: "#",
+    link: '#',
   },
   {
     id: 3,
-    name: "Manali Trip",
-    location: "Honeymoon",
-    image: "/stories/story-3.jpg",
-    platform: "instagram",
+    name: 'Manali Trip',
+    location: 'Honeymoon',
+    image: '/stories/story-3.jpg',
+    platform: 'instagram',
     rating: 5,
-    text: "Highly recommended!",
-    link: "#",
+    text: 'Highly recommended!',
+    link: '#',
   },
   {
     id: 4,
-    name: "Manali Stories",
-    location: "Couples Review Reel",
-    image: "/stories/story-4.jpg",
-    platform: "instagram",
+    name: 'Manali Stories',
+    location: 'Couples Review Reel',
+    image: '/stories/story-4.jpg',
+    platform: 'instagram',
     rating: 5,
-    text: "Amazing experience",
-    link: "#",
+    text: 'Amazing experience',
+    link: '#',
   },
 ];
 
@@ -94,12 +94,9 @@ const Testimonials = () => {
         {/* Header */}
         <div className="text-center mb-12 relative z-10">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight mb-6 drop-shadow-xl">
-            TripXplo Diaries{" "}
-            <span className="text-[#15ab8b] animate-pulse">♥</span>
+            TripXplo Diaries <span className="text-[#15ab8b] animate-pulse">♥</span>
           </h2>
-          <p className="text-slate-400 text-lg mb-8">
-            Real stories from our happy travellers
-          </p>
+          <p className="text-slate-400 text-lg mb-8">Real stories from our happy travellers</p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-12">
             {/* Google Rating */}
@@ -200,7 +197,7 @@ const Testimonials = () => {
                   {/* Top Badge */}
                   <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md rounded-full px-3 py-1 border border-white/10 group-hover:bg-black/60 transition-colors">
                     <div className="flex items-center gap-1.5">
-                      {review.platform === "google" ? (
+                      {review.platform === 'google' ? (
                         <FaGoogle className="text-sm text-white" />
                       ) : (
                         <FaInstagram className="text-sm text-pink-500" />

@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Package manager
+package-lock.json
+
+# Generated files
+*.min.js
+*.min.css
+
+# Other
+.git/
+.cache/

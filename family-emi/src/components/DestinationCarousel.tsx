@@ -1,38 +1,38 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
-import { Sun } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Sun } from 'lucide-react';
 
 const destinations = [
   {
-    id: "bali",
-    name: "BALI",
-    image: "/3d-destinations/bali_transparent-1.png",
-    location: "Island, Indonesia",
-    temp: "28°C",
+    id: 'bali',
+    name: 'BALI',
+    image: '/3d-destinations/bali_transparent-1.png',
+    location: 'Island, Indonesia',
+    temp: '28°C',
   },
   {
-    id: "manali",
-    name: "MANALI",
-    image: "/3d-destinations/manali_transparent-1.png",
-    location: "Himachal, India",
-    temp: "8°C",
+    id: 'manali',
+    name: 'MANALI',
+    image: '/3d-destinations/manali_transparent-1.png',
+    location: 'Himachal, India',
+    temp: '8°C',
   },
   {
-    id: "andaman",
-    name: "ANDAMAN",
-    image: "/3d-destinations/andaman_transparent-1.png",
-    location: "Islands, India",
-    temp: "30°C",
+    id: 'andaman',
+    name: 'ANDAMAN',
+    image: '/3d-destinations/andaman_transparent-1.png',
+    location: 'Islands, India',
+    temp: '30°C',
   },
   {
-    id: "vietnam",
-    name: "VIETNAM",
-    image: "/3d-destinations/vietnam_transparent-1.png",
-    location: "Vietnam",
-    temp: "26°C",
+    id: 'vietnam',
+    name: 'VIETNAM',
+    image: '/3d-destinations/vietnam_transparent-1.png',
+    location: 'Vietnam',
+    temp: '26°C',
   },
 ];
 
@@ -41,7 +41,7 @@ const DestinationCarousel = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % destinations.length);
+      setCurrentIndex(prev => (prev + 1) % destinations.length);
     }, 4000); // Change every 4 seconds
 
     return () => clearInterval(timer);
@@ -70,7 +70,7 @@ const DestinationCarousel = () => {
             <div className="flex flex-row items-center gap-2 md:gap-3">
               <Sun
                 className="w-8 h-8 md:w-10 md:h-10 text-yellow-400 fill-yellow-400 animate-spin"
-                style={{ animationDuration: "10s" }}
+                style={{ animationDuration: '10s' }}
               />
               <div className="flex flex-col items-start ml-0.5 md:ml-1">
                 <span className="text-xs md:text-sm font-bold text-[#0F4C81] opacity-90">
@@ -104,7 +104,7 @@ const DestinationCarousel = () => {
             key={idx}
             onClick={() => setCurrentIndex(idx)}
             className={`h-1.5 rounded-full transition-all duration-500 ${
-              idx === currentIndex ? "w-8 bg-[#15ab8b]" : "w-1.5 bg-slate-200"
+              idx === currentIndex ? 'w-8 bg-[#15ab8b]' : 'w-1.5 bg-slate-200'
             }`}
           />
         ))}

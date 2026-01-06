@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { MapPin, Calendar, Users, Search, ChevronDown } from "lucide-react";
-import DestinationCarousel from "./DestinationCarousel";
+import React from 'react';
+import { MapPin, Calendar, Users, Search, ChevronDown } from 'lucide-react';
+import DestinationCarousel from './DestinationCarousel';
 
 const Hero = () => {
   return (
@@ -70,23 +70,17 @@ const Hero = () => {
             {/* Description */}
             <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8 animate-slide-up delay-100">
               Plan your dream family vacation with flexible payment options.
-              <span className="text-[#15ab8b] font-semibold">
-                {" "}
-                No stress, just memories!
-              </span>
+              <span className="text-[#15ab8b] font-semibold"> No stress, just memories!</span>
             </p>
 
             {/* Quick Stats */}
             <div className="flex flex-wrap justify-center lg:justify-start items-center gap-6 mb-8 animate-slide-up delay-200">
               {[
-                { icon: MapPin, label: "100+ Destinations" },
-                { icon: Calendar, label: "Flexible Dates" },
-                { icon: Users, label: "Family Friendly" },
+                { icon: MapPin, label: '100+ Destinations' },
+                { icon: Calendar, label: 'Flexible Dates' },
+                { icon: Users, label: 'Family Friendly' },
               ].map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 text-slate-600"
-                >
+                <div key={index} className="flex items-center gap-2 text-slate-600">
                   <item.icon className="w-5 h-5 text-[#15ab8b]" />
                   <span className="text-sm font-medium">{item.label}</span>
                 </div>
@@ -95,16 +89,12 @@ const Hero = () => {
 
             {/* Booking Search Box */}
             <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 lg:p-8 animate-slide-up delay-300">
-              <h3 className="text-lg font-bold text-slate-800 mb-4">
-                Start Planning Your Trip
-              </h3>
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Start Planning Your Trip</h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {/* Destination */}
                 <div className="relative">
-                  <label className="block text-sm font-medium text-slate-600 mb-2">
-                    Where to?
-                  </label>
+                  <label className="block text-sm font-medium text-slate-600 mb-2">Where to?</label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#15ab8b]" />
                     <select className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#15ab8b]/20 focus:border-[#15ab8b] appearance-none cursor-pointer transition-all">
@@ -162,8 +152,7 @@ const Hero = () => {
 
               {/* EMI Note */}
               <p className="mt-4 text-center text-sm text-slate-500">
-                💳 EMI starting from{" "}
-                <span className="font-bold text-[#15ab8b]">₹2,999/month</span>
+                💳 EMI starting from <span className="font-bold text-[#15ab8b]">₹2,999/month</span>
               </p>
             </div>
           </div>

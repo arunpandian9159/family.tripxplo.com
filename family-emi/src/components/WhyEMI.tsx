@@ -1,49 +1,46 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { RefreshCw, Clock, ShieldCheck, Gift } from "lucide-react";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { RefreshCw, Clock, ShieldCheck, Gift } from 'lucide-react';
 
 const benefits = [
   {
     icon: RefreshCw,
-    title: "Easy Plan Swap",
+    title: 'Easy Plan Swap',
     description:
-      "Change your travel plans anytime with our flexible booking options. No hidden charges.",
-    gradient: "from-blue-500 to-cyan-500",
-    bgLight: "bg-blue-50",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-500",
+      'Change your travel plans anytime with our flexible booking options. No hidden charges.',
+    gradient: 'from-blue-500 to-cyan-500',
+    bgLight: 'bg-blue-50',
+    iconBg: 'bg-blue-100',
+    iconColor: 'text-blue-500',
   },
   {
     icon: Clock,
-    title: "No Last Minute Rush",
-    description:
-      "Book ahead and enjoy stress-free planning. Pay in easy EMIs over time.",
-    gradient: "from-orange-500 to-amber-500",
-    bgLight: "bg-orange-50",
-    iconBg: "bg-orange-100",
-    iconColor: "text-orange-500",
+    title: 'No Last Minute Rush',
+    description: 'Book ahead and enjoy stress-free planning. Pay in easy EMIs over time.',
+    gradient: 'from-orange-500 to-amber-500',
+    bgLight: 'bg-orange-50',
+    iconBg: 'bg-orange-100',
+    iconColor: 'text-orange-500',
   },
   {
     icon: ShieldCheck,
-    title: "Guaranteed Availability",
-    description:
-      "Your bookings are secured. Get confirmed hotels, flights, and activities.",
-    gradient: "from-[#15ab8b] to-emerald-500",
-    bgLight: "bg-[#d1fbd2]",
-    iconBg: "bg-[#15ab8b]/20",
-    iconColor: "text-[#15ab8b]",
+    title: 'Guaranteed Availability',
+    description: 'Your bookings are secured. Get confirmed hotels, flights, and activities.',
+    gradient: 'from-[#15ab8b] to-emerald-500',
+    bgLight: 'bg-[#d1fbd2]',
+    iconBg: 'bg-[#15ab8b]/20',
+    iconColor: 'text-[#15ab8b]',
   },
   {
     icon: Gift,
-    title: "Rewards on Booking",
-    description:
-      "Earn exclusive rewards, discounts, and loyalty points on every booking.",
-    gradient: "from-purple-500 to-pink-500",
-    bgLight: "bg-purple-50",
-    iconBg: "bg-purple-100",
-    iconColor: "text-purple-500",
+    title: 'Rewards on Booking',
+    description: 'Earn exclusive rewards, discounts, and loyalty points on every booking.',
+    gradient: 'from-purple-500 to-pink-500',
+    bgLight: 'bg-purple-50',
+    iconBg: 'bg-purple-100',
+    iconColor: 'text-purple-500',
   },
 ];
 
@@ -84,8 +81,8 @@ const WhyEMI = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg text-slate-600"
           >
-            Experience the freedom of travel without financial stress. Our EMI
-            packages make your dream vacations affordable.
+            Experience the freedom of travel without financial stress. Our EMI packages make your
+            dream vacations affordable.
           </motion.p>
         </div>
 
@@ -117,19 +114,12 @@ const WhyEMI = () => {
                 {benefit.title}
               </h3>
 
-              <p className="text-slate-600 text-sm leading-relaxed">
-                {benefit.description}
-              </p>
+              <p className="text-slate-600 text-sm leading-relaxed">{benefit.description}</p>
 
               {/* Decorative arrow */}
               <div className="mt-4 flex items-center text-[#15ab8b] font-medium text-sm opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
                 Learn more
-                <svg
-                  className="w-4 h-4 ml-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+                <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

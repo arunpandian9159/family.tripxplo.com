@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 import {
   Instagram,
   Facebook,
@@ -11,46 +11,46 @@ import {
   MapPin,
   ArrowUpRight,
   CreditCard,
-} from "lucide-react";
+} from 'lucide-react';
 
 const footerLinks = {
   destinations: [
-    { name: "Bali", href: "#" },
-    { name: "Goa", href: "#" },
-    { name: "Manali", href: "#" },
-    { name: "Kashmir", href: "#" },
-    { name: "Andaman", href: "#" },
+    { name: 'Bali', href: '#' },
+    { name: 'Goa', href: '#' },
+    { name: 'Manali', href: '#' },
+    { name: 'Kashmir', href: '#' },
+    { name: 'Andaman', href: '#' },
   ],
   company: [
-    { name: "About Us", href: "#" },
-    { name: "Careers", href: "#" },
-    { name: "Contact", href: "#" },
+    { name: 'About Us', href: '#' },
+    { name: 'Careers', href: '#' },
+    { name: 'Contact', href: '#' },
   ],
   legal: [
-    { name: "Privacy Policy", href: "#" },
-    { name: "Terms & Conditions", href: "#" },
-    { name: "Refund Policy", href: "#" },
+    { name: 'Privacy Policy', href: '#' },
+    { name: 'Terms & Conditions', href: '#' },
+    { name: 'Refund Policy', href: '#' },
   ],
 };
 
 const socialLinks = [
   {
-    name: "Instagram",
+    name: 'Instagram',
     icon: Instagram,
-    href: "https://www.instagram.com/mytripxplo",
-    color: "hover:text-pink-500",
+    href: 'https://www.instagram.com/mytripxplo',
+    color: 'hover:text-pink-500',
   },
   {
-    name: "Facebook",
+    name: 'Facebook',
     icon: Facebook,
-    href: "https://www.facebook.com/tripmilestone",
-    color: "hover:text-blue-500",
+    href: 'https://www.facebook.com/tripmilestone',
+    color: 'hover:text-blue-500',
   },
   {
-    name: "LinkedIn",
+    name: 'LinkedIn',
     icon: Linkedin,
-    href: "https://www.linkedin.com/company/tripxplo/",
-    color: "hover:text-blue-600",
+    href: 'https://www.linkedin.com/company/tripxplo/',
+    color: 'hover:text-blue-600',
   },
 ];
 
@@ -68,17 +68,14 @@ const Footer = () => {
                   <CreditCard className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white">
-                    Family Tripxplo
-                  </h2>
+                  <h2 className="text-xl font-bold text-white">Family Tripxplo</h2>
                   <p className="text-xs text-slate-400">EMI Travel Packages</p>
                 </div>
               </div>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm mb-6">
-              Family Tripxplo, a product of Tripmilestone Tours Pvt. Ltd, makes
-              your dream family vacations affordable with easy EMI options.
-              Trusted by 50,000+ happy travelers.
+              Family Tripxplo, a product of Tripmilestone Tours Pvt. Ltd, makes your dream family
+              vacations affordable with easy EMI options. Trusted by 50,000+ happy travelers.
             </p>
 
             {/* Contact Info */}
@@ -105,7 +102,7 @@ const Footer = () => {
 
             {/* Social Links */}
             <div className="flex items-center gap-4 mt-6">
-              {socialLinks.map((social) => (
+              {socialLinks.map(social => (
                 <Link
                   key={social.name}
                   target="_blank"
@@ -126,7 +123,7 @@ const Footer = () => {
               Top Destinations
             </h3>
             <ul className="space-y-3">
-              {footerLinks.destinations.map((link) => (
+              {footerLinks.destinations.map(link => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -146,7 +143,7 @@ const Footer = () => {
               Company
             </h3>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
+              {footerLinks.company.map(link => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -166,7 +163,7 @@ const Footer = () => {
               Legal
             </h3>
             <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
+              {footerLinks.legal.map(link => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -185,8 +182,7 @@ const Footer = () => {
         <div className="mt-16 pt-8 border-t border-slate-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-slate-500">
-              © {new Date().getFullYear()} Tripmilestone Tours Pvt. Ltd. All
-              rights reserved.
+              © {new Date().getFullYear()} Tripmilestone Tours Pvt. Ltd. All rights reserved.
             </p>
             <p className="text-sm text-slate-500 flex items-center gap-2">
               Made with

@@ -1,8 +1,8 @@
-import Hero from "@/components/Hero";
-import WhyEMI from "@/components/WhyEMI";
-import Testimonials from "@/components/Testimonials";
-import Packages from "@/components/Packages";
-import Footer from "@/components/Footer";
+import Hero from '@/components/Hero';
+import WhyEMI from '@/components/WhyEMI';
+import Testimonials from '@/components/Testimonials';
+import Packages from '@/components/Packages';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
