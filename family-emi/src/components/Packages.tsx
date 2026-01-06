@@ -53,7 +53,7 @@ const packages = [
 
 const Packages = () => {
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-linear-to-b from-white to-slate-50 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-1/2 left-0 w-72 h-72 bg-[#d1fbd2]/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       <div className="absolute top-1/3 right-0 w-80 h-80 bg-[#15ab8b]/10 rounded-full blur-3xl translate-x-1/2 pointer-events-none" />
@@ -104,7 +104,7 @@ const Packages = () => {
               className="group bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
             >
               {/* Image Placeholder */}
-              <div className={`relative h-48 bg-gradient-to-br ${pkg.gradient} overflow-hidden`}>
+              <div className={`relative h-48 bg-linear-to-br ${pkg.gradient} overflow-hidden`}>
                 {/* Pattern overlay */}
                 <div
                   className="absolute inset-0 opacity-20"
