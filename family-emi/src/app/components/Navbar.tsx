@@ -43,26 +43,26 @@ const Navbar = () => {
             />
           </a>
 
-          {/* Desktop Navigation - Right aligned with icons */}
-          <div className="hidden lg:flex items-center gap-1">
-            {navLinks.map(link => (
-              <a
-                key={link.name}
-                href={link.href}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-[#15ab8b]/10 ${
-                  isScrolled
-                    ? 'text-slate-700 hover:text-[#15ab8b]'
-                    : 'text-slate-700 hover:text-[#15ab8b]'
-                }`}
-              >
-                <link.icon className="w-4 h-4 text-[#15ab8b]" />
-                {link.name}
-              </a>
-            ))}
-          </div>
-
-          {/* Login Button & Mobile Menu Toggle */}
+          {/* Right Side - Navigation + Login + Mobile Menu */}
           <div className="flex items-center gap-3">
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-1">
+              {navLinks.map(link => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-[#15ab8b]/10 ${
+                    isScrolled
+                      ? 'text-slate-700 hover:text-[#15ab8b]'
+                      : 'text-slate-700 hover:text-[#15ab8b]'
+                  }`}
+                >
+                  <link.icon className="w-4 h-4 text-[#15ab8b]" />
+                  {link.name}
+                </a>
+              ))}
+            </div>
+
             {/* Login Button - Desktop */}
             <a
               href="/login"
