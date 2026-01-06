@@ -8,9 +8,16 @@ import DateBox from '../components/DateBox';
 import OptionsBox from '../components/OptionsBox';
 
 const Hero = () => {
-  const [selectedDestination, setSelectedDestination] = useState('');
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [guestOptions, setGuestOptions] = useState({ adults: 2, children: 0, rooms: 1 });
+  const [selectedDestination, setSelectedDestination] = useState('Manali');
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [guestOptions, setGuestOptions] = useState({
+    adults: 2,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    rooms: 1,
+    familyType: undefined as string | undefined,
+  });
 
   // State to control which dropdown is open
   const [dateOpen, setDateOpen] = useState(false);
@@ -32,6 +39,21 @@ const Hero = () => {
       destination: selectedDestination,
       date: selectedDate,
       guests: guestOptions,
+    });
+  };
+
+  // Handler for guest options change
+  const handleGuestOptionsChange = (options: {
+    adults: number;
+    children611: number;
+    children25: number;
+    infants: number;
+    rooms: number;
+    familyType?: string;
+  }) => {
+    setGuestOptions({
+      ...options,
+      familyType: options.familyType,
     });
   };
 
@@ -94,7 +116,7 @@ const Hero = () => {
 
               {/* Quote */}
               <div className="relative mb-2 animate-slide-up delay-100">
-                <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 italic leading-relaxed">
                   Luxury shouldn't be a lump sum. We've redesigned travel to fit into your
                   <span className="text-[#15ab8b] font-semibold"> monthly budget</span>.
                 </p>
@@ -184,7 +206,7 @@ const Hero = () => {
                     <OptionsBox
                       isOpen={guestOpen}
                       onOpenChange={setGuestOpen}
-                      onOptionsChange={setGuestOptions}
+                      onOptionsChange={handleGuestOptionsChange}
                     />
                   </div>
                   <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />

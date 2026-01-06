@@ -2,14 +2,319 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { Minus, Plus, AlertCircle, X } from 'lucide-react';
+import { Minus, Plus, AlertCircle, X, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// Family type definitions based on the provided table
+interface FamilyType {
+  name: string;
+  adults: number;
+  children611: number;
+  children25: number;
+  infants: number;
+  total: number;
+}
+
+const familyTypes: FamilyType[] = [
+  {
+    name: 'Baby Bliss - 2 Adults + 1 Infant (Below 2 yrs)',
+    adults: 2,
+    children611: 0,
+    children25: 0,
+    infants: 1,
+    total: 3,
+  },
+  {
+    name: 'Cosmic Combo - 2 Adults + 1 Child (Below 5 yrs) + 1 Teenager (Above 11 yrs)',
+    adults: 3,
+    children611: 0,
+    children25: 1,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Cosmic Combo Duo - 2 Adults + 1 Children (Above 5 yrs) + 1 Teenager (Above 11 yrs)',
+    adults: 3,
+    children611: 1,
+    children25: 0,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Cosmic Duo+ - 2 Adults + 1 Extra Adult (Above 11 yrs)',
+    adults: 3,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 3,
+  },
+  {
+    name: 'Cosmic Grand Combo - 2 Adults + 1 Child (Below 5 yrs) + 1 Teenager (Above 11 yrs) + 2 Grandparents',
+    adults: 5,
+    children611: 0,
+    children25: 1,
+    infants: 0,
+    total: 6,
+  },
+  { name: 'Duo - 2 Adults', adults: 2, children611: 0, children25: 0, infants: 0, total: 2 },
+  {
+    name: 'Dynamic Cosmic Duo - 5 Adults',
+    adults: 5,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 5,
+  },
+  {
+    name: 'Dynamic Cosmic Duo+ - 5 Adults + 1 Extra Adult (Above 11 yrs)',
+    adults: 6,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 6,
+  },
+  {
+    name: 'Dynamic Family Duo+ - 2 Adults + 2 Teenagers (Above 11 yrs)',
+    adults: 4,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Dynamic Grand Duo+ 2 Adults + 2 Teenagers (Above 11 yrs) + 2 Grandparents',
+    adults: 6,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 6,
+  },
+  {
+    name: 'Extended Cosmic Duo+ - 2 Adults + 2 Extra Adult (Above 11 yrs)',
+    adults: 4,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Family Nest - 2 Adults + 2 Child (Below 5 yrs)',
+    adults: 2,
+    children611: 0,
+    children25: 2,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Fantastic Four - 2 Adults + 2 Children (5 yrs to 11 yrs)',
+    adults: 2,
+    children611: 2,
+    children25: 0,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Grand Bliss - 2 Adults + 1 Infant (Below 2 yrs) + 2 Grandparents',
+    adults: 4,
+    children611: 0,
+    children25: 0,
+    infants: 1,
+    total: 5,
+  },
+  {
+    name: 'Grand Delight - 2 Adults + 1 Child (Below 5 yrs) + 2 Grandparents',
+    adults: 4,
+    children611: 0,
+    children25: 1,
+    infants: 0,
+    total: 5,
+  },
+  {
+    name: 'Grand Family Nest - 2 Adults + 2 Child (Below 5 yrs) + 2 Grandparents',
+    adults: 4,
+    children611: 0,
+    children25: 2,
+    infants: 0,
+    total: 6,
+  },
+  {
+    name: 'Grand Fantastic Four - 2 Adults + 2 Children (5 yrs to 11 yrs) + 2 Grandparents',
+    adults: 4,
+    children611: 2,
+    children25: 0,
+    infants: 0,
+    total: 6,
+  },
+  {
+    name: 'Grand Mix Match Clan - 2 Adults + 3 Children (Mix of age groups) + 2 Grandparents',
+    adults: 4,
+    children611: 1,
+    children25: 2,
+    infants: 0,
+    total: 7,
+  },
+  {
+    name: 'Grand Nebula - 2 Adults + 1 Child (5 yrs to 11 yrs) + 2 Grandparents',
+    adults: 4,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Grandparent Plus One - 1 Adult + 2 Children (Below 5 yrs) + 2 Grandparents',
+    adults: 3,
+    children611: 0,
+    children25: 2,
+    infants: 0,
+    total: 5,
+  },
+  {
+    name: 'Mix Match Clan - 2 Adults + 3 Children (Mix of age groups)',
+    adults: 2,
+    children611: 1,
+    children25: 2,
+    infants: 0,
+    total: 5,
+  },
+  {
+    name: 'Nebula Nest - 2 Adults + 1 Children (5 yrs to 11 yrs)',
+    adults: 2,
+    children611: 1,
+    children25: 0,
+    infants: 0,
+    total: 3,
+  },
+  {
+    name: 'Orbiting Duo - 1 Adult + 1 Child (Below 5 yrs)',
+    adults: 1,
+    children611: 0,
+    children25: 1,
+    infants: 0,
+    total: 2,
+  },
+  {
+    name: 'Orbiting Duo+ - 1 Adult + 1 Children (5 yrs to 11 yrs)',
+    adults: 1,
+    children611: 1,
+    children25: 0,
+    infants: 0,
+    total: 2,
+  },
+  {
+    name: 'Orbiting Grand Duo+ - 1 Adult + 1 Children (5 yrs to 11 yrs) + 2 Grandparents',
+    adults: 3,
+    children611: 1,
+    children25: 0,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Orbiting Grand Duo - 1 Adult + (Below 5 yrs) + 2 Grandparents',
+    adults: 3,
+    children611: 0,
+    children25: 1,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Parent Plus Two - 1 Adult + 2 Children (Below 5 yrs)',
+    adults: 2,
+    children611: 0,
+    children25: 2,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Stellar Duo - 2 Adults + 1 Child (2 to 5 yrs) + 1 Children (5 to 11 yrs)',
+    adults: 2,
+    children611: 1,
+    children25: 1,
+    infants: 0,
+    total: 4,
+  },
+  {
+    name: 'Stellar Grand Duo - 2 Adults + 1 Child (2 to 5 yrs) + 1 Children (5 to 11 yrs) + 2 Grandparents',
+    adults: 4,
+    children611: 1,
+    children25: 1,
+    infants: 0,
+    total: 6,
+  },
+  {
+    name: 'Stellar Teen Duo - 2 Adults + 1 Child (2 to 5 yrs) + 1 Children (5 to 11 yrs) + 1 Teenager (Above 11 yrs)',
+    adults: 3,
+    children611: 1,
+    children25: 1,
+    infants: 0,
+    total: 5,
+  },
+  {
+    name: 'Stellar Teen Duo Grand - 2 Adults + 1 Child (2 to 5 yrs) + 1 Children (5 to 11 yrs) + 1 Teenager (Above 11 yrs) + 2 Grandparents',
+    adults: 5,
+    children611: 1,
+    children25: 1,
+    infants: 0,
+    total: 7,
+  },
+  {
+    name: 'Teen Trek - 2 Adults + 1 Teenager (Above 11 yrs)',
+    adults: 3,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 3,
+  },
+  {
+    name: 'Teen Trek with Grand - 2 Adults + 1 Teenager (Above 11 yrs) + 2 Grandparents',
+    adults: 5,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    total: 5,
+  },
+  {
+    name: 'Tiny Delight - 2 Adults + 1 Child (Below 5 yrs)',
+    adults: 2,
+    children611: 0,
+    children25: 1,
+    infants: 0,
+    total: 3,
+  },
+];
+
+// Function to detect family type based on guest selection
+function detectFamilyType(
+  adults: number,
+  children611: number,
+  children25: number,
+  infants: number
+): FamilyType | null {
+  return (
+    familyTypes.find(
+      ft =>
+        ft.adults === adults &&
+        ft.children611 === children611 &&
+        ft.children25 === children25 &&
+        ft.infants === infants
+    ) || null
+  );
+}
+
+interface GuestOptions {
+  adults: number;
+  children611: number;
+  children25: number;
+  infants: number;
+  rooms: number;
+  familyType?: string;
+}
 
 interface OptionsBoxProps {
   className?: string;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onOptionsChange?: (options: { adults: number; children: number; rooms: number }) => void;
+  onOptionsChange?: (options: GuestOptions) => void;
 }
 
 export default function OptionsBox({
@@ -33,14 +338,23 @@ export default function OptionsBox({
   const [warningTxt, setWarningTxt] = useState('');
   const [rooms, setRooms] = useState(1);
   const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
+  const [children611, setChildren611] = useState(0); // Children 6-11 years
+  const [children25, setChildren25] = useState(0); // Children 2-5 years
+  const [infants, setInfants] = useState(0); // Infants under 2 years
   const [minRooms, setMinRooms] = useState(1);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [detectedFamilyType, setDetectedFamilyType] = useState<FamilyType | null>(null);
 
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
+
+  // Detect family type whenever guest counts change
+  useEffect(() => {
+    const familyType = detectFamilyType(adults, children611, children25, infants);
+    setDetectedFamilyType(familyType);
+  }, [adults, children611, children25, infants]);
 
   // Set mounted flag and initialize values on client
   useEffect(() => {
@@ -68,12 +382,32 @@ export default function OptionsBox({
         }
         break;
       }
-      case 'child': {
+      case 'children611': {
         if (i) {
-          setChildren(children + 1);
+          setChildren611(children611 + 1);
         } else {
-          if (children - 1 >= 0) {
-            setChildren(children - 1);
+          if (children611 - 1 >= 0) {
+            setChildren611(children611 - 1);
+          }
+        }
+        break;
+      }
+      case 'children25': {
+        if (i) {
+          setChildren25(children25 + 1);
+        } else {
+          if (children25 - 1 >= 0) {
+            setChildren25(children25 - 1);
+          }
+        }
+        break;
+      }
+      case 'infant': {
+        if (i) {
+          setInfants(infants + 1);
+        } else {
+          if (infants - 1 >= 0) {
+            setInfants(infants - 1);
           }
         }
         break;
@@ -99,21 +433,29 @@ export default function OptionsBox({
       setWarningTxt('');
 
       if (onOptionsChange) {
-        onOptionsChange({ adults, children, rooms });
+        onOptionsChange({
+          adults,
+          children611,
+          children25,
+          infants,
+          rooms,
+          familyType: detectedFamilyType?.name,
+        });
       }
     } else {
       setWarningTxt('Invalid number of rooms');
     }
   }
 
-  // Room calculation logic
+  // Room calculation logic - updated to include all child categories
   useEffect(() => {
+    const totalChildren = children611 + children25 + infants;
     let r = 0;
-    if (children === 0) {
+    if (totalChildren === 0) {
       r = Math.ceil(adults / 3);
     } else {
       let x = adults;
-      let y = children;
+      let y = totalChildren;
       r = 0;
       while (x >= 3 && y >= 1) {
         x = x - 3;
@@ -128,14 +470,14 @@ export default function OptionsBox({
     }
     setRooms(r);
     setMinRooms(r);
-  }, [children, adults]);
+  }, [children611, children25, infants, adults]);
 
   const updateDropdownPosition = useCallback(() => {
     if (triggerRef.current && !isMobile) {
       const rect = triggerRef.current.getBoundingClientRect();
       setDropdownPosition({
         top: rect.bottom + 8,
-        left: Math.max(rect.right - 320, 16), // Align to right, but don't go off screen
+        left: Math.max(rect.right - 360, 16), // Increased width for more content
       });
     }
   }, [isMobile]);
@@ -212,6 +554,8 @@ export default function OptionsBox({
     </button>
   );
 
+  const totalGuests = adults + children611 + children25 + infants;
+
   const GuestDisplay = () => {
     // Show placeholder during SSR and initial render to avoid hydration mismatch
     if (!mounted) {
@@ -219,10 +563,18 @@ export default function OptionsBox({
     }
 
     return rooms > 0 ? (
-      <span className="text-sm lg:text-base font-medium text-slate-800">
-        {rooms} {rooms === 1 ? 'Room' : 'Rooms'}, {adults} {adults === 1 ? 'Adult' : 'Adults'}
-        {children > 0 && `, ${children} ${children === 1 ? 'Child' : 'Children'}`}
-      </span>
+      <div className="flex flex-col">
+        <span className="text-sm lg:text-base font-medium text-slate-800">
+          {rooms} {rooms === 1 ? 'Room' : 'Rooms'}, {totalGuests}{' '}
+          {totalGuests === 1 ? 'Guest' : 'Guests'}
+        </span>
+        {detectedFamilyType && (
+          <span className="text-xs text-[#15ab8b] font-medium flex items-center gap-1 mt-0.5">
+            <Sparkles className="w-3 h-3" />
+            {detectedFamilyType.name.split(' - ')[0]}
+          </span>
+        )}
+      </div>
     ) : (
       <span className="text-sm lg:text-base text-slate-400">Select guests</span>
     );
@@ -243,8 +595,8 @@ export default function OptionsBox({
         className={cn(
           'bg-white shadow-2xl border border-slate-200 overflow-hidden',
           isMobile
-            ? 'fixed inset-x-0 bottom-0 rounded-t-3xl max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-300 z-9999'
-            : 'fixed w-[320px] rounded-2xl z-9999'
+            ? 'fixed inset-x-0 bottom-0 rounded-t-3xl max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-300 z-9999'
+            : 'fixed w-[360px] rounded-2xl z-9999'
         )}
         style={
           isMobile
@@ -276,12 +628,12 @@ export default function OptionsBox({
           )}
         </div>
 
-        <div className={cn('p-5 space-y-5', isMobile && 'p-6 pb-8 space-y-6')}>
+        <div className={cn('p-5 space-y-4', isMobile && 'p-6 pb-8 space-y-5')}>
           {/* Adults */}
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium text-slate-800">Adults</p>
-              <p className="text-xs text-slate-400">Above 12 years</p>
+              <p className="text-xs text-slate-400">12+ years</p>
             </div>
             <div className="flex items-center gap-3">
               <CounterButton
@@ -300,25 +652,77 @@ export default function OptionsBox({
             </div>
           </div>
 
-          {/* Children */}
+          {/* Children 6-11 */}
           <div className="h-px bg-slate-100" />
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium text-slate-800">Children</p>
-              <p className="text-xs text-slate-400">5 to 11 years</p>
+              <p className="text-xs text-slate-400">6-11 years</p>
             </div>
             <div className="flex items-center gap-3">
               <CounterButton
-                onClick={() => handleIncrementorDecrementor(false, 'child')}
-                disabled={children <= 0}
+                onClick={() => handleIncrementorDecrementor(false, 'children611')}
+                disabled={children611 <= 0}
               >
                 <Minus className="w-4 h-4" />
               </CounterButton>
               <span className="w-8 text-center font-semibold text-slate-800 text-lg">
-                {children}
+                {children611}
               </span>
               <CounterButton
-                onClick={() => handleIncrementorDecrementor(true, 'child')}
+                onClick={() => handleIncrementorDecrementor(true, 'children611')}
+                disabled={false}
+              >
+                <Plus className="w-4 h-4" />
+              </CounterButton>
+            </div>
+          </div>
+
+          {/* Child below 5 (2-5 years) */}
+          <div className="h-px bg-slate-100" />
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium text-slate-800">Child below 5</p>
+              <p className="text-xs text-slate-400">2-5 years</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <CounterButton
+                onClick={() => handleIncrementorDecrementor(false, 'children25')}
+                disabled={children25 <= 0}
+              >
+                <Minus className="w-4 h-4" />
+              </CounterButton>
+              <span className="w-8 text-center font-semibold text-slate-800 text-lg">
+                {children25}
+              </span>
+              <CounterButton
+                onClick={() => handleIncrementorDecrementor(true, 'children25')}
+                disabled={false}
+              >
+                <Plus className="w-4 h-4" />
+              </CounterButton>
+            </div>
+          </div>
+
+          {/* Infants */}
+          <div className="h-px bg-slate-100" />
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium text-slate-800">Infants</p>
+              <p className="text-xs text-slate-400">Under 2 years</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <CounterButton
+                onClick={() => handleIncrementorDecrementor(false, 'infant')}
+                disabled={infants <= 0}
+              >
+                <Minus className="w-4 h-4" />
+              </CounterButton>
+              <span className="w-8 text-center font-semibold text-slate-800 text-lg">
+                {infants}
+              </span>
+              <CounterButton
+                onClick={() => handleIncrementorDecrementor(true, 'infant')}
                 disabled={false}
               >
                 <Plus className="w-4 h-4" />
@@ -348,6 +752,28 @@ export default function OptionsBox({
               </CounterButton>
             </div>
           </div>
+
+          {/* Detected Family Type Badge */}
+          {detectedFamilyType && (
+            <>
+              <div className="h-px bg-slate-100" />
+              <div className="bg-linear-to-r from-[#e8f8f5] to-[#d1fbd2] rounded-xl p-4 border border-[#15ab8b]/20">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#15ab8b]/20 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-5 h-5 text-[#15ab8b]" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-[#0f8a6f] uppercase tracking-wider mb-1">
+                      Family Type Detected
+                    </p>
+                    <p className="text-sm font-medium text-slate-800 leading-snug">
+                      {detectedFamilyType.name}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Warning */}
           {warningTxt && (
