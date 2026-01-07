@@ -96,8 +96,8 @@ const SearchDestination = ({
     setIsLoading(true);
     try {
       const url = query
-        ? `/api/destinations/search?q=${encodeURIComponent(query)}&limit=50`
-        : `/api/destinations/search?limit=50`;
+        ? `/api/v1/destinations/search?q=${encodeURIComponent(query)}&limit=50`
+        : `/api/v1/destinations/search?limit=50`;
       const response = await fetch(url);
       const json = await response.json();
 

@@ -54,7 +54,7 @@ const Hero = () => {
   useEffect(() => {
     const fetchInterests = async () => {
       try {
-        const response = await fetch('/api/interests/search?limit=50');
+        const response = await fetch('/api/v1/interests?limit=50');
         const data = await response.json();
 
         if (data.success && data.result?.docs) {
