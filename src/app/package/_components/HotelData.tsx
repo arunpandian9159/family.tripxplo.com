@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { MapPin, Clock, Utensils, Snowflake } from 'lucide-react';
 import type { HotelMeal } from '@/lib/types';
 
-const NEXT_PUBLIC_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL || 'https://tripxplo.com/images/';
+const NEXT_PUBLIC_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
 interface HotelDataProps {
   hotel: HotelMeal;

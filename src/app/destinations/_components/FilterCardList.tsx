@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { formatIndianNumber } from '@/lib/format';
 import { PlanBadge } from '@/components/ui/badge';
 
-const NEXT_PUBLIC_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL || 'https://tripxplo.com/images/';
+const NEXT_PUBLIC_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
 interface FilterCardListProps {
   package: FeaturedPackage;

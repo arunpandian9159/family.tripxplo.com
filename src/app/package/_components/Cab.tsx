@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Car, Users, Briefcase, Snowflake } from 'lucide-react';
 import type { VehicleDetail } from '@/lib/types';
 
-const NEXT_PUBLIC_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL || 'https://tripxplo.com/images/';
+const NEXT_PUBLIC_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
 interface CabProps {
   vehicle: VehicleDetail;
