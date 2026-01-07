@@ -37,6 +37,7 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
                 : '/home.png'
             }
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 280px, 320px"
             alt={pkg.name}
             className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
@@ -196,6 +197,7 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
               : '/home.png'
           }
           fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
           alt={pkg.name}
           className="object-cover transition-transform duration-700 group-hover:scale-110"
         />

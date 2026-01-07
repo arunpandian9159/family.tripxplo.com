@@ -170,6 +170,7 @@ function DestinationsContent() {
               src={coverImage}
               alt={destinationQuery || 'Destination'}
               fill
+              sizes="100vw"
               className="object-cover animate-ken-burns"
               priority
             />
