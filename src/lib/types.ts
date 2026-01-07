@@ -1,18 +1,19 @@
 // Package types for family-emi
 export interface PackageDestination {
-  id: string;
-  name: string;
-  noOfNights: number;
+  destinationId: string;
+  destinationName: string;
+  noOfNight: number;
 }
 
 export interface FeaturedPackage {
-  id: string;
-  name: string;
-  images: string[];
+  _id: string;
+  packageId: string;
+  packageName: string;
+  packageImg: string[];
   noOfDays: number;
-  noOfNights: number;
-  price: number;
-  destinations: PackageDestination[];
+  noOfNight: number;
+  perPerson: number;
+  destination: PackageDestination[];
   offer: number;
   status: boolean;
   planName?: string;
@@ -167,4 +168,3 @@ export interface SearchFilters {
   sort?: 'price_asc' | 'price_desc' | 'days_asc' | 'days_desc' | 'default';
   query?: string;
 }
-

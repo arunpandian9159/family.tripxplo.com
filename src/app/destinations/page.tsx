@@ -118,10 +118,10 @@ function DestinationsContent() {
 
     switch (activeFilter) {
       case '2-4':
-        result = result.filter(pkg => pkg.noOfNights >= 2 && pkg.noOfNights <= 4);
+        result = result.filter(pkg => pkg.noOfNight >= 2 && pkg.noOfNight <= 4);
         break;
       case '5-7':
-        result = result.filter(pkg => pkg.noOfNights >= 5 && pkg.noOfNights <= 7);
+        result = result.filter(pkg => pkg.noOfNight >= 5 && pkg.noOfNight <= 7);
         break;
       case 'platinum':
         result = result.filter(pkg => pkg.planName?.toLowerCase() === 'platinum');
@@ -133,10 +133,10 @@ function DestinationsContent() {
         result = result.filter(pkg => pkg.planName?.toLowerCase() === 'silver');
         break;
       case 'price-asc':
-        result = result.sort((a, b) => (a.price || 0) - (b.price || 0));
+        result = result.sort((a, b) => (a.perPerson || 0) - (b.perPerson || 0));
         break;
       case 'price-desc':
-        result = result.sort((a, b) => (b.price || 0) - (a.price || 0));
+        result = result.sort((a, b) => (b.perPerson || 0) - (a.perPerson || 0));
         break;
       default:
         break;
@@ -292,14 +292,14 @@ function DestinationsContent() {
           >
             {filteredPackages.map((pkg, index) => (
               <div
-                key={pkg.id}
+                key={pkg.packageId}
                 className="h-full cursor-pointer animate-slide-up"
                 style={{ animationDelay: `${Math.min(index * 0.05, 0.3)}s` }}
               >
                 <FilterCardList
                   package={pkg}
                   viewMode={viewMode}
-                  onClick={() => handlePackageClick(pkg.id)}
+                  onClick={() => handlePackageClick(pkg.packageId)}
                 />
               </div>
             ))}

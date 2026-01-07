@@ -18,7 +18,7 @@ interface FilterCardListProps {
 }
 
 const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCardListProps) => {
-  const price = pkg.price || 0;
+  const price = pkg.perPerson || 0;
 
   if (viewMode === 'list') {
     return (
@@ -30,15 +30,15 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
         <div className="relative w-full sm:w-[280px] md:w-[320px] aspect-4/3 sm:aspect-4/5 md:aspect-auto md:h-full min-h-[250px] overflow-hidden shrink-0">
           <Image
             src={
-              pkg.images?.[0]
-                ? pkg.images[0].startsWith('http')
-                  ? pkg.images[0]
-                  : NEXT_PUBLIC_IMAGE_URL + pkg.images[0]
+              pkg.packageImg?.[0]
+                ? pkg.packageImg[0].startsWith('http')
+                  ? pkg.packageImg[0]
+                  : NEXT_PUBLIC_IMAGE_URL + pkg.packageImg[0]
                 : '/home.png'
             }
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 280px, 320px"
-            alt={pkg.name}
+            alt={pkg.packageName}
             className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
 
@@ -57,7 +57,7 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
             >
               <Calendar className="w-3.5 h-3.5" />
               <span>
-                {pkg.noOfNights}N/{pkg.noOfDays}D
+                {pkg.noOfNight}N/{pkg.noOfDays}D
               </span>
             </div>
           </div>
@@ -71,12 +71,12 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
                 <div className="bg-[#15ab8b]/20 backdrop-blur-md text-[#15ab8b] px-3 py-1 rounded-lg font-semibold text-sm shadow-md border border-[#15ab8b]/20 flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5" />
                   <span>
-                    {pkg.noOfNights}N/{pkg.noOfDays}D
+                    {pkg.noOfNight}N/{pkg.noOfDays}D
                   </span>
                 </div>
               </div>
               <h3 className="text-xl font-bold text-slate-900 transition-colors mb-2">
-                {pkg.name}
+                {pkg.packageName}
               </h3>
 
               {/* Destinations with Nights */}
@@ -85,17 +85,20 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
                   <MapPin className="w-4 h-4 text-[#15ab8b] shrink-0 mt-0.5" />
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-wrap items-center gap-1.5">
-                      {pkg.destinations
-                        ?.filter(d => d.noOfNights > 0)
+                      {pkg.destination
+                        ?.filter(d => d.noOfNight > 0)
                         .slice(0, 3)
                         .map((d, i, arr) => (
-                          <span key={d.id} className="text-sm text-slate-600 font-medium">
-                            {d.name} - {d.noOfNights}N
+                          <span
+                            key={d.destinationId}
+                            className="text-sm text-slate-600 font-medium"
+                          >
+                            {d.destinationName} - {d.noOfNight}N
                             {i < arr.length - 1 && <span className="text-slate-400 mx-0.5">,</span>}
                           </span>
                         ))}
-                      {pkg.destinations &&
-                        pkg.destinations.filter(d => d.noOfNights > 0).length > 3 && (
+                      {pkg.destination &&
+                        pkg.destination.filter(d => d.noOfNight > 0).length > 3 && (
                           <span className="text-sm text-slate-400 font-medium">...</span>
                         )}
                     </div>
@@ -190,15 +193,15 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
       <div className="relative w-full aspect-4/3 overflow-hidden">
         <Image
           src={
-            pkg.images?.[0]
-              ? pkg.images[0].startsWith('http')
-                ? pkg.images[0]
-                : NEXT_PUBLIC_IMAGE_URL + pkg.images[0]
+            pkg.packageImg?.[0]
+              ? pkg.packageImg[0].startsWith('http')
+                ? pkg.packageImg[0]
+                : NEXT_PUBLIC_IMAGE_URL + pkg.packageImg[0]
               : '/home.png'
           }
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-          alt={pkg.name}
+          alt={pkg.packageName}
           className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
 
@@ -213,7 +216,7 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
             <div className="bg-black/40 backdrop-blur-md text-white px-2.5 py-0.5 rounded-md font-semibold text-[11px] border border-white/20 flex items-center gap-1 shadow-sm">
               <Calendar className="w-3 h-3" />
               <span>
-                {pkg.noOfNights}N/{pkg.noOfDays}D
+                {pkg.noOfNight}N/{pkg.noOfDays}D
               </span>
             </div>
           </div>
@@ -223,10 +226,10 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
         <div className="absolute bottom-0 left-0 right-0 p-4 pt-16 bg-linear-to-t from-black/80 via-black/30 to-transparent">
           <h3
             className="text-lg font-bold text-white leading-snug line-clamp-1 transition-colors"
-            title={pkg.name}
+            title={pkg.packageName}
             style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
           >
-            {pkg.name}
+            {pkg.packageName}
           </h3>
         </div>
       </div>
@@ -238,18 +241,18 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
           <div className="flex items-start gap-2">
             <MapPin className="w-4 h-4 text-[#15ab8b] shrink-0 mt-1" />
             <p className="text-sm text-slate-600 font-medium leading-relaxed">
-              {pkg.destinations
-                ?.filter(d => d.noOfNights > 0)
+              {pkg.destination
+                ?.filter(d => d.noOfNight > 0)
                 .slice(0, 3)
                 .map((d, i, arr) => (
-                  <span key={d.id}>
-                    {d.name} ({d.noOfNights}N)
+                  <span key={d.destinationId}>
+                    {d.destinationName} ({d.noOfNight}N)
                     {i < arr.length - 1 && <span className="text-slate-300 mx-2">•</span>}
                   </span>
                 ))}
-              {pkg.destinations && pkg.destinations.filter(d => d.noOfNights > 0).length > 3 && (
+              {pkg.destination && pkg.destination.filter(d => d.noOfNight > 0).length > 3 && (
                 <span className="text-slate-400 ml-1 text-xs">
-                  +{pkg.destinations.length - 3} more
+                  +{pkg.destination.length - 3} more
                 </span>
               )}
             </p>

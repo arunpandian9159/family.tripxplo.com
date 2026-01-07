@@ -26,8 +26,8 @@ const ExploreFilter = ({ allPackages, activeFilter, onFilterChange }: ExploreFil
     const filters: string[] = ['All Packages']; // Always show "All Packages"
 
     // Check for night range availability
-    const has2to4N = allPackages.some(pkg => pkg.noOfNights >= 2 && pkg.noOfNights <= 4);
-    const has5to7N = allPackages.some(pkg => pkg.noOfNights >= 5 && pkg.noOfNights <= 7);
+    const has2to4N = allPackages.some(pkg => pkg.noOfNight >= 2 && pkg.noOfNight <= 4);
+    const has5to7N = allPackages.some(pkg => pkg.noOfNight >= 5 && pkg.noOfNight <= 7);
 
     if (has2to4N) filters.push('2N to 4N');
     if (has5to7N) filters.push('5N to 7N');
