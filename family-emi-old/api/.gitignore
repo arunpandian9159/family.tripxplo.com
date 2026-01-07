@@ -1,0 +1,19 @@
+# Ignore local env files and node modules for the backup site
+.env
+.env.*
+node_modules
+**/node_modules
+
+# Ignore API env specifically
+api/.env
+
+# Build & temp
+dist/
+build/
+.tmp/
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
