@@ -20,6 +20,7 @@ export interface FeaturedPackage {
   hotelCount?: number;
   vehicleCount?: number;
   activityCount?: number;
+  startFrom?: string;
 }
 
 export interface SearchPackage extends FeaturedPackage {

@@ -106,6 +106,14 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
                 </div>
               </div>
             </div>
+            {pkg.startFrom && (
+              <div className="flex flex-col items-end gap-2 text-nowrap">
+                <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md">
+                  <MapPin className="w-3 h-3 animate-pulse" />
+                  <span className="text-xs font-semibold">Starts @{pkg.startFrom}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Features Grid */}
@@ -257,6 +265,14 @@ const FilterCardList = ({ package: pkg, viewMode = 'grid', onClick }: FilterCard
               )}
             </p>
           </div>
+          {pkg.startFrom && (
+            <div className="ml-6">
+              <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-100/50">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-semibold">Starts @ {pkg.startFrom}</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Features Grid */}
