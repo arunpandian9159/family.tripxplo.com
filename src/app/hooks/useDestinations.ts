@@ -1,4 +1,1 @@
-const getDestinations = async() =>{
-    
-
-}
+const getDestinations = async () => {};

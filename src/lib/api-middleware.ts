@@ -34,4 +34,3 @@ export function parseQueryParams(request: NextRequest): {
     [key: string]: string | number | undefined;
   };
 }
-

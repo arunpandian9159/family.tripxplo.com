@@ -66,7 +66,7 @@ export function paginatedResponse<T>(
 ): NextResponse {
   const totalPages = Math.ceil(total / limit);
   const offset = options?.offset ?? (page - 1) * limit;
-  
+
   return NextResponse.json(
     {
       success: true,
@@ -104,4 +104,3 @@ export const ErrorCodes = {
   INTERNAL_ERROR: 'INTERNAL_ERROR',
   PACKAGE_NOT_FOUND: 'PACKAGE_NOT_FOUND',
 } as const;
-

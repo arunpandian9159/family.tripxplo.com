@@ -57,13 +57,14 @@ export const createBooking = async (body: BookingPayloadType) => {
       couponCode: body.couponCode,
       redeemCoin: body.redeemCoin,
     });
-    
+
     console.log('Booking API response:', bookingResponse);
-    
+
     if (!bookingResponse.success) {
-      const errorMsg = bookingResponse.message || bookingResponse.error || 'Failed to create booking';
+      const errorMsg =
+        bookingResponse.message || bookingResponse.error || 'Failed to create booking';
       console.error('Booking creation failed:', errorMsg, bookingResponse);
-      
+
       // Check for specific error codes
       if (bookingResponse.code === 'UNAUTHORIZED' || bookingResponse.code === 'AUTH_REQUIRED') {
         throw new Error('Please login to continue with booking');
@@ -74,45 +75,44 @@ export const createBooking = async (body: BookingPayloadType) => {
       if (bookingResponse.code === 'VALIDATION_ERROR') {
         throw new Error(errorMsg);
       }
-      
+
       throw new Error(errorMsg);
     }
-    
+
     if (!bookingResponse.data) {
       throw new Error('No booking data returned from server');
     }
-    
+
     const bookingData = bookingResponse.data as BookingResponse;
     const booking = bookingData.booking;
-    
+
     if (!booking || !booking.id) {
       throw new Error('Invalid booking response from server');
     }
-    
+
     console.log('Booking created:', booking);
-    
+
     // Step 2: Initialize payment
-    // Use the finalPackagePrice from the frontend (which includes discounts) 
+    // Use the finalPackagePrice from the frontend (which includes discounts)
     // This ensures the payment page shows the same amount as the booking overview
-    const paymentAmount = body.paymentType === 'advance' 
-      ? 1 
-      : (body.finalPackagePrice || booking.totalAmount || 10000);
-    
-    console.log('Initializing payment:', { 
-      amount: paymentAmount, 
+    const paymentAmount =
+      body.paymentType === 'advance' ? 1 : body.finalPackagePrice || booking.totalAmount || 10000;
+
+    console.log('Initializing payment:', {
+      amount: paymentAmount,
       orderId: booking.id,
       fromPayload: body.finalPackagePrice,
-      fromBooking: booking.totalAmount 
+      fromBooking: booking.totalAmount,
     });
-    
+
     const paymentResponse = await paymentApi.initialize({
       amount: paymentAmount,
       orderId: booking.id,
       currency: 'INR',
     });
-    
+
     console.log('Payment API response:', paymentResponse);
-    
+
     if (!paymentResponse.success || !paymentResponse.data) {
       console.error('Payment initialization failed:', paymentResponse.message);
       // Return booking info even if payment init fails, with a fallback URL
@@ -133,14 +133,14 @@ export const createBooking = async (body: BookingPayloadType) => {
         },
       };
     }
-    
+
     const paymentData = paymentResponse.data as {
       paymentId: string;
       paymentUrl: string;
       orderId: string;
       amount: number;
     };
-    
+
     // Return response in the format expected by booking-overview page
     return {
       data: {

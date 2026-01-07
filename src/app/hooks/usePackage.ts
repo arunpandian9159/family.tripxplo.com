@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
-import { PackType } from "../types/pack";
-import { DateDestination, Room } from "./usePackageList";
-import { useSelector } from "react-redux";
-import { packagesApi } from "@/lib/api-client";
+import { useCallback, useEffect, useState } from 'react';
+import { PackType } from '../types/pack';
+import { DateDestination, Room } from './usePackageList';
+import { useSelector } from 'react-redux';
+import { packagesApi } from '@/lib/api-client';
 
 export interface PackageGetQuery {
   packageId: string;
@@ -16,16 +16,12 @@ export interface PackageGetQuery {
 
 export const usePackage = (packageId: string) => {
   const [isLoading, setLoading] = useState(true);
-  const [err, setErr] = useState("");
+  const [err, setErr] = useState('');
   const [pack, setPack] = useState<PackType>();
 
-  const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room
-  );
+  const roomCapacityData: Room = useSelector((store: any) => store.roomSelect.room);
 
-  const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage
-  );
+  const dateAndDestination: DateDestination = useSelector((store: any) => store.searchPackage);
 
   const fetchData = useCallback(
     async (payload: PackageGetQuery) => {
@@ -35,16 +31,8 @@ export const usePackage = (packageId: string) => {
 
         if (response.success && response.data) {
           // Handle the response data format - API returns { result: [...] }
-          const data = response.data as
-            | { result?: PackType[] }
-            | PackType
-            | PackType[];
-          if (
-            data &&
-            typeof data === "object" &&
-            "result" in data &&
-            Array.isArray(data.result)
-          ) {
+          const data = response.data as { result?: PackType[] } | PackType | PackType[];
+          if (data && typeof data === 'object' && 'result' in data && Array.isArray(data.result)) {
             setPack(data.result[0]);
           } else if (Array.isArray(data)) {
             setPack(data[0]);
@@ -52,10 +40,10 @@ export const usePackage = (packageId: string) => {
             setPack(data as PackType);
           }
         } else {
-          setErr("Failed to fetch package");
+          setErr('Failed to fetch package');
         }
       } catch (err: any) {
-        setErr(err.message || "An error occurred");
+        setErr(err.message || 'An error occurred');
       } finally {
         setLoading(false);
       }
@@ -67,12 +55,9 @@ export const usePackage = (packageId: string) => {
     // Use fallback of 2 for perRoom when it's 0 (default) - matches usePackageList.ts logic
     const effectivePerRoom = roomCapacityData.perRoom || 2;
     const extraAdult =
-      roomCapacityData.totalAdults -
-      roomCapacityData.totalRooms * effectivePerRoom;
+      roomCapacityData.totalAdults - roomCapacityData.totalRooms * effectivePerRoom;
     const noAdult =
-      extraAdult > 0
-        ? roomCapacityData?.totalAdults - extraAdult
-        : roomCapacityData?.totalAdults;
+      extraAdult > 0 ? roomCapacityData?.totalAdults - extraAdult : roomCapacityData?.totalAdults;
 
     const payload = {
       packageId: packageId,

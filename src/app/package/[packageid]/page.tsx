@@ -1,17 +1,17 @@
-"use client";
-import React, { useEffect, useState, use } from "react";
-import { useSearchParams } from "next/navigation";
-import PackageDetail from "../_components/PackageDetail";
-import { fetchPackage, initializePackage } from "@/app/store/features/packageSlice";
-import PackagesLoading from "@/app/(user-area)/components/loading/PackagesLoading";
-import { PackType } from "@/app/types/pack";
-import PNF from "./(activities)/_components/PNF";
-import { useSelector, useDispatch } from "react-redux";
-import { Room } from "@/app/store/features/roomCapacitySlice";
-import { selectAdultsChild } from "@/app/store/features/roomCapacitySlice";
-import { changeDate } from "@/app/store/features/searchPackageSlice";
-import { PackageGetQuery } from "@/app/hooks/usePackage";
-import { AppDispatch } from "@/app/store/store";
+'use client';
+import React, { useEffect, useState, use } from 'react';
+import { useSearchParams } from 'next/navigation';
+import PackageDetail from '../_components/PackageDetail';
+import { fetchPackage, initializePackage } from '@/app/store/features/packageSlice';
+import PackagesLoading from '@/app/(user-area)/components/loading/PackagesLoading';
+import { PackType } from '@/app/types/pack';
+import PNF from './(activities)/_components/PNF';
+import { useSelector, useDispatch } from 'react-redux';
+import { Room } from '@/app/store/features/roomCapacitySlice';
+import { selectAdultsChild } from '@/app/store/features/roomCapacitySlice';
+import { changeDate } from '@/app/store/features/searchPackageSlice';
+import { PackageGetQuery } from '@/app/hooks/usePackage';
+import { AppDispatch } from '@/app/store/store';
 
 interface DateDestination {
   date?: string;
@@ -25,13 +25,9 @@ export default function PackageDetails({ params }: { params: Promise<{ packageid
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
 
-  const roomCapacityData = useSelector(
-    (store: any) => store.roomSelect?.room
-  );
+  const roomCapacityData = useSelector((store: any) => store.roomSelect?.room);
 
-  const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage
-  );
+  const dateAndDestination: DateDestination = useSelector((store: any) => store.searchPackage);
   const pack = useSelector((store: any) => store.package);
 
   // In Next.js 15+, params is a Promise that must be unwrapped
@@ -54,13 +50,15 @@ export default function PackageDetails({ params }: { params: Promise<{ packageid
 
       // Update room/guest data in Redux if provided in URL
       if (urlAdults || urlChildren || urlRooms) {
-        dispatch(selectAdultsChild({
-          room: {
-            adult: urlAdults ? parseInt(urlAdults, 10) : 2,
-            child: urlChildren ? parseInt(urlChildren, 10) : 0,
-            room: urlRooms ? parseInt(urlRooms, 10) : 1,
-          }
-        }));
+        dispatch(
+          selectAdultsChild({
+            room: {
+              adult: urlAdults ? parseInt(urlAdults, 10) : 2,
+              child: urlChildren ? parseInt(urlChildren, 10) : 0,
+              room: urlRooms ? parseInt(urlRooms, 10) : 1,
+            },
+          })
+        );
       }
     }
   }, [urlDate, urlAdults, urlChildren, urlRooms, dispatch]);
@@ -74,8 +72,12 @@ export default function PackageDetails({ params }: { params: Promise<{ packageid
     // Prioritize URL params over Redux state for shared links
     const today = new Date().toISOString().slice(0, 10);
     const effectiveDate = urlDate || dateAndDestination?.date?.slice(0, 10) || today;
-    const effectiveAdults = urlAdults ? parseInt(urlAdults, 10) : roomCapacityData?.totalAdults || 2;
-    const effectiveChildren = urlChildren ? parseInt(urlChildren, 10) : roomCapacityData?.totalChilds || 0;
+    const effectiveAdults = urlAdults
+      ? parseInt(urlAdults, 10)
+      : roomCapacityData?.totalAdults || 2;
+    const effectiveChildren = urlChildren
+      ? parseInt(urlChildren, 10)
+      : roomCapacityData?.totalChilds || 0;
     const effectiveRooms = urlRooms ? parseInt(urlRooms, 10) : roomCapacityData?.totalRooms || 1;
 
     const perRoom = roomCapacityData?.perRoom || 2;
@@ -93,7 +95,17 @@ export default function PackageDetails({ params }: { params: Promise<{ packageid
 
     // Always fetch package data when dependencies change
     dispatch(fetchPackage(payload));
-  }, [packageid, urlDate, urlAdults, urlChildren, urlRooms, urlHotels, dispatch, dateAndDestination?.date, roomCapacityData]);
+  }, [
+    packageid,
+    urlDate,
+    urlAdults,
+    urlChildren,
+    urlRooms,
+    urlHotels,
+    dispatch,
+    dateAndDestination?.date,
+    roomCapacityData,
+  ]);
 
   return pack.isLoading ? (
     <div className="w-full min-h-[100vh] flex justify-center items-center">

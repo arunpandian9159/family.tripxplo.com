@@ -25,8 +25,8 @@ interface BookingsApiResponse {
 export const getAllBookings = async (offset: number, limit: number) => {
   try {
     const page = Math.floor(offset / limit) + 1;
-    const response = await userApi.getBookings({ page, limit }) as BookingsApiResponse;
-    
+    const response = (await userApi.getBookings({ page, limit })) as BookingsApiResponse;
+
     // API returns data in `result` format from paginatedResponse
     if (response.success && response.result) {
       return {
@@ -39,7 +39,7 @@ export const getAllBookings = async (offset: number, limit: number) => {
         },
       };
     }
-    
+
     // Fallback: check for `data` format (legacy support)
     if (response.success && response.data) {
       const data = response.data;
@@ -53,7 +53,7 @@ export const getAllBookings = async (offset: number, limit: number) => {
         },
       };
     }
-    
+
     // Return empty result instead of rejecting
     return {
       result: {

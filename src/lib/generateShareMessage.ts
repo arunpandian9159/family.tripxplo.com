@@ -5,56 +5,58 @@
 
 // Destination emoji mappings
 const destinationEmojis: Record<string, { emoji: string; feature: string }> = {
-  manali: { emoji: "🏔️❄️", feature: "Snow + Mountains" },
-  kashmir: { emoji: "🏔️❄️🌸", feature: "Paradise on Earth" },
-  shimla: { emoji: "🏔️❄️🌲", feature: "Queen of Hills" },
-  ladakh: { emoji: "🏔️🏍️", feature: "Adventure + Landscapes" },
-  ooty: { emoji: "🌿🌄☕", feature: "Tea Gardens + Hills" },
-  munnar: { emoji: "🌿🍃☕", feature: "Green Hills + Tea" },
-  kodaikanal: { emoji: "🌲🌄✨", feature: "Misty Mountains" },
-  kerala: { emoji: "🌴🚣✨", feature: "Backwaters + Nature" },
-  goa: { emoji: "🏖️🌊🎉", feature: "Beach + Party" },
-  andaman: { emoji: "🏝️🐚🌊", feature: "Island + Beach" },
-  bali: { emoji: "🌺🏝️✨", feature: "Tropical Paradise" },
-  maldives: { emoji: "🏝️🐚💙", feature: "Island + Luxury" },
-  dubai: { emoji: "🏙️✨🌟", feature: "Luxury + Shopping" },
-  singapore: { emoji: "🏙️🌃✨", feature: "Modern + Vibrant" },
-  thailand: { emoji: "🏝️🌺🎉", feature: "Beach + Culture" },
-  vietnam: { emoji: "🌏🍜✨", feature: "Culture + Nature" },
-  rajasthan: { emoji: "🏰👑🐪", feature: "Royal + Heritage" },
-  jaipur: { emoji: "🏰🌸👑", feature: "Pink City + Royalty" },
-  udaipur: { emoji: "🏰💙✨", feature: "Lake City + Romance" },
-  darjeeling: { emoji: "🍃🚂🏔️", feature: "Tea + Toy Train" },
-  sikkim: { emoji: "🏔️🌸✨", feature: "Mountains + Peace" },
-  meghalaya: { emoji: "🌧️🌿💚", feature: "Living Bridges + Waterfalls" },
-  rishikesh: { emoji: "🧘‍♂️🏞️✨", feature: "Yoga + Adventure" },
-  varanasi: { emoji: "🪔🛕✨", feature: "Spiritual + Heritage" },
-  agra: { emoji: "🕌💕✨", feature: "Taj Mahal + Love" },
+  manali: { emoji: '🏔️❄️', feature: 'Snow + Mountains' },
+  kashmir: { emoji: '🏔️❄️🌸', feature: 'Paradise on Earth' },
+  shimla: { emoji: '🏔️❄️🌲', feature: 'Queen of Hills' },
+  ladakh: { emoji: '🏔️🏍️', feature: 'Adventure + Landscapes' },
+  ooty: { emoji: '🌿🌄☕', feature: 'Tea Gardens + Hills' },
+  munnar: { emoji: '🌿🍃☕', feature: 'Green Hills + Tea' },
+  kodaikanal: { emoji: '🌲🌄✨', feature: 'Misty Mountains' },
+  kerala: { emoji: '🌴🚣✨', feature: 'Backwaters + Nature' },
+  goa: { emoji: '🏖️🌊🎉', feature: 'Beach + Party' },
+  andaman: { emoji: '🏝️🐚🌊', feature: 'Island + Beach' },
+  bali: { emoji: '🌺🏝️✨', feature: 'Tropical Paradise' },
+  maldives: { emoji: '🏝️🐚💙', feature: 'Island + Luxury' },
+  dubai: { emoji: '🏙️✨🌟', feature: 'Luxury + Shopping' },
+  singapore: { emoji: '🏙️🌃✨', feature: 'Modern + Vibrant' },
+  thailand: { emoji: '🏝️🌺🎉', feature: 'Beach + Culture' },
+  vietnam: { emoji: '🌏🍜✨', feature: 'Culture + Nature' },
+  rajasthan: { emoji: '🏰👑🐪', feature: 'Royal + Heritage' },
+  jaipur: { emoji: '🏰🌸👑', feature: 'Pink City + Royalty' },
+  udaipur: { emoji: '🏰💙✨', feature: 'Lake City + Romance' },
+  darjeeling: { emoji: '🍃🚂🏔️', feature: 'Tea + Toy Train' },
+  sikkim: { emoji: '🏔️🌸✨', feature: 'Mountains + Peace' },
+  meghalaya: { emoji: '🌧️🌿💚', feature: 'Living Bridges + Waterfalls' },
+  rishikesh: { emoji: '🧘‍♂️🏞️✨', feature: 'Yoga + Adventure' },
+  varanasi: { emoji: '🪔🛕✨', feature: 'Spiritual + Heritage' },
+  agra: { emoji: '🕌💕✨', feature: 'Taj Mahal + Love' },
 };
 
 // Theme emoji mappings
 const themeEmojis: Record<string, { emoji: string; tagline: string }> = {
-  honeymoon: { emoji: "💑💒", tagline: "Romance + Memories" },
-  couple: { emoji: "💕❤️", tagline: "Love + Getaway" },
-  romantic: { emoji: "💑✨", tagline: "Romance + Magic" },
-  family: { emoji: "👨‍👩‍👧‍👦🎊", tagline: "Fun + Bonding" },
-  friends: { emoji: "🎉👯", tagline: "Adventure + Fun" },
-  adventure: { emoji: "🧗‍♂️🏄‍♂️", tagline: "Thrill + Explore" },
-  spiritual: { emoji: "🙏🪔", tagline: "Peace + Devotion" },
-  pilgrimage: { emoji: "🛕🙏", tagline: "Faith + Journey" },
-  wildlife: { emoji: "🐅🌿", tagline: "Safari + Nature" },
-  beach: { emoji: "🏖️🌊", tagline: "Sun + Sand" },
-  hill: { emoji: "🏔️🌄", tagline: "Mountains + Serenity" },
-  luxury: { emoji: "👑✨", tagline: "Premium + Comfort" },
-  budget: { emoji: "💰✨", tagline: "Value + Experience" },
-  weekend: { emoji: "🗓️✨", tagline: "Quick + Refreshing" },
-  group: { emoji: "👥🎉", tagline: "Together + Fun" },
+  honeymoon: { emoji: '💑💒', tagline: 'Romance + Memories' },
+  couple: { emoji: '💕❤️', tagline: 'Love + Getaway' },
+  romantic: { emoji: '💑✨', tagline: 'Romance + Magic' },
+  family: { emoji: '👨‍👩‍👧‍👦🎊', tagline: 'Fun + Bonding' },
+  friends: { emoji: '🎉👯', tagline: 'Adventure + Fun' },
+  adventure: { emoji: '🧗‍♂️🏄‍♂️', tagline: 'Thrill + Explore' },
+  spiritual: { emoji: '🙏🪔', tagline: 'Peace + Devotion' },
+  pilgrimage: { emoji: '🛕🙏', tagline: 'Faith + Journey' },
+  wildlife: { emoji: '🐅🌿', tagline: 'Safari + Nature' },
+  beach: { emoji: '🏖️🌊', tagline: 'Sun + Sand' },
+  hill: { emoji: '🏔️🌄', tagline: 'Mountains + Serenity' },
+  luxury: { emoji: '👑✨', tagline: 'Premium + Comfort' },
+  budget: { emoji: '💰✨', tagline: 'Value + Experience' },
+  weekend: { emoji: '🗓️✨', tagline: 'Quick + Refreshing' },
+  group: { emoji: '👥🎉', tagline: 'Together + Fun' },
 };
 
 /**
  * Extract destination from package name
  */
-function extractDestination(packageName: string): { name: string; emoji: string; feature: string } | null {
+function extractDestination(
+  packageName: string
+): { name: string; emoji: string; feature: string } | null {
   const lowerName = packageName.toLowerCase();
 
   for (const [destination, data] of Object.entries(destinationEmojis)) {
@@ -71,7 +73,9 @@ function extractDestination(packageName: string): { name: string; emoji: string;
 /**
  * Extract theme from package name
  */
-function extractTheme(packageName: string): { name: string; emoji: string; tagline: string } | null {
+function extractTheme(
+  packageName: string
+): { name: string; emoji: string; tagline: string } | null {
   const lowerName = packageName.toLowerCase();
 
   for (const [theme, data] of Object.entries(themeEmojis)) {
@@ -117,29 +121,30 @@ export interface ShareMessageOptions {
 export function generateShareMessage(options: ShareMessageOptions): string {
   const { packageName, location, url } = options;
 
-  const destination = extractDestination(packageName) || (location ? extractDestination(location) : null);
+  const destination =
+    extractDestination(packageName) || (location ? extractDestination(location) : null);
   const theme = extractTheme(packageName);
   const duration = extractDuration(packageName);
 
   // Build the header with emojis based on destination/theme
-  const headerEmoji = destination?.emoji?.charAt(0) || theme?.emoji?.charAt(0) || "✈️";
+  const headerEmoji = destination?.emoji?.charAt(0) || theme?.emoji?.charAt(0) || '✈️';
   let header = `${headerEmoji} *`;
   if (destination) {
     header += destination.name.toUpperCase();
     if (theme) {
       header += ` ${theme.name.toUpperCase()}`;
     } else {
-      header += " TRIP";
+      header += ' TRIP';
     }
   } else if (theme) {
     header += `${theme.name.toUpperCase()} PACKAGE`;
   } else {
-    header += "YOUR DREAM TRIP";
+    header += 'YOUR DREAM TRIP';
   }
   header += `* ${headerEmoji}`;
 
   // Build the message lines
-  const lines: string[] = [header, ""];
+  const lines: string[] = [header, ''];
 
   // Duration line - bold
   if (duration) {
@@ -148,23 +153,23 @@ export function generateShareMessage(options: ShareMessageOptions): string {
 
   // Feature/highlight line
   if (destination || theme) {
-    const feature = destination?.feature || theme?.tagline || "Amazing Experience";
+    const feature = destination?.feature || theme?.tagline || 'Amazing Experience';
     lines.push(`✨ ${feature}`);
   }
 
   // Standard inclusions with emojis
-  lines.push("🏨 Premium Hotels");
-  lines.push("🚗 Comfortable Transfers");
-  lines.push("🍽️ Meals Included");
-  lines.push("");
+  lines.push('🏨 Premium Hotels');
+  lines.push('🚗 Comfortable Transfers');
+  lines.push('🍽️ Meals Included');
+  lines.push('');
 
   // Call to action - bold and catchy
-  lines.push("💰 *Best Price Guaranteed!*");
-  lines.push("");
-  lines.push("📲 *Book Now* 👇");
+  lines.push('💰 *Best Price Guaranteed!*');
+  lines.push('');
+  lines.push('📲 *Book Now* 👇');
   lines.push(url);
 
-  return lines.join("\n");
+  return lines.join('\n');
 }
 
 /**

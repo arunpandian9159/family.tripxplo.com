@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
-import { Theme } from "../store/features/selectThemeSlice";
-import { RootState } from "../store/store";
-import { GetPackageQueryType, getPackages } from "../utils/api/getPackages";
-import { useEffect, useState, useRef } from "react";
-import { PackageType } from "../types/package";
+import { useSelector } from 'react-redux';
+import { Theme } from '../store/features/selectThemeSlice';
+import { RootState } from '../store/store';
+import { GetPackageQueryType, getPackages } from '../utils/api/getPackages';
+import { useEffect, useState, useRef } from 'react';
+import { PackageType } from '../types/package';
 
 export interface DateDestination {
   date: string;
@@ -26,23 +26,17 @@ interface InputRoomWithId {
 }
 
 export const usePackageList = (offset: number) => {
-  const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room
-  );
-  const themeSelected: Theme = useSelector(
-    (state: RootState) => state.themeSelect
-  );
-  const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage
-  );
+  const roomCapacityData: Room = useSelector((store: any) => store.roomSelect.room);
+  const themeSelected: Theme = useSelector((state: RootState) => state.themeSelect);
+  const dateAndDestination: DateDestination = useSelector((store: any) => store.searchPackage);
 
   const [isLoading, setIsLoading] = useState(true);
   const [packageList, setPackageList] = useState<PackageType[]>([]);
-  const [err, setErr] = useState<string>("");
+  const [err, setErr] = useState<string>('');
   const [packageListHasNext, setPackageListHasNext] = useState(false);
 
   // Track previous search params to detect changes
-  const prevSearchParams = useRef<string>("");
+  const prevSearchParams = useRef<string>('');
   // Track request ID to handle race conditions
   const requestIdRef = useRef<number>(0);
 
@@ -108,13 +102,13 @@ export const usePackageList = (offset: number) => {
           setPackageList(resp.result.docs as PackageType[]);
         } else {
           // Append for pagination
-          setPackageList((prevPackageList) => [
+          setPackageList(prevPackageList => [
             ...prevPackageList,
             ...(resp.result.docs as PackageType[]),
           ]);
         }
         setPackageListHasNext(resp.result.hasNextPage);
-        setErr("");
+        setErr('');
       } catch (err: any) {
         // Only update state if this is still the latest request
         if (currentRequestId !== requestIdRef.current) {

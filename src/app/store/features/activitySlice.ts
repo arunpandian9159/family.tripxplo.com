@@ -1,21 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 interface activityState {
   packageName: string;
   packageId: string;
   activity: any[];
 }
-interface changeActivityType{
-  slot: number,
-  day:number,
-  activity:any[],
+interface changeActivityType {
+  slot: number;
+  day: number;
+  activity: any[];
 }
 const initialState: activityState = {
-    packageName: "",
-    packageId: "",
-    activity: [],
-}
+  packageName: '',
+  packageId: '',
+  activity: [],
+};
 const activitySlice = createSlice({
-  name: "activity",
+  name: 'activity',
   initialState,
   reducers: {
     setActivity: (state, action) => {
@@ -24,17 +24,17 @@ const activitySlice = createSlice({
       state.packageId = action.payload.packageId;
     },
     changeActivity: (state, action) => {
-      const {slot,day,activity}:changeActivityType = action.payload
-      const updatedData = state.activity.map((dayItem) => {
+      const { slot, day, activity }: changeActivityType = action.payload;
+      const updatedData = state.activity.map(dayItem => {
         if (dayItem.day === day) {
-          const updatedEvents = dayItem.event.map((slotItem:any) => {
+          const updatedEvents = dayItem.event.map((slotItem: any) => {
             if (slotItem.slot === slot) {
-              return { ...slotItem, ...activity, activityType: "allocated" };
+              return { ...slotItem, ...activity, activityType: 'allocated' };
             } else {
               return slotItem;
             }
           });
-      
+
           return { ...dayItem, event: updatedEvents };
         } else {
           return dayItem;
@@ -42,9 +42,9 @@ const activitySlice = createSlice({
       });
 
       state.activity = updatedData;
-    }
+    },
   },
 });
 
-export const { setActivity,changeActivity } = activitySlice.actions;
+export const { setActivity, changeActivity } = activitySlice.actions;
 export default activitySlice.reducer;

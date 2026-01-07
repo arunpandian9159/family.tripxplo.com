@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface Room {
   room: {
@@ -37,7 +37,7 @@ const initialState: Room = {
   },
 };
 const selectRoomSlice = createSlice({
-  name: "selectRoomSlice",
+  name: 'selectRoomSlice',
   initialState: initialState,
   reducers: {
     initialLoad(state) {
@@ -50,15 +50,9 @@ const selectRoomSlice = createSlice({
     selectRoom(state, action) {
       const rooms: { room: InputRoomWithId[] } = action.payload;
       state.room.totalRooms = rooms.room.length;
-      state.room.totalAdults = rooms.room.reduce(
-        (total, room) => total + room.totalAdults,
-        0
-      );
-      state.room.totalChilds = rooms.room.reduce(
-        (total, room) => total + room.totalChilds,
-        0
-      );
-      state.room.roomSchema = rooms.room.map((r) => {
+      state.room.totalAdults = rooms.room.reduce((total, room) => total + room.totalAdults, 0);
+      state.room.totalChilds = rooms.room.reduce((total, room) => total + room.totalChilds, 0);
+      state.room.roomSchema = rooms.room.map(r => {
         if (isNaN(r.totalAdults)) {
           r.totalAdults = 0;
         }
@@ -80,7 +74,7 @@ const selectRoomSlice = createSlice({
     },
     selectInitiallyLoaded(state, action) {
       state.room.initiallyLoaded = action.payload;
-    }
+    },
   },
 });
 export const { initialLoad, selectRoom, selectAdultsChild, selectPerRooom, selectInitiallyLoaded } =

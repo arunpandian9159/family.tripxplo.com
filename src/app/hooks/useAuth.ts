@@ -10,7 +10,11 @@ interface User {
 }
 
 export function useAuth() {
-  const { data: userInfo, status: queryStatus, refetch } = useQuery({
+  const {
+    data: userInfo,
+    status: queryStatus,
+    refetch,
+  } = useQuery({
     queryKey: ['user-profile'],
     queryFn: async () => {
       const response = await userApi.getProfile();

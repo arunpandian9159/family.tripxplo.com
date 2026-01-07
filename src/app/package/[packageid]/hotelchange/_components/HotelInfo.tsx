@@ -1,10 +1,10 @@
-"use client";
-import React, { useMemo } from "react";
-import HotelInfoList from "./HotelInfoList";
-import { HotelMeal } from "@/app/types/pack";
-import { useSelector } from "react-redux";
-import { HotelChangeDataType } from "@/app/types/hotel";
-import { SortType } from "./HotelDetail";
+'use client';
+import React, { useMemo } from 'react';
+import HotelInfoList from './HotelInfoList';
+import { HotelMeal } from '@/app/types/pack';
+import { useSelector } from 'react-redux';
+import { HotelChangeDataType } from '@/app/types/hotel';
+import { SortType } from './HotelDetail';
 
 interface HotelInfoProps {
   hotelData: HotelChangeDataType[];
@@ -13,48 +13,45 @@ interface HotelInfoProps {
 }
 
 const FilterCards = ({ hotelData, searchQuery, sortBy }: HotelInfoProps) => {
-  const prevHotel = useSelector(
-    (store: any) => store.hotelChange?.replaceHotel
-  );
+  const prevHotel = useSelector((store: any) => store.hotelChange?.replaceHotel);
 
   // Filter and sort hotels
   const processedHotels = useMemo(() => {
     // First filter hotels that have valid rooms with meal plans
-    let hotels = hotelData.filter((hotel) => {
-      const selectedRoom = hotel.hotelRoom?.find(
-        (data) => data?.mealPlan?.length > 0
-      );
+    let hotels = hotelData.filter(hotel => {
+      const selectedRoom = hotel.hotelRoom?.find(data => data?.mealPlan?.length > 0);
       return !!selectedRoom;
     });
 
     // Apply search filter
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
-      hotels = hotels.filter((hotel) =>
-        hotel.hotelName?.toLowerCase().includes(query) ||
-        hotel.location?.state?.toLowerCase().includes(query)
+      hotels = hotels.filter(
+        hotel =>
+          hotel.hotelName?.toLowerCase().includes(query) ||
+          hotel.location?.state?.toLowerCase().includes(query)
       );
     }
 
     // Apply sorting
     if (sortBy) {
       hotels = [...hotels].sort((a, b) => {
-        if (sortBy === "rating") {
+        if (sortBy === 'rating') {
           // Rating is stored in contract.additionalEmail (as seen in HotelInfoList.tsx line 167)
-          const ratingA = parseFloat(a.contract?.additionalEmail || "0") || 0;
-          const ratingB = parseFloat(b.contract?.additionalEmail || "0") || 0;
+          const ratingA = parseFloat(a.contract?.additionalEmail || '0') || 0;
+          const ratingB = parseFloat(b.contract?.additionalEmail || '0') || 0;
           return ratingB - ratingA; // High to low
         }
 
-        if (sortBy === "price_low" || sortBy === "price_high") {
+        if (sortBy === 'price_low' || sortBy === 'price_high') {
           // Get room price from first available room's meal plan
           const getPriceForHotel = (hotel: HotelChangeDataType) => {
-            const room = hotel.hotelRoom?.find((r) => r?.mealPlan?.length > 0);
+            const room = hotel.hotelRoom?.find(r => r?.mealPlan?.length > 0);
             if (!room) return 0;
 
             // Find matching meal plan or first available
             let mealPlan = room.mealPlan.find(
-              (mp) => mp.mealPlan?.toLowerCase() === prevHotel?.mealPlan?.toLowerCase()
+              mp => mp.mealPlan?.toLowerCase() === prevHotel?.mealPlan?.toLowerCase()
             );
             if (!mealPlan && room.mealPlan.length > 0) {
               mealPlan = room.mealPlan[0];
@@ -76,7 +73,7 @@ const FilterCards = ({ hotelData, searchQuery, sortBy }: HotelInfoProps) => {
           const priceA = getPriceForHotel(a);
           const priceB = getPriceForHotel(b);
 
-          return sortBy === "price_low" ? priceA - priceB : priceB - priceA;
+          return sortBy === 'price_low' ? priceA - priceB : priceB - priceA;
         }
 
         return 0;
@@ -94,7 +91,7 @@ const FilterCards = ({ hotelData, searchQuery, sortBy }: HotelInfoProps) => {
         </div>
         <h3 className="text-slate-600 font-semibold mb-1">No hotels found</h3>
         <p className="text-slate-400 text-sm text-center">
-          {searchQuery ? "Try a different search term" : "No hotels available for this selection"}
+          {searchQuery ? 'Try a different search term' : 'No hotels available for this selection'}
         </p>
       </div>
     );

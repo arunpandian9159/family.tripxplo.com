@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import HotelDetail from "./_components/HotelDetail";
+'use client';
+import React from 'react';
+import HotelDetail from './_components/HotelDetail';
 
 const Page = () => {
   return (

@@ -1,14 +1,11 @@
-
-"use client";
-import { useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
-import RoomDetail from "./RoomDetail";
-import PackagesLoadingFull from "@/app/(user-area)/components/loading/PackagesLoadingFull";
-import { useAvailableRooms } from "@/app/hooks/useAvailableRooms";
+'use client';
+import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import RoomDetail from './RoomDetail';
+import PackagesLoadingFull from '@/app/(user-area)/components/loading/PackagesLoadingFull';
+import { useAvailableRooms } from '@/app/hooks/useAvailableRooms';
 const ExploreRoom = () => {
-  const prevHotel = useSelector(
-    (store: any) => store.hotelChange?.replaceHotel
-  );
+  const prevHotel = useSelector((store: any) => store.hotelChange?.replaceHotel);
   const loading = useSelector((store: any) => store.package.isLoading);
   const { rooms, isLoading, err } = useAvailableRooms();
   const [loadingRooms, setLoadingRooms] = useState(true);
@@ -29,8 +26,7 @@ const ExploreRoom = () => {
       </h1>
       {filteredRooms?.length > 0 && (
         <h1 className=" mb-[30px] text-[#5D6670] text-center font-Poppins text-[16px] font-semibold not-italic leading-normal tracking-[0.18px]">
-          {filteredRooms?.length}{" "}
-          {filteredRooms?.length === 1 ? "Room" : "Rooms"} Available
+          {filteredRooms?.length} {filteredRooms?.length === 1 ? 'Room' : 'Rooms'} Available
         </h1>
       )}
       <div className=" flex flex-col lg:grid lg:grid-cols-3 lg:gap-4  px-2 lg:px-10">
@@ -45,5 +41,3 @@ const ExploreRoom = () => {
 };
 
 export default ExploreRoom;
-
-

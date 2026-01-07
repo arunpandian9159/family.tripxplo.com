@@ -35,7 +35,6 @@
 }
 
 @layer utilities {
-
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
@@ -84,7 +83,6 @@
 
 /* Animation keyframes */
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0px) rotate(0deg);
@@ -96,7 +94,6 @@
 }
 
 @keyframes float-slow {
-
   0%,
   100% {
     transform: translateY(0px);
@@ -108,7 +105,6 @@
 }
 
 @keyframes pulse-glow {
-
   0%,
   100% {
     box-shadow: 0 0 20px 0 rgba(21, 171, 139, 0.3);

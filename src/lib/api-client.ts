@@ -3,7 +3,7 @@ import { API_ENDPOINTS, buildApiUrl } from '@/app/utils/constants/apiUrls';
 interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
-  result?: T;  // For paginated responses matching external API format
+  result?: T; // For paginated responses matching external API format
   message?: string;
   error?: string;
   code?: string;
@@ -55,7 +55,7 @@ export async function apiRequest<T>(
   const { method = 'GET', body, headers = {}, requireAuth = false } = options;
 
   const url = buildApiUrl(endpoint);
-  
+
   const requestHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
     ...headers,
@@ -84,13 +84,13 @@ export async function apiRequest<T>(
         // Retry the request with new token
         const token = getAccessToken();
         requestHeaders['Authorization'] = `Bearer ${token}`;
-        
+
         const retryResponse = await fetch(url, {
           method,
           headers: requestHeaders,
           body: body ? JSON.stringify(body) : undefined,
         });
-        
+
         return await retryResponse.json();
       }
     }
@@ -140,21 +140,20 @@ export const authApi = {
       API_ENDPOINTS.AUTH.REGISTER,
       { method: 'POST', body: data }
     ),
-  
+
   login: (data: { email: string; password: string }) =>
-    apiRequest<{ user: unknown; token: string; refreshToken: string }>(
-      API_ENDPOINTS.AUTH.LOGIN,
-      { method: 'POST', body: data }
-    ),
-  
-  logout: () =>
-    apiRequest(API_ENDPOINTS.AUTH.LOGOUT, { method: 'POST', requireAuth: true }),
-  
+    apiRequest<{ user: unknown; token: string; refreshToken: string }>(API_ENDPOINTS.AUTH.LOGIN, {
+      method: 'POST',
+      body: data,
+    }),
+
+  logout: () => apiRequest(API_ENDPOINTS.AUTH.LOGOUT, { method: 'POST', requireAuth: true }),
+
   refresh: (refreshToken: string) =>
-    apiRequest<{ token: string; refreshToken: string }>(
-      API_ENDPOINTS.AUTH.REFRESH,
-      { method: 'POST', body: { refreshToken } }
-    ),
+    apiRequest<{ token: string; refreshToken: string }>(API_ENDPOINTS.AUTH.REFRESH, {
+      method: 'POST',
+      body: { refreshToken },
+    }),
 };
 
 // Destinations API
@@ -163,17 +162,16 @@ export const destinationsApi = {
     apiRequest(
       `${API_ENDPOINTS.DESTINATIONS.LIST}?${new URLSearchParams(params as Record<string, string>).toString()}`
     ),
-  
+
   featured: (limit?: number) =>
     apiRequest(`${API_ENDPOINTS.DESTINATIONS.FEATURED}${limit ? `?limit=${limit}` : ''}`),
-  
+
   search: (query: string, params?: { page?: number; limit?: number }) =>
     apiRequest(
       `${API_ENDPOINTS.DESTINATIONS.SEARCH}?q=${encodeURIComponent(query)}&${new URLSearchParams(params as Record<string, string>).toString()}`
     ),
-  
-  getById: (id: string) =>
-    apiRequest(API_ENDPOINTS.DESTINATIONS.BY_ID(id)),
+
+  getById: (id: string) => apiRequest(API_ENDPOINTS.DESTINATIONS.BY_ID(id)),
 };
 
 // Packages API
@@ -182,36 +180,36 @@ export const packagesApi = {
     apiRequest(
       `${API_ENDPOINTS.PACKAGES.LIST}?${new URLSearchParams(params as Record<string, string>).toString()}`
     ),
-  
+
   featured: (limit?: number) =>
     apiRequest(`${API_ENDPOINTS.PACKAGES.FEATURED}${limit ? `?limit=${limit}` : ''}`),
-  
+
   search: (params?: Record<string, string | number>) =>
     apiRequest(
       `${API_ENDPOINTS.PACKAGES.SEARCH}?${new URLSearchParams(params as Record<string, string>).toString()}`
     ),
-  
-  getById: (id: string) =>
-    apiRequest(API_ENDPOINTS.PACKAGES.BY_ID(id)),
+
+  getById: (id: string) => apiRequest(API_ENDPOINTS.PACKAGES.BY_ID(id)),
 };
 
 // User API
 export const userApi = {
-  getProfile: () =>
-    apiRequest(API_ENDPOINTS.USER.PROFILE, { requireAuth: true }),
-  
+  getProfile: () => apiRequest(API_ENDPOINTS.USER.PROFILE, { requireAuth: true }),
+
   updateProfile: (data: Record<string, unknown>) =>
     apiRequest(API_ENDPOINTS.USER.PROFILE, { method: 'PUT', body: data, requireAuth: true }),
-  
-  getWishlist: () =>
-    apiRequest(API_ENDPOINTS.USER.WISHLIST, { requireAuth: true }),
-  
+
+  getWishlist: () => apiRequest(API_ENDPOINTS.USER.WISHLIST, { requireAuth: true }),
+
   addToWishlist: (packageId: string) =>
     apiRequest(API_ENDPOINTS.USER.WISHLIST_ITEM(packageId), { method: 'POST', requireAuth: true }),
-  
+
   removeFromWishlist: (packageId: string) =>
-    apiRequest(API_ENDPOINTS.USER.WISHLIST_ITEM(packageId), { method: 'DELETE', requireAuth: true }),
-  
+    apiRequest(API_ENDPOINTS.USER.WISHLIST_ITEM(packageId), {
+      method: 'DELETE',
+      requireAuth: true,
+    }),
+
   getBookings: (params?: { page?: number; limit?: number }) =>
     apiRequest(
       `${API_ENDPOINTS.USER.BOOKINGS}?${new URLSearchParams(params as Record<string, string>).toString()}`,
@@ -221,28 +219,31 @@ export const userApi = {
 
 // Cart API
 export const cartApi = {
-  get: () =>
-    apiRequest(API_ENDPOINTS.CART.GET, { requireAuth: true }),
-  
-  add: (data: { packageId: string; travelDate: string; adults: number; children?: number; quantity?: number }) =>
-    apiRequest(API_ENDPOINTS.CART.ADD, { method: 'POST', body: data, requireAuth: true }),
-  
+  get: () => apiRequest(API_ENDPOINTS.CART.GET, { requireAuth: true }),
+
+  add: (data: {
+    packageId: string;
+    travelDate: string;
+    adults: number;
+    children?: number;
+    quantity?: number;
+  }) => apiRequest(API_ENDPOINTS.CART.ADD, { method: 'POST', body: data, requireAuth: true }),
+
   update: (itemId: string, data: Record<string, unknown>) =>
     apiRequest(API_ENDPOINTS.CART.UPDATE(itemId), { method: 'PUT', body: data, requireAuth: true }),
-  
+
   remove: (itemId: string) =>
     apiRequest(API_ENDPOINTS.CART.REMOVE(itemId), { method: 'DELETE', requireAuth: true }),
-  
-  clear: () =>
-    apiRequest(API_ENDPOINTS.CART.CLEAR, { method: 'POST', requireAuth: true }),
+
+  clear: () => apiRequest(API_ENDPOINTS.CART.CLEAR, { method: 'POST', requireAuth: true }),
 };
 
 // Bookings API
 export const bookingsApi = {
-  create: (data: { 
-    packageId: string; 
-    travelDate: string; 
-    adults: number; 
+  create: (data: {
+    packageId: string;
+    travelDate: string;
+    adults: number;
     children?: number;
     // Price fields
     finalPackagePrice?: number;
@@ -254,25 +255,28 @@ export const bookingsApi = {
     redeemCoin?: number;
   }) =>
     apiRequest(API_ENDPOINTS.BOOKINGS.CREATE, { method: 'POST', body: data, requireAuth: true }),
-  
-  getById: (id: string) =>
-    apiRequest(API_ENDPOINTS.BOOKINGS.BY_ID(id), { requireAuth: true }),
-  
+
+  getById: (id: string) => apiRequest(API_ENDPOINTS.BOOKINGS.BY_ID(id), { requireAuth: true }),
+
   cancel: (id: string, reason?: string) =>
-    apiRequest(API_ENDPOINTS.BOOKINGS.CANCEL(id), { method: 'POST', body: { reason }, requireAuth: true }),
+    apiRequest(API_ENDPOINTS.BOOKINGS.CANCEL(id), {
+      method: 'POST',
+      body: { reason },
+      requireAuth: true,
+    }),
 };
 
 // Payment API
 export const paymentApi = {
   initialize: (data: { amount: number; orderId: string; currency?: string }) =>
     apiRequest(API_ENDPOINTS.PAYMENT.INITIALIZE, { method: 'POST', body: data, requireAuth: true }),
-  
+
   process: (data: { paymentId: string; paymentMethod: string }) =>
     apiRequest(API_ENDPOINTS.PAYMENT.PROCESS, { method: 'POST', body: data, requireAuth: true }),
-  
+
   verify: (data: { paymentId: string; transactionId: string }) =>
     apiRequest(API_ENDPOINTS.PAYMENT.VERIFY, { method: 'POST', body: data, requireAuth: true }),
-  
+
   getStatus: (paymentId: string) =>
     apiRequest(API_ENDPOINTS.PAYMENT.STATUS(paymentId), { requireAuth: true }),
 };
@@ -280,7 +284,11 @@ export const paymentApi = {
 // Coupon API
 export const couponApi = {
   validate: (code: string) =>
-    apiRequest(API_ENDPOINTS.COUPONS.VALIDATE, { method: 'POST', body: { code }, requireAuth: true }),
+    apiRequest(API_ENDPOINTS.COUPONS.VALIDATE, {
+      method: 'POST',
+      body: { code },
+      requireAuth: true,
+    }),
 };
 
 // Health check
@@ -300,4 +308,3 @@ export default {
   coupon: couponApi,
   health: healthApi,
 };
-

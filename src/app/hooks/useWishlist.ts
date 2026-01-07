@@ -1,35 +1,33 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "@/app/store/store";
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '@/app/store/store';
 import {
   setWishlist,
   setWishlistLoading,
   setWishlistError,
   addToWishlist,
   removeFromWishlist,
-} from "@/app/store/features/wishlistSlice";
-import { userApi } from "@/lib/api-client";
-import toast from "react-hot-toast";
+} from '@/app/store/features/wishlistSlice';
+import { userApi } from '@/lib/api-client';
+import toast from 'react-hot-toast';
 
 // Helper to check if user is logged in
 const checkIsLoggedIn = (): boolean => {
-  if (typeof window === "undefined") return false;
-  const token = localStorage.getItem("accessToken");
+  if (typeof window === 'undefined') return false;
+  const token = localStorage.getItem('accessToken');
   return !!token;
 };
 
 export function useWishlist() {
   const dispatch = useDispatch();
-  const { items, packageIds, isLoading, error } = useAppSelector(
-    (state) => state.wishlist
-  );
-  const { userId } = useAppSelector((state) => state.userSlice);
-  
+  const { items, packageIds, isLoading, error } = useAppSelector(state => state.wishlist);
+  const { userId } = useAppSelector(state => state.userSlice);
+
   // Check both Redux userId AND localStorage token
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   // Update isLoggedIn on mount and when userId changes
   useEffect(() => {
     const hasToken = checkIsLoggedIn();
@@ -51,11 +49,11 @@ export function useWishlist() {
         const data = response.data as { wishlist: any[] };
         dispatch(setWishlist(data.wishlist || []));
       } else {
-        dispatch(setWishlistError(response.message || "Failed to fetch wishlist"));
+        dispatch(setWishlistError(response.message || 'Failed to fetch wishlist'));
       }
     } catch (err) {
-      console.error("Error fetching wishlist:", err);
-      dispatch(setWishlistError("Failed to fetch wishlist"));
+      console.error('Error fetching wishlist:', err);
+      dispatch(setWishlistError('Failed to fetch wishlist'));
     } finally {
       dispatch(setWishlistLoading(false));
     }
@@ -83,19 +81,19 @@ export function useWishlist() {
         const response = await userApi.addToWishlist(packageId);
 
         if (response.success) {
-          toast.success("Added to wishlist!");
+          toast.success('Added to wishlist!');
           return true;
         } else {
           // Revert optimistic update
           dispatch(removeFromWishlist(packageId));
-          toast.error(response.message || "Failed to add to wishlist");
+          toast.error(response.message || 'Failed to add to wishlist');
           return false;
         }
       } catch (err) {
         // Revert optimistic update
         dispatch(removeFromWishlist(packageId));
-        console.error("Error adding to wishlist:", err);
-        toast.error("Failed to add to wishlist");
+        console.error('Error adding to wishlist:', err);
+        toast.error('Failed to add to wishlist');
         return false;
       }
     },
@@ -116,19 +114,19 @@ export function useWishlist() {
         const response = await userApi.removeFromWishlist(packageId);
 
         if (response.success) {
-          toast.success("Removed from wishlist");
+          toast.success('Removed from wishlist');
           return true;
         } else {
           // Revert optimistic update
           dispatch(addToWishlist(packageId));
-          toast.error(response.message || "Failed to remove from wishlist");
+          toast.error(response.message || 'Failed to remove from wishlist');
           return false;
         }
       } catch (err) {
         // Revert optimistic update
         dispatch(addToWishlist(packageId));
-        console.error("Error removing from wishlist:", err);
-        toast.error("Failed to remove from wishlist");
+        console.error('Error removing from wishlist:', err);
+        toast.error('Failed to remove from wishlist');
         return false;
       }
     },

@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { VehicleDetail } from "@/app/types/vehicle";
-import { stat } from "fs";
+import { createSlice } from '@reduxjs/toolkit';
+import { VehicleDetail } from '@/app/types/vehicle';
+import { stat } from 'fs';
 
 interface CabChangeState {
   replaceCab: VehicleDetail | {};
@@ -15,7 +15,7 @@ const initialState: CabChangeState = {
 };
 
 export const cabChangeSlice = createSlice({
-  name: "cabChange",
+  name: 'cabChange',
   initialState,
   reducers: {
     setReplaceCab: (state, action) => {
@@ -32,6 +32,5 @@ export const cabChangeSlice = createSlice({
   },
 });
 
-export const { setReplaceCab, setCabData, setFilterCabs } =
-  cabChangeSlice.actions;
+export const { setReplaceCab, setCabData, setFilterCabs } = cabChangeSlice.actions;
 export default cabChangeSlice.reducer;

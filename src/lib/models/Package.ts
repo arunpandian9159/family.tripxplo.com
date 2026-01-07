@@ -97,15 +97,17 @@ const PackageSchema = new mongoose.Schema<IPackage>(
     noOfChild: { type: Number, default: 0 },
     offer: { type: Number, default: 0 },
     hotel: {
-      type: [{
-        hotelRoomId: { type: String },
-        mealPlan: { type: String, enum: ['ep', 'cp', 'map', 'ap'], default: 'ep' },
-        noOfNight: { type: Number, default: 0 },
-        startDateWise: { type: Number, default: 0 },
-        endDateWise: { type: Number, default: 0 },
-        sort: { type: Number, default: 0 },
-        isAddOn: { type: Boolean, default: false },
-      }],
+      type: [
+        {
+          hotelRoomId: { type: String },
+          mealPlan: { type: String, enum: ['ep', 'cp', 'map', 'ap'], default: 'ep' },
+          noOfNight: { type: Number, default: 0 },
+          startDateWise: { type: Number, default: 0 },
+          endDateWise: { type: Number, default: 0 },
+          sort: { type: Number, default: 0 },
+          isAddOn: { type: Boolean, default: false },
+        },
+      ],
       default: [],
     },
     availableHotel: { type: [String], default: [] },
@@ -118,18 +120,30 @@ const PackageSchema = new mongoose.Schema<IPackage>(
     inclusion: { type: [String], default: [] },
     exclusion: { type: [String], default: [] },
     activity: {
-      type: [{
-        day: { type: Number, default: 0 },
-        from: { type: String },
-        to: { type: String },
-        startDateWise: { type: Number, default: 0 },
-        event: [{
-          slot: { type: Number, default: 0 },
-          activityType: { type: String, enum: ['free', 'allocated', 'travel'], default: 'allocated' },
-          activityId: { type: String, default: null },
-          timePeriod: { type: String, enum: ['morning', 'noon', 'evening', 'noon-evening', 'full-day'], default: 'morning' },
-        }],
-      }],
+      type: [
+        {
+          day: { type: Number, default: 0 },
+          from: { type: String },
+          to: { type: String },
+          startDateWise: { type: Number, default: 0 },
+          event: [
+            {
+              slot: { type: Number, default: 0 },
+              activityType: {
+                type: String,
+                enum: ['free', 'allocated', 'travel'],
+                default: 'allocated',
+              },
+              activityId: { type: String, default: null },
+              timePeriod: {
+                type: String,
+                enum: ['morning', 'noon', 'evening', 'noon-evening', 'full-day'],
+                default: 'morning',
+              },
+            },
+          ],
+        },
+      ],
       default: [],
     },
     availableActivity: { type: [String], default: [] },
@@ -147,7 +161,7 @@ const PackageSchema = new mongoose.Schema<IPackage>(
 PackageSchema.index({ status: 1, sort: -1 });
 PackageSchema.index({ packageName: 'text' });
 
-const Package: Model<IPackage> = mongoose.models.Package || mongoose.model<IPackage>('Package', PackageSchema, 'package');
+const Package: Model<IPackage> =
+  mongoose.models.Package || mongoose.model<IPackage>('Package', PackageSchema, 'package');
 
 export default Package;
-

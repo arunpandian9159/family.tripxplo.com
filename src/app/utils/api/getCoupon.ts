@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 export const getCoupon = async (coupon: string) => {
   const body = {
-    couponCode: coupon
+    couponCode: coupon,
   };
   try {
     const response = await api.post('package/coupon/check', body);

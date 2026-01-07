@@ -1,6 +1,6 @@
-import { FaIndianRupeeSign } from "react-icons/fa6";
-import Book from "./Book";
-import { useState } from "react";
+import { FaIndianRupeeSign } from 'react-icons/fa6';
+import Book from './Book';
+import { useState } from 'react';
 interface Fare {
   fare_Name: string;
   fare_Cost: number;
@@ -22,7 +22,7 @@ const FareBreakup = ({
 }) => {
   const FareDetails: any[] = [
     {
-      fare_Name: "Total Package Price",
+      fare_Name: 'Total Package Price',
       fare_Cost: packagePrice,
       no_Of_Persons: `${adults} Adults + ${child} child`,
     },
@@ -41,7 +41,7 @@ const FareBreakup = ({
 
     // },
     {
-      fare_Name: "Fees & Taxes",
+      fare_Name: 'Fees & Taxes',
       fare_Cost: gstPrice,
       no_Of_Persons: `GST ${gstPer}%`,
     },
@@ -49,12 +49,12 @@ const FareBreakup = ({
   function open() {}
   return (
     <>
-    <div className="">
-    <h1
+      <div className="">
+        <h1
           className="text-center font-Poppins text-[18px] font-semibold leading-normal tracking-[0.18px] bg-clip-text text-transparent"
           style={{
             backgroundImage:
-              " linear-gradient(87deg, #FF5F5F -25.84%, #FF5F5F -25.82%, #FF9080 118.31%)",
+              ' linear-gradient(87deg, #FF5F5F -25.84%, #FF5F5F -25.82%, #FF9080 118.31%)',
           }}
         >
           Fare Breakup
@@ -73,25 +73,23 @@ const FareBreakup = ({
                   </p>
                 </div>
               </div>
-  
+
               <div className="text-[#6A778B]     text-[12px] flex items-center ">
                 <p className="font-medium font-Poppinsleading-normal tracking-[0.12px]">
                   {details.no_Of_Persons}
                 </p>
-           
               </div>
 
               {index != FareDetails.length - 1 && (
                 <hr
                   className="w-[305px] mt-[35px] mb-[22px] stroke-[1px] mx-auto "
-                  style={{ stroke: "rgba(172, 161, 159, 0.32)" }}
+                  style={{ stroke: 'rgba(172, 161, 159, 0.32)' }}
                 />
               )}
             </div>
           ))}
         </section>
-
-    </div>
+      </div>
     </>
   );
 };

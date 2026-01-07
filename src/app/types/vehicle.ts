@@ -8,7 +8,7 @@ export interface VehicleDetail {
   seater: number;
   maxPax: number;
   vehicleCompany: string;
-  acType: "Private" | string;
+  acType: 'Private' | string;
   itineraryName: string[];
   transferInfo: string[];
   inclusion: string[];

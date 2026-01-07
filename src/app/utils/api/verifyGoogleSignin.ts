@@ -22,7 +22,7 @@ export const verifyGoogleAccessToken = async (token: string) => {
     if (response.success && response.data) {
       setAccessToken(response.data.token);
       setRefreshToken(response.data.refreshToken);
-      
+
       return {
         data: {
           result: {

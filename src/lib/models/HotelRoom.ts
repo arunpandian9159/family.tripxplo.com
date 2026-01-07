@@ -37,23 +37,25 @@ const HotelRoomSchema = new mongoose.Schema<IHotelRoom>({
   roomCapacity: { type: Number },
   isAc: { type: Boolean, default: false },
   mealPlan: {
-    type: [{
-      hotelId: { type: String },
-      hotelRoomId: { type: String },
-      hotelMealId: { type: String },
-      mealPlan: { type: String, enum: ['ep', 'cp', 'map', 'ap'], default: 'ep' },
-      roomPrice: { type: Number },
-      gstPer: { type: Number, default: 0 },
-      adultPrice: { type: Number },
-      childPrice: { type: Number },
-      seasonType: {
-        type: String,
-        enum: ['offSeason', 'onSeason', 'splitSeason', 'peakSeason', 'weekEnd', 'weekDay'],
-        default: 'offSeason',
+    type: [
+      {
+        hotelId: { type: String },
+        hotelRoomId: { type: String },
+        hotelMealId: { type: String },
+        mealPlan: { type: String, enum: ['ep', 'cp', 'map', 'ap'], default: 'ep' },
+        roomPrice: { type: Number },
+        gstPer: { type: Number, default: 0 },
+        adultPrice: { type: Number },
+        childPrice: { type: Number },
+        seasonType: {
+          type: String,
+          enum: ['offSeason', 'onSeason', 'splitSeason', 'peakSeason', 'weekEnd', 'weekDay'],
+          default: 'offSeason',
+        },
+        startDate: { type: [String], default: [] },
+        endDate: { type: [String], default: [] },
       },
-      startDate: { type: [String], default: [] },
-      endDate: { type: [String], default: [] },
-    }],
+    ],
     default: [],
   },
   amenities: { type: [String], default: [] },
@@ -61,7 +63,8 @@ const HotelRoomSchema = new mongoose.Schema<IHotelRoom>({
 
 HotelRoomSchema.index({ hotelId: 1 });
 
-const HotelRoom: Model<IHotelRoom> = mongoose.models.HotelRoom || mongoose.model<IHotelRoom>('HotelRoom', HotelRoomSchema, 'hotelRoom');
+const HotelRoom: Model<IHotelRoom> =
+  mongoose.models.HotelRoom ||
+  mongoose.model<IHotelRoom>('HotelRoom', HotelRoomSchema, 'hotelRoom');
 
 export default HotelRoom;
-

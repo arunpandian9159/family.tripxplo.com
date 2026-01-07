@@ -1,26 +1,21 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 interface pkgCategoryState {
-    pkgCategory : string,
-    
+  pkgCategory: string;
 }
 
+const initialState: pkgCategoryState = {
+  pkgCategory: '',
+};
 
-const initialState : pkgCategoryState ={
-    pkgCategory : '',
-}
+const pkgCategorySlice = createSlice({
+  name: 'pkgCategory',
+  initialState,
+  reducers: {
+    setPkgCategory: (state, action: PayloadAction<string>) => {
+      state.pkgCategory = action.payload;
+    },
+  },
+});
 
-
-const pkgCategorySlice =createSlice({
-    name : 'pkgCategory',
-    initialState,
-    reducers : {
-        setPkgCategory :(state,action : PayloadAction<string>)=> {
-            state.pkgCategory = action.payload;
-
-        },
-        
-    }
-})
-
-export const {setPkgCategory} = pkgCategorySlice.actions;
+export const { setPkgCategory } = pkgCategorySlice.actions;
 export default pkgCategorySlice.reducer;

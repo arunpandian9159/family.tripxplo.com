@@ -1,6 +1,7 @@
 // API Base URLs
-export const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || "/api/v1/";
-export const NEXT_PUBLIC_IMAGE_URL = process.env.NEXT_PUBLIC_PIC_URL || "https://tripemilestone.in-maa-1.linodeobjects.com/";
+export const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || '/api/v1/';
+export const NEXT_PUBLIC_IMAGE_URL =
+  process.env.NEXT_PUBLIC_PIC_URL || 'https://tripemilestone.in-maa-1.linodeobjects.com/';
 
 // API Endpoints
 export const API_ENDPOINTS = {
@@ -74,6 +75,8 @@ export const API_ENDPOINTS = {
 
 // Helper function to build full API URL
 export const buildApiUrl = (endpoint: string): string => {
-  const baseUrl = NEXT_PUBLIC_API_URL.endsWith('/') ? NEXT_PUBLIC_API_URL : `${NEXT_PUBLIC_API_URL}/`;
+  const baseUrl = NEXT_PUBLIC_API_URL.endsWith('/')
+    ? NEXT_PUBLIC_API_URL
+    : `${NEXT_PUBLIC_API_URL}/`;
   return `${baseUrl}${endpoint}`;
 };

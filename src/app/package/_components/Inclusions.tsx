@@ -1,9 +1,9 @@
-"use client";
-import React from "react";
-import { Inclusion } from "@/app/types/pack";
-import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
-import Image from "next/image";
-import { Check, Sparkles } from "lucide-react";
+'use client';
+import React from 'react';
+import { Inclusion } from '@/app/types/pack';
+import { NEXT_PUBLIC_IMAGE_URL } from '@/app/utils/constants/apiUrls';
+import Image from 'next/image';
+import { Check, Sparkles } from 'lucide-react';
 
 const Inclusions = ({ inclusions }: { inclusions: Inclusion[] }) => {
   if (!inclusions || !Array.isArray(inclusions) || inclusions.length === 0) {
@@ -23,7 +23,7 @@ const Inclusions = ({ inclusions }: { inclusions: Inclusion[] }) => {
         if (!inc || typeof inc !== 'object') return null;
         const name = inc?.name || 'Inclusion';
         const image = inc?.image || '';
-        
+
         return (
           <div
             key={inc?._id || index}

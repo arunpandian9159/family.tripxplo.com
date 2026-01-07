@@ -52,7 +52,7 @@ const HotelSchema = new mongoose.Schema<IHotel>({
   amenities: { type: [String], default: [] },
 });
 
-const Hotel: Model<IHotel> = mongoose.models.Hotel || mongoose.model<IHotel>('Hotel', HotelSchema, 'hotel');
+const Hotel: Model<IHotel> =
+  mongoose.models.Hotel || mongoose.model<IHotel>('Hotel', HotelSchema, 'hotel');
 
 export default Hotel;
-

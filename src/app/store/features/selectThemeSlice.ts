@@ -1,18 +1,18 @@
-import { Interest } from "@/app/(user-area)/components/home/package-theme/PackageThemes";
-import { getInterest } from "@/app/actions/get-interest";
-import { createSlice } from "@reduxjs/toolkit";
+import { Interest } from '@/app/(user-area)/components/home/package-theme/PackageThemes';
+import { getInterest } from '@/app/actions/get-interest';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface Theme {
   theme: string;
-  themeId:string;
+  themeId: string;
 }
 
 const initialState: Theme = {
-  theme: "Couple",
-  themeId:"",
+  theme: 'Couple',
+  themeId: '',
 };
 const themeSlice = createSlice({
-  name: "themeSlice",
+  name: 'themeSlice',
   initialState: initialState,
   reducers: {
     selectTheme(state, action) {
@@ -25,5 +25,5 @@ const themeSlice = createSlice({
     },
   },
 });
-export const { selectTheme,selectThemeId } = themeSlice.actions;
+export const { selectTheme, selectThemeId } = themeSlice.actions;
 export default themeSlice.reducer;

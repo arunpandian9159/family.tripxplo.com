@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 
-import CabDetail from "./_components/CabDetail";
+import CabDetail from './_components/CabDetail';
 
 const page = () => {
   return (

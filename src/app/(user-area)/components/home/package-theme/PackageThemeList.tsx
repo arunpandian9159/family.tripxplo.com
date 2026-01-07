@@ -1,15 +1,12 @@
-"use client"
-import { Sparkle, User } from 'lucide-react'
-import React from 'react'
+'use client';
+import { Sparkle, User } from 'lucide-react';
+import React from 'react';
 interface PackageThemeListProps {
-    label : string
+  label: string;
 }
 
-const PackageThemeList = ({label} : PackageThemeListProps) => {
-  return (
-   <>
-   </>
-  )
-}
+const PackageThemeList = ({ label }: PackageThemeListProps) => {
+  return <></>;
+};
 
-export default PackageThemeList
+export default PackageThemeList;

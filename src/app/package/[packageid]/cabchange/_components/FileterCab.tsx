@@ -1,24 +1,24 @@
-import FilterCabList from "./FilterCabList";
+import FilterCabList from './FilterCabList';
 
 const FilterCab = ({ hotelCount }: { hotelCount: number }) => {
   const FilterCategories = [
     {
-      label: "Filter",
+      label: 'Filter',
     },
     {
-      label: "5",
+      label: '5',
     },
     {
-      label: "4",
+      label: '4',
     },
     {
-      label: "3",
+      label: '3',
     },
     {
-      label: "Pool",
+      label: 'Pool',
     },
     {
-      label: "Lowest",
+      label: 'Lowest',
     },
   ];
 

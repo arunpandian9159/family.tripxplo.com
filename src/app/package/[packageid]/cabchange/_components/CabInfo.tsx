@@ -1,10 +1,10 @@
-"use client";
-import React from "react";
-import { HotelMeal } from "@/app/types/pack";
-import { useSelector } from "react-redux";
-import { HotelChangeDataType } from "@/app/types/hotel";
-import CabInfoList from "./CabInfoList";
-import { VehicleDetail } from "@/app/types/vehicle";
+'use client';
+import React from 'react';
+import { HotelMeal } from '@/app/types/pack';
+import { useSelector } from 'react-redux';
+import { HotelChangeDataType } from '@/app/types/hotel';
+import CabInfoList from './CabInfoList';
+import { VehicleDetail } from '@/app/types/vehicle';
 
 const FilterCards = ({ cabData }: { cabData: VehicleDetail[] }) => {
   // const prevHotel = useSelector(

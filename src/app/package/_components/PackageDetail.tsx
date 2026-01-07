@@ -162,8 +162,8 @@ const PackageDetail = ({ pack }: PropsType) => {
                       {isWithoutFlight && isWithoutTrain
                         ? 'Land Package Only'
                         : isWithoutFlight
-                        ? 'Without Flight'
-                        : 'Without Train'}
+                          ? 'Without Flight'
+                          : 'Without Train'}
                     </span>
                   </div>
                 )}

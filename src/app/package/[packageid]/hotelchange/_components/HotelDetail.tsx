@@ -1,18 +1,18 @@
-"use client";
-import React, { useState } from "react";
-import FilterHotel from "./FilterHotel";
-import HotelInfo from "./HotelInfo";
-import { ArrowLeft, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useAvailableHotels } from "@/app/hooks/useAvailableHotels";
-import { useSelector } from "react-redux";
-import PackagesLoadingFull from "@/app/(user-area)/components/loading/PackagesLoadingFull";
+'use client';
+import React, { useState } from 'react';
+import FilterHotel from './FilterHotel';
+import HotelInfo from './HotelInfo';
+import { ArrowLeft, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useAvailableHotels } from '@/app/hooks/useAvailableHotels';
+import { useSelector } from 'react-redux';
+import PackagesLoadingFull from '@/app/(user-area)/components/loading/PackagesLoadingFull';
 
-export type SortType = "rating" | "price_low" | "price_high" | null;
+export type SortType = 'rating' | 'price_low' | 'price_high' | null;
 
 const HotelDetail = () => {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortType>(null);
 
   function clickBack() {
@@ -31,7 +31,7 @@ const HotelDetail = () => {
       <section className="">
         <div
           className="fixed top-0 text-center flex items-center justify-between w-full h-auto py-4 lg:py-6 bg-white z-10 px-4 lg:px-6"
-          style={{ boxShadow: "0px 4px 36.1px 0px rgba(190, 190, 190, 0.22)" }}
+          style={{ boxShadow: '0px 4px 36.1px 0px rgba(190, 190, 190, 0.22)' }}
         >
           <button
             onClick={clickBack}
@@ -44,11 +44,10 @@ const HotelDetail = () => {
           <h1
             className="text-lg lg:text-xl font-bold"
             style={{
-              backgroundImage:
-                "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              backgroundImage: 'linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
             }}
           >
             Change Hotel

@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { PiMagnifyingGlassBold } from "react-icons/pi";
+import { createSlice } from '@reduxjs/toolkit';
+import { PiMagnifyingGlassBold } from 'react-icons/pi';
 interface UserType {
   userId: string;
   email: string;
@@ -12,31 +12,31 @@ interface UserType {
   claimRedeemCoins: number;
 }
 const initialState = {
-    userId: "",
-    email: "",
-    gender: "",
-    profileImg: "",
-    userType: "",
-    fullName: "",
-    mobileNo: 0,
-    redeemCoins: 0,
-    claimRedeemCoins: 0,
+  userId: '',
+  email: '',
+  gender: '',
+  profileImg: '',
+  userType: '',
+  fullName: '',
+  mobileNo: 0,
+  redeemCoins: 0,
+  claimRedeemCoins: 0,
 };
 const userSlice = createSlice({
-  name: "activity",
+  name: 'activity',
   initialState,
   reducers: {
     setUser: (state, action) => {
-        const user:UserType  = action.payload;
-       state.fullName = user.fullName;
-       state.email = user.email;
-       state.gender = user.gender;
-       state.profileImg = user.profileImg;
-       state.userType = user.userType;
-       state.userId = user.userId;
-       state.mobileNo = user.mobileNo;
-       state.redeemCoins = user.redeemCoins;
-       state.claimRedeemCoins = user.claimRedeemCoins;
+      const user: UserType = action.payload;
+      state.fullName = user.fullName;
+      state.email = user.email;
+      state.gender = user.gender;
+      state.profileImg = user.profileImg;
+      state.userType = user.userType;
+      state.userId = user.userId;
+      state.mobileNo = user.mobileNo;
+      state.redeemCoins = user.redeemCoins;
+      state.claimRedeemCoins = user.claimRedeemCoins;
     },
   },
 });

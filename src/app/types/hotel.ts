@@ -1,4 +1,4 @@
-import { HotelMealContact, HotelMealLocation } from "./pack";
+import { HotelMealContact, HotelMealLocation } from './pack';
 
 export interface HotelChangeDataType {
   _id: string;
@@ -26,7 +26,7 @@ export interface HotelRoom {
   amenities: string[]; // full data required
   mealPlan: HotelMealType[];
   __v: number;
-  amenitiesDetails: AmenitiesType[]
+  amenitiesDetails: AmenitiesType[];
 }
 export interface AmenitiesType {
   _id: string;
@@ -39,7 +39,7 @@ export interface HotelMealType {
   hotelId: string;
   hotelRoomId: string;
   hotelMealId: string;
-  mealPlan: "cp" | "map" | "ap" | "ep";
+  mealPlan: 'cp' | 'map' | 'ap' | 'ep';
   roomPrice: number;
   gstPer: number;
   adultPrice: number;

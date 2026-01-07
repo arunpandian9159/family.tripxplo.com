@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface WishlistItem {
   packageId: string;
@@ -31,7 +31,7 @@ const initialState: WishlistState = {
 };
 
 const wishlistSlice = createSlice({
-  name: "wishlist",
+  name: 'wishlist',
   initialState,
   reducers: {
     setWishlistLoading: (state, action: PayloadAction<boolean>) => {
@@ -42,7 +42,7 @@ const wishlistSlice = createSlice({
     },
     setWishlist: (state, action: PayloadAction<WishlistItem[]>) => {
       state.items = action.payload;
-      state.packageIds = action.payload.map((item) => item.packageId);
+      state.packageIds = action.payload.map(item => item.packageId);
     },
     addToWishlist: (state, action: PayloadAction<string>) => {
       if (!state.packageIds.includes(action.payload)) {
@@ -50,12 +50,10 @@ const wishlistSlice = createSlice({
       }
     },
     removeFromWishlist: (state, action: PayloadAction<string>) => {
-      state.packageIds = state.packageIds.filter((id) => id !== action.payload);
-      state.items = state.items.filter(
-        (item) => item.packageId !== action.payload
-      );
+      state.packageIds = state.packageIds.filter(id => id !== action.payload);
+      state.items = state.items.filter(item => item.packageId !== action.payload);
     },
-    clearWishlist: (state) => {
+    clearWishlist: state => {
       state.items = [];
       state.packageIds = [];
     },
@@ -72,4 +70,3 @@ export const {
 } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;
-

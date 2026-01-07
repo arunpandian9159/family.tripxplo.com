@@ -19,7 +19,7 @@ export const getPackages = async (payload: GetPackageQueryType) => {
   try {
     // Convert payload to query params format
     const params: Record<string, string | number> = {};
-    
+
     if (payload.destinationId) params.destinationId = payload.destinationId;
     if (payload.interestId) params.interestId = payload.interestId;
     if (payload.planId) params.planId = payload.planId;
@@ -32,12 +32,16 @@ export const getPackages = async (payload: GetPackageQueryType) => {
     if (payload.limit) params.limit = payload.limit;
     if (payload.offset !== undefined) params.offset = payload.offset;
     if (payload.priceOrder !== undefined) params.priceOrder = payload.priceOrder;
-    
+
     const response = await packagesApi.list(params);
-    
+
     // Response now matches external API format: { success, result: { docs, totalDocs, hasNextPage, ... } }
     if (response.success && response.result) {
-      const result = response.result as { docs: unknown[]; totalDocs: number; hasNextPage: boolean };
+      const result = response.result as {
+        docs: unknown[];
+        totalDocs: number;
+        hasNextPage: boolean;
+      };
       return {
         result: {
           docs: result.docs || [],
@@ -46,10 +50,18 @@ export const getPackages = async (payload: GetPackageQueryType) => {
         },
       };
     }
-    
+
     // Fallback for old format (data.items)
     if (response.success && response.data) {
-      const data = response.data as { items?: unknown[]; docs?: unknown[]; total?: number; totalDocs?: number; hasNextPage?: boolean; page?: number; totalPages?: number };
+      const data = response.data as {
+        items?: unknown[];
+        docs?: unknown[];
+        total?: number;
+        totalDocs?: number;
+        hasNextPage?: boolean;
+        page?: number;
+        totalPages?: number;
+      };
       return {
         result: {
           docs: data.docs || data.items || [],
@@ -58,7 +70,7 @@ export const getPackages = async (payload: GetPackageQueryType) => {
         },
       };
     }
-    
+
     return {
       result: {
         docs: [],

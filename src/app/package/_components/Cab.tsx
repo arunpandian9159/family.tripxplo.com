@@ -1,20 +1,13 @@
-"use client";
+'use client';
 
-import { setReplaceCab } from "@/app/store/features/cabChangeSlice";
-import { VehicleDetail } from "@/app/types/vehicle";
-import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
-import {
-  ArrowRightLeft,
-  Users,
-  Briefcase,
-  Snowflake,
-  Check,
-  Car
-} from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import ChangeCabModal from "./modals/ChangeCabModal";
+import { setReplaceCab } from '@/app/store/features/cabChangeSlice';
+import { VehicleDetail } from '@/app/types/vehicle';
+import { NEXT_PUBLIC_IMAGE_URL } from '@/app/utils/constants/apiUrls';
+import { ArrowRightLeft, Users, Briefcase, Snowflake, Check, Car } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import ChangeCabModal from './modals/ChangeCabModal';
 
 export default function Cab({ vehicle }: { vehicle: VehicleDetail }) {
   const dispatch = useDispatch();
@@ -106,13 +99,20 @@ export default function Cab({ vehicle }: { vehicle: VehicleDetail }) {
                 </div>
 
                 {/* AC Type */}
-                <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg border ${vehicle?.acType
-                    ? 'bg-cyan-50 border-cyan-100'
-                    : 'bg-slate-50 border-slate-100'
-                  }`}>
-                  <Snowflake size={14} className={vehicle?.acType ? 'text-cyan-500' : 'text-slate-400'} />
-                  <span className={`text-xs font-medium ${vehicle?.acType ? 'text-cyan-700' : 'text-slate-500'
-                    }`}>
+                <div
+                  className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg border ${
+                    vehicle?.acType ? 'bg-cyan-50 border-cyan-100' : 'bg-slate-50 border-slate-100'
+                  }`}
+                >
+                  <Snowflake
+                    size={14}
+                    className={vehicle?.acType ? 'text-cyan-500' : 'text-slate-400'}
+                  />
+                  <span
+                    className={`text-xs font-medium ${
+                      vehicle?.acType ? 'text-cyan-700' : 'text-slate-500'
+                    }`}
+                  >
                     {vehicle?.acType ? 'AC' : 'Non-AC'}
                   </span>
                 </div>
@@ -121,7 +121,9 @@ export default function Cab({ vehicle }: { vehicle: VehicleDetail }) {
               {/* Inclusions */}
               {vehicleInclusions.length > 0 && (
                 <div className="pt-4 border-t border-slate-100">
-                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-2">Included</p>
+                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-2">
+                    Included
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {vehicleInclusions.map((inclusion, index) => (
                       <span

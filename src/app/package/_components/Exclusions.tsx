@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
-import { X, AlertCircle } from "lucide-react";
-import { Exclusion } from "@/app/types/pack";
+'use client';
+import React from 'react';
+import { X, AlertCircle } from 'lucide-react';
+import { Exclusion } from '@/app/types/pack';
 
 const Exclusions = ({ exclusions }: { exclusions: Exclusion[] }) => {
   if (!exclusions || !Array.isArray(exclusions) || exclusions.length === 0) {
@@ -20,18 +20,16 @@ const Exclusions = ({ exclusions }: { exclusions: Exclusion[] }) => {
       {exclusions.map((exc, i) => {
         if (!exc || typeof exc !== 'object') return null;
         const name = exc?.name || 'Exclusion';
-        
+
         return (
-          <div 
-            key={exc?._id || i} 
+          <div
+            key={exc?._id || i}
             className="group flex items-start gap-3 p-3 bg-linear-to-br from-rose-50 to-red-50 rounded-xl border border-rose-100 hover:shadow-sm hover:border-rose-200 transition-all duration-300"
           >
             <div className="shrink-0 p-1.5 bg-white rounded-lg shadow-sm mt-0.5">
               <X size={14} className="text-rose-500" />
             </div>
-            <span className="text-sm text-rose-800 font-medium leading-relaxed">
-              {name}
-            </span>
+            <span className="text-sm text-rose-800 font-medium leading-relaxed">{name}</span>
           </div>
         );
       })}

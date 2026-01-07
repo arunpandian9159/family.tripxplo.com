@@ -1,5 +1,5 @@
-import { Activity, Vehicle } from "./pack";
-import { HotelMeal } from "./pack";
+import { Activity, Vehicle } from './pack';
+import { HotelMeal } from './pack';
 
 export interface BookingPayloadType {
   startDate: string;

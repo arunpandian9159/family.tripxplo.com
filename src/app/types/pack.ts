@@ -26,7 +26,7 @@ export interface ActivityEvent {
   _id: string;
   name: string;
   image: string;
-  price: number,
+  price: number;
   destinationId: string;
   description: string;
   __v: number;
@@ -38,7 +38,7 @@ interface Period {
 }
 export interface HotelMeal {
   hotelRoomId: string;
-  mealPlan: "cp" | "map" | "ap" | "ep";
+  mealPlan: 'cp' | 'map' | 'ap' | 'ep';
   noOfNight: number;
   startDateWise: number;
   endDateWise: number;
@@ -50,7 +50,7 @@ export interface HotelMeal {
   location: HotelMealLocation;
   viewPoint: string[];
   image: string;
-  contract: HotelMealContact
+  contract: HotelMealContact;
   __v: number;
   review: number;
   hotelRoomType: string;
@@ -85,13 +85,13 @@ export interface HotelMealLocation {
   state: string;
   country: string;
   _id: string;
-};
+}
 export interface HotelMealContact {
   businessEmail: string;
   additionalEmail: string;
   maintainerPhoneNo: number;
   _id: string;
-};
+}
 export interface Vehicle {
   _id: string;
   vehicleId: string;
@@ -133,14 +133,14 @@ export interface PackType {
   packageName: string;
   destination: PackDestination[];
   startFrom: string;
-  packageImg: string[]
+  packageImg: string[];
   noOfDays: number;
   noOfNight: number;
   activity: Activity[];
   marketingPer: number;
   agentCommissionPer: number;
   gstPer: number;
-  period: Period[]
+  period: Period[];
   hotelMeal: HotelMeal[];
   totalRoomPrice: number;
   totalAdditionalFee: number;
@@ -161,9 +161,9 @@ export interface PackType {
   checkEndDate: string;
   planName: string;
   vehicleCount: number;
-  vehicleDetail: Vehicle[]
-  inclusionDetail: Inclusion[]
-  exclusionDetail: Exclusion[]
+  vehicleDetail: Vehicle[];
+  inclusionDetail: Inclusion[];
+  exclusionDetail: Exclusion[];
   hotelCount: number;
   activityCount: number;
   perPerson: number;
