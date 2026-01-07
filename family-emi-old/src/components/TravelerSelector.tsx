@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { detectFamilyType } from "@/lib/utils";
+import {
+  detectFamilyType,
+  detectFamilyTypeAsync,
+  FamilyType,
+} from "@/lib/utils";
 
 interface Travelers {
   adults: number;
@@ -23,6 +27,34 @@ export default function TravelerSelector({
   onClose,
 }: TravelerSelectorProps) {
   const [travelers, setTravelers] = useState<Travelers>(initialTravelers);
+  const [familyType, setFamilyType] = useState<FamilyType>(() =>
+    detectFamilyType(initialTravelers)
+  );
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Debounced async family type detection
+  const detectFamilyTypeFromDB = useCallback(async (t: Travelers) => {
+    setIsLoading(true);
+    try {
+      const result = await detectFamilyTypeAsync(t);
+      setFamilyType(result);
+    } catch (error) {
+      console.error("Error detecting family type:", error);
+      // Fallback to sync version
+      setFamilyType(detectFamilyType(t));
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Fetch family type from database when travelers change
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      detectFamilyTypeFromDB(travelers);
+    }, 300); // Debounce 300ms
+
+    return () => clearTimeout(timeoutId);
+  }, [travelers, detectFamilyTypeFromDB]);
 
   const updateCounter = (key: keyof Travelers, delta: number) => {
     setTravelers((prev) => {
@@ -32,8 +64,6 @@ export default function TravelerSelector({
       return { ...prev, [key]: newValue };
     });
   };
-
-  const familyType = detectFamilyType(travelers);
 
   const handleApply = () => {
     onUpdate(travelers);
@@ -128,13 +158,25 @@ export default function TravelerSelector({
                 <span className="text-sm text-gray-600">
                   Detected Family Type:
                 </span>
-                <span className="font-bold text-teal-700">
-                  {familyType.name}
-                </span>
+                {isLoading ? (
+                  <span className="font-bold text-teal-700 flex items-center gap-2">
+                    <i className="fas fa-spinner fa-spin text-sm"></i>
+                    Detecting...
+                  </span>
+                ) : (
+                  <span className="font-bold text-teal-700">
+                    {familyType.name}
+                  </span>
+                )}
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                {familyType.composition}
+                {isLoading ? "Loading from database..." : familyType.composition}
               </p>
+              {familyType.family_id && (
+                <p className="text-xs text-teal-600 mt-1">
+                  Family ID: {familyType.family_id}
+                </p>
+              )}
             </div>
           </div>
 
