@@ -8,7 +8,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_IMAGE_URL,
+        hostname: 'tripemilestone.in-maa-1.linodeobjects.com',
       },
     ],
   },
