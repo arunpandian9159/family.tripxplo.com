@@ -86,6 +86,44 @@ const Hero = () => {
     }
   }, [selectedTheme, interestsCache]);
 
+  // Fetch default destination ID on mount or when name is set but ID is missing
+  useEffect(() => {
+    let isActive = true;
+
+    const fetchDefaultDestination = async () => {
+      try {
+        // Only fetch if we have a name but no ID (initial state)
+        if (selectedDestination && !selectedDestinationId) {
+          const response = await fetch(
+            `/api/v1/destinations/search?q=${encodeURIComponent(selectedDestination)}&limit=1`
+          );
+          const data = await response.json();
+
+          if (isActive && data.success && data.result?.docs?.length > 0) {
+            // Find the best match
+            const destination =
+              data.result.docs.find(
+                (d: { name: string; id: string }) =>
+                  d.name.toLowerCase() === selectedDestination.toLowerCase()
+              ) || data.result.docs[0];
+
+            if (destination) {
+              setSelectedDestinationId(destination.id);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching default destination:', error);
+      }
+    };
+
+    fetchDefaultDestination();
+
+    return () => {
+      isActive = false;
+    };
+  }, [selectedDestination, selectedDestinationId]);
+
   // Handler for destination selection - receives both name and ID from SearchDestination
   const handleDestinationChange = useCallback((name: string, id: string) => {
     setSelectedDestination(name);

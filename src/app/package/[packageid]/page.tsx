@@ -12,6 +12,8 @@ import { selectAdultsChild } from '@/app/store/features/roomCapacitySlice';
 import { changeDate } from '@/app/store/features/searchPackageSlice';
 import { PackageGetQuery } from '@/app/hooks/usePackage';
 import { AppDispatch } from '@/app/store/store';
+import { useSearch } from '@/context/SearchContext';
+import { changeDestination, changeDestinationId } from '@/app/store/features/searchPackageSlice';
 
 interface DateDestination {
   date?: string;
@@ -24,6 +26,7 @@ export default function PackageDetails({ params }: { params: Promise<{ packageid
   const [error, setError] = useState(false);
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
+  const { searchParams: ctxSearchParams } = useSearch();
 
   const roomCapacityData = useSelector((store: any) => store.roomSelect?.room);
 
@@ -71,16 +74,19 @@ export default function PackageDetails({ params }: { params: Promise<{ packageid
   useEffect(() => {
     // Prioritize URL params over Redux state for shared links
     const today = new Date().toISOString().slice(0, 10);
-    const effectiveDate = urlDate || dateAndDestination?.date?.slice(0, 10) || today;
+    const effectiveDate =
+      urlDate || ctxSearchParams?.startDate || dateAndDestination?.date?.slice(0, 10) || today;
     const effectiveAdults = urlAdults
       ? parseInt(urlAdults, 10)
-      : roomCapacityData?.totalAdults || 2;
+      : ctxSearchParams?.noAdult || roomCapacityData?.totalAdults || 2;
     const effectiveChildren = urlChildren
       ? parseInt(urlChildren, 10)
-      : roomCapacityData?.totalChilds || 0;
-    const effectiveRooms = urlRooms ? parseInt(urlRooms, 10) : roomCapacityData?.totalRooms || 1;
+      : ctxSearchParams?.noChild ?? roomCapacityData?.totalChilds ?? 0;
+    const effectiveRooms = urlRooms
+      ? parseInt(urlRooms, 10)
+      : ctxSearchParams?.noRoomCount || roomCapacityData?.totalRooms || 1;
 
-    const perRoom = roomCapacityData?.perRoom || 2;
+    const perRoom = ctxSearchParams?.perRoom || roomCapacityData?.perRoom || 2;
     const extraAdult = effectiveAdults - effectiveRooms * perRoom;
 
     const payload: PackageGetQuery = {
@@ -105,10 +111,38 @@ export default function PackageDetails({ params }: { params: Promise<{ packageid
     dispatch,
     dateAndDestination?.date,
     roomCapacityData,
+    ctxSearchParams, // Add context dependency
   ]);
 
+  // Sync SearchContext to Redux
+  useEffect(() => {
+    if (ctxSearchParams) {
+      // Sync Date & Destination
+      if (ctxSearchParams.startDate) {
+        dispatch(changeDate(ctxSearchParams.startDate));
+      }
+      if (ctxSearchParams.destinationId) {
+        dispatch(changeDestinationId(ctxSearchParams.destinationId));
+      }
+      if (ctxSearchParams.destinationName) {
+        dispatch(changeDestination(ctxSearchParams.destinationName));
+      }
+
+      // Sync Room/Guest Data
+      dispatch(
+        selectAdultsChild({
+          room: {
+            adult: ctxSearchParams.noAdult || 2,
+            child: ctxSearchParams.noChild || 0,
+            room: ctxSearchParams.noRoomCount || 1,
+          },
+        })
+      );
+    }
+  }, [ctxSearchParams, dispatch]);
+
   return pack.isLoading ? (
-    <div className="w-full min-h-[100vh] flex justify-center items-center">
+    <div className="w-full min-h-screen flex justify-center items-center">
       <PackagesLoading />
     </div>
   ) : (

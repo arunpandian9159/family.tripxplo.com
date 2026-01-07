@@ -147,7 +147,21 @@ export default function HotelData({ hotel, index }: { hotel: HotelMeal; index: n
 
                         // Check if we have necessary data for dynamic calculation
                         if (searchDateStr && typeof hotel?.startDateWise === 'number') {
-                          const tripStartDate = new Date(searchDateStr);
+                          // Fix: Parse YYYY-MM-DD manually to create a local date at 00:00:00
+                          // This prevents timezone issues where new Date("YYYY-MM-DD") is parsed as UTC midnight
+                          // and shifts to the previous day in western timezones.
+                          let tripStartDate: Date;
+                          const dateMatch = String(searchDateStr).match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+                          if (dateMatch) {
+                            tripStartDate = new Date(
+                              parseInt(dateMatch[1]),
+                              parseInt(dateMatch[2]) - 1, // Month is 0-indexed
+                              parseInt(dateMatch[3])
+                            );
+                          } else {
+                            tripStartDate = new Date(searchDateStr);
+                          }
 
                           if (!isNaN(tripStartDate.getTime())) {
                             // Calculate Check-in: TripStart + (DayOffset - 1)
