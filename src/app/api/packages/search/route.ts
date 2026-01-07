@@ -3,60 +3,102 @@ import connectDB from '@/lib/db';
 import Package from '@/lib/models/Package';
 import HotelRoom from '@/lib/models/HotelRoom';
 import { paginatedResponse, errorResponse, ErrorCodes } from '@/lib/api-response';
-import { parseQueryParams } from '@/lib/api-middleware';
 
-// GET /api/packages/search - Search packages with filters
+// Interface for tripxplo.com compatible search params
+interface TripxploSearchParams {
+  destinationId?: string;
+  interestId?: string;
+  perRoom?: number;
+  startDate?: string;
+  noAdult?: number;
+  noChild?: number;
+  noRoomCount?: number;
+  noExtraAdult?: number;
+  limit?: number;
+  offset?: number;
+  priceOrder?: number; // 1 = asc, -1 = desc
+}
+
+// GET /api/packages/search - Search packages with tripxplo.com compatible filters
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
 
-    const params = parseQueryParams(request);
-    const { page, limit, query, destination, minPrice, maxPrice, minDays, maxDays, sort } = params;
-    const skip = (page - 1) * limit;
+    const url = new URL(request.url);
+
+    // Parse tripxplo.com compatible params
+    const params: TripxploSearchParams = {
+      destinationId: url.searchParams.get('destinationId') || undefined,
+      interestId: url.searchParams.get('interestId') || undefined,
+      perRoom: url.searchParams.get('perRoom') ? parseInt(url.searchParams.get('perRoom')!) : 2,
+      startDate: url.searchParams.get('startDate') || undefined,
+      noAdult: url.searchParams.get('noAdult') ? parseInt(url.searchParams.get('noAdult')!) : 2,
+      noChild: url.searchParams.get('noChild') ? parseInt(url.searchParams.get('noChild')!) : 0,
+      noRoomCount: url.searchParams.get('noRoomCount')
+        ? parseInt(url.searchParams.get('noRoomCount')!)
+        : 1,
+      noExtraAdult: url.searchParams.get('noExtraAdult')
+        ? parseInt(url.searchParams.get('noExtraAdult')!)
+        : 0,
+      limit: url.searchParams.get('limit') ? parseInt(url.searchParams.get('limit')!) : 10,
+      offset: url.searchParams.get('offset') ? parseInt(url.searchParams.get('offset')!) : 0,
+      priceOrder: url.searchParams.get('priceOrder')
+        ? parseInt(url.searchParams.get('priceOrder')!)
+        : 1,
+    };
+
+    // Also support legacy params for backward compatibility
+    const legacyQuery = url.searchParams.get('q') || url.searchParams.get('query');
+    const legacyPage = url.searchParams.get('page')
+      ? parseInt(url.searchParams.get('page')!)
+      : undefined;
+    const legacyLimit = url.searchParams.get('limit')
+      ? parseInt(url.searchParams.get('limit')!)
+      : 10;
+
+    // Calculate pagination
+    let limit = params.limit || legacyLimit || 10;
+    let offset = params.offset || 0;
+
+    // If using legacy page param, convert to offset
+    if (legacyPage !== undefined && params.offset === 0) {
+      offset = (legacyPage - 1) * limit;
+    }
+
+    const page = Math.floor(offset / limit) + 1;
 
     // Build filter query
     const filterQuery: Record<string, unknown> = { status: true };
 
-    if (query) {
-      filterQuery.packageName = { $regex: query, $options: 'i' };
+    // Filter by destinationId (tripxplo.com format)
+    if (params.destinationId) {
+      filterQuery['destination.destinationId'] = params.destinationId;
     }
 
-    if (destination) {
-      filterQuery['destination.destinationId'] = destination;
+    // Filter by interestId (tripxplo.com format)
+    if (params.interestId) {
+      filterQuery.interestId = params.interestId;
     }
 
-    if (minPrice) {
-      filterQuery.activityPrice = { $gte: parseInt(minPrice as string) };
+    // Filter by perRoom if specified
+    if (params.perRoom) {
+      filterQuery.perRoom = { $lte: params.perRoom };
     }
 
-    if (maxPrice) {
-      filterQuery.activityPrice = { 
-        ...(filterQuery.activityPrice as Record<string, unknown> || {}), 
-        $lte: parseInt(maxPrice as string) 
-      };
+    // Legacy: search by destination name
+    if (legacyQuery && !params.destinationId) {
+      filterQuery.$or = [
+        { packageName: { $regex: legacyQuery, $options: 'i' } },
+        { 'destination.destinationName': { $regex: legacyQuery, $options: 'i' } },
+      ];
     }
 
-    if (minDays) {
-      filterQuery.noOfDays = { $gte: parseInt(minDays as string) };
-    }
-
-    if (maxDays) {
-      filterQuery.noOfDays = { 
-        ...(filterQuery.noOfDays as Record<string, unknown> || {}), 
-        $lte: parseInt(maxDays as string) 
-      };
-    }
-
-    // Build sort query
+    // Build sort query based on priceOrder
     let sortQuery: Record<string, 1 | -1> = { sort: -1, createdAt: -1 };
-    if (sort === 'price_asc') {
-      sortQuery = { activityPrice: 1 };
-    } else if (sort === 'price_desc') {
-      sortQuery = { activityPrice: -1 };
-    } else if (sort === 'days_asc') {
-      sortQuery = { noOfDays: 1 };
-    } else if (sort === 'days_desc') {
-      sortQuery = { noOfDays: -1 };
+    if (params.priceOrder === 1) {
+      sortQuery = { activityPrice: 1, sort: -1 };
+    } else if (params.priceOrder === -1) {
+      sortQuery = { activityPrice: -1, sort: -1 };
     }
 
     const packages = await Package.aggregate([
@@ -78,6 +120,14 @@ export async function GET(request: NextRequest) {
         },
       },
       {
+        $lookup: {
+          from: 'interest',
+          localField: 'interestId',
+          foreignField: 'interestId',
+          as: 'interestDetails',
+        },
+      },
+      {
         $addFields: {
           destinations: {
             $map: {
@@ -87,23 +137,27 @@ export async function GET(request: NextRequest) {
                 $mergeObjects: [
                   '$$dest',
                   {
-                    $arrayElemAt: [{
-                      $filter: {
-                        input: '$destinationDetails',
-                        as: 'dd',
-                        cond: { $eq: ['$$dd.destinationId', '$$dest.destinationId'] },
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: '$destinationDetails',
+                          as: 'dd',
+                          cond: { $eq: ['$$dd.destinationId', '$$dest.destinationId'] },
+                        },
                       },
-                    }, 0],
+                      0,
+                    ],
                   },
                 ],
               },
             },
           },
           planName: { $arrayElemAt: ['$planDetails.planName', 0] },
+          interestName: { $arrayElemAt: ['$interestDetails.interestName', 0] },
         },
       },
       { $sort: sortQuery },
-      { $skip: skip },
+      { $skip: offset },
       { $limit: limit },
       {
         $project: {
@@ -114,12 +168,20 @@ export async function GET(request: NextRequest) {
           noOfNight: 1,
           startFrom: 1,
           planName: 1,
+          planId: 1,
+          interestId: 1,
+          interestName: 1,
+          perRoom: 1,
           hotel: 1,
           destinations: {
             $map: {
               input: '$destinations',
               as: 'd',
-              in: { id: '$$d.destinationId', name: '$$d.destinationName', noOfNights: '$$d.noOfNight' },
+              in: {
+                id: '$$d.destinationId',
+                name: '$$d.destinationName',
+                noOfNights: '$$d.noOfNight',
+              },
             },
           },
           offer: 1,
@@ -130,43 +192,67 @@ export async function GET(request: NextRequest) {
 
     const total = await Package.countDocuments(filterQuery);
 
-    // Get hotel room details
-    const allHotelRoomIds = packages.flatMap(p => p.hotel?.map((h: { hotelRoomId: string }) => h.hotelRoomId) || []);
+    // Get hotel room details for price calculation
+    const allHotelRoomIds = packages.flatMap(
+      p => p.hotel?.map((h: { hotelRoomId: string }) => h.hotelRoomId) || []
+    );
     const hotelRoomData = await HotelRoom.find({ hotelRoomId: { $in: allHotelRoomIds } }).lean();
 
-    const formattedPackages = packages.map((pkg) => {
+    const formattedPackages = packages.map(pkg => {
       let price = 0;
       if (pkg.startFrom) {
         const parsed = parseFloat(pkg.startFrom);
         if (!isNaN(parsed) && parsed > 0) price = parsed;
       }
       if (price === 0 && pkg.hotel?.length > 0) {
-        const hotelPrices = pkg.hotel.map((h: { hotelRoomId: string }) => {
-          const room = hotelRoomData.find((r) => (r as { hotelRoomId?: string }).hotelRoomId === h.hotelRoomId);
-          if (!room) return 0;
-          const roomWithMealPlan = room as { mealPlan?: Array<{ roomPrice?: number }> };
-          const mealPlanArray = roomWithMealPlan.mealPlan;
-          if (mealPlanArray && mealPlanArray.length > 0) {
-            const prices = mealPlanArray.map((mp) => mp.roomPrice || 0).filter((p) => p > 0);
-            return prices.length > 0 ? Math.min(...prices) : 0;
-          }
-          return 0;
-        }).filter((p: number) => p > 0);
-        if (hotelPrices.length > 0) price = Math.round(hotelPrices.reduce((a: number, b: number) => a + b, 0) / 2);
+        const hotelPrices = pkg.hotel
+          .map((h: { hotelRoomId: string }) => {
+            const room = hotelRoomData.find(
+              r => (r as { hotelRoomId?: string }).hotelRoomId === h.hotelRoomId
+            );
+            if (!room) return 0;
+            const roomWithMealPlan = room as { mealPlan?: Array<{ roomPrice?: number }> };
+            const mealPlanArray = roomWithMealPlan.mealPlan;
+            if (mealPlanArray && mealPlanArray.length > 0) {
+              const prices = mealPlanArray.map(mp => mp.roomPrice || 0).filter(p => p > 0);
+              return prices.length > 0 ? Math.min(...prices) : 0;
+            }
+            return 0;
+          })
+          .filter((p: number) => p > 0);
+        if (hotelPrices.length > 0)
+          price = Math.round(hotelPrices.reduce((a: number, b: number) => a + b, 0) / 2);
       }
 
       return {
-        id: pkg.packageId, name: pkg.packageName, images: pkg.packageImg || [], noOfDays: pkg.noOfDays,
-        noOfNights: pkg.noOfNight, price, startFrom: pkg.startFrom, destinations: pkg.destinations || [],
-        offer: pkg.offer || 0, status: pkg.status, planName: pkg.planName || '',
+        id: pkg.packageId,
+        name: pkg.packageName,
+        images: pkg.packageImg || [],
+        noOfDays: pkg.noOfDays,
+        noOfNights: pkg.noOfNight,
+        price,
+        startFrom: pkg.startFrom,
+        destinations: pkg.destinations || [],
+        offer: pkg.offer || 0,
+        status: pkg.status,
+        planName: pkg.planName || '',
+        planId: pkg.planId,
+        interestId: pkg.interestId,
+        interestName: pkg.interestName,
+        perRoom: pkg.perRoom,
         hotelCount: pkg.hotel?.length || 0,
       };
     });
 
-    return paginatedResponse(formattedPackages, total, page, limit, 'Search results retrieved successfully');
+    return paginatedResponse(
+      formattedPackages,
+      total,
+      page,
+      limit,
+      'Search results retrieved successfully'
+    );
   } catch (error) {
     console.error('Search packages error:', error);
     return errorResponse('Internal server error', ErrorCodes.INTERNAL_ERROR, 500);
   }
 }
-
