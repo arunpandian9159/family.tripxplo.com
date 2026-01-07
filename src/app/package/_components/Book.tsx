@@ -1,19 +1,19 @@
-"use client";
-import React, { useState } from "react";
+'use client';
+import React, { useState } from 'react';
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { ChevronUp, Shield, Zap, Gift } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { formatIndianCurrency } from "@/lib/utils";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/app/store/features/userSlice";
-import { useAuth } from "@/app/hooks/useAuth";
-import LoginModal from "./LoginModal";
+} from '@/components/ui/drawer';
+import { ChevronUp, Shield, Zap, Gift } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { formatIndianCurrency } from '@/lib/utils';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/app/store/features/userSlice';
+import { useAuth } from '@/app/hooks/useAuth';
+import LoginModal from './LoginModal';
 
 export default function Book({
   packageId,
@@ -40,8 +40,7 @@ export default function Book({
   const safeGstPer = gstPer || 0;
   const safeAdult = adult || 2;
   const safeChild = child || 0;
-  const safePerPerson =
-    perPerson || Math.round(safePrice / (safeAdult + safeChild * 0.5) || 0);
+  const safePerPerson = perPerson || Math.round(safePrice / (safeAdult + safeChild * 0.5) || 0);
   const dispatch = useDispatch();
   const { isAuthenticated, user, isLoading, refetch } = useAuth();
   const router = useRouter();
@@ -84,25 +83,23 @@ export default function Book({
       <div className="hidden lg:block sticky top-24">
         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
           {/* Header with gradient */}
-          <div className="relative px-6 py-5 bg-linear-to-r from-coral-500 to-rose-500 text-white overflow-hidden">
+          <div className="relative px-6 py-5 bg-linear-to-r from-emerald-500 to-emerald-600 text-white overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
 
             <div className="relative">
               <div className="flex items-center gap-2 mb-2">
-                <Gift size={16} className="text-coral-200" />
-                <span className="text-xs font-medium text-coral-100 uppercase tracking-wider">
+                <Gift size={16} className="text-emerald-200" />
+                <span className="text-xs font-medium text-emerald-100 uppercase tracking-wider">
                   Starting From
                 </span>
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">
-                  {formatIndianCurrency(safePerPerson)}
-                </span>
+                <span className="text-3xl font-bold">{formatIndianCurrency(safePerPerson)}</span>
                 <span className="text-sm text-white/80">/ person</span>
               </div>
-              <p className="text-xs text-coral-100 mt-1">
+              <p className="text-xs text-emerald-100 mt-1">
                 Total: {formatIndianCurrency(safePrice)} (taxes included)
               </p>
             </div>
@@ -111,11 +108,9 @@ export default function Book({
           {/* Price Breakdown */}
           <div className="p-6 space-y-4">
             {/* Per Person Price */}
-            <div className="flex items-center justify-between py-3 bg-coral-50 rounded-xl px-4 -mx-2">
-              <span className="text-sm font-medium text-coral-700">
-                Per Person
-              </span>
-              <span className="text-lg font-bold text-coral-600">
+            <div className="flex items-center justify-between py-3 bg-emerald-50 rounded-xl px-4 -mx-2">
+              <span className="text-sm font-medium text-emerald-700">Per Person</span>
+              <span className="text-lg font-bold text-emerald-600">
                 {formatIndianCurrency(safePerPerson)}
               </span>
             </div>
@@ -124,10 +119,8 @@ export default function Book({
             <div className="flex items-center justify-between py-3 border-b border-dashed border-slate-200">
               <span className="text-sm text-slate-500">Travelers</span>
               <span className="text-sm font-medium text-slate-800">
-                {safeAdult} Adult{safeAdult > 1 ? "s" : ""}
-                {safeChild > 0
-                  ? `, ${safeChild} Child${safeChild > 1 ? "ren" : ""}`
-                  : ""}
+                {safeAdult} Adult{safeAdult > 1 ? 's' : ''}
+                {safeChild > 0 ? `, ${safeChild} Child${safeChild > 1 ? 'ren' : ''}` : ''}
               </span>
             </div>
 
@@ -141,9 +134,7 @@ export default function Book({
 
             {/* Taxes */}
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-500">
-                Taxes & Fees ({safeGstPer}%)
-              </span>
+              <span className="text-sm text-slate-500">Taxes & Fees ({safeGstPer}%)</span>
               <span className="text-sm font-medium text-slate-800">
                 {formatIndianCurrency(safeGstPrice)}
               </span>
@@ -162,7 +153,7 @@ export default function Book({
           <div className="px-6 pb-6">
             <button
               onClick={handlePackageClick}
-              className="w-full py-4 bg-linear-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-coral-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-coral-500/30 active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full py-4 bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30 active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <Zap size={18} />
               Book Now
@@ -189,12 +180,8 @@ export default function Book({
               <Gift size={16} className="text-emerald-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-emerald-800">
-                No Last Minute Rush
-              </p>
-              <p className="text-xs text-emerald-600 mt-0.5">
-                Reserve with Just ₹1 Rupee!
-              </p>
+              <p className="text-sm font-medium text-emerald-800">No Last Minute Rush</p>
+              <p className="text-xs text-emerald-600 mt-0.5">Reserve with Just ₹1 Rupee!</p>
             </div>
           </div>
         </div>
@@ -227,9 +214,9 @@ export default function Book({
               </DrawerHeader>
               <div className="p-6 space-y-4">
                 {/* Per Person Price */}
-                <div className="flex items-center justify-between py-3 bg-coral-50 rounded-xl px-4">
-                  <span className="font-medium text-coral-700">Per Person</span>
-                  <span className="text-lg font-bold text-coral-600">
+                <div className="flex items-center justify-between py-3 bg-emerald-50 rounded-xl px-4">
+                  <span className="font-medium text-emerald-700">Per Person</span>
+                  <span className="text-lg font-bold text-emerald-600">
                     {formatIndianCurrency(safePerPerson)}
                   </span>
                 </div>
@@ -238,10 +225,8 @@ export default function Book({
                 <div className="flex items-center justify-between py-3 border-b border-dashed border-slate-200">
                   <span className="text-slate-500">Travelers</span>
                   <span className="font-medium text-slate-800">
-                    {safeAdult} Adult{safeAdult > 1 ? "s" : ""}
-                    {safeChild > 0
-                      ? `, ${safeChild} Child${safeChild > 1 ? "ren" : ""}`
-                      : ""}
+                    {safeAdult} Adult{safeAdult > 1 ? 's' : ''}
+                    {safeChild > 0 ? `, ${safeChild} Child${safeChild > 1 ? 'ren' : ''}` : ''}
                   </span>
                 </div>
 
@@ -255,9 +240,7 @@ export default function Book({
 
                 {/* Taxes */}
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">
-                    Taxes & Fees ({safeGstPer}%)
-                  </span>
+                  <span className="text-slate-500">Taxes & Fees ({safeGstPer}%)</span>
                   <span className="font-medium text-slate-800">
                     {formatIndianCurrency(safeGstPrice)}
                   </span>
@@ -265,9 +248,7 @@ export default function Book({
 
                 {/* Total */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-                  <span className="text-lg font-bold text-slate-900">
-                    Total Amount
-                  </span>
+                  <span className="text-lg font-bold text-slate-900">Total Amount</span>
                   <span className="text-xl font-bold text-slate-900">
                     {formatIndianCurrency(safePrice)}
                   </span>
@@ -285,7 +266,7 @@ export default function Book({
           {/* Book Button */}
           <button
             onClick={handlePackageClick}
-            className="flex-1 max-w-[180px] py-3.5 bg-linear-to-r from-coral-500 to-rose-500 text-white font-bold rounded-xl shadow-lg shadow-coral-500/25 active:scale-[0.98] transition-transform"
+            className="flex-1 max-w-[180px] py-3.5 bg-linear-to-r from-emerald-500 to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 active:scale-[0.98] transition-transform"
           >
             Book Now
           </button>

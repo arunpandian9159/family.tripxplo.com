@@ -1,7 +1,7 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import {
   ArrowLeft,
   Share2,
@@ -13,21 +13,21 @@ import {
   ChevronRight,
   Heart,
   Star,
-  Map
-} from "lucide-react";
-import Iternary from "../_components/Iternary";
-import { Activity } from "@/app/types/pack";
-import PackagesLoadingFull from "@/app/(user-area)/components/loading/PackagesLoadingFull";
-import { useSelector } from "react-redux";
-import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
-import { generateActivityShareMessage } from "@/lib/generateShareMessage";
+  Map,
+} from 'lucide-react';
+import Iternary from '../_components/Iternary';
+import { Activity } from '@/app/types/pack';
+import PackagesLoadingFull from '@/app/(user-area)/components/loading/PackagesLoadingFull';
+import { useSelector } from 'react-redux';
+import { NEXT_PUBLIC_IMAGE_URL } from '@/app/utils/constants/apiUrls';
+import { generateActivityShareMessage } from '@/lib/generateShareMessage';
 
 // Section Header Component (consistent with PackageDetail)
 const SectionHeader = ({
   icon: Icon,
   title,
   subtitle,
-  iconBg = "from-coral-500 to-rose-500",
+  iconBg = 'from-emerald-500 to-rose-500',
 }: {
   icon: React.ComponentType<any>;
   title: string;
@@ -36,7 +36,7 @@ const SectionHeader = ({
 }) => (
   <div className="flex items-start justify-between mb-6">
     <div className="flex items-start gap-4">
-      <div className={`p-3 bg-gradient-to-br ${iconBg} rounded-xl text-white shadow-lg`}>
+      <div className={`p-3 bg-linear-to-br ${iconBg} rounded-xl text-white shadow-lg`}>
         <Icon size={22} />
       </div>
       <div>
@@ -56,9 +56,9 @@ const SectionDivider = () => (
     <div className="relative flex justify-center">
       <div className="bg-slate-50 px-4">
         <div className="flex gap-1.5">
-          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-coral-400 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
         </div>
       </div>
     </div>
@@ -75,8 +75,8 @@ const Page = () => {
   const searchParams = useSelector((store: any) => store.searchPackage);
   const [activity, setActivity] = useState<Activity[]>([]);
   const [isLoading, setLoading] = useState(true);
-  const [packageName, setPackageName] = useState("");
-  const [packageImage, setPackageImage] = useState("");
+  const [packageName, setPackageName] = useState('');
+  const [packageImage, setPackageImage] = useState('');
   const [packageSlug, setPackageSlug] = useState<string | null>(null);
   const [showCopied, setShowCopied] = useState(false);
 
@@ -93,17 +93,16 @@ const Page = () => {
     function validatePackage() {
       setLoading(true);
       const location = window.location.pathname;
-      const urlIdentifier = location.split("/")[2];
+      const urlIdentifier = location.split('/')[2];
 
       // Check if URL identifier matches either packageId OR slug
       const isValidPackage =
-        packageData.data.packageId === urlIdentifier ||
-        packageData.data.slug === urlIdentifier;
+        packageData.data.packageId === urlIdentifier || packageData.data.slug === urlIdentifier;
 
       if (isValidPackage) {
         setActivity(packageData.data.activity);
         setPackageName(packageData.data.packageName);
-        setPackageImage(packageData.data.packageImg?.[0] || "");
+        setPackageImage(packageData.data.packageImg?.[0] || '');
         setPackageSlug(packageData.data.slug || null);
         setLoading(false);
       } else {
@@ -177,7 +176,7 @@ const Page = () => {
           {hasValidImage ? (
             <>
               {!imageLoaded && (
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 animate-pulse" />
+                <div className="absolute inset-0 bg-linear-to-br from-slate-700 via-slate-800 to-slate-900 animate-pulse" />
               )}
               <Image
                 src={`${NEXT_PUBLIC_IMAGE_URL}${packageImage}`}
@@ -185,17 +184,19 @@ const Page = () => {
                 alt={packageName}
                 priority
                 sizes="100vw"
-                className={`object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                className={`object-cover transition-opacity duration-500 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
               />
             </>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-coral-600 via-rose-600 to-purple-700" />
+            <div className="w-full h-full bg-linear-to-br from-emerald-600 via-rose-600 to-purple-700" />
           )}
 
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/30" />
         </div>
 
         {/* Top Navigation Bar */}
@@ -214,10 +215,9 @@ const Page = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => setIsLiked(!isLiked)}
-                className={`p-2.5 rounded-xl backdrop-blur-md transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 ${isLiked
-                  ? 'bg-coral-500 text-white'
-                  : 'bg-white/10 hover:bg-white/20 text-white'
-                  }`}
+                className={`p-2.5 rounded-xl backdrop-blur-md transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 ${
+                  isLiked ? 'bg-emerald-500 text-white' : 'bg-white/10 hover:bg-white/20 text-white'
+                }`}
               >
                 <Heart size={18} className={isLiked ? 'fill-current' : ''} />
               </button>
@@ -237,7 +237,7 @@ const Page = () => {
         </div>
 
         {/* Bottom Content */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 pb-16 pt-10 px-4 md:px-6 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 z-20 pb-16 pt-10 px-4 md:px-6 bg-linear-to-t from-black/90 via-black/60 to-transparent">
           <div className="max-w-7xl mx-auto">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-lg mb-3">
@@ -253,7 +253,7 @@ const Page = () => {
             {/* Stats */}
             <div className="flex items-center gap-4 mt-3">
               <div className="flex items-center gap-2 text-white/80">
-                <Calendar size={16} className="text-coral-400" />
+                <Calendar size={16} className="text-emerald-400" />
                 <span className="text-sm">{activity?.length || 0} Days</span>
               </div>
               <div className="flex items-center gap-2 text-white/80">
@@ -283,7 +283,6 @@ const Page = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
-
         {/* Itinerary Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 lg:p-8 animate-slide-up">
           <SectionHeader
@@ -296,21 +295,20 @@ const Page = () => {
           {/* Timeline Content */}
           <div className="relative mt-8">
             {/* Timeline Line */}
-            <div className="absolute left-5 lg:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-coral-200 via-rose-200 to-emerald-200 rounded-full" />
+            <div className="absolute left-5 lg:left-6 top-0 bottom-0 w-0.5 bg-linear-to-b from-emerald-200 via-rose-200 to-emerald-200 rounded-full" />
 
             {/* Days */}
             {activity?.length > 0 ? (
               <div className="space-y-8 lg:space-y-10">
                 {activity.map((data, dayIndex) => (
-                  <div
-                    key={data._id}
-                    className="relative"
-                  >
+                  <div key={data._id} className="relative">
                     {/* Day Header */}
                     <div className="flex items-start gap-4 lg:gap-6 mb-4">
                       {/* Timeline Node */}
-                      <div className="relative z-10 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-coral-500 to-rose-500 rounded-xl shadow-lg shadow-coral-500/25 flex-shrink-0">
-                        <span className="text-white font-bold text-sm lg:text-base">{data?.day}</span>
+                      <div className="relative z-10 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-linear-to-br from-emerald-500 to-rose-500 rounded-xl shadow-lg shadow-emerald-500/25 shrink-0">
+                        <span className="text-white font-bold text-sm lg:text-base">
+                          {data?.day}
+                        </span>
                       </div>
 
                       {/* Day Info */}
@@ -320,7 +318,7 @@ const Page = () => {
                             Day {data?.day}
                           </h3>
                           {data?.fullStartDate && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-coral-50 text-coral-600 text-xs font-semibold rounded-md">
+                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded-md">
                               <Clock className="w-3 h-3" />
                               {data.fullStartDate}
                             </span>
@@ -365,14 +363,16 @@ const Page = () => {
 
         {/* End of Trip Card */}
         {activity?.length > 0 && (
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 p-6 lg:p-8 animate-slide-up">
+          <div className="bg-linear-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 p-6 lg:p-8 animate-slide-up">
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg shadow-emerald-500/25">
+              <div className="flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 bg-linear-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg shadow-emerald-500/25">
                 <Sparkles className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
               </div>
               <div>
                 <p className="font-bold text-emerald-800 text-lg lg:text-xl">🎉 End of Trip</p>
-                <p className="text-emerald-600 text-sm lg:text-base">We hope you have an amazing journey!</p>
+                <p className="text-emerald-600 text-sm lg:text-base">
+                  We hope you have an amazing journey!
+                </p>
               </div>
             </div>
           </div>

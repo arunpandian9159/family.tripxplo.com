@@ -1,6 +1,6 @@
-"use client";
-import { HotelMeal } from "@/app/types/pack";
-import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
+'use client';
+import { HotelMeal } from '@/app/types/pack';
+import { NEXT_PUBLIC_IMAGE_URL } from '@/app/utils/constants/apiUrls';
 import {
   CalendarDays,
   Utensils,
@@ -9,23 +9,17 @@ import {
   Star,
   MapPin,
   ChevronRight,
-  Sparkles
-} from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { setReplaceHotel } from "@/app/store/features/hotelChangeSlice";
-import { useState } from "react";
-import Image from "next/image";
-import ChangeHotelModal from "./modals/ChangeHotelModal";
-import ChangeRoomModal from "./modals/ChangeRoomModal";
-import { HotelChangeDataType } from "@/app/types/hotel";
+  Sparkles,
+} from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setReplaceHotel } from '@/app/store/features/hotelChangeSlice';
+import { useState } from 'react';
+import Image from 'next/image';
+import ChangeHotelModal from './modals/ChangeHotelModal';
+import ChangeRoomModal from './modals/ChangeRoomModal';
+import { HotelChangeDataType } from '@/app/types/hotel';
 
-export default function HotelData({
-  hotel,
-  index,
-}: {
-  hotel: HotelMeal;
-  index: number;
-}) {
+export default function HotelData({ hotel, index }: { hotel: HotelMeal; index: number }) {
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -56,17 +50,21 @@ export default function HotelData({
   }
 
   const mealPlans: Record<string, { label: string; color: string; bg: string }> = {
-    cp: { label: "Breakfast Included", color: "text-amber-600", bg: "bg-amber-50" },
-    map: { label: "Breakfast & Dinner", color: "text-orange-600", bg: "bg-orange-50" },
-    ap: { label: "All Meals Included", color: "text-emerald-600", bg: "bg-emerald-50" },
-    ep: { label: "Rooms Only", color: "text-slate-600", bg: "bg-slate-50" },
+    cp: { label: 'Breakfast Included', color: 'text-amber-600', bg: 'bg-amber-50' },
+    map: { label: 'Breakfast & Dinner', color: 'text-orange-600', bg: 'bg-orange-50' },
+    ap: { label: 'All Meals Included', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    ep: { label: 'Rooms Only', color: 'text-slate-600', bg: 'bg-slate-50' },
   };
 
   const hotelName = hotel?.hotelName || 'Hotel';
   const hotelImage = hotel?.image || '';
   // Safely get mealPlan as string
   const mealPlanValue = typeof hotel?.mealPlan === 'string' ? hotel.mealPlan.toLowerCase() : 'ep';
-  const mealInfo = mealPlans[mealPlanValue] || { label: hotel?.mealPlan || 'N/A', color: "text-slate-600", bg: "bg-slate-50" };
+  const mealInfo = mealPlans[mealPlanValue] || {
+    label: hotel?.mealPlan || 'N/A',
+    color: 'text-slate-600',
+    bg: 'bg-slate-50',
+  };
 
   return (
     <>
@@ -74,17 +72,19 @@ export default function HotelData({
         {/* Card Header */}
         <div className="flex items-center justify-between px-5 py-4 bg-linear-to-r from-slate-50 to-white border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 bg-coral-500 text-white text-sm font-bold rounded-lg">
+            <div className="flex items-center justify-center w-8 h-8 bg-emerald-500 text-white text-sm font-bold rounded-lg">
               {index}
             </div>
             <div>
               <h3 className="font-semibold text-slate-800">Stay {index}</h3>
-              <p className="text-xs text-slate-400">{hotel?.noOfNight || 0} Night{(hotel?.noOfNight || 0) !== 1 ? 's' : ''}</p>
+              <p className="text-xs text-slate-400">
+                {hotel?.noOfNight || 0} Night{(hotel?.noOfNight || 0) !== 1 ? 's' : ''}
+              </p>
             </div>
           </div>
           <button
             onClick={openHotelModal}
-            className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-coral-500 to-coral-400 text-white hover:from-coral-600 hover:to-coral-500 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
+            className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-emerald-500 to-emerald-400 text-white hover:from-emerald-600 hover:to-emerald-500 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
           >
             <ArrowRightLeft size={14} />
             Change Hotel
@@ -152,15 +152,24 @@ export default function HotelData({
                           if (!isNaN(tripStartDate.getTime())) {
                             // Calculate Check-in: TripStart + (DayOffset - 1)
                             const checkInDate = new Date(tripStartDate);
-                            checkInDate.setDate(tripStartDate.getDate() + (hotel.startDateWise - 1));
+                            checkInDate.setDate(
+                              tripStartDate.getDate() + (hotel.startDateWise - 1)
+                            );
 
                             // Calculate Check-out: CheckIn + Nights
                             // OR TripStart + (EndOffset - 1) if endDateWise is reliable
                             const checkOutDate = new Date(checkInDate);
                             checkOutDate.setDate(checkInDate.getDate() + (hotel.noOfNight || 1));
 
-                            const startStr = checkInDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-                            const endStr = checkOutDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                            const startStr = checkInDate.toLocaleDateString('en-US', {
+                              weekday: 'short',
+                              month: 'short',
+                              day: 'numeric',
+                            });
+                            const endStr = checkOutDate.toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                            });
 
                             return `${startStr} — ${endStr}`;
                           }
@@ -171,26 +180,37 @@ export default function HotelData({
                         const endDate = new Date(hotel?.fullEndDate);
 
                         if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-                          return `${hotel?.fullStartDate || 'Check-in'} — ${hotel?.fullEndDate || 'Check-out'}`;
+                          return `${hotel?.fullStartDate || 'Check-in'} — ${
+                            hotel?.fullEndDate || 'Check-out'
+                          }`;
                         }
 
-                        const startStr = startDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-                        const endStr = endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const startStr = startDate.toLocaleDateString('en-US', {
+                          weekday: 'short',
+                          month: 'short',
+                          day: 'numeric',
+                        });
+                        const endStr = endDate.toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                        });
 
                         return `${startStr} — ${endStr}`;
                       } catch (e) {
-                        return `${hotel?.fullStartDate || 'Check-in'} — ${hotel?.fullEndDate || 'Check-out'}`;
+                        return `${hotel?.fullStartDate || 'Check-in'} — ${
+                          hotel?.fullEndDate || 'Check-out'
+                        }`;
                       }
                     })()}
                   </span>
                 </div>
 
                 {/* Meal Plan */}
-                <div className={`inline-flex items-center gap-2 px-3 py-2 ${mealInfo.bg} rounded-lg`}>
+                <div
+                  className={`inline-flex items-center gap-2 px-3 py-2 ${mealInfo.bg} rounded-lg`}
+                >
                   <Utensils size={14} className={mealInfo.color} />
-                  <span className={`text-xs font-medium ${mealInfo.color}`}>
-                    {mealInfo.label}
-                  </span>
+                  <span className={`text-xs font-medium ${mealInfo.color}`}>{mealInfo.label}</span>
                 </div>
               </div>
 
@@ -202,7 +222,9 @@ export default function HotelData({
                   </div>
                   <div>
                     <p className="text-xs text-slate-400 font-medium">Room Type</p>
-                    <p className="text-sm font-semibold text-slate-800">{hotel?.hotelRoomType || 'Standard Room'}</p>
+                    <p className="text-sm font-semibold text-slate-800">
+                      {hotel?.hotelRoomType || 'Standard Room'}
+                    </p>
                   </div>
                 </div>
                 <button
@@ -217,7 +239,9 @@ export default function HotelData({
               {/* Amenities/Viewpoints */}
               {hotel?.viewPoint && hotel.viewPoint.length > 0 && (
                 <div className="mt-4">
-                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-2">Amenities</p>
+                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-2">
+                    Amenities
+                  </p>
                   <div className="flex flex-wrap gap-1.5">
                     {hotel.viewPoint.slice(0, showAll ? undefined : 4).map((vp, i) => (
                       <span
@@ -233,7 +257,7 @@ export default function HotelData({
                         onClick={() => setShowAll(!showAll)}
                         className="px-2.5 py-1 text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors"
                       >
-                        {showAll ? "Show Less" : `+${hotel.viewPoint.length - 4} more`}
+                        {showAll ? 'Show Less' : `+${hotel.viewPoint.length - 4} more`}
                       </button>
                     )}
                   </div>

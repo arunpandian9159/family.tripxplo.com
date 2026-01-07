@@ -1,29 +1,18 @@
-"use client";
-import React, { useState } from "react";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { login } from "@/app/utils/api/login";
-import { setUser } from "@/app/store/features/userSlice";
-import toast from "react-hot-toast";
-import GoogleSignIn from "@/components/ui/gogglesignin";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
-import { useRouter, usePathname } from "next/navigation";
-import {
-  Mail,
-  Lock,
-  ArrowRight,
-  Plane,
-  X,
-  Shield,
-  CheckCircle2
-} from "lucide-react";
+'use client';
+import React, { useState } from 'react';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { login } from '@/app/utils/api/login';
+import { setUser } from '@/app/store/features/userSlice';
+import toast from 'react-hot-toast';
+import GoogleSignIn from '@/components/ui/gogglesignin';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useRouter, usePathname } from 'next/navigation';
+import { Mail, Lock, ArrowRight, Plane, X, Shield, CheckCircle2 } from 'lucide-react';
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -31,11 +20,8 @@ interface LoginModalProps {
 }
 
 const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Please enter a valid email address")
-    .required("Email is required"),
-  password: yup.string().required("Password is required"),
+  email: yup.string().email('Please enter a valid email address').required('Email is required'),
+  password: yup.string().required('Password is required'),
 });
 
 export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
@@ -49,8 +35,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
     reset,
   } = useForm({
     resolver: yupResolver(loginSchema),
-    mode: "onBlur",
-    reValidateMode: "onChange",
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
   });
 
   const onSubmit = async (values: yup.InferType<typeof loginSchema>) => {
@@ -63,38 +49,40 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
         dispatch(setUser(response.data.result.user));
       }
 
-      toast.success("Welcome back!");
+      toast.success('Welcome back!');
       reset();
       onSuccess();
     } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Invalid email or password");
+      console.error('Error submitting form:', error);
+      toast.error('Invalid email or password');
     } finally {
       setLoading(false);
     }
   };
 
   const handleGoogleSuccess = () => {
-    toast.success("Signed in with Google!");
+    toast.success('Signed in with Google!');
     onSuccess();
   };
 
-
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogContent
         className="max-w-4xl p-0 border-0 bg-white [&>button]:hidden
           fixed inset-0 translate-x-0 translate-y-0
           sm:inset-auto sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]
           w-full h-full sm:h-auto sm:max-h-[90vh] sm:w-[95vw] sm:max-w-4xl
           rounded-none sm:rounded-2xl overflow-hidden"
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onInteractOutside={(e) => e.preventDefault()}
-        onClick={(e) => e.stopPropagation()}
+        onPointerDownOutside={e => e.preventDefault()}
+        onInteractOutside={e => e.preventDefault()}
+        onClick={e => e.stopPropagation()}
       >
-        <div className="flex flex-col sm:flex-row h-full sm:min-h-[600px] overflow-y-auto sm:overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="flex flex-col sm:flex-row h-full sm:min-h-[600px] overflow-y-auto sm:overflow-hidden"
+          onClick={e => e.stopPropagation()}
+        >
           {/* Left Panel - Decorative (Hidden on mobile) */}
-          <div className="hidden lg:flex lg:w-2/5 bg-linear-to-br from-coral-500 via-coral-500 to-rose-500 relative overflow-hidden">
+          <div className="hidden lg:flex lg:w-2/5 bg-linear-to-br from-emerald-500 via-emerald-500 to-rose-500 relative overflow-hidden">
             {/* Background decorations */}
             <div className="absolute inset-0">
               <div className="absolute top-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
@@ -107,19 +95,17 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
                 <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-6">
                   <Plane className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-3">
-                  Almost There!
-                </h2>
-                <p className="text-coral-100 text-sm">
+                <h2 className="text-2xl font-bold text-white mb-3">Almost There!</h2>
+                <p className="text-emerald-100 text-sm">
                   Sign in to complete your booking and access exclusive member benefits.
                 </p>
 
                 {/* Benefits */}
                 <div className="mt-8 space-y-3 text-left">
                   {[
-                    "Exclusive member discounts",
-                    "Easy booking management",
-                    "24/7 travel support",
+                    'Exclusive member discounts',
+                    'Easy booking management',
+                    '24/7 travel support',
                   ].map((benefit, i) => (
                     <div key={i} className="flex items-center gap-2.5 text-white/90 text-sm">
                       <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
@@ -145,7 +131,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
             <div className="flex-1 flex flex-col justify-start sm:justify-center max-w-sm mx-auto w-full pt-12 sm:pt-0 pb-6 sm:pb-0">
               {/* Mobile Header - Compact gradient banner */}
               <div className="sm:hidden mb-4">
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-linear-to-r from-coral-500 to-rose-500">
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-linear-to-r from-emerald-500 to-rose-500">
                   <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
                     <Plane className="w-5 h-5 text-white" />
                   </div>
@@ -185,7 +171,10 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
                 {/* Email Field */}
                 <div>
-                  <label htmlFor="modal-email" className="block text-sm font-medium text-slate-700 mb-1 sm:mb-1.5">
+                  <label
+                    htmlFor="modal-email"
+                    className="block text-sm font-medium text-slate-700 mb-1 sm:mb-1.5"
+                  >
                     Email Address
                   </label>
                   <div className="relative">
@@ -195,12 +184,12 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
                     <input
                       type="email"
                       id="modal-email"
-                      {...register("email")}
+                      {...register('email')}
                       className={cn(
-                        "w-full pl-9 sm:pl-10 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                        "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
-                        "transition-all duration-200 touch-manipulation",
-                        errors.email && "border-red-500 bg-red-50 focus:ring-red-500/20"
+                        'w-full pl-9 sm:pl-10 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm',
+                        'focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white',
+                        'transition-all duration-200 touch-manipulation',
+                        errors.email && 'border-red-500 bg-red-50 focus:ring-red-500/20'
                       )}
                       placeholder="you@example.com"
                       autoComplete="email"
@@ -214,7 +203,10 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
 
                 {/* Password Field */}
                 <div>
-                  <label htmlFor="modal-password" className="block text-sm font-medium text-slate-700 mb-1 sm:mb-1.5">
+                  <label
+                    htmlFor="modal-password"
+                    className="block text-sm font-medium text-slate-700 mb-1 sm:mb-1.5"
+                  >
                     Password
                   </label>
                   <div className="relative">
@@ -224,12 +216,12 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
                     <input
                       type="password"
                       id="modal-password"
-                      {...register("password")}
+                      {...register('password')}
                       className={cn(
-                        "w-full pl-9 sm:pl-10 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                        "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
-                        "transition-all duration-200 touch-manipulation",
-                        errors.password && "border-red-500 bg-red-50 focus:ring-red-500/20"
+                        'w-full pl-9 sm:pl-10 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm',
+                        'focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white',
+                        'transition-all duration-200 touch-manipulation',
+                        errors.password && 'border-red-500 bg-red-50 focus:ring-red-500/20'
                       )}
                       placeholder="••••••••"
                       autoComplete="current-password"
@@ -244,7 +236,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
                 <div className="flex justify-end">
                   <Link
                     href="/forgot-password"
-                    className="text-xs text-coral-600 hover:text-coral-700 font-medium transition-colors py-1 touch-manipulation"
+                    className="text-xs text-emerald-600 hover:text-emerald-700 font-medium transition-colors py-1 touch-manipulation"
                     onClick={onClose}
                   >
                     Forgot password?
@@ -255,7 +247,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 bg-linear-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 active:from-coral-700 active:to-rose-700 text-white font-semibold rounded-xl shadow-lg shadow-coral-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
+                  className="w-full py-3.5 bg-linear-to-r from-emerald-500 to-rose-500 hover:from-emerald-600 hover:to-rose-600 active:from-emerald-700 active:to-rose-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
                 >
                   {loading ? (
                     <>
@@ -273,14 +265,14 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
 
               {/* Sign Up Link - Touch optimized */}
               <p className="mt-4 sm:mt-6 text-center text-sm text-slate-600">
-                Don&apos;t have an account?{" "}
+                Don&apos;t have an account?{' '}
                 <button
                   type="button"
-                  className="text-coral-600 hover:text-coral-700 font-semibold transition-colors py-1 px-1 touch-manipulation"
+                  className="text-emerald-600 hover:text-emerald-700 font-semibold transition-colors py-1 px-1 touch-manipulation"
                   onClick={() => {
                     onClose();
-                    sessionStorage.setItem("openAuthModal", "register");
-                    router.push("/");
+                    sessionStorage.setItem('openAuthModal', 'register');
+                    router.push('/');
                   }}
                 >
                   Create account
@@ -299,4 +291,3 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: LoginModalPro
     </Dialog>
   );
 }
-

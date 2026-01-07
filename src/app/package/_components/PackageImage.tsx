@@ -1,17 +1,17 @@
-"use client";
-import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
-import { Share2, Heart, MapPin, Star, ArrowLeft } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { useWishlist } from "@/app/hooks/useWishlist";
-import { addToWishlist } from "@/app/store/features/wishlistSlice";
-import { userApi } from "@/lib/api-client";
-import toast from "react-hot-toast";
-import LoginModal from "./LoginModal";
-import { DateDestination, Room } from "@/app/hooks/usePackageList";
-import { generateShareMessage, generateShareTitle } from "@/lib/generateShareMessage";
+'use client';
+import { NEXT_PUBLIC_IMAGE_URL } from '@/app/utils/constants/apiUrls';
+import { Share2, Heart, MapPin, Star, ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { useWishlist } from '@/app/hooks/useWishlist';
+import { addToWishlist } from '@/app/store/features/wishlistSlice';
+import { userApi } from '@/lib/api-client';
+import toast from 'react-hot-toast';
+import LoginModal from './LoginModal';
+import { DateDestination, Room } from '@/app/hooks/usePackageList';
+import { generateShareMessage, generateShareTitle } from '@/lib/generateShareMessage';
 
 export default function PackageImage({
   img,
@@ -37,12 +37,8 @@ export default function PackageImage({
   const dispatch = useDispatch();
 
   // Get current search parameters from Redux
-  const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect?.room
-  );
-  const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage
-  );
+  const roomCapacityData: Room = useSelector((store: any) => store.roomSelect?.room);
+  const dateAndDestination: DateDestination = useSelector((store: any) => store.searchPackage);
   const pack = useSelector((store: any) => store.package);
 
   const { isInWishlist, toggleWishlist, isLoggedIn } = useWishlist();
@@ -86,16 +82,18 @@ export default function PackageImage({
     if (isHotelUpdated) {
       const hotelMeal = pack?.data?.hotelMeal;
       if (hotelMeal && Array.isArray(hotelMeal)) {
-        const selectedHotels = hotelMeal.map((hm: any, index: number) => {
-          if (hm.hotelId && hm.hotelRoomId) {
-            // Format: index:hotelId:roomId
-            return `${index}:${hm.hotelId}:${hm.hotelRoomId}`;
-          } else if (hm.hotelId) {
-            // Fallback to just hotel ID
-            return `${index}:${hm.hotelId}`;
-          }
-          return null;
-        }).filter(Boolean);
+        const selectedHotels = hotelMeal
+          .map((hm: any, index: number) => {
+            if (hm.hotelId && hm.hotelRoomId) {
+              // Format: index:hotelId:roomId
+              return `${index}:${hm.hotelId}:${hm.hotelRoomId}`;
+            } else if (hm.hotelId) {
+              // Fallback to just hotel ID
+              return `${index}:${hm.hotelId}`;
+            }
+            return null;
+          })
+          .filter(Boolean);
 
         if (selectedHotels.length > 0) {
           queryParams.set('hotels', selectedHotels.join(','));
@@ -117,7 +115,8 @@ export default function PackageImage({
     // Build final URL with query params
     const queryString = queryParams.toString();
     // Use current domain dynamically so it works on any deployment (tripxplo.com, vercel.app, localhost, etc.)
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.tripxplo.com';
+    const baseUrl =
+      typeof window !== 'undefined' ? window.location.origin : 'https://www.tripxplo.com';
     const shareUrl = `${baseUrl}/package/${identifier}${queryString ? `?${queryString}` : ''}`;
 
     const shareData = {
@@ -136,7 +135,7 @@ export default function PackageImage({
       } else {
         // Fallback: copy to clipboard
         await navigator.clipboard.writeText(shareUrl);
-        toast.success("Link copied to clipboard!");
+        toast.success('Link copied to clipboard!');
       }
     } catch (error) {
       // User cancelled share or error occurred
@@ -144,9 +143,9 @@ export default function PackageImage({
         // Fallback to clipboard
         try {
           await navigator.clipboard.writeText(shareUrl);
-          toast.success("Link copied to clipboard!");
+          toast.success('Link copied to clipboard!');
         } catch {
-          toast.error("Failed to share");
+          toast.error('Failed to share');
         }
       }
     }
@@ -173,18 +172,18 @@ export default function PackageImage({
       dispatch(addToWishlist(packageId)); // Optimistic update
       const response = await userApi.addToWishlist(packageId);
       if (response.success) {
-        toast.success("Added to wishlist!");
+        toast.success('Added to wishlist!');
       } else {
-        toast.error(response.message || "Failed to add to wishlist");
+        toast.error(response.message || 'Failed to add to wishlist');
       }
     } catch (err) {
-      console.error("Error adding to wishlist:", err);
-      toast.error("Failed to add to wishlist");
+      console.error('Error adding to wishlist:', err);
+      toast.error('Failed to add to wishlist');
     }
   };
 
   // Generate deterministic random rating and review count based on packageId
-  const generateRandomRating = (id: string = "") => {
+  const generateRandomRating = (id: string = '') => {
     let hash = 0;
     for (let i = 0; i < id.length; i++) {
       hash = id.charCodeAt(i) + ((hash << 5) - hash);
@@ -218,14 +217,16 @@ export default function PackageImage({
                 alt={packageName}
                 priority
                 sizes="100vw"
-                className={`object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                className={`object-cover transition-opacity duration-500 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
               />
             </>
           ) : (
             // Fallback gradient when no image
-            <div className="w-full h-full bg-linear-to-br from-coral-600 via-rose-600 to-purple-700" />
+            <div className="w-full h-full bg-linear-to-br from-emerald-600 via-rose-600 to-purple-700" />
           )}
 
           {/* Dark Overlay for text readability */}
@@ -248,10 +249,11 @@ export default function PackageImage({
             <div className="flex gap-2">
               <button
                 onClick={handleWishlistClick}
-                className={`p-3 min-w-[44px] min-h-[44px] rounded-xl backdrop-blur-md transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 ${isWishlisted
-                  ? 'bg-coral-500 text-white'
-                  : 'bg-white/10 hover:bg-white/20 text-white'
-                  }`}
+                className={`p-3 min-w-[44px] min-h-[44px] rounded-xl backdrop-blur-md transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 ${
+                  isWishlisted
+                    ? 'bg-emerald-500 text-white'
+                    : 'bg-white/10 hover:bg-white/20 text-white'
+                }`}
               >
                 <Heart size={20} className={isWishlisted ? 'fill-current' : ''} />
               </button>
@@ -283,7 +285,7 @@ export default function PackageImage({
             {/* Location */}
             {location && (
               <div className="flex items-center gap-2 mt-3 text-white/80">
-                <MapPin size={16} className="text-coral-400" />
+                <MapPin size={16} className="text-emerald-400" />
                 <span className="text-sm md:text-base">{location}</span>
               </div>
             )}

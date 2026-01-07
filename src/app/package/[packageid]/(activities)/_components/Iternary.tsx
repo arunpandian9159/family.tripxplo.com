@@ -1,6 +1,6 @@
-"use client";
-import React, { useState, useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+'use client';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Sunrise,
   Sun,
@@ -18,27 +18,22 @@ import {
   IndianRupee,
   Check,
   Users,
-} from "lucide-react";
-import Image from "next/image";
-import { ActivityEvent } from "@/app/types/pack";
-import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
+} from 'lucide-react';
+import Image from 'next/image';
+import { ActivityEvent } from '@/app/types/pack';
+import { NEXT_PUBLIC_IMAGE_URL } from '@/app/utils/constants/apiUrls';
 import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { changeActivityAndCalculatePrice } from "@/app/store/features/packageSlice";
-import { AppDispatch } from "@/app/store/store";
-import { apiRequest } from "@/lib/api-client";
-import { DateDestination, Room } from "@/app/hooks/usePackageList";
+} from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { changeActivityAndCalculatePrice } from '@/app/store/features/packageSlice';
+import { AppDispatch } from '@/app/store/store';
+import { apiRequest } from '@/lib/api-client';
+import { DateDestination, Room } from '@/app/hooks/usePackageList';
 
 interface IternaryProps {
   events: ActivityEvent[];
@@ -59,40 +54,40 @@ const timeConfig: Record<
 > = {
   morning: {
     icon: Sunrise,
-    gradient: "from-amber-400 to-orange-400",
-    bgLight: "bg-amber-50",
-    textColor: "text-amber-600",
-    label: "Morning",
-    borderColor: "border-amber-200",
+    gradient: 'from-amber-400 to-orange-400',
+    bgLight: 'bg-amber-50',
+    textColor: 'text-amber-600',
+    label: 'Morning',
+    borderColor: 'border-amber-200',
   },
   noon: {
     icon: Sun,
-    gradient: "from-orange-400 to-rose-400",
-    bgLight: "bg-orange-50",
-    textColor: "text-orange-600",
-    label: "Afternoon",
-    borderColor: "border-orange-200",
+    gradient: 'from-orange-400 to-rose-400',
+    bgLight: 'bg-orange-50',
+    textColor: 'text-orange-600',
+    label: 'Afternoon',
+    borderColor: 'border-orange-200',
   },
   evening: {
     icon: Sunset,
-    gradient: "from-rose-400 to-purple-400",
-    bgLight: "bg-rose-50",
-    textColor: "text-rose-600",
-    label: "Evening",
-    borderColor: "border-rose-200",
+    gradient: 'from-rose-400 to-purple-400',
+    bgLight: 'bg-rose-50',
+    textColor: 'text-rose-600',
+    label: 'Evening',
+    borderColor: 'border-rose-200',
   },
   night: {
     icon: Moon,
-    gradient: "from-indigo-400 to-purple-400",
-    bgLight: "bg-indigo-50",
-    textColor: "text-indigo-600",
-    label: "Night",
-    borderColor: "border-indigo-200",
+    gradient: 'from-indigo-400 to-purple-400',
+    bgLight: 'bg-indigo-50',
+    textColor: 'text-indigo-600',
+    label: 'Night',
+    borderColor: 'border-indigo-200',
   },
 };
 
 const getTimeConfig = (timePeriod: string) => {
-  const key = timePeriod?.toLowerCase() || "morning";
+  const key = timePeriod?.toLowerCase() || 'morning';
   return timeConfig[key] || timeConfig.morning;
 };
 
@@ -115,17 +110,10 @@ const Iternary = ({ events, day }: IternaryProps) => {
       {/* Horizontal scrollable container for activity cards */}
       <div className="flex gap-4 lg:gap-6 overflow-x-auto pb-4 no-scrollbar">
         {events.map((event, index) =>
-          event?.activityType === "allocated" ? (
-            <AllocatedActivityCard
-              key={event?.activityId || index}
-              event={event}
-            />
+          event?.activityType === 'allocated' ? (
+            <AllocatedActivityCard key={event?.activityId || index} event={event} />
           ) : (
-            <FreeSlotCard
-              key={event?.activityId || index}
-              event={event}
-              day={day}
-            />
+            <FreeSlotCard key={event?.activityId || index} event={event} day={day} />
           )
         )}
       </div>
@@ -147,7 +135,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
             <div className="relative h-[120px] lg:h-[160px] overflow-hidden">
               <img
                 src={NEXT_PUBLIC_IMAGE_URL + event?.image}
-                alt={event?.name || "Activity"}
+                alt={event?.name || 'Activity'}
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
               />
 
@@ -159,9 +147,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
                 className={`absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 ${config.bgLight} rounded-lg border ${config.borderColor} backdrop-blur-sm`}
               >
                 <IconComponent className={`w-3.5 h-3.5 ${config.textColor}`} />
-                <span className={`text-xs font-semibold ${config.textColor}`}>
-                  {config.label}
-                </span>
+                <span className={`text-xs font-semibold ${config.textColor}`}>{config.label}</span>
               </div>
 
               {/* View Details Hint */}
@@ -174,27 +160,22 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
             {/* Content */}
             <div className="p-4 lg:p-5">
               {/* Activity Name */}
-              <h4 className="font-bold text-slate-800 text-sm lg:text-base line-clamp-1 mb-2 group-hover:text-coral-600 transition-colors">
+              <h4 className="font-bold text-slate-800 text-sm lg:text-base line-clamp-1 mb-2 group-hover:text-emerald-600 transition-colors">
                 {event?.name}
               </h4>
 
               {/* Description */}
               <p className="text-slate-500 text-xs lg:text-sm line-clamp-2 leading-relaxed">
-                {event?.description ||
-                  "Discover amazing experiences during your trip."}
+                {event?.description || 'Discover amazing experiences during your trip.'}
               </p>
 
               {/* Activity Info */}
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
                 <div className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="text-xs text-slate-400">
-                    {event?.timePeriod}
-                  </span>
+                  <span className="text-xs text-slate-400">{event?.timePeriod}</span>
                 </div>
-                <div
-                  className={`w-2 h-2 rounded-full bg-linear-to-r ${config.gradient}`}
-                />
+                <div className={`w-2 h-2 rounded-full bg-linear-to-r ${config.gradient}`} />
               </div>
             </div>
           </div>
@@ -208,7 +189,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
           <div className="relative h-[200px] lg:h-[300px]">
             <img
               src={NEXT_PUBLIC_IMAGE_URL + event?.image}
-              alt={event?.name || "Activity"}
+              alt={event?.name || 'Activity'}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
@@ -218,9 +199,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
               className={`absolute top-4 left-4 flex items-center gap-2 px-3 py-2 ${config.bgLight} rounded-xl border ${config.borderColor}`}
             >
               <IconComponent className={`w-4 h-4 ${config.textColor}`} />
-              <span className={`text-sm font-semibold ${config.textColor}`}>
-                {config.label}
-              </span>
+              <span className={`text-sm font-semibold ${config.textColor}`}>{config.label}</span>
             </div>
 
             {/* Title Overlay */}
@@ -234,9 +213,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
           {/* Content */}
           <div className="p-6 lg:p-8 bg-white">
             <div className="flex items-center gap-4 mb-4">
-              <div
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${config.bgLight}`}
-              >
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${config.bgLight}`}>
                 <Clock className={`w-4 h-4 ${config.textColor}`} />
                 <span className={`text-sm font-medium ${config.textColor}`}>
                   {event?.timePeriod}
@@ -244,22 +221,20 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
               </div>
               {event?.price > 0 && (
                 <div className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-50">
-                  <span className="text-sm font-semibold text-emerald-600">
-                    ₹{event?.price}
-                  </span>
+                  <span className="text-sm font-semibold text-emerald-600">₹{event?.price}</span>
                 </div>
               )}
             </div>
 
             <p className="text-slate-600 text-base lg:text-lg leading-relaxed">
               {event?.description ||
-                "Discover amazing experiences during your trip. This activity promises unforgettable memories."}
+                'Discover amazing experiences during your trip. This activity promises unforgettable memories.'}
             </p>
           </div>
 
           {/* Footer */}
           <AlertDialogFooter className="p-4 lg:p-6 pt-0 bg-white">
-            <AlertDialogCancel className="w-full py-4 rounded-xl bg-linear-to-r from-coral-500 to-rose-500 text-white font-semibold border-0 hover:from-coral-600 hover:to-rose-600 shadow-lg shadow-coral-500/25 transition-all hover:shadow-xl">
+            <AlertDialogCancel className="w-full py-4 rounded-xl bg-linear-to-r from-emerald-500 to-rose-500 text-white font-semibold border-0 hover:from-emerald-600 hover:to-rose-600 shadow-lg shadow-emerald-500/25 transition-all hover:shadow-xl">
               Close
             </AlertDialogCancel>
           </AlertDialogFooter>
@@ -270,13 +245,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
 };
 
 // Free Slot Card with Add Activity Modal
-const FreeSlotCard = ({
-  event,
-  day,
-}: {
-  event: ActivityEvent;
-  day: number;
-}) => {
+const FreeSlotCard = ({ event, day }: { event: ActivityEvent; day: number }) => {
   const config = getTimeConfig(event?.timePeriod);
   const IconComponent = config.icon;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -301,19 +270,13 @@ const FreeSlotCard = ({
             {/* Time Period Badge */}
             <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4">
               <IconComponent className="w-4 h-4 text-white" />
-              <span className="text-sm font-semibold text-white">
-                {config.label} Slot
-              </span>
+              <span className="text-sm font-semibold text-white">{config.label} Slot</span>
             </div>
 
             {/* Main Message */}
             <div className="text-center mb-6">
-              <h4 className="text-lg lg:text-xl font-bold text-white mb-2">
-                Free Slot Available
-              </h4>
-              <p className="text-white/80 text-sm lg:text-base">
-                Add an exciting activity!
-              </p>
+              <h4 className="text-lg lg:text-xl font-bold text-white mb-2">Free Slot Available</h4>
+              <p className="text-white/80 text-sm lg:text-base">Add an exciting activity!</p>
             </div>
 
             {/* Add Button */}
@@ -330,7 +293,7 @@ const FreeSlotCard = ({
             <div className="absolute bottom-8 right-6">
               <Sparkles
                 className="w-4 h-4 text-white/40 animate-pulse"
-                style={{ animationDelay: "0.5s" }}
+                style={{ animationDelay: '0.5s' }}
               />
             </div>
           </div>
@@ -369,16 +332,12 @@ const AddActivityModal = ({
   const [activities, setActivities] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedActivity, setSelectedActivity] = useState<any>(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const dispatch = useDispatch<AppDispatch>();
   const activityData = useSelector((store: any) => store.activity);
-  const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room
-  );
-  const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage
-  );
+  const roomCapacityData: Room = useSelector((store: any) => store.roomSelect.room);
+  const dateAndDestination: DateDestination = useSelector((store: any) => store.searchPackage);
 
   const config = getTimeConfig(timePeriod);
   const IconComponent = config.icon;
@@ -392,11 +351,10 @@ const AddActivityModal = ({
       // Use fallback of 2 for perRoom when it's 0 (default) - matches usePackageList.ts logic
       const effectivePerRoom = roomCapacityData.perRoom || 2;
       const extraAdult =
-        roomCapacityData.totalAdults -
-        roomCapacityData.totalRooms * effectivePerRoom;
+        roomCapacityData.totalAdults - roomCapacityData.totalRooms * effectivePerRoom;
       const queryParams = new URLSearchParams({
-        noOfNight: "1",
-        startDate: dateAndDestination.date?.slice(0, 10) || "",
+        noOfNight: '1',
+        startDate: dateAndDestination.date?.slice(0, 10) || '',
         noOfChild: (roomCapacityData.totalChilds || 0).toString(),
         noRoomCount: (roomCapacityData.totalRooms || 1).toString(),
         noExtraAdult: (extraAdult > 0 ? extraAdult : 0).toString(),
@@ -414,17 +372,11 @@ const AddActivityModal = ({
         setActivities(filteredActivities);
       }
     } catch (err) {
-      console.error("Error fetching activities:", err);
+      console.error('Error fetching activities:', err);
     } finally {
       setIsLoading(false);
     }
-  }, [
-    isOpen,
-    activityData.packageId,
-    destinationId,
-    roomCapacityData,
-    dateAndDestination,
-  ]);
+  }, [isOpen, activityData.packageId, destinationId, roomCapacityData, dateAndDestination]);
 
   useEffect(() => {
     fetchActivities();
@@ -436,7 +388,7 @@ const AddActivityModal = ({
     onClose();
   };
 
-  const filteredActivities = activities.filter((activity) =>
+  const filteredActivities = activities.filter(activity =>
     activity.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -479,8 +431,8 @@ const AddActivityModal = ({
                 type="text"
                 placeholder="Search activities..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 transition-all"
+                onChange={e => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
               />
             </div>
           </div>
@@ -490,32 +442,24 @@ const AddActivityModal = ({
         <div className="p-6 overflow-y-auto max-h-[60vh]">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-16">
-              <Loader2 className="w-10 h-10 text-coral-500 animate-spin mb-4" />
-              <p className="text-slate-500 font-medium">
-                Loading activities...
-              </p>
+              <Loader2 className="w-10 h-10 text-emerald-500 animate-spin mb-4" />
+              <p className="text-slate-500 font-medium">Loading activities...</p>
             </div>
           ) : filteredActivities.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
               <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
                 <MapPin className="w-8 h-8 text-slate-400" />
               </div>
-              <p className="text-slate-700 font-semibold mb-1">
-                No activities found
-              </p>
-              <p className="text-slate-500 text-sm">
-                Try adjusting your search
-              </p>
+              <p className="text-slate-700 font-semibold mb-1">No activities found</p>
+              <p className="text-slate-500 text-sm">Try adjusting your search</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredActivities.map((activity) => (
+              {filteredActivities.map(activity => (
                 <ActivityCard
                   key={activity.activityId}
                   activity={activity}
-                  isSelected={
-                    selectedActivity?.activityId === activity.activityId
-                  }
+                  isSelected={selectedActivity?.activityId === activity.activityId}
                   onSelect={() => handleSelectActivity(activity)}
                 />
               ))}
@@ -527,9 +471,8 @@ const AddActivityModal = ({
         <div className="sticky bottom-0 p-4 bg-white border-t border-slate-100">
           <div className="flex items-center justify-between">
             <p className="text-sm text-slate-500">
-              {filteredActivities.length}{" "}
-              {filteredActivities.length === 1 ? "activity" : "activities"}{" "}
-              available
+              {filteredActivities.length}{' '}
+              {filteredActivities.length === 1 ? 'activity' : 'activities'} available
             </p>
             <button
               onClick={onClose}
@@ -560,21 +503,19 @@ const ActivityCard = ({
     <div
       className={`group relative bg-white rounded-2xl border overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer ${
         isSelected
-          ? "border-emerald-500 ring-2 ring-emerald-500/20"
-          : "border-slate-100 hover:border-slate-200"
+          ? 'border-emerald-500 ring-2 ring-emerald-500/20'
+          : 'border-slate-100 hover:border-slate-200'
       }`}
     >
       {/* Image */}
       <div className="relative h-36 overflow-hidden">
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-slate-200 animate-pulse" />
-        )}
+        {!imageLoaded && <div className="absolute inset-0 bg-slate-200 animate-pulse" />}
         <Image
           src={NEXT_PUBLIC_IMAGE_URL + activity?.image}
           alt={activity?.name}
           fill
           className={`object-cover transition-all duration-500 group-hover:scale-105 ${
-            imageLoaded ? "opacity-100" : "opacity-0"
+            imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           onLoad={() => setImageLoaded(true)}
         />
@@ -585,11 +526,11 @@ const ActivityCard = ({
           <span
             className={`px-2 py-1 text-xs font-semibold rounded-md ${
               activity?.isPrivate
-                ? "bg-purple-100 text-purple-700"
-                : "bg-emerald-100 text-emerald-700"
+                ? 'bg-purple-100 text-purple-700'
+                : 'bg-emerald-100 text-emerald-700'
             }`}
           >
-            {activity?.isPrivate ? "Private" : "Public"}
+            {activity?.isPrivate ? 'Private' : 'Public'}
           </span>
         </div>
 
@@ -603,7 +544,7 @@ const ActivityCard = ({
 
       {/* Content */}
       <div className="p-4">
-        <h4 className="font-bold text-slate-800 line-clamp-1 mb-2 group-hover:text-coral-600 transition-colors">
+        <h4 className="font-bold text-slate-800 line-clamp-1 mb-2 group-hover:text-emerald-600 transition-colors">
           {activity?.name}
         </h4>
 
@@ -629,20 +570,16 @@ const ActivityCard = ({
             {activity?.price > 0 ? (
               <>
                 <span className="text-xs text-slate-400">+</span>
-                <IndianRupee className="w-3.5 h-3.5 text-coral-500" />
-                <span className="font-bold text-coral-600">
-                  {activity.price}
-                </span>
+                <IndianRupee className="w-3.5 h-3.5 text-emerald-500" />
+                <span className="font-bold text-emerald-600">{activity.price}</span>
               </>
             ) : (
-              <span className="text-sm text-emerald-600 font-medium">
-                Included
-              </span>
+              <span className="text-sm text-emerald-600 font-medium">Included</span>
             )}
           </div>
 
           <button
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
               onSelect();
             }}

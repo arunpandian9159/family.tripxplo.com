@@ -93,7 +93,7 @@ const GoogleSignIn = ({ onSuccess }: GoogleSignInProps) => {
   if (isVerifying) {
     return (
       <div className="flex w-full gap-3 items-center justify-center p-3 border border-slate-200 rounded-xl bg-slate-50">
-        <span className="w-5 h-5 border-2 border-slate-300 border-t-coral-500 rounded-full animate-spin" />
+        <span className="w-5 h-5 border-2 border-slate-300 border-t-emerald-500 rounded-full animate-spin" />
         <span className="font-medium text-slate-700">Completing sign in...</span>
       </div>
     );

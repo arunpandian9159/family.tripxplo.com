@@ -160,7 +160,7 @@ const FilterCardList = ({
 
         {/* Location badge */}
         <div className="absolute top-3 left-3 flex items-center gap-1 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-medium text-slate-700">
-          <FaLocationDot size={10} className="text-coral-500" />
+          <FaLocationDot size={10} className="text-emerald-500" />
           {hotel?.location?.state}
         </div>
 
@@ -204,8 +204,8 @@ const FilterCardList = ({
 
         {/* Meal Plan */}
         <div className="flex items-center gap-2 mb-3">
-          <Soup size={14} className="text-coral-500" />
-          <span className="text-sm font-medium text-coral-600">
+          <Soup size={14} className="text-emerald-500" />
+          <span className="text-sm font-medium text-emerald-600">
             {selectedMealPlan?.mealPlan && mealPlans[selectedMealPlan.mealPlan]}
           </span>
         </div>
@@ -221,7 +221,7 @@ const FilterCardList = ({
           {hotel?.viewPoint?.slice(0, 2).map((view, idx) => (
             <span
               key={idx}
-              className="px-2 py-0.5 bg-coral-50 text-coral-600 text-xs font-medium rounded-md border border-coral-100"
+              className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-xs font-medium rounded-md border border-emerald-100"
             >
               {view}
             </span>
@@ -248,18 +248,18 @@ const FilterCardList = ({
               <>
                 <span
                   className={`text-xs font-medium ${
-                    mealPlanPrice > 0 ? 'text-coral-500' : 'text-emerald-500'
+                    mealPlanPrice > 0 ? 'text-emerald-500' : 'text-emerald-500'
                   }`}
                 >
                   {mealPlanPrice > 0 ? '+' : '-'}
                 </span>
                 <FaIndianRupeeSign
                   size={11}
-                  className={mealPlanPrice > 0 ? 'text-coral-500' : 'text-emerald-500'}
+                  className={mealPlanPrice > 0 ? 'text-emerald-500' : 'text-emerald-500'}
                 />
                 <span
                   className={`text-sm font-bold ${
-                    mealPlanPrice > 0 ? 'text-coral-500' : 'text-emerald-500'
+                    mealPlanPrice > 0 ? 'text-emerald-500' : 'text-emerald-500'
                   }`}
                 >
                   {Math.abs(Math.ceil(mealPlanPrice))}

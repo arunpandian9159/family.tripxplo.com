@@ -150,15 +150,15 @@ const MealPlanDropdown = ({
                   className={`w-full flex items-center justify-between px-3 py-2 hover:bg-slate-50 transition-colors ${index < mealPlans.length - 1
                     ? "border-b border-slate-50"
                     : ""
-                    } ${isSelected ? "bg-coral-50" : ""}`}
+                    } ${isSelected ? "bg-emerald-50" : ""}`}
                 >
                   <span
-                    className={`text-xs font-medium ${isSelected ? "text-coral-600" : "text-slate-600"
+                    className={`text-xs font-medium ${isSelected ? "text-emerald-600" : "text-slate-600"
                       }`}
                   >
                     {planConfig.shortLabel}
                   </span>
-                  {isSelected && <Check size={12} className="text-coral-500" />}
+                  {isSelected && <Check size={12} className="text-emerald-500" />}
                 </button>
               );
             })}
@@ -184,7 +184,7 @@ const MealDot = ({
 
   return (
     <div
-      className={`px-2.5 py-1 rounded-full flex items-center justify-center text-[10px] font-semibold transition-all ${isIncluded ? "bg-coral-500 text-white" : "bg-slate-100 text-slate-400"
+      className={`px-2.5 py-1 rounded-full flex items-center justify-center text-[10px] font-semibold transition-all ${isIncluded ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-400"
         }`}
     >
       {labels[type]}
@@ -355,7 +355,7 @@ const RoomCard = ({
           <div>
             {mealPlanPrice !== 0 ? (
               <span
-                className={`text-lg font-bold ${mealPlanPrice > 0 ? "text-coral-500" : "text-emerald-500"
+                className={`text-lg font-bold ${mealPlanPrice > 0 ? "text-emerald-500" : "text-emerald-500"
                   }`}
               >
                 {mealPlanPrice > 0 ? "+" : "-"}₹{Math.abs(Math.ceil(mealPlanPrice))}
@@ -371,7 +371,7 @@ const RoomCard = ({
           {!isSelected && (
             <button
               onClick={() => onSelect(selectedMealPlan)}
-              className="px-4 py-2 bg-linear-to-r from-coral-500 to-coral-400 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-coral-500/20 transition-all press-effect"
+              className="px-4 py-2 bg-linear-to-r from-emerald-500 to-emerald-400 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-emerald-500/20 transition-all press-effect"
             >
               Select Room
             </button>
@@ -449,7 +449,7 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
                 Select Room Type
               </DialogTitle>
               <p className="text-sm text-slate-500 mt-0.5">
-                <span className="text-coral-500 font-semibold">
+                <span className="text-emerald-500 font-semibold">
                   {newHotel?.hotelName || hotel?.hotelName}
                 </span>
                 {" · "}
@@ -471,8 +471,8 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
         <div className="overflow-y-auto p-6 max-h-[calc(90vh-80px)]">
           {isLoading || loading ? (
             <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl">
-              <div className="w-14 h-14 rounded-full bg-linear-to-br from-coral-100 to-coral-50 flex items-center justify-center mb-4">
-                <Loader2 className="h-7 w-7 animate-spin text-coral-500" />
+              <div className="w-14 h-14 rounded-full bg-linear-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mb-4">
+                <Loader2 className="h-7 w-7 animate-spin text-emerald-500" />
               </div>
               <p className="text-slate-600 font-semibold">Loading Rooms</p>
               <p className="text-slate-400 text-sm mt-1">

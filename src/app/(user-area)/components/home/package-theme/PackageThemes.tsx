@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
-import { getInterest } from "@/app/actions/get-interest";
-import { cn } from "@/lib/utils";
-import { selectTheme, selectThemeId } from "@/app/store/features/selectThemeSlice";
-import { RootState } from "@/app/store/store";
-import { selectPerRooom, selectAdultsChild } from "@/app/store/features/roomCapacitySlice";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
+import { getInterest } from '@/app/actions/get-interest';
+import { cn } from '@/lib/utils';
+import { selectTheme, selectThemeId } from '@/app/store/features/selectThemeSlice';
+import { RootState } from '@/app/store/store';
+import { selectPerRooom, selectAdultsChild } from '@/app/store/features/roomCapacitySlice';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export interface Interest {
   image: string;
@@ -32,9 +32,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const themeSelected = useSelector(
-    (state: RootState) => state.themeSelect.theme
-  );
+  const themeSelected = useSelector((state: RootState) => state.themeSelect.theme);
   const [focused, setFocused] = useState(themeSelected);
   const [selectedTheme, setSelectedTheme] = useState(themeSelected);
   const [selectedThemeId, setSelectedThemeId] = useState<string | null>(null);
@@ -43,7 +41,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
   const [rooms, setRooms] = useState(1);
 
   const { data: themes, isLoading } = useQuery<Interest[]>({
-    queryKey: ["fetch Interest"],
+    queryKey: ['fetch Interest'],
     queryFn: getInterest,
   });
 
@@ -52,7 +50,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     const checkScroll = () => {
       if (containerRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
@@ -63,10 +61,10 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
 
     checkMobile();
     checkScroll();
-    
+
     window.addEventListener('resize', checkMobile);
     window.addEventListener('resize', checkScroll);
-    
+
     return () => {
       window.removeEventListener('resize', checkMobile);
       window.removeEventListener('resize', checkScroll);
@@ -87,7 +85,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
     container.addEventListener('scroll', handleScroll);
     // Initial check after themes load
     setTimeout(handleScroll, 100);
-    
+
     return () => container.removeEventListener('scroll', handleScroll);
   }, [themes]);
 
@@ -111,13 +109,15 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
       setAdults(2);
       setChildren(0);
       setRooms(1);
-      dispatch(selectAdultsChild({
-        room: {
-          adult: 2,
-          child: 0,
-          room: 1,
-        },
-      }));
+      dispatch(
+        selectAdultsChild({
+          room: {
+            adult: 2,
+            child: 0,
+            room: 1,
+          },
+        })
+      );
       if (theme.perRoom) {
         dispatch(selectPerRooom(theme.perRoom));
       }
@@ -125,24 +125,28 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
       setAdults(2);
       setChildren(2);
       setRooms(1);
-      dispatch(selectAdultsChild({
-        room: {
-          adult: 2,
-          child: 2,
-          room: 1,
-        },
-      }));
+      dispatch(
+        selectAdultsChild({
+          room: {
+            adult: 2,
+            child: 2,
+            room: 1,
+          },
+        })
+      );
     } else if (theme.name === 'Friends') {
       setAdults(4);
       setChildren(0);
       setRooms(2);
-      dispatch(selectAdultsChild({
-        room: {
-          adult: 4,
-          child: 0,
-          room: 2,
-        },
-      }));
+      dispatch(
+        selectAdultsChild({
+          room: {
+            adult: 4,
+            child: 0,
+            room: 2,
+          },
+        })
+      );
     }
   };
 
@@ -169,13 +173,10 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
   // Loading skeleton for mobile
   const LoadingSkeleton = () => (
     <div className="flex items-center gap-2 md:gap-3">
-      {[1, 2, 3, 4].map((i) => (
-        <Skeleton 
-          key={i} 
-          className={cn(
-            "rounded-full flex-shrink-0",
-            isMobile ? "w-24 h-11" : "w-28 h-10"
-          )} 
+      {[1, 2, 3, 4].map(i => (
+        <Skeleton
+          key={i}
+          className={cn('rounded-full shrink-0', isMobile ? 'w-24 h-11' : 'w-28 h-10')}
         />
       ))}
     </div>
@@ -194,11 +195,11 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
       )}
 
       {/* Themes container */}
-      <div 
+      <div
         ref={containerRef}
         className={cn(
-          "flex items-center gap-2 md:gap-3 overflow-x-auto no-scrollbar py-1",
-          isMobile ? "px-1 snap-x snap-mandatory" : "justify-center px-8"
+          'flex items-center gap-2 md:gap-3 overflow-x-auto no-scrollbar py-1',
+          isMobile ? 'px-1 snap-x snap-mandatory' : 'justify-center px-8'
         )}
         style={{
           scrollbarWidth: 'none',
@@ -211,52 +212,52 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
           (themes || [])
             .slice()
             .sort((a, b) => {
-              const order: Record<string, number> = { 'Honeymoon': 1, 'Couple': 2, 'Family': 3, 'Friends': 4 };
+              const order: Record<string, number> = {
+                Honeymoon: 1,
+                Couple: 2,
+                Family: 3,
+                Friends: 4,
+              };
               return (order[a.name] || 99) - (order[b.name] || 99);
             })
-            .map((theme) => (
-            <button
-              key={theme.id}
-              onClick={() => handleThemeFocus(theme)}
-              className={cn(
-                "flex-shrink-0 flex items-center gap-2 md:gap-2.5 transition-all duration-300 border snap-start",
-                // Mobile: Larger touch targets
-                isMobile 
-                  ? "px-4 py-3 rounded-2xl min-w-[90px]"
-                  : "px-4 py-2.5 rounded-full",
-                // Selected state
-                focused === theme.name
-                  ? "bg-gradient-to-r from-coral-500 to-coral-400 text-white border-transparent shadow-lg shadow-coral-500/30 scale-[1.02]"
-                  : "bg-white border-slate-200 text-slate-600 hover:border-coral-200 hover:bg-coral-50 active:scale-95"
-              )}
-            >
-              <div className={cn(
-                "relative flex-shrink-0",
-                isMobile ? "h-5 w-5" : "h-4 w-4"
-              )}>
-                {theme.image !== undefined && (
-                  <Image
-                    loading="eager"
-                    fill
-                    className={cn(
-                      "object-contain transition-all",
-                      focused === theme.name
-                        ? "brightness-0 invert"
-                        : "opacity-60"
-                    )}
-                    alt={theme.name}
-                    src={`https://tripemilestone.in-maa-1.linodeobjects.com/${theme.image}`}
-                  />
+            .map(theme => (
+              <button
+                key={theme.id}
+                onClick={() => handleThemeFocus(theme)}
+                className={cn(
+                  'shrink-0 flex items-center gap-2 md:gap-2.5 transition-all duration-300 border snap-start',
+                  // Mobile: Larger touch targets
+                  isMobile ? 'px-4 py-3 rounded-2xl min-w-[90px]' : 'px-4 py-2.5 rounded-full',
+                  // Selected state
+                  focused === theme.name
+                    ? 'bg-linear-to-r from-emerald-500 to-emerald-400 text-white border-transparent shadow-lg shadow-emerald-500/30 scale-[1.02]'
+                    : 'bg-white border-slate-200 text-slate-600 hover:border-emerald-200 hover:bg-emerald-50 active:scale-95'
                 )}
-              </div>
-              <span className={cn(
-                "font-semibold whitespace-nowrap",
-                isMobile ? "text-sm" : "text-sm"
-              )}>
-                {theme.name}
-              </span>
-            </button>
-          ))
+              >
+                <div className={cn('relative shrink-0', isMobile ? 'h-5 w-5' : 'h-4 w-4')}>
+                  {theme.image !== undefined && (
+                    <Image
+                      loading="eager"
+                      fill
+                      className={cn(
+                        'object-contain transition-all',
+                        focused === theme.name ? 'brightness-0 invert' : 'opacity-60'
+                      )}
+                      alt={theme.name}
+                      src={`https://tripemilestone.in-maa-1.linodeobjects.com/${theme.image}`}
+                    />
+                  )}
+                </div>
+                <span
+                  className={cn(
+                    'font-semibold whitespace-nowrap',
+                    isMobile ? 'text-sm' : 'text-sm'
+                  )}
+                >
+                  {theme.name}
+                </span>
+              </button>
+            ))
         )}
       </div>
 
@@ -274,10 +275,10 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
       {isMobile && (
         <>
           {showLeftArrow && (
-            <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white to-transparent pointer-events-none z-[5]" />
+            <div className="absolute left-0 top-0 bottom-0 w-6 bg-linear-to-r from-white to-transparent pointer-events-none z-5" />
           )}
           {showRightArrow && (
-            <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white to-transparent pointer-events-none z-[5]" />
+            <div className="absolute right-0 top-0 bottom-0 w-6 bg-linear-to-l from-white to-transparent pointer-events-none z-5" />
           )}
         </>
       )}

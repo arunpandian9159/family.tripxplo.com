@@ -1,17 +1,8 @@
-"use client";
-import { Destination } from "@/app/types/package";
-import Link from "next/link";
-import { Activity } from "@/app/types/pack";
-import {
-  Sunrise,
-  Sun,
-  Sunset,
-  Moon,
-  ChevronRight,
-  MapPin,
-  Calendar,
-  Clock
-} from "lucide-react";
+'use client';
+import { Destination } from '@/app/types/package';
+import Link from 'next/link';
+import { Activity } from '@/app/types/pack';
+import { Sunrise, Sun, Sunset, Moon, ChevronRight, MapPin, Calendar, Clock } from 'lucide-react';
 
 export default function IternaryStory({
   destinations,
@@ -20,17 +11,19 @@ export default function IternaryStory({
   destinations?: Destination[];
   activity?: Activity[];
 }) {
-  const location =
-    typeof window !== "undefined" ? window.location.pathname : "";
+  const location = typeof window !== 'undefined' ? window.location.pathname : '';
 
   const activities = activity || [];
 
   // Time period icons and colors
-  const timeConfig: Record<string, { icon: React.ComponentType<any>; color: string; bg: string; label: string }> = {
-    morning: { icon: Sunrise, color: "text-amber-500", bg: "bg-amber-50", label: "Morning" },
-    afternoon: { icon: Sun, color: "text-orange-500", bg: "bg-orange-50", label: "Afternoon" },
-    evening: { icon: Sunset, color: "text-rose-500", bg: "bg-rose-50", label: "Evening" },
-    night: { icon: Moon, color: "text-indigo-500", bg: "bg-indigo-50", label: "Night" },
+  const timeConfig: Record<
+    string,
+    { icon: React.ComponentType<any>; color: string; bg: string; label: string }
+  > = {
+    morning: { icon: Sunrise, color: 'text-amber-500', bg: 'bg-amber-50', label: 'Morning' },
+    afternoon: { icon: Sun, color: 'text-orange-500', bg: 'bg-orange-50', label: 'Afternoon' },
+    evening: { icon: Sunset, color: 'text-rose-500', bg: 'bg-rose-50', label: 'Evening' },
+    night: { icon: Moon, color: 'text-indigo-500', bg: 'bg-indigo-50', label: 'Night' },
   };
 
   const getTimeConfig = (timePeriod: string) => {
@@ -43,10 +36,10 @@ export default function IternaryStory({
       {/* Itinerary Preview Card */}
       <div className="bg-linear-to-br from-white to-slate-50 rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-100 bg-linear-to-r from-coral-50 to-white">
+        <div className="px-6 py-5 border-b border-slate-100 bg-linear-to-r from-emerald-50 to-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-linear-to-br from-coral-500 to-rose-500 rounded-xl text-white shadow-lg shadow-coral-500/25">
+              <div className="p-2.5 bg-linear-to-br from-emerald-500 to-rose-500 rounded-xl text-white shadow-lg shadow-emerald-500/25">
                 <Calendar size={20} />
               </div>
               <div>
@@ -68,7 +61,9 @@ export default function IternaryStory({
                 <Calendar size={32} className="text-slate-400" />
               </div>
               <p className="text-slate-500 font-medium">No activities scheduled yet</p>
-              <p className="text-slate-400 text-sm mt-1">Activities will appear here once planned</p>
+              <p className="text-slate-400 text-sm mt-1">
+                Activities will appear here once planned
+              </p>
             </div>
           ) : (
             <div className="space-y-6">
@@ -76,7 +71,7 @@ export default function IternaryStory({
               {[...activities]
                 .sort((a, b) => (a.day || 1) - (b.day || 1))
                 .slice(0, 2)
-                .map((dayActivity) => {
+                .map(dayActivity => {
                   if (!dayActivity) return null;
                   const events = Array.isArray(dayActivity.event) ? dayActivity.event : [];
 
@@ -88,8 +83,12 @@ export default function IternaryStory({
                           {dayActivity.day || 1}
                         </div>
                         <div>
-                          <h4 className="font-semibold text-slate-800">Day {dayActivity.day || 1}</h4>
-                          <p className="text-xs text-slate-400">{events.length} activities planned</p>
+                          <h4 className="font-semibold text-slate-800">
+                            Day {dayActivity.day || 1}
+                          </h4>
+                          <p className="text-xs text-slate-400">
+                            {events.length} activities planned
+                          </p>
                         </div>
                       </div>
 
@@ -112,7 +111,9 @@ export default function IternaryStory({
                                 <IconComponent size={16} className={config.color} />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <span className={`text-xs font-semibold ${config.color} uppercase tracking-wider`}>
+                                <span
+                                  className={`text-xs font-semibold ${config.color} uppercase tracking-wider`}
+                                >
                                   {config.label}
                                 </span>
                                 <p className="text-sm font-medium text-slate-800 mt-0.5 line-clamp-1">
@@ -142,7 +143,8 @@ export default function IternaryStory({
                 <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-100">
                   <Clock size={16} className="text-slate-400" />
                   <span className="text-sm text-slate-500">
-                    +{activities.length - 2} more day{activities.length - 2 !== 1 ? 's' : ''} in your itinerary
+                    +{activities.length - 2} more day{activities.length - 2 !== 1 ? 's' : ''} in
+                    your itinerary
                   </span>
                 </div>
               )}

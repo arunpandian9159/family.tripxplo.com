@@ -1,16 +1,16 @@
-"use client";
-import React, { useEffect } from "react";
-import Inclusions from "./Inclusions";
-import Exclusions from "./Exclusions";
-import PackageHighlight from "./PackageHighlight";
-import HotelData from "./HotelData";
-import IternaryStory from "./IternaryStory";
-import Book from "./Book";
-import Cab from "./Cab";
-import PackageImage from "./PackageImage";
-import { PackType } from "@/app/types/pack";
-import { useDispatch, useSelector } from "react-redux";
-import { setActivity } from "@/app/store/features/activitySlice";
+'use client';
+import React, { useEffect } from 'react';
+import Inclusions from './Inclusions';
+import Exclusions from './Exclusions';
+import PackageHighlight from './PackageHighlight';
+import HotelData from './HotelData';
+import IternaryStory from './IternaryStory';
+import Book from './Book';
+import Cab from './Cab';
+import PackageImage from './PackageImage';
+import { PackType } from '@/app/types/pack';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActivity } from '@/app/store/features/activitySlice';
 import {
   Building2,
   Map,
@@ -23,8 +23,8 @@ import {
   Train,
   Utensils,
   Coffee,
-  UtensilsCrossed
-} from "lucide-react";
+  UtensilsCrossed,
+} from 'lucide-react';
 
 interface PropsType {
   pack: PackType;
@@ -35,8 +35,8 @@ const SectionHeader = ({
   icon: Icon,
   title,
   subtitle,
-  iconBg = "from-coral-500 to-rose-500",
-  action
+  iconBg = 'from-emerald-500 to-emerald-600',
+  action,
 }: {
   icon: React.ComponentType<any>;
   title: string;
@@ -67,9 +67,9 @@ const SectionDivider = () => (
     <div className="relative flex justify-center">
       <div className="bg-white px-4">
         <div className="flex gap-1.5">
-          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-coral-400 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
         </div>
       </div>
     </div>
@@ -77,12 +77,8 @@ const SectionDivider = () => (
 );
 
 const PackageDetail = ({ pack }: PropsType) => {
-  const roomCapacityAdults = useSelector(
-    (store: any) => store.roomSelect?.room?.totalAdults || 2
-  );
-  const roomCapacityChild = useSelector(
-    (store: any) => store.roomSelect?.room?.totalChilds || 0
-  );
+  const roomCapacityAdults = useSelector((store: any) => store.roomSelect?.room?.totalAdults || 2);
+  const roomCapacityChild = useSelector((store: any) => store.roomSelect?.room?.totalChilds || 0);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -111,10 +107,11 @@ const PackageDetail = ({ pack }: PropsType) => {
   }
 
   // Check if package is without flight/train based on exclusions
-  const isWithoutFlight = pack?.exclusionDetail?.some(exc =>
-    exc?.name?.toLowerCase().includes('flight') ||
-    exc?.name?.toLowerCase().includes('airfare') ||
-    exc?.name?.toLowerCase().includes('air ticket')
+  const isWithoutFlight = pack?.exclusionDetail?.some(
+    exc =>
+      exc?.name?.toLowerCase().includes('flight') ||
+      exc?.name?.toLowerCase().includes('airfare') ||
+      exc?.name?.toLowerCase().includes('air ticket')
   );
   const isWithoutTrain = pack?.exclusionDetail?.some(exc =>
     exc?.name?.toLowerCase().includes('train')
@@ -143,10 +140,8 @@ const PackageDetail = ({ pack }: PropsType) => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
         <div className="flex flex-col lg:flex-row gap-8">
-
           {/* Main Content Column */}
           <div className="flex-1 min-w-0 space-y-0">
-
             {/* Overview Card */}
             <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 lg:p-8 animate-slide-up">
               <SectionHeader
@@ -164,8 +159,11 @@ const PackageDetail = ({ pack }: PropsType) => {
                     {isWithoutFlight && <Plane size={16} className="text-amber-600" />}
                     {isWithoutTrain && <Train size={16} className="text-amber-600" />}
                     <span className="text-sm font-medium text-amber-700">
-                      {isWithoutFlight && isWithoutTrain ? 'Land Package Only' :
-                        isWithoutFlight ? 'Without Flight' : 'Without Train'}
+                      {isWithoutFlight && isWithoutTrain
+                        ? 'Land Package Only'
+                        : isWithoutFlight
+                        ? 'Without Flight'
+                        : 'Without Train'}
                     </span>
                   </div>
                 )}
@@ -181,13 +179,17 @@ const PackageDetail = ({ pack }: PropsType) => {
                     {hasBreakfast && (
                       <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
                         <Coffee size={16} className="text-emerald-600" />
-                        <span className="text-sm font-medium text-emerald-700">Breakfast Included</span>
+                        <span className="text-sm font-medium text-emerald-700">
+                          Breakfast Included
+                        </span>
                       </div>
                     )}
                     {hasDinner && (
                       <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
                         <Utensils size={16} className="text-emerald-600" />
-                        <span className="text-sm font-medium text-emerald-700">Dinner Included</span>
+                        <span className="text-sm font-medium text-emerald-700">
+                          Dinner Included
+                        </span>
                       </div>
                     )}
                   </>
@@ -215,7 +217,9 @@ const PackageDetail = ({ pack }: PropsType) => {
                   <SectionHeader
                     icon={Building2}
                     title="Hotels & Stays"
-                    subtitle={`${pack.hotelMeal.length} handpicked ${pack.hotelMeal.length === 1 ? 'stay' : 'stays'}`}
+                    subtitle={`${pack.hotelMeal.length} handpicked ${
+                      pack.hotelMeal.length === 1 ? 'stay' : 'stays'
+                    }`}
                     iconBg="from-blue-500 to-indigo-500"
                   />
                   <div className="space-y-5">
@@ -236,10 +240,7 @@ const PackageDetail = ({ pack }: PropsType) => {
                 subtitle="Day-by-day planned activities"
                 iconBg="from-emerald-500 to-teal-500"
               />
-              <IternaryStory
-                destinations={pack?.destination}
-                activity={pack?.activity}
-              />
+              <IternaryStory destinations={pack?.destination} activity={pack?.activity} />
             </div>
 
             <SectionDivider />
@@ -286,7 +287,6 @@ const PackageDetail = ({ pack }: PropsType) => {
                 <Exclusions exclusions={pack?.exclusionDetail} />
               </div>
             </div>
-
           </div>
 
           {/* Sidebar (Booking Card) */}

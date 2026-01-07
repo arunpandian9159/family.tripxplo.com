@@ -1,28 +1,14 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { useSelector, useDispatch } from "react-redux";
-import { useAvailableCab } from "@/app/hooks/useAvailableCab";
-import { VehicleDetail } from "@/app/types/vehicle";
-import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
-import {
-  Check,
-  Loader2,
-  Users,
-  Briefcase,
-  Snowflake,
-  X,
-  Car,
-  Shield,
-} from "lucide-react";
-import Image from "next/image";
-import { changeVehicleAndCalculatePrice } from "@/app/store/features/packageSlice";
-import { AppDispatch } from "@/app/store/store";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useSelector, useDispatch } from 'react-redux';
+import { useAvailableCab } from '@/app/hooks/useAvailableCab';
+import { VehicleDetail } from '@/app/types/vehicle';
+import { NEXT_PUBLIC_IMAGE_URL } from '@/app/utils/constants/apiUrls';
+import { Check, Loader2, Users, Briefcase, Snowflake, X, Car, Shield } from 'lucide-react';
+import Image from 'next/image';
+import { changeVehicleAndCalculatePrice } from '@/app/store/features/packageSlice';
+import { AppDispatch } from '@/app/store/store';
 
 interface ChangeCabModalProps {
   isOpen: boolean;
@@ -53,11 +39,16 @@ const CabCard = ({
 
   const getVehicleTypeColor = (company: string) => {
     const c = company?.toLowerCase() || '';
-    if (c.includes('suv') || c.includes('innova') || c.includes('ertiga')) return { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200' };
-    if (c.includes('sedan') || c.includes('dzire') || c.includes('etios')) return { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-200' };
-    if (c.includes('hatchback') || c.includes('swift') || c.includes('i20')) return { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-200' };
-    if (c.includes('luxury') || c.includes('fortuner') || c.includes('crysta')) return { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-200' };
-    if (c.includes('tempo') || c.includes('traveller') || c.includes('bus')) return { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-orange-200' };
+    if (c.includes('suv') || c.includes('innova') || c.includes('ertiga'))
+      return { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200' };
+    if (c.includes('sedan') || c.includes('dzire') || c.includes('etios'))
+      return { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-200' };
+    if (c.includes('hatchback') || c.includes('swift') || c.includes('i20'))
+      return { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-200' };
+    if (c.includes('luxury') || c.includes('fortuner') || c.includes('crysta'))
+      return { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-200' };
+    if (c.includes('tempo') || c.includes('traveller') || c.includes('bus'))
+      return { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-orange-200' };
     return { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-200' };
   };
 
@@ -71,10 +62,13 @@ const CabCard = ({
   };
 
   return (
-    <div className={`relative bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${isSelected
-      ? 'border-emerald-400 shadow-lg shadow-emerald-500/10'
-      : 'border-slate-200 hover:border-slate-300 hover:shadow-lg'
-      }`}>
+    <div
+      className={`relative bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${
+        isSelected
+          ? 'border-emerald-400 shadow-lg shadow-emerald-500/10'
+          : 'border-slate-200 hover:border-slate-300 hover:shadow-lg'
+      }`}
+    >
       {/* Selected Badge */}
       {isSelected && (
         <div className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-full">
@@ -88,7 +82,7 @@ const CabCard = ({
         {cab?.image ? (
           <Image
             src={`${NEXT_PUBLIC_IMAGE_URL}${cab.image}`}
-            alt={cab.vehicleName || "Vehicle"}
+            alt={cab.vehicleName || 'Vehicle'}
             fill
             className="object-contain p-4"
           />
@@ -99,7 +93,9 @@ const CabCard = ({
         )}
 
         {/* Vehicle Company/Type Badge */}
-        <div className={`absolute top-3 left-3 px-2 py-1 ${typeColor.bg} ${typeColor.border} border rounded-full`}>
+        <div
+          className={`absolute top-3 left-3 px-2 py-1 ${typeColor.bg} ${typeColor.border} border rounded-full`}
+        >
           <span className={`text-[10px] font-bold ${typeColor.text} uppercase tracking-wide`}>
             {cab?.acType || (cab?.isAc ? 'AC' : 'Non-AC')}
           </span>
@@ -114,15 +110,15 @@ const CabCard = ({
         </h3>
 
         {/* Vehicle Company */}
-        {cab?.vehicleCompany && (
-          <p className="text-xs text-slate-400 mb-2">{cab.vehicleCompany}</p>
-        )}
+        {cab?.vehicleCompany && <p className="text-xs text-slate-400 mb-2">{cab.vehicleCompany}</p>}
 
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-2 mb-3">
           <div className="flex flex-col items-center p-2 bg-slate-50 rounded-lg">
             <Users size={14} className="text-blue-500 mb-1" />
-            <span className="text-xs font-bold text-slate-700">{cab?.seater || cab?.maxPax || '-'}</span>
+            <span className="text-xs font-bold text-slate-700">
+              {cab?.seater || cab?.maxPax || '-'}
+            </span>
             <span className="text-[10px] text-slate-400">Seats</span>
           </div>
           <div className="flex flex-col items-center p-2 bg-slate-50 rounded-lg">
@@ -131,7 +127,10 @@ const CabCard = ({
             <span className="text-[10px] text-slate-400">Bags</span>
           </div>
           <div className="flex flex-col items-center p-2 bg-slate-50 rounded-lg">
-            <Snowflake size={14} className={`mb-1 ${cab?.isAc ? 'text-cyan-500' : 'text-slate-300'}`} />
+            <Snowflake
+              size={14}
+              className={`mb-1 ${cab?.isAc ? 'text-cyan-500' : 'text-slate-300'}`}
+            />
             <span className="text-xs font-bold text-slate-700">{cab?.isAc ? 'Yes' : 'No'}</span>
             <span className="text-[10px] text-slate-400">AC</span>
           </div>
@@ -167,7 +166,11 @@ const CabCard = ({
           {/* Price */}
           <div>
             {priceDiff !== 0 ? (
-              <span className={`text-lg font-bold ${priceDiff > 0 ? 'text-coral-500' : 'text-emerald-500'}`}>
+              <span
+                className={`text-lg font-bold ${
+                  priceDiff > 0 ? 'text-emerald-500' : 'text-emerald-500'
+                }`}
+              >
                 {priceDiff > 0 ? '+' : '-'}₹{Math.abs(Math.ceil(priceDiff))}
               </span>
             ) : (
@@ -179,7 +182,7 @@ const CabCard = ({
           {!isSelected && (
             <button
               onClick={onSelect}
-              className="px-4 py-2 bg-linear-to-r from-coral-500 to-coral-400 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-coral-500/20 transition-all press-effect"
+              className="px-4 py-2 bg-linear-to-r from-emerald-500 to-emerald-400 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-emerald-500/20 transition-all press-effect"
             >
               Select Cab
             </button>
@@ -190,11 +193,7 @@ const CabCard = ({
   );
 };
 
-const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
-  isOpen,
-  onClose,
-  vehicle,
-}) => {
+const ChangeCabModal: React.FC<ChangeCabModalProps> = ({ isOpen, onClose, vehicle }) => {
   const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector((store: any) => store.package.isLoading);
   const packageData = useSelector((store: any) => store.package.data);
@@ -207,10 +206,12 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
     // Store current scroll position before state update
     const currentScrollY = window.scrollY;
 
-    dispatch(changeVehicleAndCalculatePrice({
-      newVehicle: cab,
-      prevVehicle: vehicle,
-    }));
+    dispatch(
+      changeVehicleAndCalculatePrice({
+        newVehicle: cab,
+        prevVehicle: vehicle,
+      })
+    );
 
     // Restore scroll position after modal closes and state updates
     requestAnimationFrame(() => {
@@ -231,12 +232,12 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
         <div className="sticky top-0 z-10 bg-white border-b border-slate-100 px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="text-xl font-bold text-slate-900">
-                Select Vehicle
-              </DialogTitle>
+              <DialogTitle className="text-xl font-bold text-slate-900">Select Vehicle</DialogTitle>
               <p className="text-sm text-slate-500 mt-0.5">
-                Current: <span className="text-coral-500 font-semibold">{vehicle?.vehicleName}</span>
-                {' · '}<span className="font-medium">{cabs?.length || 0} options</span>
+                Current:{' '}
+                <span className="text-emerald-500 font-semibold">{vehicle?.vehicleName}</span>
+                {' · '}
+                <span className="font-medium">{cabs?.length || 0} options</span>
               </p>
             </div>
             <button
@@ -252,8 +253,8 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
         <div className="overflow-y-auto p-6 max-h-[calc(90vh-80px)]">
           {isLoading || loading ? (
             <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl">
-              <div className="w-14 h-14 rounded-full bg-linear-to-br from-coral-100 to-coral-50 flex items-center justify-center mb-4">
-                <Loader2 className="h-7 w-7 animate-spin text-coral-500" />
+              <div className="w-14 h-14 rounded-full bg-linear-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mb-4">
+                <Loader2 className="h-7 w-7 animate-spin text-emerald-500" />
               </div>
               <p className="text-slate-600 font-semibold">Loading Vehicles</p>
               <p className="text-slate-400 text-sm mt-1">Finding best options for you...</p>
@@ -269,12 +270,12 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {cabs.map((cab: VehicleDetail, index: number) => (
-                <div key={cab.vehicleId || index} className="animate-scale-in" style={{ animationDelay: `${index * 40}ms` }}>
-                  <CabCard
-                    cab={cab}
-                    prevVehicle={vehicle}
-                    onSelect={() => handleSelectCab(cab)}
-                  />
+                <div
+                  key={cab.vehicleId || index}
+                  className="animate-scale-in"
+                  style={{ animationDelay: `${index * 40}ms` }}
+                >
+                  <CabCard cab={cab} prevVehicle={vehicle} onSelect={() => handleSelectCab(cab)} />
                 </div>
               ))}
             </div>

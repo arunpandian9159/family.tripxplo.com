@@ -1,5 +1,5 @@
-"use client";
-import React, { ChangeEvent, useEffect, useState } from "react";
+'use client';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import {
   ArrowDown,
@@ -17,27 +17,26 @@ import {
   Sparkles,
   TrendingDown,
   Loader2,
-} from "lucide-react";
-import { Wifi } from "lucide-react";
-import Image from "next/image";
-import {
-  HotelChangeDataType,
-  HotelMealType,
-  HotelRoom,
-} from "@/app/types/hotel";
-import {
-  changeRoom,
-  changeRoomAndCalculatePrice,
-} from "@/app/store/features/packageSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import { AppDispatch } from "@/app/store/store";
-import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
-import MealPlanSelector from "./MeanPlanDropdown";
-import toast from "react-hot-toast";
+} from 'lucide-react';
+import { Wifi } from 'lucide-react';
+import Image from 'next/image';
+import { HotelChangeDataType, HotelMealType, HotelRoom } from '@/app/types/hotel';
+import { changeRoom, changeRoomAndCalculatePrice } from '@/app/store/features/packageSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { AppDispatch } from '@/app/store/store';
+import { NEXT_PUBLIC_IMAGE_URL } from '@/app/utils/constants/apiUrls';
+import MealPlanSelector from './MeanPlanDropdown';
+import toast from 'react-hot-toast';
 
 // Price change notification component
-const PriceChangeNotification = ({ priceDiff, isVisible }: { priceDiff: number; isVisible: boolean }) => {
+const PriceChangeNotification = ({
+  priceDiff,
+  isVisible,
+}: {
+  priceDiff: number;
+  isVisible: boolean;
+}) => {
   if (!isVisible || priceDiff === 0) return null;
 
   const isSaving = priceDiff < 0;
@@ -45,10 +44,13 @@ const PriceChangeNotification = ({ priceDiff, isVisible }: { priceDiff: number; 
 
   return (
     <div className={`fixed top-20 left-1/2 -translate-x-1/2 z-50 animate-bounce-in`}>
-      <div className={`flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl ${isSaving
-        ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white'
-        : 'bg-gradient-to-r from-coral-500 to-rose-500 text-white'
-        }`}>
+      <div
+        className={`flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl ${
+          isSaving
+            ? 'bg-linear-to-r from-emerald-500 to-teal-500 text-white'
+            : 'bg-linear-to-r from-emerald-500 to-rose-500 text-white'
+        }`}
+      >
         {isSaving ? (
           <>
             <TrendingDown className="w-6 h-6 animate-pulse" />
@@ -71,21 +73,21 @@ const PriceChangeNotification = ({ priceDiff, isVisible }: { priceDiff: number; 
   );
 };
 
-export type MealPlanKey = "cp" | "map" | "ap" | "ep";
-export type MealType = "breakfast" | "lunch" | "dinner";
+export type MealPlanKey = 'cp' | 'map' | 'ap' | 'ep';
+export type MealType = 'breakfast' | 'lunch' | 'dinner';
 
 // Constants
 const MEAL_PLANS: Record<MealPlanKey, string> = {
-  cp: "Continental Plan (Breakfast)",
-  map: "Modified American Plan (Breakfast + Dinner)",
-  ap: "American Plan (All Meals)",
-  ep: "European Plan (No Meals)",
+  cp: 'Continental Plan (Breakfast)',
+  map: 'Modified American Plan (Breakfast + Dinner)',
+  ap: 'American Plan (All Meals)',
+  ep: 'European Plan (No Meals)',
 };
 
 const MEAL_PLAN_MAP: Record<MealPlanKey, MealType[]> = {
-  cp: ["breakfast"],
-  map: ["breakfast", "dinner"],
-  ap: ["breakfast", "lunch", "dinner"],
+  cp: ['breakfast'],
+  map: ['breakfast', 'dinner'],
+  ap: ['breakfast', 'lunch', 'dinner'],
   ep: [],
 };
 
@@ -100,9 +102,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
   const packageId = useSelector((store: any) => store.package.data?.packageId);
   const useAppDispatch = () => useDispatch<AppDispatch>();
   const dispatch = useAppDispatch();
-  const prevHotel = useSelector(
-    (store: any) => store.hotelChange?.replaceHotel
-  );
+  const prevHotel = useSelector((store: any) => store.hotelChange?.replaceHotel);
   const router = useRouter();
 
   const selectRoom = async () => {
@@ -129,18 +129,14 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
       toast.success('Room changed successfully!');
     }
 
-    router.push("/package/" + packageId, { scroll: false });
+    router.push('/package/' + packageId, { scroll: false });
   };
 
-  const [selectedMealPlan, setSelectedMealPlan] = useState<HotelMealType>(
-    {} as HotelMealType
-  );
+  const [selectedMealPlan, setSelectedMealPlan] = useState<HotelMealType>({} as HotelMealType);
   useEffect(() => {
     // const selectedmp = room?.mealPlan.find((data)=> prevHotel?.mealPlan?.includes(data.mealPlan));
     // console.log("selectedmp", selectedmp);
-    const prevHotelMp = room.mealPlan?.find((data) =>
-      prevHotel?.mealPlan?.includes(data.mealPlan)
-    );
+    const prevHotelMp = room.mealPlan?.find(data => prevHotel?.mealPlan?.includes(data.mealPlan));
 
     if (prevHotelMp !== undefined) {
       setSelectedMealPlan(prevHotelMp);
@@ -157,20 +153,20 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
     return MEAL_PLAN_MAP[mealPlan]?.includes(meal) || false;
   };
 
-  const getMealStyle = (meal: "breakfast" | "lunch" | "dinner") => {
+  const getMealStyle = (meal: 'breakfast' | 'lunch' | 'dinner') => {
     const isIncluded = selectedMealPlan?.mealPlan
       ? isMealIncluded(selectedMealPlan.mealPlan, meal)
       : false;
 
     return {
       container: {
-        borderColor: isIncluded ? "#FF9080" : "#e5e7eb",
+        borderColor: isIncluded ? '#FF9080' : '#e5e7eb',
       },
       icon: {
-        color: isIncluded ? "#FF9080" : "#6b7280",
+        color: isIncluded ? '#FF9080' : '#6b7280',
       },
       text: {
-        color: isIncluded ? "#FF9080" : "#6b7280",
+        color: isIncluded ? '#FF9080' : '#6b7280',
       },
     };
   };
@@ -206,16 +202,17 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
       <PriceChangeNotification priceDiff={mealPlanPrice} isVisible={showNotification} />
 
       <div
-        className={`w-full lg:w-[420px] flex-shrink-0 h-[${expand ? "370px" : "h-[120px"
-          }] mb-[30px] rounded-[14px] bg-[#FFF] border-[2px] border-solid border-[#4BCDA1]`}
-        style={{ boxShadow: "4px 8px 25.8px 0px rgba(51, 214, 159, 0.11)" }}
+        className={`w-full lg:w-[420px] shrink-0 h-[${
+          expand ? '370px' : 'h-[120px'
+        }] mb-[30px] rounded-[14px] bg-[#FFF] border-[2px] border-solid border-[#4BCDA1]`}
+        style={{ boxShadow: '4px 8px 25.8px 0px rgba(51, 214, 159, 0.11)' }}
       >
         <div className="flex flex-col  relative p-2 ">
           <div className="flex px-2 ">
             <section className=" flex flex-col w-full gap-2">
               <p
                 className="text-[11px] sm:text-[18px] flex-wrap w-full lg:text-[18px] text-[#6A778B] flex font-medium my-4"
-              // style={{ whiteSpace: "nowrap" }}
+                // style={{ whiteSpace: "nowrap" }}
               >
                 {room.hotelRoomType}
               </p>
@@ -226,7 +223,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                   <div className="flex flex-nowrap text-[#27B182] items-center  sm:gap-2">
                     <Check size={12} className="stroke-2" />
                     <span
-                      style={{ whiteSpace: "nowrap" }}
+                      style={{ whiteSpace: 'nowrap' }}
                       className="text-[8px] flex flex-nowrap sm:text-xs"
                     >
                       Wifi Facility
@@ -234,10 +231,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                   </div>
                   <div className="flex flex-nowrap text-[#27B182] items-center sm:gap-2">
                     <Check size={12} className="stroke-2" />
-                    <span
-                      style={{ whiteSpace: "nowrap" }}
-                      className="text-[8px] sm:text-xs"
-                    >
+                    <span style={{ whiteSpace: 'nowrap' }} className="text-[8px] sm:text-xs">
                       Pool
                     </span>
                   </div>
@@ -247,22 +241,24 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                     {mealPlanPrice !== 0 && (
                       <>
                         {mealPlanPrice > 0 && (
-                          <Image
-                            src="/Plus.svg"
-                            height={7}
-                            width={7}
-                            alt="plus"
-                            className="mx-1"
-                          />
+                          <Image src="/Plus.svg" height={7} width={7} alt="plus" className="mx-1" />
                         )}
                         <p
-                          className={`font-montserrat text-[9px] sm:text-[12px] lg:text-[15px] sm:font-semibold ${mealPlanPrice < 0 ? 'text-emerald-600' : 'bg-clip-text text-transparent'}`}
-                          style={mealPlanPrice >= 0 ? {
-                            backgroundImage:
-                              "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
-                          } : undefined}
+                          className={`font-montserrat text-[9px] sm:text-[12px] lg:text-[15px] sm:font-semibold ${
+                            mealPlanPrice < 0 ? 'text-emerald-600' : 'bg-clip-text text-transparent'
+                          }`}
+                          style={
+                            mealPlanPrice >= 0
+                              ? {
+                                  backgroundImage:
+                                    'linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)',
+                                }
+                              : undefined
+                          }
                         >
-                          {mealPlanPrice < 0 ? `−₹${Math.abs(mealPlanPrice).toLocaleString()}` : `+₹${mealPlanPrice.toLocaleString()}`}
+                          {mealPlanPrice < 0
+                            ? `−₹${Math.abs(mealPlanPrice).toLocaleString()}`
+                            : `+₹${mealPlanPrice.toLocaleString()}`}
                         </p>
                       </>
                     )}
@@ -273,18 +269,16 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                     )}
                   </div>
                   {prevHotel.hotelId === room?.hotelId &&
-                    prevHotel.hotelRoomId === room?.hotelRoomId &&
-                    prevHotel.mealPlan === selectedMealPlan?.mealPlan ? (
+                  prevHotel.hotelRoomId === room?.hotelRoomId &&
+                  prevHotel.mealPlan === selectedMealPlan?.mealPlan ? (
                     <div
                       style={{
-                        boxShadow:
-                          " 2.713px 5.425px 20.479px 0px rgba(101, 255, 181, 0.49)",
-                        backgroundColor:
-                          " linear-gradient(90deg, #27B182 -5.26%, #31DAA1 99.73%)",
+                        boxShadow: ' 2.713px 5.425px 20.479px 0px rgba(101, 255, 181, 0.49)',
+                        backgroundColor: ' linear-gradient(90deg, #27B182 -5.26%, #31DAA1 99.73%)',
                       }}
                       className=" bg-[#4BCDA1] ml-[10px] md:ml-[20px] flex items-center md:px-4 px-2 gap-1 cursor-pointer py-2 rounded-[11px]  leading-normal tracking-[0.1px] text-white  "
                     >
-                      {" "}
+                      {' '}
                       <Check size={14} className="stroke-2" />
                       <p className="text-[9px] lg:text-[13px]">Selected</p>
                     </div>
@@ -295,23 +289,22 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                         prevHotel.hotelRoomId === room?.hotelRoomId &&
                         prevHotel.mealPlan === selectedMealPlan?.mealPlan
                       ) && (
-                          <button
-                            onClick={selectRoom}
-                            className=" ml-[5x] sm:ml-[20px] flex items-center sm:px-4  cursor-pointer sm:py-2  rounded-[11px]   text-[#27B182] text-[9px] sm:text-[11px] font-medium leading-normal tracking-[0.1px] "
-                            style={{
-                              border:
-                                " 1.356px solid var(--green-gradient, #27B182)",
-                              // boxShadow:
-                              // " 2.713px 5.425px 20.479px 0px rgba(101, 255, 181, 0.49)",
+                        <button
+                          onClick={selectRoom}
+                          className=" ml-[5x] sm:ml-[20px] flex items-center sm:px-4  cursor-pointer sm:py-2  rounded-[11px]   text-[#27B182] text-[9px] sm:text-[11px] font-medium leading-normal tracking-[0.1px] "
+                          style={{
+                            border: ' 1.356px solid var(--green-gradient, #27B182)',
+                            // boxShadow:
+                            // " 2.713px 5.425px 20.479px 0px rgba(101, 255, 181, 0.49)",
 
-                              // box-shadow: 2.713px 5.425px 20.479px 0px rgba(101, 255, 181, 0.49);
-                              // backgroundImage:
-                              //   "linear-gradient(90deg, #27B182 -5.26%, #41D6A3 99.73%)",
-                            }}
-                          >
-                            Select
-                          </button>
-                        )}
+                            // box-shadow: 2.713px 5.425px 20.479px 0px rgba(101, 255, 181, 0.49);
+                            // backgroundImage:
+                            //   "linear-gradient(90deg, #27B182 -5.26%, #41D6A3 99.73%)",
+                          }}
+                        >
+                          Select
+                        </button>
+                      )}
                     </>
                   )}
                 </div>
@@ -341,21 +334,16 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
               </div>
             </section> */}
           </div>
-          <hr
-            className=" w-full my-2 stroke"
-            style={{ stroke: "rgba(0, 0, 0, 0.08)" }}
-          />
+          <hr className=" w-full my-2 stroke" style={{ stroke: 'rgba(0, 0, 0, 0.08)' }} />
           {/* Room Features */}
           <div className="bg-gray-50 rounded-xl p-4 border mt-4">
             <div className="grid grid-cols-3 gap-4">
               <div className="flex flex-col items-center justify-center gap-2">
                 <div className="w-6 h-6 text-gray-500">
-                  {" "}
+                  {' '}
                   <Bed />
                 </div>
-                <span className="text-[11px] md:text-sm text-gray-600">
-                  Double Bed
-                </span>
+                <span className="text-[11px] md:text-sm text-gray-600">Double Bed</span>
               </div>
               <div className="flex flex-col items-center justify-center  gap-2 border-l border-r ">
                 <div className="w-6 h-6 text-gray-500">
@@ -369,24 +357,19 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                 <div className="w-6 h-6 text-gray-500">
                   <Grid2x2 />
                 </div>
-                <span className="text-[11px] md:text-xs  text-gray-600">
-                  224 Sq.ft
-                </span>
+                <span className="text-[11px] md:text-xs  text-gray-600">224 Sq.ft</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div
-          className={`mt-[10px] overflow-hidden transition-all duration-300 ease-in-out`}
-        >
+        <div className={`mt-[10px] overflow-hidden transition-all duration-300 ease-in-out`}>
           {/* Meal Plan Section - Increased size for large screens */}
           <div className="flex items-center pb-2">
             <h1
               className="my-[15px] ml-[19px] font-Poppins text-[16px] lg:text-[16px] font-semibold tracking-[0.1px] bg-clip-text text-transparent"
               style={{
-                backgroundImage:
-                  "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                backgroundImage: 'linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)',
               }}
             >
               Meal Plan:
@@ -404,13 +387,13 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
               <div className="flex flex-col items-center gap-2">
                 <div
                   className="w-10 h-10 rounded-lg border-2 flex items-center justify-center transition-colors duration-200"
-                  style={getMealStyle("breakfast").container}
+                  style={getMealStyle('breakfast').container}
                 >
-                  <Coffee style={getMealStyle("breakfast").icon} />
+                  <Coffee style={getMealStyle('breakfast').icon} />
                 </div>
                 <span
                   className="text-[10px] sm:text-sm transition-colors duration-200"
-                  style={getMealStyle("breakfast").text}
+                  style={getMealStyle('breakfast').text}
                 >
                   Breakfast
                 </span>
@@ -420,7 +403,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
               <div className="flex flex-col items-center gap-2">
                 <div
                   className="w-10 h-10 rounded-lg border-2 flex items-center justify-center transition-colors duration-200"
-                  style={getMealStyle("lunch").container}
+                  style={getMealStyle('lunch').container}
                 >
                   {/* <Utensils style={getMealStyle("lunch").icon} /> */}
                   {/* <Sandwich style={getMealStyle("lunch").icon} /> */}
@@ -429,12 +412,12 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                     alt="lunch_image"
                     width={20}
                     height={20}
-                    style={getMealStyle("lunch").icon}
+                    style={getMealStyle('lunch').icon}
                   />
                 </div>
                 <span
                   className="text-[10px] sm:text-sm transition-colors duration-200"
-                  style={getMealStyle("lunch").text}
+                  style={getMealStyle('lunch').text}
                 >
                   Lunch
                 </span>
@@ -444,7 +427,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
               <div className="flex flex-col items-center gap-2">
                 <div
                   className="w-10 h-10 rounded-lg border-2 flex items-center justify-center transition-colors duration-200"
-                  style={getMealStyle("dinner").container}
+                  style={getMealStyle('dinner').container}
                 >
                   {/* <Drumstick style={getMealStyle("dinner").icon} /> */}
                   <Image
@@ -452,12 +435,12 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                     alt="dinner_image"
                     height={40}
                     width={30}
-                    style={getMealStyle("dinner").icon}
+                    style={getMealStyle('dinner').icon}
                   />
                 </div>
                 <span
                   className="text-[10px] sm:text-sm transition-colors duration-200"
-                  style={getMealStyle("dinner").text}
+                  style={getMealStyle('dinner').text}
                 >
                   Dinner
                 </span>
@@ -469,8 +452,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
           <h1
             className="mt-[18px] ml-[19px] font-Poppins text-[13px] lg:text-[16px] font-semibold tracking-[0.1px] bg-clip-text text-transparent"
             style={{
-              backgroundImage:
-                "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+              backgroundImage: 'linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)',
             }}
           >
             Amenities

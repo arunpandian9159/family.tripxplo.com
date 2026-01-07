@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Check, Pencil } from "lucide-react";
-import { HotelMealType } from "@/app/types/hotel";
+import React, { useState } from 'react';
+import { Check, Pencil } from 'lucide-react';
+import { HotelMealType } from '@/app/types/hotel';
 
 interface MealPlanSelectorProps {
   selectedMealPlan: HotelMealType;
@@ -10,20 +10,20 @@ interface MealPlanSelectorProps {
 
 const getMealPlanFullName = (mealPlan: string): string => {
   // First, try to match the full name if it's already provided
-  if (mealPlan.includes("Plan")) {
+  if (mealPlan.includes('Plan')) {
     return mealPlan;
   }
 
   // Map abbreviated codes to full names
   const mealPlanMap: Record<string, string> = {
-    CP: "Continental Plan",
-    MAP: "Modified American Plan",
-    AP: "American Plan",
-    EP: "European Plan",
-    cp: "Continental Plan",
-    map: "Modified American Plan",
-    ap: "American Plan",
-    ep: "European Plan",
+    CP: 'Continental Plan',
+    MAP: 'Modified American Plan',
+    AP: 'American Plan',
+    EP: 'European Plan',
+    cp: 'Continental Plan',
+    map: 'Modified American Plan',
+    ap: 'American Plan',
+    ep: 'European Plan',
   };
 
   // Get the full plan name
@@ -31,19 +31,19 @@ const getMealPlanFullName = (mealPlan: string): string => {
 
   // Map full names to user-friendly descriptions
   const userFriendlyNames: Record<string, string> = {
-    "Continental Plan": "Breakfast Only",
-    "Modified American Plan": "Breakfast and Dinner",
-    "American Plan": "All Meals Included",
-    "European Plan": "Room Only (No Meals)",
+    'Continental Plan': 'Breakfast Only',
+    'Modified American Plan': 'Breakfast and Dinner',
+    'American Plan': 'All Meals Included',
+    'European Plan': 'Room Only (No Meals)',
   };
 
   return userFriendlyNames[fullPlanName] || fullPlanName;
 };
 
 const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
     maximumFractionDigits: 0,
   }).format(price);
 };
@@ -60,7 +60,7 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex gap-2 justify-center items-center px-3 py-2 ml-3
-    bg-gradient-to-r from-[#FF5F5F] to-[#FF7865] 
+    bg-linear-to-r from-[#FF5F5F] to-[#FF7865] 
     hover:from-[#FF7865] hover:to-[#FF5F5F]
     rounded-full shadow-md hover:shadow-lg
     transform hover:scale-105 transition-all duration-300
@@ -70,17 +70,12 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
           size={13}
           className="text-white group-hover:rotate-12 transition-transform duration-300"
         />
-        <span className="text-white text-[11px] font-semibold tracking-wide">
-          Change Plan
-        </span>
+        <span className="text-white text-[11px] font-semibold tracking-wide">Change Plan</span>
       </button>
 
       {isOpen && (
         <>
-          <div
-            className="fixed inset-0 z-10"
-            onClick={() => setIsOpen(false)}
-          />
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
           <div className="absolute z-20 right-[-120px] mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-lg">
             <div className="py-1">
               {mealPlans.map((mealPlan, index) => (
@@ -96,23 +91,19 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
                     <p
                       className={`font-medium ${
                         selectedMealPlan.mealPlan === mealPlan.mealPlan &&
-                        selectedMealPlan.totalAdultPrice ===
-                          mealPlan.totalAdultPrice
-                          ? "text-[#4BCDA1]"
-                          : "text-gray-700"
+                        selectedMealPlan.totalAdultPrice === mealPlan.totalAdultPrice
+                          ? 'text-[#4BCDA1]'
+                          : 'text-gray-700'
                       }`}
                     >
                       {getMealPlanFullName(mealPlan.mealPlan)}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
-                      {formatPrice(
-                        mealPlan.totalAdultPrice + mealPlan.gstAdultPrice
-                      )}
+                      {formatPrice(mealPlan.totalAdultPrice + mealPlan.gstAdultPrice)}
                     </p>
                   </div>
                   {selectedMealPlan.mealPlan === mealPlan.mealPlan &&
-                    selectedMealPlan.totalAdultPrice ===
-                      mealPlan.totalAdultPrice && (
+                    selectedMealPlan.totalAdultPrice === mealPlan.totalAdultPrice && (
                       <Check className="w-4 h-4 text-[#4BCDA1]" />
                     )}
                 </button>

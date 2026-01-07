@@ -19,7 +19,7 @@ export const OtpStyledInput = forwardRef<HTMLInputElement, OtpStyledInputProps>(
           <Input
             {...inputProps}
             className={cn(
-              "!w-10 !appearance-none selection:bg-none text-center text-sm",
+              "w-10 appearance-none selection:bg-none text-center text-sm",
               className
             )}
             key={index} // Ensure each input has a unique key
