@@ -301,7 +301,7 @@ export default function OptionsBox({
           'bg-white shadow-2xl border border-slate-200 overflow-hidden',
           isMobile
             ? 'fixed inset-x-0 bottom-0 rounded-t-3xl max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-300 z-9999'
-            : 'fixed w-[360px] rounded-2xl z-9999'
+            : 'fixed w-90 rounded-2xl z-9999'
         )}
         style={
           isMobile

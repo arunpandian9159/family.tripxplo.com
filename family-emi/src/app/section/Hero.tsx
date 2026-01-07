@@ -1,15 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MapPin, Calendar, Users, Search, ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { MapPin, Calendar, Users, Search, ChevronDown, Loader2 } from 'lucide-react';
 import DestinationCarousel from '../components/DestinationCarousel';
 import SearchDestination from '../components/SearchDestination';
 import DateBox from '../components/DateBox';
 import OptionsBox from '../components/OptionsBox';
 
 const Hero = () => {
+  const router = useRouter();
   const [selectedDestination, setSelectedDestination] = useState('Manali');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [isSearching, setIsSearching] = useState(false);
   const [guestOptions, setGuestOptions] = useState({
     adults: 2,
     children611: 0,
@@ -34,12 +37,31 @@ const Hero = () => {
   };
 
   const handleSearch = () => {
-    // Handle search logic here
-    console.log('Searching with:', {
-      destination: selectedDestination,
-      date: selectedDate,
-      guests: guestOptions,
-    });
+    setIsSearching(true);
+
+    // Build query parameters
+    const params = new URLSearchParams();
+
+    if (selectedDestination) {
+      params.set('destination', selectedDestination);
+    }
+
+    if (selectedDate) {
+      params.set('startDate', selectedDate.toISOString().split('T')[0]);
+    }
+
+    // Guest parameters
+    params.set('adults', String(guestOptions.adults));
+    params.set('children', String(guestOptions.children611 + guestOptions.children25));
+    params.set('infants', String(guestOptions.infants));
+    params.set('rooms', String(guestOptions.rooms));
+
+    if (guestOptions.familyType) {
+      params.set('familyType', guestOptions.familyType);
+    }
+
+    // Navigate to destinations page with search parameters
+    router.push(`/destinations?${params.toString()}`);
   };
 
   // Handler for guest options change
@@ -64,7 +86,7 @@ const Hero = () => {
         {/* Gradient Orbs */}
         <div className="absolute top-20 -left-32 w-96 h-96 bg-[#15ab8b]/20 rounded-full blur-3xl" />
         <div className="absolute top-40 right-0 w-80 h-80 bg-[#d1fbd2]/50 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 w-[600px] h-64 bg-[#15ab8b]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 w-150 h-64 bg-[#15ab8b]/10 rounded-full blur-3xl" />
 
         {/* Grid Pattern */}
         <div
@@ -216,10 +238,20 @@ const Hero = () => {
               {/* Search Button */}
               <button
                 onClick={handleSearch}
-                className="w-full mt-6 py-4 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white font-bold text-lg rounded-2xl shadow-lg shadow-[#15ab8b]/30 hover:shadow-xl hover:shadow-[#15ab8b]/40 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3"
+                disabled={isSearching}
+                className="w-full mt-6 py-4 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white font-bold text-lg rounded-2xl shadow-lg shadow-[#15ab8b]/30 hover:shadow-xl hover:shadow-[#15ab8b]/40 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
               >
-                <Search className="w-5 h-5" />
-                Search
+                {isSearching ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Searching...
+                  </>
+                ) : (
+                  <>
+                    <Search className="w-5 h-5" />
+                    Search
+                  </>
+                )}
               </button>
 
               {/* EMI Note */}
