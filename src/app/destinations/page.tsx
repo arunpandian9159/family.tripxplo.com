@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, Suspense, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { MapPin, Grid, List, Package, ArrowLeft, Loader2 } from 'lucide-react';
 import type { FeaturedPackage } from '@/lib/types';
@@ -13,6 +13,7 @@ import { SkeletonPackageCard } from '@/components/ui/skeleton';
 import ExploreFilter from './_components/ExploreFilter';
 import FilterCardList from './_components/FilterCardList';
 import Navbar from '@/app/components/Navbar';
+import { useSearch } from '@/context/SearchContext';
 
 // Destination image mapping
 const destinationImages: Record<string, string> = {
@@ -24,18 +25,11 @@ const destinationImages: Record<string, string> = {
   kashmir: '/kashmir.jpg',
 };
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 10;
 
 function DestinationsContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Get search params from URL
-  const destinationQuery = searchParams.get('destination') || '';
-  const startDateParam = searchParams.get('startDate') || '';
-  const adultsParam = searchParams.get('adults') || '2';
-  const childrenParam = searchParams.get('children') || '0';
-  const roomsParam = searchParams.get('rooms') || '1';
+  const { searchParams } = useSearch();
 
   // State
   const [packages, setPackages] = useState<FeaturedPackage[]>([]);
@@ -44,14 +38,43 @@ function DestinationsContent() {
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [activeFilter, setActiveFilter] = useState('all');
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [offset, setOffset] = useState(0);
   const [totalDocs, setTotalDocs] = useState(0);
 
+  // Calculate pages
+  const totalPages = Math.ceil(totalDocs / ITEMS_PER_PAGE);
+  const currentPage = Math.floor(offset / ITEMS_PER_PAGE) + 1;
+
   // Get destination cover image
-  const coverImage = destinationQuery
-    ? destinationImages[destinationQuery.toLowerCase()] || null
+  const coverImage = searchParams.destinationName
+    ? destinationImages[searchParams.destinationName.toLowerCase()] || null
     : null;
+
+  // Build tripxplo.com compatible API URL
+  const buildApiUrl = useCallback(() => {
+    const params = new URLSearchParams();
+
+    // Tripxplo.com compatible params
+    if (searchParams.destinationId) {
+      params.set('destinationId', searchParams.destinationId);
+    }
+    if (searchParams.interestId) {
+      params.set('interestId', searchParams.interestId);
+    }
+    params.set('perRoom', String(searchParams.perRoom || 2));
+    if (searchParams.startDate) {
+      params.set('startDate', searchParams.startDate);
+    }
+    params.set('noAdult', String(searchParams.noAdult || 2));
+    params.set('noChild', String(searchParams.noChild || 0));
+    params.set('noRoomCount', String(searchParams.noRoomCount || 1));
+    params.set('noExtraAdult', String(searchParams.noExtraAdult || 0));
+    params.set('limit', String(ITEMS_PER_PAGE));
+    params.set('offset', String(offset));
+    params.set('priceOrder', String(searchParams.priceOrder || 1));
+
+    return `/api/v1/packages?${params.toString()}`;
+  }, [searchParams, offset]);
 
   // Fetch packages
   const fetchPackages = useCallback(async () => {
@@ -59,22 +82,16 @@ function DestinationsContent() {
     setError(null);
 
     try {
-      const params = new URLSearchParams();
-      params.set('page', String(page));
-      params.set('limit', String(ITEMS_PER_PAGE));
+      const apiUrl = buildApiUrl();
+      console.log('Fetching packages with URL:', apiUrl);
 
-      if (destinationQuery) {
-        params.set('q', destinationQuery);
-      }
-
-      const response = await fetch(`/api/packages/search?${params.toString()}`);
+      const response = await fetch(apiUrl);
       const data = await response.json();
 
       if (data.success && data.result) {
         const fetchedPackages = data.result.docs || [];
         setPackages(fetchedPackages);
         setAllPackages(fetchedPackages);
-        setTotalPages(data.result.totalPages || 1);
         setTotalDocs(data.result.totalDocs || 0);
       } else {
         setPackages([]);
@@ -89,7 +106,7 @@ function DestinationsContent() {
     } finally {
       setLoading(false);
     }
-  }, [page, destinationQuery]);
+  }, [buildApiUrl]);
 
   useEffect(() => {
     fetchPackages();
@@ -128,20 +145,24 @@ function DestinationsContent() {
     return result;
   }, [allPackages, activeFilter]);
 
-  // Handle package click
+  // Handle package click - navigate to /package/PACKAGE_ID (like tripxplo.com)
   const handlePackageClick = (packageId: string) => {
-    const params = new URLSearchParams();
-    if (startDateParam) params.set('startDate', startDateParam);
-    params.set('noAdult', adultsParam);
-    params.set('noChild', childrenParam);
-    params.set('noRoomCount', roomsParam);
-
-    router.push(`/package/${packageId}?${params.toString()}`);
+    // Navigate to package detail page like tripxplo.com: /package/PACKAGE_ID
+    router.push(`/package/${packageId}`);
   };
 
   // Handle filter change
   const handleFilterChange = (filter: string) => {
     setActiveFilter(filter);
+  };
+
+  // Handle pagination
+  const handlePrevPage = () => {
+    setOffset(prev => Math.max(0, prev - ITEMS_PER_PAGE));
+  };
+
+  const handleNextPage = () => {
+    setOffset(prev => prev + ITEMS_PER_PAGE);
   };
 
   return (
@@ -168,7 +189,7 @@ function DestinationsContent() {
           <div className="absolute inset-0">
             <Image
               src={coverImage}
-              alt={destinationQuery || 'Destination'}
+              alt={searchParams.destinationName || 'Destination'}
               fill
               sizes="100vw"
               className="object-cover animate-ken-burns"
@@ -189,19 +210,37 @@ function DestinationsContent() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="animate-slide-up">
               <div className="flex items-center gap-2 mb-3">
-                {destinationQuery && (
+                {searchParams.destinationName && (
                   <Badge variant="emerald" size="lg">
                     <MapPin className="w-3 h-3 mr-1" />
-                    {destinationQuery}
+                    {searchParams.destinationName}
+                  </Badge>
+                )}
+                {searchParams.interestName && (
+                  <Badge variant="outline" size="lg">
+                    {searchParams.interestName}
                   </Badge>
                 )}
               </div>
               <h1 className="text-3xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg">
-                {destinationQuery ? `Explore ${destinationQuery}` : 'All Packages'}
+                {searchParams.destinationName
+                  ? `Explore ${searchParams.destinationName}`
+                  : 'All Packages'}
               </h1>
               <p className="text-slate-200 text-lg drop-shadow-md">
                 {filteredPackages?.length || 0} handcrafted packages available
               </p>
+              {searchParams.startDate && (
+                <p className="text-slate-300 text-sm mt-1">
+                  Starting from{' '}
+                  {new Date(searchParams.startDate).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}{' '}
+                  • {searchParams.noAdult} Adults, {searchParams.noChild} Children
+                </p>
+              )}
             </div>
 
             {/* View Toggle (Desktop) */}
@@ -311,18 +350,18 @@ function DestinationsContent() {
         {totalPages > 1 && !loading && (
           <div className="flex items-center justify-center gap-2 mt-12">
             <button
-              onClick={() => setPage(p => Math.max(1, p - 1))}
-              disabled={page === 1}
+              onClick={handlePrevPage}
+              disabled={offset === 0}
               className="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
             <span className="px-4 py-2 text-slate-600">
-              Page {page} of {totalPages}
+              Page {currentPage} of {totalPages}
             </span>
             <button
-              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
+              onClick={handleNextPage}
+              disabled={offset + ITEMS_PER_PAGE >= totalDocs}
               className="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next

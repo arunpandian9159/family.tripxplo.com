@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { MapPin, Calendar, Users, Search, ChevronDown, Loader2 } from 'lucide-react';
 import DestinationCarousel from '../components/DestinationCarousel';
@@ -8,10 +8,28 @@ import SearchDestination from '../components/SearchDestination';
 import DateBox from '../components/DateBox';
 import OptionsBox from '../components/OptionsBox';
 import PackageThemes, { ThemeType } from '../components/PackageThemes';
+import { useSearch } from '@/context/SearchContext';
+
+// Theme to Interest name mapping
+const THEME_TO_INTEREST: Record<ThemeType, string> = {
+  Honeymoon: 'Honeymoon',
+  Couple: 'Couple',
+  Family: 'Family',
+  Friends: 'Friends',
+};
+
+interface InterestData {
+  id: string;
+  name: string;
+  perRoom?: number;
+}
 
 const Hero = () => {
   const router = useRouter();
+  const { setSearchParams } = useSearch();
+
   const [selectedDestination, setSelectedDestination] = useState('Manali');
+  const [selectedDestinationId, setSelectedDestinationId] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [isSearching, setIsSearching] = useState(false);
   const [guestOptions, setGuestOptions] = useState({
@@ -27,6 +45,52 @@ const Hero = () => {
   const [dateOpen, setDateOpen] = useState(false);
   const [guestOpen, setGuestOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState<ThemeType>('Couple');
+  const [selectedInterestId, setSelectedInterestId] = useState('');
+
+  // Cache for interest data
+  const [interestsCache, setInterestsCache] = useState<InterestData[]>([]);
+
+  // Fetch interests on mount to get IDs
+  useEffect(() => {
+    const fetchInterests = async () => {
+      try {
+        const response = await fetch('/api/interests/search?limit=50');
+        const data = await response.json();
+
+        if (data.success && data.result?.docs) {
+          setInterestsCache(data.result.docs);
+
+          // Set initial interest ID based on selected theme
+          const interestName = THEME_TO_INTEREST[selectedTheme];
+          const interest = data.result.docs.find(
+            (i: InterestData) => i.name.toLowerCase() === interestName.toLowerCase()
+          );
+          if (interest) {
+            setSelectedInterestId(interest.id);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching interests:', error);
+      }
+    };
+
+    fetchInterests();
+  }, [selectedTheme]);
+
+  // Update interest ID when theme changes
+  useEffect(() => {
+    const interestName = THEME_TO_INTEREST[selectedTheme];
+    const interest = interestsCache.find(i => i.name.toLowerCase() === interestName.toLowerCase());
+    if (interest) {
+      setSelectedInterestId(interest.id);
+    }
+  }, [selectedTheme, interestsCache]);
+
+  // Handler for destination selection - receives both name and ID from SearchDestination
+  const handleDestinationChange = useCallback((name: string, id: string) => {
+    setSelectedDestination(name);
+    setSelectedDestinationId(id);
+  }, []);
 
   // Handler to open date picker after destination selection
   const handleDestinationSelect = () => {
@@ -41,36 +105,28 @@ const Hero = () => {
   const handleSearch = () => {
     setIsSearching(true);
 
-    // Build query parameters
-    const params = new URLSearchParams();
-
-    if (selectedDestination) {
-      params.set('destination', selectedDestination);
-    }
-
-    if (selectedDate) {
-      params.set('startDate', selectedDate.toISOString().split('T')[0]);
-    }
-
-    // Guest parameters
-    params.set('adults', String(guestOptions.adults));
-
-    // Combine all children types for API: children611 + children25 + infants = total children
+    // Combine all children types
     const totalChildren = guestOptions.children611 + guestOptions.children25 + guestOptions.infants;
-    params.set('children', String(totalChildren));
 
-    params.set('rooms', String(guestOptions.rooms));
+    // Update search context with tripxplo.com compatible params
+    setSearchParams({
+      destinationId: selectedDestinationId,
+      destinationName: selectedDestination,
+      interestId: selectedInterestId,
+      interestName: selectedTheme,
+      perRoom: guestOptions.adults,
+      startDate: selectedDate ? selectedDate.toISOString().split('T')[0] : '',
+      noAdult: guestOptions.adults,
+      noChild: totalChildren,
+      noRoomCount: guestOptions.rooms,
+      noExtraAdult: 0,
+      limit: 10,
+      offset: 0,
+      priceOrder: 1,
+    });
 
-    if (selectedTheme) {
-      params.set('theme', selectedTheme);
-    }
-
-    if (guestOptions.familyType) {
-      params.set('familyType', guestOptions.familyType);
-    }
-
-    // Navigate to destinations page with search parameters
-    router.push(`/destinations?${params.toString()}`);
+    // Navigate to destinations page WITHOUT query parameters (like tripxplo.com)
+    router.push('/destinations');
   };
 
   // Handler for guest options change
@@ -206,7 +262,7 @@ const Hero = () => {
                     </p>
                     <SearchDestination
                       selectedDestination={selectedDestination}
-                      onDestinationChange={setSelectedDestination}
+                      onDestinationChange={handleDestinationChange}
                       onDestinationSelect={handleDestinationSelect}
                     />
                   </div>

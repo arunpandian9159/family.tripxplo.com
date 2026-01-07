@@ -2,43 +2,54 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { MapPin, Search, X } from 'lucide-react';
+import { MapPin, Search, Loader2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Destination {
   id: string;
   name: string;
-  tag?: string;
-  tagColor?: string;
+  image?: string;
+  type?: string;
+  isDomestic?: boolean;
+  rankNo?: number;
 }
 
 interface SearchDestinationProps {
   className?: string;
   selectedDestination?: string;
-  onDestinationChange?: (name: string) => void;
+  onDestinationChange?: (name: string, id: string) => void;
   onDestinationSelect?: () => void;
 }
 
 // Featured destinations with tags and colors
-const FEATURED_DESTINATIONS: Destination[] = [
+const FEATURED_DESTINATIONS = [
   // Domestic Destinations
-  { id: '1', name: 'Andaman', tag: 'IN SEASON', tagColor: 'bg-green-100 text-green-800' },
-  { id: '2', name: 'Manali', tag: 'HONEYMOON', tagColor: 'bg-pink-100 text-pink-800' },
-  { id: '3', name: 'Kashmir', tag: 'TRENDING', tagColor: 'bg-purple-100 text-purple-800' },
-  { id: '4', name: 'Ooty', tag: 'BUDGET', tagColor: 'bg-orange-100 text-orange-800' },
-  { id: '5', name: 'Goa', tag: 'POPULAR', tagColor: 'bg-purple-100 text-purple-800' },
-  { id: '6', name: 'Varkala', tag: 'IN SEASON', tagColor: 'bg-green-100 text-green-800' },
-  { id: '7', name: 'Coorg', tag: 'BUDGET', tagColor: 'bg-orange-100 text-orange-800' },
-  { id: '8', name: 'Kodaikanal', tag: 'IN SEASON', tagColor: 'bg-green-100 text-green-800' },
-  { id: '9', name: 'Alleppey', tag: 'BACKWATERS', tagColor: 'bg-blue-100 text-blue-800' },
-  { id: '10', name: 'Shimla', tag: 'BUDGET', tagColor: 'bg-orange-100 text-orange-800' },
-  { id: '11', name: 'Munnar', tag: 'TRENDING', tagColor: 'bg-teal-100 text-teal-800' },
+  { name: 'Andaman', tag: 'IN SEASON', color: 'bg-green-100 text-green-800' },
+  { name: 'Manali', tag: 'HONEYMOON', color: 'bg-pink-100 text-pink-800' },
+  { name: 'Kashmir', tag: 'TRENDING', color: 'bg-purple-100 text-purple-800' },
+  { name: 'Ooty', tag: 'BUDGET', color: 'bg-orange-100 text-orange-800' },
+  { name: 'Goa', tag: 'POPULAR', color: 'bg-purple-100 text-purple-800' },
+  { name: 'Varkala', tag: 'IN SEASON', color: 'bg-green-100 text-green-800' },
+  { name: 'Coorg', tag: 'BUDGET', color: 'bg-orange-100 text-orange-800' },
+  { name: 'Kodaikanal', tag: 'IN SEASON', color: 'bg-green-100 text-green-800' },
+  { name: 'Alleppey', tag: 'BACKWATERS', color: 'bg-blue-100 text-blue-800' },
+  { name: 'Shimla', tag: 'BUDGET', color: 'bg-orange-100 text-orange-800' },
+  { name: 'Munnar', tag: 'TRENDING', color: 'bg-teal-100 text-teal-800' },
   // International Destinations
-  { id: '12', name: 'Bali', tag: 'HONEYMOON', tagColor: 'bg-pink-100 text-pink-800' },
-  { id: '13', name: 'Thailand', tag: 'POPULAR', tagColor: 'bg-purple-100 text-purple-800' },
-  { id: '14', name: 'Vietnam', tag: 'TRENDING', tagColor: 'bg-teal-100 text-teal-800' },
-  { id: '15', name: 'Maldives', tag: 'LUXURY', tagColor: 'bg-amber-100 text-amber-800' },
+  { name: 'Bali', tag: 'HONEYMOON', color: 'bg-pink-100 text-pink-800' },
+  { name: 'Thailand', tag: 'POPULAR', color: 'bg-purple-100 text-purple-800' },
+  { name: 'Vietnam', tag: 'TRENDING', color: 'bg-teal-100 text-teal-800' },
+  { name: 'Maldives', tag: 'LUXURY', color: 'bg-amber-100 text-amber-800' },
 ];
+
+const getDestinationTag = (name: string) => {
+  const featured = FEATURED_DESTINATIONS.find(
+    f =>
+      name.toLowerCase().includes(f.name.toLowerCase()) ||
+      f.name.toLowerCase().includes(name.toLowerCase())
+  );
+  return featured || null;
+};
 
 const SearchDestination = ({
   className,
@@ -51,8 +62,10 @@ const SearchDestination = ({
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
 
+  const [inputDestinations, setInputDestinations] = useState<Destination[]>([]);
   const [inputText, setInputText] = useState(selectedDestination || '');
   const [isInputFocused, setInputFocused] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
@@ -78,6 +91,35 @@ const SearchDestination = ({
     }
   }, [selectedDestination]);
 
+  // Fetch destinations from API (like tripxplo.com)
+  const fetchDestinations = useCallback(async (query: string = '') => {
+    setIsLoading(true);
+    try {
+      const url = query
+        ? `/api/destinations/search?q=${encodeURIComponent(query)}&limit=50`
+        : `/api/destinations/search?limit=50`;
+      const response = await fetch(url);
+      const json = await response.json();
+
+      // API returns { success, result: { docs: [...] } }
+      if (json.success && json.result?.docs) {
+        setInputDestinations(json.result.docs);
+      } else {
+        setInputDestinations([]);
+      }
+    } catch (error) {
+      console.error('Error fetching destinations:', error);
+      setInputDestinations([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Fetch destinations on mount
+  useEffect(() => {
+    fetchDestinations();
+  }, [fetchDestinations]);
+
   const updateDropdownPosition = useCallback(() => {
     if (triggerRef.current && !isMobile) {
       const rect = triggerRef.current.getBoundingClientRect();
@@ -94,17 +136,21 @@ const SearchDestination = ({
     updateDropdownPosition();
   }, [updateDropdownPosition]);
 
-  const handleInputChange = useCallback((input: string) => {
-    setInputText(input);
-  }, []);
+  const handleInputChange = useCallback(
+    (input: string) => {
+      setInputText(input);
+      fetchDestinations(input.trim());
+    },
+    [fetchDestinations]
+  );
 
   const selectDestination = useCallback(
-    (name: string) => {
+    (name: string, id: string) => {
       setInputText(name);
       setInputFocused(false);
 
       if (onDestinationChange) {
-        onDestinationChange(name);
+        onDestinationChange(name, id);
       }
 
       // Trigger callback to transition to calendar dropdown
@@ -159,44 +205,94 @@ const SearchDestination = ({
     }
   }, [isMobile, isInputFocused]);
 
-  // Filter destinations based on input
-  const filteredDestinations = inputText.trim()
-    ? FEATURED_DESTINATIONS.filter(dest =>
-        dest.name.toLowerCase().includes(inputText.toLowerCase())
+  // Separate destinations into domestic and international, and sort by FEATURED_DESTINATIONS order
+  const sortByFeaturedOrder = (destinations: Destination[]) => {
+    return [...destinations].sort((a, b) => {
+      const aIndex = FEATURED_DESTINATIONS.findIndex(
+        f =>
+          a.name.toLowerCase().includes(f.name.toLowerCase()) ||
+          f.name.toLowerCase().includes(a.name.toLowerCase())
+      );
+      const bIndex = FEATURED_DESTINATIONS.findIndex(
+        f =>
+          b.name.toLowerCase().includes(f.name.toLowerCase()) ||
+          f.name.toLowerCase().includes(b.name.toLowerCase())
+      );
+
+      // If both are featured, sort by their index in FEATURED_DESTINATIONS
+      if (aIndex !== -1 && bIndex !== -1) {
+        return aIndex - bIndex;
+      }
+      // Featured items come first
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+      // Non-featured items sort alphabetically
+      return a.name.localeCompare(b.name);
+    });
+  };
+
+  // Filter to only show featured destinations when not searching
+  const filterFeaturedOnly = (destinations: Destination[]) => {
+    return destinations.filter(dest =>
+      FEATURED_DESTINATIONS.some(
+        f =>
+          dest.name.toLowerCase().includes(f.name.toLowerCase()) ||
+          f.name.toLowerCase().includes(dest.name.toLowerCase())
       )
-    : FEATURED_DESTINATIONS;
+    );
+  };
 
-  // Separate into domestic and international
-  const domesticDestinations = filteredDestinations.filter(
-    dest => !['Bali', 'Thailand', 'Vietnam', 'Maldives'].includes(dest.name)
-  );
-  const internationalDestinations = filteredDestinations.filter(dest =>
-    ['Bali', 'Thailand', 'Vietnam', 'Maldives'].includes(dest.name)
+  const domesticDestinations = sortByFeaturedOrder(
+    inputText.trim()
+      ? inputDestinations.filter(dest => dest.isDomestic !== false && dest.type !== 'International')
+      : filterFeaturedOnly(
+          inputDestinations.filter(
+            dest => dest.isDomestic !== false && dest.type !== 'International'
+          )
+        )
   );
 
-  const renderDestinationItem = (dest: Destination) => (
-    <button
-      key={dest.id}
-      onMouseDown={() => selectDestination(dest.name)}
-      className="w-full flex items-center justify-between p-3 hover:bg-gray-50 active:bg-gray-100 rounded-lg transition-colors text-left group"
-    >
-      <div className="flex items-center gap-3">
-        <MapPin className="w-4 h-4 text-gray-400 group-hover:text-[#15ab8b] transition-colors" />
-        <span className="text-base text-gray-700 group-hover:text-gray-900 font-medium">
-          {dest.name}
-        </span>
-      </div>
-      {dest.tag && (
-        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${dest.tagColor}`}>
-          {dest.tag}
-        </span>
-      )}
-    </button>
+  const internationalDestinations = sortByFeaturedOrder(
+    inputText.trim()
+      ? inputDestinations.filter(dest => dest.isDomestic === false || dest.type === 'International')
+      : filterFeaturedOnly(
+          inputDestinations.filter(
+            dest => dest.isDomestic === false || dest.type === 'International'
+          )
+        )
   );
+
+  const renderDestinationItem = (dest: Destination) => {
+    const tag = getDestinationTag(dest.name);
+    return (
+      <button
+        key={dest.id}
+        onMouseDown={() => selectDestination(dest.name, dest.id)}
+        className="w-full flex items-center justify-between p-3 hover:bg-gray-50 active:bg-gray-100 rounded-lg transition-colors text-left group"
+      >
+        <div className="flex items-center gap-3">
+          <MapPin className="w-4 h-4 text-gray-400 group-hover:text-[#15ab8b] transition-colors" />
+          <span className="text-base text-gray-700 group-hover:text-gray-900 font-medium">
+            {dest.name}
+          </span>
+        </div>
+        {tag && (
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${tag.color}`}>
+            {tag.tag}
+          </span>
+        )}
+      </button>
+    );
+  };
 
   const destinationsContent = (
     <>
-      {filteredDestinations.length > 0 ? (
+      {isLoading ? (
+        <div className="px-4 py-8 text-center">
+          <Loader2 className="w-6 h-6 text-[#15ab8b] animate-spin mx-auto mb-2" />
+          <p className="text-sm text-slate-500">Searching destinations...</p>
+        </div>
+      ) : inputDestinations.length > 0 ? (
         <div className="p-4 space-y-4">
           {/* Domestic Destinations Section */}
           {domesticDestinations.length > 0 && (

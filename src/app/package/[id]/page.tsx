@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState, use, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Loader2, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { PackageDetail as PackageDetailType } from '@/lib/types';
 import PackageDetail from '../_components/PackageDetail';
 import Navbar from '@/app/components/Navbar';
+import { useSearch } from '@/context/SearchContext';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -14,18 +14,19 @@ interface PageProps {
 
 function PackageDetailsContent({ params }: PageProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const { searchParams } = useSearch();
   const { id } = use(params);
 
   const [pkg, setPkg] = useState<PackageDetailType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Get search params
-  const startDate = searchParams.get('startDate');
-  const noAdult = searchParams.get('noAdult') || '2';
-  const noChild = searchParams.get('noChild') || '0';
-  const noRoomCount = searchParams.get('noRoomCount') || '1';
+  // Get search params from context (tripxplo.com style - no URL params)
+  const startDate = searchParams.startDate;
+  const noAdult = searchParams.noAdult || 2;
+  const noChild = searchParams.noChild || 0;
+  const noRoomCount = searchParams.noRoomCount || 1;
+  const noExtraAdult = searchParams.noExtraAdult || 0;
 
   useEffect(() => {
     const fetchPackage = async () => {
@@ -33,12 +34,13 @@ function PackageDetailsContent({ params }: PageProps) {
       setError(null);
 
       try {
+        // Build API URL with tripxplo.com compatible params
         const queryParams = new URLSearchParams();
-
         if (startDate) queryParams.set('startDate', startDate);
-        queryParams.set('noAdult', noAdult);
-        queryParams.set('noChild', noChild);
-        queryParams.set('noRoomCount', noRoomCount);
+        queryParams.set('noAdult', String(noAdult));
+        queryParams.set('noChild', String(noChild));
+        queryParams.set('noRoomCount', String(noRoomCount));
+        queryParams.set('noExtraAdult', String(noExtraAdult));
 
         const response = await fetch(`/api/packages/${id}?${queryParams.toString()}`);
         const data = await response.json();
@@ -59,7 +61,7 @@ function PackageDetailsContent({ params }: PageProps) {
     if (id) {
       fetchPackage();
     }
-  }, [id, startDate, noAdult, noChild, noRoomCount]);
+  }, [id, startDate, noAdult, noChild, noRoomCount, noExtraAdult]);
 
   if (loading) {
     return (
@@ -101,7 +103,7 @@ function PackageDetailsContent({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-slate-50">
       <Navbar staticMode />
-      <PackageDetail pack={pkg} adults={parseInt(noAdult, 10)} children={parseInt(noChild, 10)} />
+      <PackageDetail pack={pkg} adults={noAdult} children={noChild} />
     </div>
   );
 }
