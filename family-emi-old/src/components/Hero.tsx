@@ -8,8 +8,11 @@ import {
   toTitleCase,
   getDestinationIcon,
   detectFamilyType,
+  detectFamilyTypeAsync,
+  FamilyType,
 } from "@/lib/utils";
 import TravelerSelector from "./TravelerSelector";
+import FamilyTypeInfoModal from "./FamilyTypeInfoModal";
 
 interface Destination {
   destination: string;
@@ -34,20 +37,37 @@ export default function Hero({ destinations, onSearch }: HeroProps) {
   const [travelMonth, setTravelMonth] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showTravelerModal, setShowTravelerModal] = useState(false);
+  const [showFamilyTypeInfo, setShowFamilyTypeInfo] = useState(false);
   const [travelers, setTravelers] = useState({
     adults: 2,
     children: 0,
     child: 0,
     infants: 0,
   });
+  const [familyType, setFamilyType] = useState<FamilyType>(() =>
+    detectFamilyType({ adults: 2, children: 0, child: 0, infants: 0 })
+  );
 
   // Get filtered destinations based on input
   const filteredDestinations = destinations.filter((d) =>
     d.destination.toLowerCase().includes(destination.toLowerCase())
   );
 
-  // Get family type based on travelers
-  const familyType = detectFamilyType(travelers);
+  // Fetch family type from database when travelers change
+  useEffect(() => {
+    const fetchFamilyType = async () => {
+      try {
+        const result = await detectFamilyTypeAsync(travelers);
+        setFamilyType(result);
+      } catch (error) {
+        console.error("Error detecting family type:", error);
+        setFamilyType(detectFamilyType(travelers));
+      }
+    };
+
+    const timeoutId = setTimeout(fetchFamilyType, 300);
+    return () => clearTimeout(timeoutId);
+  }, [travelers]);
 
   // Handle destination selection
   const handleSelectDestination = useCallback((dest: string) => {
@@ -86,7 +106,7 @@ export default function Hero({ destinations, onSearch }: HeroProps) {
   }));
 
   return (
-    <section className="relative min-h-screen bg-linear-to-br from-slate-50 via-white to-teal-50/30 pt-[70px] overflow-hidden">
+    <section className="relative min-h-screen bg-linear-to-br from-slate-50 via-white to-teal-50/30 pt-17.5 overflow-hidden">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-72 h-72 bg-teal-100/40 rounded-full blur-3xl" />
@@ -231,6 +251,7 @@ export default function Hero({ destinations, onSearch }: HeroProps) {
                     </button>
                     <button
                       type="button"
+                      onClick={() => setShowFamilyTypeInfo(true)}
                       className="p-3.5 rounded-xl border-2 border-gray-200 hover:border-teal-500 hover:bg-teal-50 transition-all text-teal-600"
                       title="View family type information"
                     >
@@ -304,6 +325,12 @@ export default function Hero({ destinations, onSearch }: HeroProps) {
           onClose={() => setShowTravelerModal(false)}
         />
       )}
+
+      {/* Family Type Info Modal */}
+      <FamilyTypeInfoModal
+        isOpen={showFamilyTypeInfo}
+        onClose={() => setShowFamilyTypeInfo(false)}
+      />
     </section>
   );
 }

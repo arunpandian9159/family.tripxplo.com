@@ -8,10 +8,10 @@ class DatabaseService {
     // Initialize Supabase clients
     this.initializeClients();
     this.sessionId = this.generateSessionId();
-
+    
     console.log('🗄️ Database Service initialized');
   }
-
+  
   initializeClients() {
     // Check if CONFIG is available
     if (typeof CONFIG === 'undefined') {
@@ -20,18 +20,22 @@ class DatabaseService {
     }
 
     // Validate configuration
-    if (
-      CONFIG.CRM_ANON_KEY === 'YOUR_CRM_DATABASE_ANON_KEY_HERE' ||
-      CONFIG.QUOTE_ANON_KEY === 'YOUR_QUOTE_DATABASE_ANON_KEY_HERE'
-    ) {
+    if (CONFIG.CRM_ANON_KEY === 'YOUR_CRM_DATABASE_ANON_KEY_HERE' ||
+        CONFIG.QUOTE_ANON_KEY === 'YOUR_QUOTE_DATABASE_ANON_KEY_HERE') {
       console.warn('⚠️ Please update the database keys in js/config.js');
     }
 
     // CRM Database (Family Types)
-    this.crmDB = supabase.createClient(CONFIG.CRM_DB_URL, CONFIG.CRM_ANON_KEY);
+    this.crmDB = supabase.createClient(
+      CONFIG.CRM_DB_URL,
+      CONFIG.CRM_ANON_KEY
+    );
 
     // Quote Database (Packages & EMI)
-    this.quoteDB = supabase.createClient(CONFIG.QUOTE_DB_URL, CONFIG.QUOTE_ANON_KEY);
+    this.quoteDB = supabase.createClient(
+      CONFIG.QUOTE_DB_URL,
+      CONFIG.QUOTE_ANON_KEY
+    );
 
     console.log('🔗 Database clients initialized');
 
@@ -85,42 +89,46 @@ class DatabaseService {
           console.warn('⚠️ Quote mappings table is empty');
         }
       }
+
     } catch (error) {
       console.error('❌ Database connection test failed:', error);
     }
   }
-
+  
   generateSessionId() {
     return `sess_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
   }
-
+  
   // Get all family types from CRM database
   async getFamilyTypes() {
     try {
       console.log('📊 Fetching family types from CRM database...');
-
-      const { data, error } = await this.crmDB.from('family_type').select('*').order('family_type');
-
+      
+      const { data, error } = await this.crmDB
+        .from('family_type')
+        .select('*')
+        .order('family_type');
+      
       if (error) {
         console.error('❌ Error fetching family types:', error);
         throw error;
       }
-
+      
       console.log('✅ Loaded family types:', data.length);
-
+      
       // Format data for frontend
       const formattedData = data.map(ft => ({
         ...ft,
-        composition: this.formatFamilyComposition(ft),
+        composition: this.formatFamilyComposition(ft)
       }));
-
+      
       return { success: true, data: formattedData };
     } catch (error) {
       console.error('Database error in getFamilyTypes:', error);
       return { success: false, error: error.message };
     }
   }
-
+  
   // Get destinations from quote database - using actual Quote Generator structure
   async getDestinations() {
     try {
@@ -146,21 +154,17 @@ class DatabaseService {
               destinationMap.set(category, {
                 destination: category,
                 category: category,
-                packages_available: 0,
+                packages_available: 0
               });
             }
             destinationMap.get(category).packages_available++;
           }
         });
 
-        const destinations = Array.from(destinationMap.values()).sort((a, b) =>
-          a.destination.localeCompare(b.destination)
-        );
+        const destinations = Array.from(destinationMap.values())
+          .sort((a, b) => a.destination.localeCompare(b.destination));
 
-        console.log(
-          '✅ Loaded destination categories from family_type_prices:',
-          destinations.length
-        );
+        console.log('✅ Loaded destination categories from family_type_prices:', destinations.length);
         return { success: true, data: destinations };
       }
 
@@ -180,7 +184,7 @@ class DatabaseService {
           .map(dest => ({
             destination: dest,
             category: 'Available',
-            packages_available: mappingsData.filter(item => item.destination === dest).length,
+            packages_available: mappingsData.filter(item => item.destination === dest).length
           }))
           .sort((a, b) => a.destination.localeCompare(b.destination));
 
@@ -204,7 +208,7 @@ class DatabaseService {
           .map(dest => ({
             destination: dest,
             category: 'Available',
-            packages_available: quotesData.filter(item => item.destination === dest).length,
+            packages_available: quotesData.filter(item => item.destination === dest).length
           }))
           .sort((a, b) => a.destination.localeCompare(b.destination));
 
@@ -224,15 +228,16 @@ class DatabaseService {
           { destination: 'Rajasthan', category: 'Desert', packages_available: 0 },
           { destination: 'Himachal Pradesh', category: 'Hill Station', packages_available: 0 },
           { destination: 'Uttarakhand', category: 'Hill Station', packages_available: 0 },
-          { destination: 'Andaman', category: 'Island', packages_available: 0 },
-        ],
+          { destination: 'Andaman', category: 'Island', packages_available: 0 }
+        ]
       };
+
     } catch (error) {
       console.error('Database error in getDestinations:', error);
       return { success: false, error: error.message };
     }
   }
-
+  
   // Search packages based on criteria
   async searchPackages(searchParams) {
     try {
@@ -241,12 +246,7 @@ class DatabaseService {
       const { destination, adults, child, children, infants } = searchParams;
 
       // Step 1: Detect family type with correct field mapping
-      const familyType = await this.detectFamilyType(
-        adults,
-        child || 0,
-        children || 0,
-        infants || 0
-      );
+      const familyType = await this.detectFamilyType(adults, child || 0, children || 0, infants || 0);
       console.log('🎯 Detected family type:', familyType);
 
       // Step 2: Search for packages using Quote Generator database structure
@@ -256,7 +256,10 @@ class DatabaseService {
 
       // Method 1: Try family_type_prices table with family type filtering
       // Note: family_type_prices doesn't have destination column, we'll filter later
-      let query = this.quoteDB.from('family_type_prices').select('*').eq('is_public_visible', true);
+      let query = this.quoteDB
+        .from('family_type_prices')
+        .select('*')
+        .eq('is_public_visible', true);
 
       // Filter by family type - family_type_prices.family_type_id expects VARCHAR(50) from CRM
       if (familyType && familyType.family_id !== 'CUSTOM' && familyType.family_id) {
@@ -267,16 +270,15 @@ class DatabaseService {
       }
 
       // Order by display order and limit results
-      query = query
-        .order('public_display_order', { ascending: true })
-        .order('created_at', { ascending: false })
-        .limit(20);
+      query = query.order('public_display_order', { ascending: true })
+                   .order('created_at', { ascending: false })
+                   .limit(20);
 
       console.log('🔍 Executing family_type_prices query...');
       console.log('🔍 Query details:', {
         destination: destination,
         family_type_id: familyType?.family_id,
-        family_type_valid: familyType && familyType.family_id !== 'CUSTOM' && familyType.family_id,
+        family_type_valid: familyType && familyType.family_id !== 'CUSTOM' && familyType.family_id
       });
 
       const { data: packagesData, error } = await query;
@@ -284,15 +286,12 @@ class DatabaseService {
 
       if (packagesData && packagesData.length > 0) {
         console.log('📦 Retrieved packages from family_type_prices:', packagesData.length);
-        console.log(
-          '💰 Package prices:',
-          packagesData.map(pkg => ({
-            id: pkg.id,
-            family_type: pkg.family_type_name,
-            total_price: pkg.total_price,
-            subtotal: pkg.subtotal,
-          }))
-        );
+        console.log('💰 Package prices:', packagesData.map(pkg => ({
+          id: pkg.id,
+          family_type: pkg.family_type_name,
+          total_price: pkg.total_price,
+          subtotal: pkg.subtotal
+        })));
       }
 
       if (error) {
@@ -301,7 +300,7 @@ class DatabaseService {
           message: error.message,
           details: error.details,
           hint: error.hint,
-          code: error.code,
+          code: error.code
         });
         console.log('🔄 Trying alternative approach...');
 
@@ -309,8 +308,7 @@ class DatabaseService {
         console.log('🔄 Trying quote_mappings table...');
         const { data: mappingsData, error: mappingsError } = await this.quoteDB
           .from('quote_mappings')
-          .select(
-            `
+          .select(`
             *,
             quotes (
               id,
@@ -325,8 +323,7 @@ class DatabaseService {
               extra_adults,
               trip_duration
             )
-          `
-          )
+          `)
           .ilike('destination', `%${destination}%`)
           .limit(10);
 
@@ -356,7 +353,7 @@ class DatabaseService {
               success: true,
               matched_family_type: familyType,
               packages: convertedPackages,
-              search_params: searchParams,
+              search_params: searchParams
             };
           }
 
@@ -381,7 +378,7 @@ class DatabaseService {
             success: true,
             matched_family_type: familyType,
             packages: convertedPackages,
-            search_params: searchParams,
+            search_params: searchParams
           };
         }
 
@@ -403,7 +400,7 @@ class DatabaseService {
             success: true,
             matched_family_type: familyType,
             packages: convertedPackages,
-            search_params: searchParams,
+            search_params: searchParams
           };
         }
 
@@ -424,7 +421,7 @@ class DatabaseService {
           family_type_price: packages[0].family_type_price,
           base_price: packages[0].base_price,
           final_price: packages[0].final_price,
-          all_keys: Object.keys(packages[0]),
+          all_keys: Object.keys(packages[0])
         });
       }
 
@@ -441,9 +438,7 @@ class DatabaseService {
             try {
               const { data: quoteData, error: quoteError } = await this.quoteDB
                 .from('quotes')
-                .select(
-                  'destination, package_name, total_cost, trip_duration, family_type, customer_name'
-                )
+                .select('destination, package_name, total_cost, trip_duration, family_type, customer_name')
                 .eq('id', pkg.quote_id)
                 .single();
 
@@ -456,7 +451,7 @@ class DatabaseService {
                     quote_total_cost: quoteData.total_cost,
                     package_duration_days: quoteData.trip_duration,
                     quote_family_type: quoteData.family_type,
-                    quote_customer_name: quoteData.customer_name,
+                    quote_customer_name: quoteData.customer_name
                   });
                 }
               }
@@ -483,7 +478,8 @@ class DatabaseService {
           .select('*')
           .eq('is_public_visible', true);
 
-        broadQuery = broadQuery.order('public_display_order', { ascending: true }).limit(10);
+        broadQuery = broadQuery.order('public_display_order', { ascending: true })
+                              .limit(10);
 
         console.log('🔍 Executing broader family_type_prices query...');
         const { data: broadPackages, error: broadError } = await broadQuery;
@@ -505,9 +501,7 @@ class DatabaseService {
       if (packages && packages.length > 0) {
         try {
           // Get all unique destinations from packages
-          const destinations = [
-            ...new Set(packages.map(pkg => pkg.destination).filter(dest => dest)),
-          ];
+          const destinations = [...new Set(packages.map(pkg => pkg.destination).filter(dest => dest))];
 
           if (destinations.length > 0) {
             console.log('🔍 Enhancing packages with quote names for destinations:', destinations);
@@ -515,20 +509,14 @@ class DatabaseService {
 
             // Enhance each package with quote_name if available
             packages = packages.map(pkg => {
-              if (
-                pkg.destination &&
-                quoteNamesMap[pkg.destination] &&
-                quoteNamesMap[pkg.destination].length > 0
-              ) {
+              if (pkg.destination && quoteNamesMap[pkg.destination] && quoteNamesMap[pkg.destination].length > 0) {
                 // Use the first available quote name for this destination
                 const quoteName = quoteNamesMap[pkg.destination][0].quote_name;
-                console.log(
-                  `✅ Enhanced package for ${pkg.destination} with quote name: ${quoteName}`
-                );
+                console.log(`✅ Enhanced package for ${pkg.destination} with quote name: ${quoteName}`);
                 return {
                   ...pkg,
                   quote_name: quoteName,
-                  quote_id: quoteNamesMap[pkg.destination][0].quote_id,
+                  quote_id: quoteNamesMap[pkg.destination][0].quote_id
                 };
               }
               return pkg;
@@ -550,87 +538,76 @@ class DatabaseService {
 
           if (!emiError && emiPlans) {
             console.log('📊 Available EMI plans from database:', emiPlans.length);
-            console.log(
-              '📊 EMI plans family_price_ids:',
-              emiPlans.map(emi => emi.family_price_id)
-            );
-            console.log(
-              '📦 Package IDs to match:',
-              packages.map(pkg => pkg.id)
-            );
+            console.log('📊 EMI plans family_price_ids:', emiPlans.map(emi => emi.family_price_id));
+            console.log('📦 Package IDs to match:', packages.map(pkg => pkg.id));
             // Attach EMI plans to packages - filter by family_price_id (correct foreign key)
-            packagesWithEMI = packages
-              .map(pkg => {
-                // Try to match EMI plans by family_price_id (the correct relationship)
-                let packageEmiPlans = emiPlans.filter(emi => emi.family_price_id === pkg.id);
+            packagesWithEMI = packages.map(pkg => {
+              // Try to match EMI plans by family_price_id (the correct relationship)
+              let packageEmiPlans = emiPlans.filter(emi =>
+                emi.family_price_id === pkg.id
+              );
 
-                console.log(`🔍 Package ${pkg.id} EMI plans found:`, packageEmiPlans.length);
+              console.log(`🔍 Package ${pkg.id} EMI plans found:`, packageEmiPlans.length);
 
-                // Get the actual total price for this package - prioritize family_type_prices fields
-                const actualTotalPrice =
-                  pkg.total_price || pkg.subtotal || pkg.total_cost || pkg.price || pkg.cost;
+              // Get the actual total price for this package - prioritize family_type_prices fields
+              const actualTotalPrice = pkg.total_price || pkg.subtotal || pkg.total_cost || pkg.price || pkg.cost;
 
-                if (!actualTotalPrice) {
-                  console.error(`❌ No valid price found for package ${pkg.id}:`, {
-                    total_price: pkg.total_price,
-                    subtotal: pkg.subtotal,
-                    total_cost: pkg.total_cost,
-                    price: pkg.price,
-                    cost: pkg.cost,
-                    package_data: pkg,
-                  });
-                  // Skip this package if no price is available
-                  return null;
-                }
+              if (!actualTotalPrice) {
+                console.error(`❌ No valid price found for package ${pkg.id}:`, {
+                  total_price: pkg.total_price,
+                  subtotal: pkg.subtotal,
+                  total_cost: pkg.total_cost,
+                  price: pkg.price,
+                  cost: pkg.cost,
+                  package_data: pkg
+                });
+                // Skip this package if no price is available
+                return null;
+              }
 
-                // If no specific EMI plans found, use first 3 as fallback
-                if (packageEmiPlans.length === 0) {
-                  console.log(
-                    `⚠️ No specific EMI plans found for package ${pkg.id}, using fallback plans`
-                  );
-                  packageEmiPlans = emiPlans.slice(0, 3);
-                }
+              // If no specific EMI plans found, use first 3 as fallback
+              if (packageEmiPlans.length === 0) {
+                console.log(`⚠️ No specific EMI plans found for package ${pkg.id}, using fallback plans`);
+                packageEmiPlans = emiPlans.slice(0, 3);
+              }
 
-                console.log(
-                  `💰 Using actual price ${actualTotalPrice} for package ${pkg.id} EMI calculation`
-                );
+              console.log(`💰 Using actual price ${actualTotalPrice} for package ${pkg.id} EMI calculation`);
 
-                // ALWAYS recalculate EMI amounts based on actual package price - SIMPLE DIVISION (NO INTEREST/FEES)
-                packageEmiPlans = packageEmiPlans.map(emi => {
-                  const months = emi.emi_months || 6;
+              // ALWAYS recalculate EMI amounts based on actual package price - SIMPLE DIVISION (NO INTEREST/FEES)
+              packageEmiPlans = packageEmiPlans.map(emi => {
+                const months = emi.emi_months || 6;
 
-                  // Simple division: monthly_amount = total_price / months
-                  // No interest rates, no processing fees - just split the DB total price
-                  const recalculatedMonthlyAmount = Math.round(actualTotalPrice / months);
-                  const recalculatedTotalAmount = actualTotalPrice; // Keep same as DB total price
-                  const recalculatedProcessingFee = 0; // No processing fee for prepaid EMI
-                  const recalculatedTotalInterest = 0; // No interest for simple division
+                // Simple division: monthly_amount = total_price / months
+                // No interest rates, no processing fees - just split the DB total price
+                const recalculatedMonthlyAmount = Math.round(actualTotalPrice / months);
+                const recalculatedTotalAmount = actualTotalPrice; // Keep same as DB total price
+                const recalculatedProcessingFee = 0; // No processing fee for prepaid EMI
+                const recalculatedTotalInterest = 0; // No interest for simple division
 
-                  console.log(`🔄 Recalculated EMI for ${months} months (Simple Division):`, {
-                    monthly_amount: recalculatedMonthlyAmount,
-                    total_amount: recalculatedTotalAmount,
-                    package_price: actualTotalPrice,
-                    calculation: `${actualTotalPrice} ÷ ${months} = ${recalculatedMonthlyAmount}`,
-                  });
-
-                  return {
-                    ...emi,
-                    monthly_amount: recalculatedMonthlyAmount,
-                    total_amount: recalculatedTotalAmount,
-                    processing_fee: recalculatedProcessingFee,
-                    total_interest: recalculatedTotalInterest,
-                    effective_annual_rate: 0, // No interest rate for simple division
-                  };
+                console.log(`🔄 Recalculated EMI for ${months} months (Simple Division):`, {
+                  monthly_amount: recalculatedMonthlyAmount,
+                  total_amount: recalculatedTotalAmount,
+                  package_price: actualTotalPrice,
+                  calculation: `${actualTotalPrice} ÷ ${months} = ${recalculatedMonthlyAmount}`
                 });
 
-                console.log(`📋 EMI plans for package ${pkg.id}:`, packageEmiPlans);
-
                 return {
-                  ...pkg,
-                  family_type_emi_plans: packageEmiPlans,
+                  ...emi,
+                  monthly_amount: recalculatedMonthlyAmount,
+                  total_amount: recalculatedTotalAmount,
+                  processing_fee: recalculatedProcessingFee,
+                  total_interest: recalculatedTotalInterest,
+                  effective_annual_rate: 0 // No interest rate for simple division
                 };
-              })
-              .filter(pkg => pkg !== null); // Filter out packages with no valid price
+              });
+
+              console.log(`📋 EMI plans for package ${pkg.id}:`, packageEmiPlans);
+
+              return {
+                ...pkg,
+                family_type_emi_plans: packageEmiPlans
+              };
+            }).filter(pkg => pkg !== null); // Filter out packages with no valid price
           }
         } catch (emiError) {
           console.warn('⚠️ Could not load EMI plans, using packages without EMI:', emiError);
@@ -648,14 +625,14 @@ class DatabaseService {
         success: true,
         matched_family_type: familyType,
         packages: formattedPackages,
-        search_params: searchParams,
+        search_params: searchParams
       };
     } catch (error) {
       console.error('Database error in searchPackages:', error);
       return { success: false, error: error.message };
     }
   }
-
+  
   // Get package details
   async getPackageDetails(packageId) {
     try {
@@ -735,20 +712,14 @@ class DatabaseService {
 
         if (!emiError && emiData) {
           // Filter EMI plans by family_price_id (correct foreign key relationship)
-          const filteredEmiPlans = emiData.filter(emi => emi.family_price_id === packageData.id);
-
-          console.log(
-            `🔍 Package ${packageData.id} specific EMI plans found:`,
-            filteredEmiPlans.length
+          const filteredEmiPlans = emiData.filter(emi =>
+            emi.family_price_id === packageData.id
           );
 
+          console.log(`🔍 Package ${packageData.id} specific EMI plans found:`, filteredEmiPlans.length);
+
           // Get the actual total price for this package - prioritize family_type_prices fields
-          const actualTotalPrice =
-            packageData.total_price ||
-            packageData.subtotal ||
-            packageData.total_cost ||
-            packageData.price ||
-            packageData.cost;
+          const actualTotalPrice = packageData.total_price || packageData.subtotal || packageData.total_cost || packageData.price || packageData.cost;
 
           if (!actualTotalPrice) {
             console.error(`❌ No valid price found for package ${packageData.id}:`, {
@@ -757,27 +728,21 @@ class DatabaseService {
               total_cost: packageData.total_cost,
               price: packageData.price,
               cost: packageData.cost,
-              package_data: packageData,
+              package_data: packageData
             });
             // Use empty EMI plans if no price is available
             emiPlans = [];
-            console.warn(
-              `⚠️ Skipping EMI calculation for package ${packageData.id} due to missing price`
-            );
+            console.warn(`⚠️ Skipping EMI calculation for package ${packageData.id} due to missing price`);
           } else {
             // Use filtered plans if available, otherwise use first 3 as fallback
             if (filteredEmiPlans.length > 0) {
               emiPlans = filteredEmiPlans;
             } else {
-              console.log(
-                `⚠️ No specific EMI plans found for package ${packageData.id}, using fallback plans`
-              );
+              console.log(`⚠️ No specific EMI plans found for package ${packageData.id}, using fallback plans`);
               emiPlans = emiData.slice(0, 3);
             }
 
-            console.log(
-              `💰 Using actual price ${actualTotalPrice} for package ${packageData.id} EMI calculation`
-            );
+            console.log(`💰 Using actual price ${actualTotalPrice} for package ${packageData.id} EMI calculation`);
 
             // ALWAYS recalculate EMI amounts based on actual package price - SIMPLE DIVISION (NO INTEREST/FEES)
             emiPlans = emiPlans.map(emi => {
@@ -794,7 +759,7 @@ class DatabaseService {
                 monthly_amount: recalculatedMonthlyAmount,
                 total_amount: recalculatedTotalAmount,
                 package_price: actualTotalPrice,
-                calculation: `${actualTotalPrice} ÷ ${months} = ${recalculatedMonthlyAmount}`,
+                calculation: `${actualTotalPrice} ÷ ${months} = ${recalculatedMonthlyAmount}`
               });
 
               return {
@@ -803,11 +768,11 @@ class DatabaseService {
                 total_amount: recalculatedTotalAmount,
                 processing_fee: recalculatedProcessingFee,
                 total_interest: recalculatedTotalInterest,
-                effective_annual_rate: 0, // No interest rate for simple division
+                effective_annual_rate: 0 // No interest rate for simple division
               };
             });
           }
-
+          
           console.log('✅ Loaded EMI plans for package:', emiPlans.length);
           console.log('📊 EMI plans data:', emiPlans);
         } else if (emiError) {
@@ -821,7 +786,7 @@ class DatabaseService {
       const packageWithEMI = {
         ...packageData,
         family_type_emi_plans: emiPlans,
-        data_source: dataSource,
+        data_source: dataSource
       };
 
       const formattedPackage = await this.formatPackageDetailsForFrontend(packageWithEMI);
@@ -832,12 +797,12 @@ class DatabaseService {
       return { success: false, error: error.message };
     }
   }
-
+  
   // Submit quote request
   async submitQuoteRequest(quoteData) {
     try {
       console.log('📝 Submitting quote request:', quoteData);
-
+      
       // Insert into public_family_quotes table
       const { data, error } = await this.quoteDB
         .from('public_family_quotes')
@@ -856,29 +821,29 @@ class DatabaseService {
           utm_source: this.getUtmSource(),
           session_id: this.sessionId,
           lead_source: 'family_website',
-          created_at: new Date().toISOString(),
+          created_at: new Date().toISOString()
         })
         .select()
         .single();
-
+      
       if (error) {
         console.error('❌ Error submitting quote request:', error);
         throw error;
       }
-
+      
       console.log('✅ Quote request submitted successfully:', data.id);
-
+      
       return {
         success: true,
         quote_id: data.id,
-        message: 'Quote request submitted successfully! Our team will contact you soon.',
+        message: 'Quote request submitted successfully! Our team will contact you soon.'
       };
     } catch (error) {
       console.error('Database error in submitQuoteRequest:', error);
       return { success: false, error: error.message };
     }
   }
-
+  
   // Helper: Detect family type based on traveler counts
   async detectFamilyType(adults, child, children, infants) {
     try {
@@ -891,22 +856,20 @@ class DatabaseService {
       const familyTypes = familyTypesResponse.data;
 
       // Find exact match first - using correct field mapping
-      let match = familyTypes.find(
-        ft =>
-          ft.no_of_adults === adults &&
-          ft.no_of_child === child &&
-          ft.no_of_children === children &&
-          ft.no_of_infants === infants
+      let match = familyTypes.find(ft =>
+        ft.no_of_adults === adults &&
+        ft.no_of_child === child &&
+        ft.no_of_children === children &&
+        ft.no_of_infants === infants
       );
 
       // If no exact match, find closest match
       if (!match) {
-        match = familyTypes.find(
-          ft =>
-            ft.no_of_adults === adults &&
-            ft.no_of_child >= child &&
-            ft.no_of_children >= children &&
-            ft.no_of_infants >= infants
+        match = familyTypes.find(ft =>
+          ft.no_of_adults === adults &&
+          ft.no_of_child >= child &&
+          ft.no_of_children >= children &&
+          ft.no_of_infants >= infants
         );
       }
 
@@ -935,19 +898,17 @@ class DatabaseService {
 
       console.log('🎯 Family type detection result:', {
         input: { adults, children, infants },
-        matched: match
-          ? {
-              family_id: match.family_id,
-              family_type: match.family_type,
-              composition: `${match.no_of_adults}A ${match.no_of_children}C ${match.no_of_infants}I`,
-              database_fields: {
-                no_of_adults: match.no_of_adults,
-                no_of_children: match.no_of_children,
-                no_of_child: match.no_of_child,
-                no_of_infants: match.no_of_infants,
-              },
-            }
-          : null,
+        matched: match ? {
+          family_id: match.family_id,
+          family_type: match.family_type,
+          composition: `${match.no_of_adults}A ${match.no_of_children}C ${match.no_of_infants}I`,
+          database_fields: {
+            no_of_adults: match.no_of_adults,
+            no_of_children: match.no_of_children,
+            no_of_child: match.no_of_child,
+            no_of_infants: match.no_of_infants
+          }
+        } : null
       });
 
       return match;
@@ -956,7 +917,7 @@ class DatabaseService {
       return this.getDefaultFamilyType(adults, children, infants);
     }
   }
-
+  
   // Helper: Get default family type
   getDefaultFamilyType(adults, child, children, infants) {
     return {
@@ -966,15 +927,10 @@ class DatabaseService {
       no_of_child: child,
       no_of_children: children,
       no_of_infants: infants,
-      composition: this.formatFamilyComposition({
-        no_of_adults: adults,
-        no_of_child: child,
-        no_of_children: children,
-        no_of_infants: infants,
-      }),
+      composition: this.formatFamilyComposition({ no_of_adults: adults, no_of_child: child, no_of_children: children, no_of_infants: infants })
     };
   }
-
+  
   // Helper: Format family composition
   formatFamilyComposition(familyType) {
     let composition = `${familyType.no_of_adults} Adult${familyType.no_of_adults > 1 ? 's' : ''}`;
@@ -1029,7 +985,7 @@ class DatabaseService {
         }
         destinationQuoteMap[destination].push({
           quote_name: mapping.quote_name,
-          quote_id: mapping.quote_id,
+          quote_id: mapping.quote_id
         });
       });
 
@@ -1055,10 +1011,7 @@ class DatabaseService {
           // Use the first available quote name for this destination
           packageData.quote_name = destinationQuotes[0].quote_name;
           packageData.quote_id = destinationQuotes[0].quote_id;
-          console.log(
-            '✅ Enhanced package with quote name from quote_mappings:',
-            packageData.quote_name
-          );
+          console.log('✅ Enhanced package with quote name from quote_mappings:', packageData.quote_name);
         }
       } catch (error) {
         console.warn('⚠️ Could not fetch quote name from quote_mappings:', error);
@@ -1078,7 +1031,7 @@ class DatabaseService {
         console.log('🏨 Hotel query result:', {
           error: hotelError,
           data_count: hotelRowsData?.length || 0,
-          sample_data: hotelRowsData?.[0],
+          sample_data: hotelRowsData?.[0]
         });
 
         if (!hotelError && hotelRowsData && hotelRowsData.length > 0) {
@@ -1121,10 +1074,7 @@ class DatabaseService {
           // Update package with multiple hotel information
           // Prioritize quote_name from quote_mappings table, apply transformation if needed, fallback to generated title
           const transformedName = this.transformPackageName(packageData.quote_name);
-          basePackage.title =
-            transformedName ||
-            packageData.quote_name ||
-            `${destination}: ${totalNights}N ${packageData.quote_family_type || 'Family Package'}`;
+          basePackage.title = transformedName || packageData.quote_name || `${destination}: ${totalNights}N ${packageData.quote_family_type || 'Family Package'}`;
           basePackage.hotel_name = hotelNames.join(', '); // Combined hotel names
           basePackage.hotel_category = 'Standard'; // Default category
           basePackage.nights = totalNights;
@@ -1133,7 +1083,7 @@ class DatabaseService {
             nights: hotel.stay_nights,
             meal_plan: hotel.meal_plan || 'Breakfast included',
             room_type: hotel.room_type || 'Standard Room',
-            price: hotel.price,
+            price: hotel.price
           })); // Store all hotel details in correct format
           basePackage.duration_days = totalNights; // Update duration to match total nights
 
@@ -1142,13 +1092,13 @@ class DatabaseService {
             ...hotelInclusions, // All hotel inclusions
             'Airport transfers',
             'All sightseeing as per itinerary',
-            'All applicable taxes',
+            'All applicable taxes'
           ];
 
           console.log('✅ Enhanced package with hotel data:', {
             hotels_count: hotels.length,
             total_nights: totalNights,
-            hotel_names: hotelNames,
+            hotel_names: hotelNames
           });
         } else {
           console.warn('⚠️ No hotel data found for quote_id:', packageData.quote_id);
@@ -1166,30 +1116,27 @@ class DatabaseService {
 
         // Create a basic hotel entry based on destination and price
         const hotelName = this.generateHotelName(destination);
-        const mealPlan =
-          packageData.total_price > 50000 ? 'Breakfast & Dinner included' : 'Breakfast included';
+        const mealPlan = packageData.total_price > 50000 ? 'Breakfast & Dinner included' : 'Breakfast included';
 
-        basePackage.hotels_list = [
-          {
-            hotel_name: hotelName,
-            nights: duration,
-            meal_plan: mealPlan,
-            room_type: 'Standard Room',
-            price: Math.round((packageData.total_price || 45000) * 0.6), // Assume 60% of total price is hotel cost
-          },
-        ];
+        basePackage.hotels_list = [{
+          hotel_name: hotelName,
+          nights: duration,
+          meal_plan: mealPlan,
+          room_type: 'Standard Room',
+          price: Math.round((packageData.total_price || 45000) * 0.6) // Assume 60% of total price is hotel cost
+        }];
 
         basePackage.inclusions = [
           `${duration}N - ${hotelName} (${mealPlan})`,
           'Airport transfers',
           'All sightseeing as per itinerary',
-          'All applicable taxes',
+          'All applicable taxes'
         ];
 
         console.log('✅ Created fallback hotel information:', {
           hotel_name: hotelName,
           nights: duration,
-          meal_plan: mealPlan,
+          meal_plan: mealPlan
         });
       }
     }
@@ -1200,16 +1147,15 @@ class DatabaseService {
   // Helper: Format package for frontend - Enhanced for Quote Generator data
   formatPackageForFrontend(packageData) {
     // Ensure we have a valid total price - check all possible price fields
-    const totalPrice =
-      packageData.total_price ||
-      packageData.total_cost ||
-      packageData.price ||
-      packageData.cost ||
-      packageData.package_cost ||
-      packageData.family_type_price ||
-      packageData.base_price ||
-      packageData.final_price ||
-      45000; // fallback only if no price found
+    const totalPrice = packageData.total_price ||
+                      packageData.total_cost ||
+                      packageData.price ||
+                      packageData.cost ||
+                      packageData.package_cost ||
+                      packageData.family_type_price ||
+                      packageData.base_price ||
+                      packageData.final_price ||
+                      45000; // fallback only if no price found
 
     console.log('💰 Price extraction for package:', {
       id: packageData.id,
@@ -1221,18 +1167,13 @@ class DatabaseService {
       family_type_price: packageData.family_type_price,
       base_price: packageData.base_price,
       final_price: packageData.final_price,
-      extracted_price: totalPrice,
+      extracted_price: totalPrice
     });
 
     // Extract real package information from Quote Generator database
     // Prioritize quote_name from quote_mappings table, apply transformation if needed
     const transformedName = this.transformPackageName(packageData.quote_name);
-    let packageTitle =
-      transformedName ||
-      packageData.quote_name ||
-      packageData.package_title ||
-      packageData.title ||
-      packageData.package_name;
+    let packageTitle = transformedName || packageData.quote_name || packageData.package_title || packageData.title || packageData.package_name;
     let destination = packageData.destination;
     let duration = packageData.package_duration_days || packageData.duration_days || 5;
 
@@ -1280,7 +1221,7 @@ class DatabaseService {
           original_total_amount: emi.total_amount,
           recalculated_total_amount: recalculatedTotalAmount,
           package_price: totalPrice,
-          calculation: `${totalPrice} ÷ ${months} = ${recalculatedMonthlyAmount}`,
+          calculation: `${totalPrice} ÷ ${months} = ${recalculatedMonthlyAmount}`
         });
 
         return {
@@ -1290,7 +1231,7 @@ class DatabaseService {
           total_amount: recalculatedTotalAmount,
           processing_fee: recalculatedProcessingFee,
           label: emi.marketing_label || `${months} Months`,
-          is_featured: emi.is_featured || false,
+          is_featured: emi.is_featured || false
         };
       });
     } else {
@@ -1305,8 +1246,7 @@ class DatabaseService {
     }
 
     // Determine package category and offer badge
-    const category =
-      packageData.destination_category || this.getCategoryByDestination(packageData.destination);
+    const category = packageData.destination_category || this.getCategoryByDestination(packageData.destination);
     const offerBadge = this.getOfferBadge(totalPrice);
 
     return {
@@ -1331,7 +1271,7 @@ class DatabaseService {
       hotel_name: packageData.hotel_name || this.generateHotelName(packageData.destination),
       hotel_category: packageData.hotel_category || 'Standard',
       nights: packageData.nights || duration,
-      hotels_list: packageData.hotels_list || [],
+      hotels_list: packageData.hotels_list || []
     };
   }
 
@@ -1350,10 +1290,7 @@ class DatabaseService {
     }
 
     // Check for meals
-    if (
-      packageData.meal_cost_per_person > 0 ||
-      packageData.additional_costs?.meal_cost_per_person > 0
-    ) {
+    if (packageData.meal_cost_per_person > 0 || packageData.additional_costs?.meal_cost_per_person > 0) {
       inclusions.push('Meals');
     } else {
       inclusions.push('Breakfast');
@@ -1379,13 +1316,10 @@ class DatabaseService {
     if (!destination) return 'General';
 
     const dest = destination.toLowerCase();
-    if (dest.includes('kashmir') || dest.includes('manali') || dest.includes('shimla'))
-      return 'Hill Station';
+    if (dest.includes('kashmir') || dest.includes('manali') || dest.includes('shimla')) return 'Hill Station';
     if (dest.includes('goa') || dest.includes('andaman') || dest.includes('kerala')) return 'Beach';
-    if (dest.includes('rajasthan') || dest.includes('jaipur') || dest.includes('udaipur'))
-      return 'Heritage';
-    if (dest.includes('ladakh') || dest.includes('spiti') || dest.includes('adventure'))
-      return 'Adventure';
+    if (dest.includes('rajasthan') || dest.includes('jaipur') || dest.includes('udaipur')) return 'Heritage';
+    if (dest.includes('ladakh') || dest.includes('spiti') || dest.includes('adventure')) return 'Adventure';
 
     return 'Popular';
   }
@@ -1443,12 +1377,7 @@ class DatabaseService {
     const dest = destination.toLowerCase();
 
     // Map destinations to available images
-    if (
-      dest.includes('kashmir') ||
-      dest.includes('manali') ||
-      dest.includes('shimla') ||
-      dest.includes('hill')
-    ) {
+    if (dest.includes('kashmir') || dest.includes('manali') || dest.includes('shimla') || dest.includes('hill')) {
       return 'img/rectangle-14.png'; // Mountain/Hill station image
     }
     if (dest.includes('goa') || dest.includes('beach')) {
@@ -1457,13 +1386,7 @@ class DatabaseService {
     if (dest.includes('andaman') || dest.includes('nicobar')) {
       return 'img/rectangle-14-3.png'; // Tropical island image
     }
-    if (
-      dest.includes('rajasthan') ||
-      dest.includes('heritage') ||
-      dest.includes('palace') ||
-      dest.includes('jaipur') ||
-      dest.includes('udaipur')
-    ) {
+    if (dest.includes('rajasthan') || dest.includes('heritage') || dest.includes('palace') || dest.includes('jaipur') || dest.includes('udaipur')) {
       return 'img/rectangle-14-4.png'; // Heritage image
     }
     if (dest.includes('kerala') || dest.includes('backwater')) {
@@ -1473,7 +1396,7 @@ class DatabaseService {
     // Default travel image
     return 'img/rectangle-14.png';
   }
-
+  
   // Helper: Format package details for frontend
   async formatPackageDetailsForFrontend(packageData) {
     // First, try to get additional data from quotes table if we have quote_id
@@ -1483,9 +1406,7 @@ class DatabaseService {
       try {
         const { data: quoteData, error: quoteError } = await this.quoteDB
           .from('quotes')
-          .select(
-            'destination, package_name, total_cost, customer_name, family_type, no_of_persons, children, infants, extra_adults, trip_duration'
-          )
+          .select('destination, package_name, total_cost, customer_name, family_type, no_of_persons, children, infants, extra_adults, trip_duration')
           .eq('id', packageData.quote_id)
           .single();
 
@@ -1497,7 +1418,7 @@ class DatabaseService {
             quote_total_cost: quoteData.total_cost,
             quote_customer_name: quoteData.customer_name,
             quote_family_type: quoteData.family_type,
-            quote_duration: quoteData.trip_duration,
+            quote_duration: quoteData.trip_duration
           };
           console.log('✅ Enriched package data with quote information');
         }
@@ -1519,18 +1440,10 @@ class DatabaseService {
     return {
       ...basePackage,
       // Enhanced package information
-      package_name:
-        this.transformPackageName(enrichedPackageData.quote_name) ||
-        enrichedPackageData.quote_name ||
-        enrichedPackageData.package_name ||
-        basePackage.title,
+      package_name: this.transformPackageName(enrichedPackageData.quote_name) || enrichedPackageData.quote_name || enrichedPackageData.package_name || basePackage.title,
       hotel_name: hotelInfo.name,
       hotel_category: hotelInfo.category,
-      nights:
-        enrichedPackageData.package_duration_days ||
-        enrichedPackageData.quote_duration ||
-        enrichedPackageData.duration_days ||
-        5,
+      nights: enrichedPackageData.package_duration_days || enrichedPackageData.quote_duration || enrichedPackageData.duration_days || 5,
       meal_plan: mealPlanInfo.plan,
       meal_details: mealPlanInfo.details,
 
@@ -1556,7 +1469,7 @@ class DatabaseService {
       // Package metadata
       data_source: enrichedPackageData.data_source || 'quote_generator',
       last_updated: enrichedPackageData.updated_at || enrichedPackageData.created_at,
-      validity: this.getPackageValidity(enrichedPackageData),
+      validity: this.getPackageValidity(enrichedPackageData)
     };
   }
 
@@ -1597,7 +1510,7 @@ class DatabaseService {
 
     return {
       name: hotelName,
-      category: hotelCategory,
+      category: hotelCategory
     };
   }
 
@@ -1640,7 +1553,7 @@ class DatabaseService {
 
     return {
       plan: mealPlan,
-      details: mealDetails,
+      details: mealDetails
     };
   }
 
@@ -1652,10 +1565,7 @@ class DatabaseService {
     inclusions.push('Accommodation as per itinerary');
 
     // Transportation
-    if (
-      packageData.vehicle_cost > 0 ||
-      (packageData.quote_mapping_data && packageData.quote_mapping_data.vehicle_mappings)
-    ) {
+    if (packageData.vehicle_cost > 0 || (packageData.quote_mapping_data && packageData.quote_mapping_data.vehicle_mappings)) {
       inclusions.push('Private vehicle for all transfers and sightseeing');
     } else {
       inclusions.push('Airport transfers');
@@ -1714,7 +1624,7 @@ class DatabaseService {
       'Camera fees at monuments',
       'Medical expenses',
       'Any expenses arising due to unforeseen circumstances',
-      'Anything not mentioned in inclusions',
+      'Anything not mentioned in inclusions'
     ];
 
     // Add specific exclusions based on package type
@@ -1734,11 +1644,9 @@ class DatabaseService {
     if (packageData.additional_costs && packageData.additional_costs.ferry_cost > 0) {
       return true;
     }
-    if (
-      packageData.quote_mapping_data &&
-      packageData.quote_mapping_data.additional_costs &&
-      packageData.quote_mapping_data.additional_costs.ferry_cost > 0
-    ) {
+    if (packageData.quote_mapping_data &&
+        packageData.quote_mapping_data.additional_costs &&
+        packageData.quote_mapping_data.additional_costs.ferry_cost > 0) {
       return true;
     }
     return false;
@@ -1749,11 +1657,9 @@ class DatabaseService {
     if (packageData.additional_costs && packageData.additional_costs.guide_cost_per_day > 0) {
       return true;
     }
-    if (
-      packageData.quote_mapping_data &&
-      packageData.quote_mapping_data.additional_costs &&
-      packageData.quote_mapping_data.additional_costs.guide_cost_per_day > 0
-    ) {
+    if (packageData.quote_mapping_data &&
+        packageData.quote_mapping_data.additional_costs &&
+        packageData.quote_mapping_data.additional_costs.guide_cost_per_day > 0) {
       return true;
     }
     return packageData.total_price > 60000; // Include guide for premium packages
@@ -1795,21 +1701,16 @@ class DatabaseService {
     // Add destination-specific description
     const dest = destination.toLowerCase();
     if (dest.includes('kashmir')) {
-      description +=
-        'Explore the paradise on earth with its pristine lakes, snow-capped mountains, and beautiful gardens. ';
+      description += 'Explore the paradise on earth with its pristine lakes, snow-capped mountains, and beautiful gardens. ';
     } else if (dest.includes('goa')) {
-      description +=
-        'Enjoy the sun, sand, and sea with beautiful beaches, vibrant nightlife, and Portuguese heritage. ';
+      description += 'Enjoy the sun, sand, and sea with beautiful beaches, vibrant nightlife, and Portuguese heritage. ';
     } else if (dest.includes('manali')) {
-      description +=
-        'Discover the hill station beauty with adventure activities, scenic landscapes, and pleasant weather. ';
+      description += 'Discover the hill station beauty with adventure activities, scenic landscapes, and pleasant weather. ';
     } else if (dest.includes('kerala')) {
-      description +=
-        "Experience God's own country with backwaters, spice plantations, and cultural heritage. ";
+      description += 'Experience God\'s own country with backwaters, spice plantations, and cultural heritage. ';
     }
 
-    description +=
-      'All arrangements are made to ensure a memorable and hassle-free vacation for your family.';
+    description += 'All arrangements are made to ensure a memorable and hassle-free vacation for your family.';
 
     return description;
   }
@@ -1824,7 +1725,7 @@ class DatabaseService {
     itinerary.push({
       day: 1,
       title: `Arrival in ${destination}`,
-      description: `Arrive at ${destination} airport/railway station. Meet and greet by our representative. Transfer to hotel and check-in. Rest of the day at leisure. Overnight stay at hotel.`,
+      description: `Arrive at ${destination} airport/railway station. Meet and greet by our representative. Transfer to hotel and check-in. Rest of the day at leisure. Overnight stay at hotel.`
     });
 
     // Middle days - Sightseeing
@@ -1839,30 +1740,24 @@ class DatabaseService {
       if (dest.includes('kashmir')) {
         if (day === 2) {
           dayTitle = 'Srinagar Local Sightseeing';
-          dayDescription =
-            'After breakfast, visit Mughal Gardens - Nishat Bagh, Shalimar Bagh, and Chashme Shahi. Enjoy Shikara ride in Dal Lake. Visit local markets. Overnight stay at hotel.';
+          dayDescription = 'After breakfast, visit Mughal Gardens - Nishat Bagh, Shalimar Bagh, and Chashme Shahi. Enjoy Shikara ride in Dal Lake. Visit local markets. Overnight stay at hotel.';
         } else if (day === 3) {
           dayTitle = 'Srinagar to Gulmarg';
-          dayDescription =
-            'After breakfast, drive to Gulmarg (2 hours). Enjoy Gondola ride (Phase 1 & 2). Experience snow activities. Return to Srinagar. Overnight stay at hotel.';
+          dayDescription = 'After breakfast, drive to Gulmarg (2 hours). Enjoy Gondola ride (Phase 1 & 2). Experience snow activities. Return to Srinagar. Overnight stay at hotel.';
         } else {
           dayTitle = 'Pahalgam Excursion';
-          dayDescription =
-            'After breakfast, full day excursion to Pahalgam. Visit Betaab Valley, Aru Valley, and Chandanwari. Return to Srinagar. Overnight stay at hotel.';
+          dayDescription = 'After breakfast, full day excursion to Pahalgam. Visit Betaab Valley, Aru Valley, and Chandanwari. Return to Srinagar. Overnight stay at hotel.';
         }
       } else if (dest.includes('goa')) {
         if (day === 2) {
           dayTitle = 'North Goa Sightseeing';
-          dayDescription =
-            'After breakfast, visit North Goa beaches - Calangute, Baga, Anjuna. Visit Fort Aguada. Enjoy water sports. Overnight stay at hotel.';
+          dayDescription = 'After breakfast, visit North Goa beaches - Calangute, Baga, Anjuna. Visit Fort Aguada. Enjoy water sports. Overnight stay at hotel.';
         } else if (day === 3) {
           dayTitle = 'South Goa Sightseeing';
-          dayDescription =
-            'After breakfast, visit South Goa beaches - Colva, Benaulim. Visit Old Goa churches. Spice plantation tour. Overnight stay at hotel.';
+          dayDescription = 'After breakfast, visit South Goa beaches - Colva, Benaulim. Visit Old Goa churches. Spice plantation tour. Overnight stay at hotel.';
         } else {
           dayTitle = 'Leisure Day';
-          dayDescription =
-            'Day at leisure. Enjoy beach activities, shopping, or optional tours. Overnight stay at hotel.';
+          dayDescription = 'Day at leisure. Enjoy beach activities, shopping, or optional tours. Overnight stay at hotel.';
         }
       } else {
         dayTitle = `${destination} Sightseeing - Day ${day - 1}`;
@@ -1872,7 +1767,7 @@ class DatabaseService {
       itinerary.push({
         day: day,
         title: dayTitle,
-        description: dayDescription,
+        description: dayDescription
       });
     }
 
@@ -1880,7 +1775,7 @@ class DatabaseService {
     itinerary.push({
       day: nights + 1,
       title: 'Departure',
-      description: `After breakfast, check-out from hotel. Transfer to airport/railway station for onward journey. Tour ends with sweet memories.`,
+      description: `After breakfast, check-out from hotel. Transfer to airport/railway station for onward journey. Tour ends with sweet memories.`
     });
 
     return itinerary;
@@ -1894,7 +1789,7 @@ class DatabaseService {
       breakdown.push({
         item: 'Accommodation',
         cost: packageData.hotel_cost,
-        description: `${packageData.package_duration_days || 5} nights hotel stay`,
+        description: `${packageData.package_duration_days || 5} nights hotel stay`
       });
     }
 
@@ -1902,7 +1797,7 @@ class DatabaseService {
       breakdown.push({
         item: 'Transportation',
         cost: packageData.vehicle_cost,
-        description: 'Private vehicle for transfers and sightseeing',
+        description: 'Private vehicle for transfers and sightseeing'
       });
     }
 
@@ -1914,19 +1809,16 @@ class DatabaseService {
         breakdown.push({
           item: 'Meals',
           cost: costs.meal_cost_per_person * familyCount,
-          description: `Meals for ${familyCount} persons`,
+          description: `Meals for ${familyCount} persons`
         });
       }
 
       if (costs.ferry_cost > 0) {
-        const ferryPersons =
-          (packageData.no_of_adults || 2) +
-          (packageData.no_of_children || 0) +
-          (packageData.no_of_child || 0);
+        const ferryPersons = (packageData.no_of_adults || 2) + (packageData.no_of_children || 0) + (packageData.no_of_child || 0);
         breakdown.push({
           item: 'Ferry',
           cost: costs.ferry_cost * ferryPersons,
-          description: `Ferry tickets for ${ferryPersons} persons (excluding infants)`,
+          description: `Ferry tickets for ${ferryPersons} persons (excluding infants)`
         });
       }
 
@@ -1935,7 +1827,7 @@ class DatabaseService {
         breakdown.push({
           item: 'Activities',
           cost: costs.activity_cost_per_person * familyCount,
-          description: `Activities for ${familyCount} persons`,
+          description: `Activities for ${familyCount} persons`
         });
       }
 
@@ -1944,7 +1836,7 @@ class DatabaseService {
         breakdown.push({
           item: 'Guide',
           cost: costs.guide_cost_per_day * days,
-          description: `Professional guide for ${days} days`,
+          description: `Professional guide for ${days} days`
         });
       }
     }
@@ -1955,7 +1847,7 @@ class DatabaseService {
       breakdown.push({
         item: 'Other charges',
         cost: (packageData.total_price || 0) - total,
-        description: 'Taxes, service charges, and other fees',
+        description: 'Taxes, service charges, and other fees'
       });
     }
 
@@ -1988,7 +1880,7 @@ class DatabaseService {
             total_amount: 45000,
             processing_fee: 1000,
             label: 'Quick Pay',
-            is_featured: false,
+            is_featured: false
           },
           {
             id: 'emi-2',
@@ -1997,7 +1889,7 @@ class DatabaseService {
             total_amount: 45000,
             processing_fee: 1500,
             label: 'Best Value',
-            is_featured: true,
+            is_featured: true
           },
           {
             id: 'emi-3',
@@ -2006,12 +1898,12 @@ class DatabaseService {
             total_amount: 45000,
             processing_fee: 2000,
             label: 'Low Monthly',
-            is_featured: false,
-          },
+            is_featured: false
+          }
         ],
         inclusions: ['Flights', 'Hotels', 'Meals', 'Sightseeing'],
         images: [this.getDestinationImage(destination)],
-        offer_badge: '15% OFF',
+        offer_badge: '15% OFF'
       },
       {
         id: 'sample-2',
@@ -2028,20 +1920,20 @@ class DatabaseService {
             total_amount: 65000,
             processing_fee: 2000,
             label: 'Popular',
-            is_featured: true,
-          },
+            is_featured: true
+          }
         ],
         inclusions: ['Flights', 'Hotels', 'Meals', 'Adventure Activities'],
         images: [this.getDestinationImage(destination)],
-        offer_badge: 'Best Value',
-      },
+        offer_badge: 'Best Value'
+      }
     ];
 
     return {
       success: true,
       matched_family_type: familyType,
       packages: samplePackages,
-      search_params: searchParams,
+      search_params: searchParams
     };
   }
 
@@ -2051,34 +1943,33 @@ class DatabaseService {
     const quote = mapping.quotes || mapping;
 
     // Apply package name transformation if needed
-    let packageName =
-      this.transformPackageName(mapping.quote_name) ||
-      mapping.quote_name ||
-      `${mapping.destination} Package`;
+    let packageName = this.transformPackageName(mapping.quote_name) || mapping.quote_name || `${mapping.destination} Package`;
 
     // First, try to get the actual price from the database record
-    let totalPrice =
-      mapping.total_price ||
-      mapping.total_cost ||
-      mapping.price ||
-      mapping.cost ||
-      mapping.package_cost ||
-      mapping.family_type_price ||
-      mapping.base_price ||
-      mapping.final_price;
+    let totalPrice = mapping.total_price ||
+                    mapping.total_cost ||
+                    mapping.price ||
+                    mapping.cost ||
+                    mapping.package_cost ||
+                    mapping.family_type_price ||
+                    mapping.base_price ||
+                    mapping.final_price;
 
     // If no database price found, calculate family type specific price
     if (!totalPrice) {
       const calculatedPrice = this.calculateFamilyTypePrice(mapping, familyType);
-      totalPrice =
-        calculatedPrice || quote?.total_cost || quote?.subtotal || mapping.subtotal || 45000; // fallback only if nothing else works
+      totalPrice = calculatedPrice ||
+                  quote?.total_cost ||
+                  quote?.subtotal ||
+                  mapping.subtotal ||
+                  45000; // fallback only if nothing else works
     }
 
     console.log('💰 Price selection for mapping:', {
       id: mapping.id,
       database_price: mapping.total_price || mapping.total_cost || mapping.price,
       final_price: totalPrice,
-      family_type: familyType?.family_type,
+      family_type: familyType?.family_type
     });
 
     return {
@@ -2100,7 +1991,7 @@ class DatabaseService {
       // Add additional data from quote mapping
       hotel_name: this.extractHotelName(mapping),
       meal_plan: this.extractMealPlan(mapping),
-      nights: quote?.duration_days || mapping.duration_days || 5,
+      nights: quote?.duration_days || mapping.duration_days || 5
     };
   }
 
@@ -2110,17 +2001,14 @@ class DatabaseService {
 
     // Define package name transformations
     const nameTransformations = {
-      'Goa: 3N Cosmic Combo - 2 Adults + 1 Child (Above 5 yrs) + 1 Teenager (Above 11 yrs)':
-        'Family Fun in Goa: 2N of Adventure and Bonding',
+      "Goa: 3N Cosmic Combo - 2 Adults + 1 Child (Above 5 yrs) + 1 Teenager (Above 11 yrs)": "Family Fun in Goa: 2N of Adventure and Bonding",
       // Add more transformations as needed
       // "Original Name": "Transformed Name",
     };
 
     // Check if there's a transformation for this name
     if (nameTransformations[originalName]) {
-      console.log(
-        `🔄 Transforming package name: "${originalName}" → "${nameTransformations[originalName]}"`
-      );
+      console.log(`🔄 Transforming package name: "${originalName}" → "${nameTransformations[originalName]}"`);
       return nameTransformations[originalName];
     }
 
@@ -2135,16 +2023,13 @@ class DatabaseService {
 
     try {
       const costs = mapping.additional_costs;
-      const familyCount =
-        familyType.family_count ||
-        familyType.no_of_adults +
-          familyType.no_of_children +
-          familyType.no_of_child +
-          familyType.no_of_infants;
+      const familyCount = familyType.family_count ||
+                         (familyType.no_of_adults + familyType.no_of_children + familyType.no_of_child + familyType.no_of_infants);
 
       // Calculate ferry cost: per-person cost * eligible persons (adults + children + child, excluding infants)
-      const ferryEligiblePersons =
-        familyType.no_of_adults + (familyType.no_of_children || 0) + (familyType.no_of_child || 0);
+      const ferryEligiblePersons = familyType.no_of_adults +
+                                  (familyType.no_of_children || 0) +
+                                  (familyType.no_of_child || 0);
       const ferryCost = (costs.ferry_cost || 0) * ferryEligiblePersons;
       const mealCost = (costs.meal_cost_per_person || 0) * familyCount;
       const activityCost = (costs.activity_cost_per_person || 0) * familyCount;
@@ -2154,36 +2039,25 @@ class DatabaseService {
 
       // Get base quote price - try to get actual price from database first
       const quote = mapping.quotes || mapping;
-      const basePrice =
-        quote?.total_cost ||
-        quote?.subtotal ||
-        mapping.total_price ||
-        mapping.total_cost ||
-        mapping.price ||
-        null; // Don't use fallback here, let caller handle it
+      const basePrice = quote?.total_cost ||
+                       quote?.subtotal ||
+                       mapping.total_price ||
+                       mapping.total_cost ||
+                       mapping.price ||
+                       null; // Don't use fallback here, let caller handle it
 
       if (!basePrice) {
-        console.log(
-          '⚠️ No base price found for calculation, skipping family type price calculation'
-        );
+        console.log('⚠️ No base price found for calculation, skipping family type price calculation');
         return null;
       }
 
       console.log(`🧮 Family Type Price Calculation for ${familyType.family_type}:`);
-      console.log(
-        `   ⛴️ Ferry: ₹${costs.ferry_cost} × ${ferryEligiblePersons} persons (excluding ${familyType.no_of_infants} infants) = ₹${ferryCost}`
-      );
-      console.log(
-        `   🍽️ Meals: ₹${costs.meal_cost_per_person} × ${familyCount} persons = ₹${mealCost}`
-      );
-      console.log(
-        `   🎯 Activities: ₹${costs.activity_cost_per_person} × ${familyCount} persons = ₹${activityCost}`
-      );
+      console.log(`   ⛴️ Ferry: ₹${costs.ferry_cost} × ${ferryEligiblePersons} persons (excluding ${familyType.no_of_infants} infants) = ₹${ferryCost}`);
+      console.log(`   🍽️ Meals: ₹${costs.meal_cost_per_person} × ${familyCount} persons = ₹${mealCost}`);
+      console.log(`   🎯 Activities: ₹${costs.activity_cost_per_person} × ${familyCount} persons = ₹${activityCost}`);
       console.log(`   👨‍🏫 Guide: ₹${costs.guide_cost_per_day} × 3 days = ₹${guideCost}`);
       console.log(`   💰 Total Additional: ₹${additionalCosts}`);
-      console.log(
-        `   💰 Final Price: ₹${basePrice} + ₹${additionalCosts} = ₹${basePrice + additionalCosts}`
-      );
+      console.log(`   💰 Final Price: ₹${basePrice} + ₹${additionalCosts} = ₹${basePrice + additionalCosts}`);
 
       return Math.round(basePrice + additionalCosts);
     } catch (error) {
@@ -2195,14 +2069,18 @@ class DatabaseService {
   // Helper: Convert quote to package format
   convertQuoteToPackage(quote, familyType) {
     const packageName = `${quote.destination} ${this.getPackageTypeByPrice(quote.total_cost)} Package`;
-    const totalPrice =
-      quote.total_cost || quote.subtotal || quote.total_price || quote.price || quote.cost || 45000; // Only use fallback if no price found at all
+    const totalPrice = quote.total_cost ||
+                      quote.subtotal ||
+                      quote.total_price ||
+                      quote.price ||
+                      quote.cost ||
+                      45000; // Only use fallback if no price found at all
 
     console.log('💰 Quote to package conversion:', {
       quote_id: quote.id,
       total_cost: quote.total_cost,
       subtotal: quote.subtotal,
-      final_price: totalPrice,
+      final_price: totalPrice
     });
 
     return {
@@ -2217,7 +2095,7 @@ class DatabaseService {
       images: [this.getDestinationImage(quote.destination)], // Destination-specific image
       offer_badge: this.getOfferBadge(totalPrice),
       package_validity: quote.travel_date || 'Valid for booking',
-      created_from: 'quote',
+      created_from: 'quote'
     };
   }
 
@@ -2237,7 +2115,7 @@ class DatabaseService {
         total_amount: totalPrice, // Same as DB total price
         processing_fee: 0, // No processing fee for prepaid EMI
         label: 'Quick Pay',
-        is_featured: false,
+        is_featured: false
       },
       {
         id: `emi-6-${packageId}`,
@@ -2246,7 +2124,7 @@ class DatabaseService {
         total_amount: totalPrice, // Same as DB total price
         processing_fee: 0, // No processing fee for prepaid EMI
         label: 'Best Value',
-        is_featured: true,
+        is_featured: true
       },
       {
         id: `emi-12-${packageId}`,
@@ -2255,8 +2133,8 @@ class DatabaseService {
         total_amount: totalPrice, // Same as DB total price
         processing_fee: 0, // No processing fee for prepaid EMI
         label: 'Low Monthly',
-        is_featured: false,
-      },
+        is_featured: false
+      }
     ];
   }
 
@@ -2344,16 +2222,14 @@ class DatabaseService {
 
       const { data, error } = await this.quoteDB
         .from('family_type_prices')
-        .select(
-          `
+        .select(`
           family_type_name,
           no_of_adults,
           no_of_children,
           no_of_child,
           no_of_infants,
           family_count
-        `
-        )
+        `)
         .eq('is_public_visible', true)
         .order('family_type_name');
 
@@ -2373,8 +2249,9 @@ class DatabaseService {
       return {
         success: true,
         data: data,
-        message: `Loaded ${data.length} family type price records from database`,
+        message: `Loaded ${data.length} family type price records from database`
       };
+
     } catch (error) {
       console.error('❌ Database error in getFamilyTypePricesData:', error);
       // Return fallback data on any error
@@ -2393,7 +2270,7 @@ class DatabaseService {
         no_of_children: 0,
         no_of_child: 0,
         no_of_infants: 0,
-        family_count: 2,
+        family_count: 2
       },
       {
         family_type_name: 'Baby Bliss',
@@ -2401,7 +2278,7 @@ class DatabaseService {
         no_of_children: 0,
         no_of_child: 0,
         no_of_infants: 1,
-        family_count: 3,
+        family_count: 3
       },
       {
         family_type_name: 'Tiny Delight',
@@ -2409,7 +2286,7 @@ class DatabaseService {
         no_of_children: 0,
         no_of_child: 1,
         no_of_infants: 0,
-        family_count: 3,
+        family_count: 3
       },
       {
         family_type_name: 'Family Nest',
@@ -2417,7 +2294,7 @@ class DatabaseService {
         no_of_children: 2,
         no_of_child: 0,
         no_of_infants: 0,
-        family_count: 4,
+        family_count: 4
       },
       {
         family_type_name: 'Dynamic Family Duo+',
@@ -2425,7 +2302,7 @@ class DatabaseService {
         no_of_children: 0,
         no_of_child: 0,
         no_of_infants: 0,
-        family_count: 4,
+        family_count: 4
       },
       {
         family_type_name: 'Grand Family',
@@ -2433,14 +2310,14 @@ class DatabaseService {
         no_of_children: 3,
         no_of_child: 1,
         no_of_infants: 0,
-        family_count: 6,
-      },
+        family_count: 6
+      }
     ];
 
     return {
       success: true,
       data: fallbackData,
-      message: `Loaded ${fallbackData.length} sample family type records (offline mode)`,
+      message: `Loaded ${fallbackData.length} sample family type records (offline mode)`
     };
   }
 }

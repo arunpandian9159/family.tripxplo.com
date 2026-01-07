@@ -60,7 +60,7 @@ async function previewPackagePDF() {
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 14; // smaller margin for more content
-    const contentWidth = pageWidth - margin * 2;
+    const contentWidth = pageWidth - (margin * 2);
     let yPosition = 50; // move header and main image down by 13cm (130mm)
 
     // --- Add a colored accent bar at the top of the first page ---
@@ -71,14 +71,9 @@ async function previewPackagePDF() {
     const bgPage1Url = 'img/tripxplo-pdf-bg-page-1.jpg';
     // Choose second page background based on EMI plan
     let bgPage2Url = 'img/tripxplo-pdf-bg-page-3.jpg';
-    if (cardData.emi.months === 12 || pkg.emi_options?.find(e => e.selected)?.months === 12) {
+    if (cardData.emi.months === 12 || pkg.emi_options?.find(e=>e.selected)?.months === 12) {
       bgPage2Url = 'img/tripxplo-pdf-bg-page-2.jpg';
-    } else if (
-      cardData.emi.months === 3 ||
-      cardData.emi.months === 6 ||
-      pkg.emi_options?.find(e => e.selected)?.months === 3 ||
-      pkg.emi_options?.find(e => e.selected)?.months === 6
-    ) {
+    } else if (cardData.emi.months === 3 || cardData.emi.months === 6 || pkg.emi_options?.find(e=>e.selected)?.months === 3 || pkg.emi_options?.find(e=>e.selected)?.months === 6) {
       bgPage2Url = 'img/tripxplo-pdf-bg-page-3.jpg';
     }
     const bgPage1DataUrl = await getImageDataUrl(bgPage1Url, { fullQuality: true });
@@ -112,8 +107,7 @@ async function previewPackagePDF() {
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(21, 171, 139);
     // Improved split logic for package title
-    let mainTitle =
-      pkg.quote_name || pkg.package_name || pkg.title || `${cardData.destination} Travel Package`;
+    let mainTitle = pkg.quote_name || pkg.package_name || pkg.title || `${cardData.destination} Travel Package`;
     let line1 = mainTitle;
     let line2 = '';
     // Try to split at colon, hyphen, or comma
@@ -121,23 +115,15 @@ async function previewPackagePDF() {
     if (splitMatch) {
       line1 = splitMatch[1].trim();
       line2 = splitMatch[2].trim();
-    } else if (
-      (pkg.destination || cardData.destination) &&
-      mainTitle
-        .toLowerCase()
-        .includes('in ' + (pkg.destination || cardData.destination).toLowerCase())
-    ) {
+    } else if ((pkg.destination || cardData.destination) && mainTitle.toLowerCase().includes('in ' + (pkg.destination || cardData.destination).toLowerCase())) {
       // Split at 'in [Destination]'
-      let dest = pkg.destination || cardData.destination;
+      let dest = (pkg.destination || cardData.destination);
       let idx = mainTitle.toLowerCase().indexOf('in ' + dest.toLowerCase());
       if (idx !== -1) {
         line1 = mainTitle.slice(0, idx + 2).trim();
         line2 = mainTitle.slice(idx + 2).trim();
       }
-    } else if (
-      (pkg.destination || cardData.destination) &&
-      mainTitle !== (pkg.destination || cardData.destination)
-    ) {
+    } else if ((pkg.destination || cardData.destination) && mainTitle !== (pkg.destination || cardData.destination)) {
       line2 = pkg.destination || cardData.destination;
     }
     doc.text(line1, pageWidth / 2, yPosition, { align: 'center' });
@@ -190,11 +176,7 @@ async function previewPackagePDF() {
     doc.text('Family Type:', margin + labelOffset, detailsRowY);
     doc.setFont(valueFont.font, valueFont.style);
     doc.setTextColor(...valueColor);
-    doc.text(
-      `${pkg.family_type || (window.detectFamilyType && detectFamilyType().family_type) || 'Family'}`,
-      margin + 32 + labelOffset,
-      detailsRowY
-    );
+    doc.text(`${pkg.family_type || (window.detectFamilyType && detectFamilyType().family_type) || 'Family'}`, margin + 32 + labelOffset, detailsRowY);
     detailsRowY += 8.5;
     // Total Price
     let price = (pkg.total_price || 0).toLocaleString();
@@ -219,11 +201,7 @@ async function previewPackagePDF() {
     doc.text('EMI Plan:', margin + labelOffset, detailsRowY);
     doc.setFont(valueFont.font, valueFont.style);
     doc.setTextColor(...valueColor);
-    doc.text(
-      `${cardData.emi.months} months × ${emiPriceString}`.trim(),
-      margin + 32 + labelOffset,
-      detailsRowY
-    );
+    doc.text(`${cardData.emi.months} months × ${emiPriceString}`.trim(), margin + 32 + labelOffset, detailsRowY);
     yPosition = detailsRowY + 8;
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
@@ -243,17 +221,9 @@ async function previewPackagePDF() {
     let domExclusions = [];
     try {
       const exclusionNodes = document.querySelectorAll('.package-exclusions .exclusion-item span');
-      domExclusions = Array.from(exclusionNodes)
-        .map(node => node.textContent.trim())
-        .filter(Boolean);
-    } catch (e) {
-      domExclusions = [];
-    }
-    const exclusions = sanitizeList(domExclusions.length ? domExclusions : pkg.exclusions, [
-      'Personal expenses',
-      'Travel insurance',
-      'Items not mentioned in inclusions',
-    ]);
+      domExclusions = Array.from(exclusionNodes).map(node => node.textContent.trim()).filter(Boolean);
+    } catch (e) { domExclusions = []; }
+    const exclusions = sanitizeList(domExclusions.length ? domExclusions : pkg.exclusions, ['Personal expenses', 'Travel insurance', 'Items not mentioned in inclusions']);
     let hotelInclusions = [];
     if (pkg.hotels_list && pkg.hotels_list.length > 0) {
       hotelInclusions = pkg.hotels_list.map(hotel => {
@@ -269,12 +239,11 @@ async function previewPackagePDF() {
     }
     const allInclusions = hotelInclusions.concat(
       inclusions.filter(
-        inc =>
-          !hotelInclusions.some(hotelInc => {
-            const codeMatch = inc.match(/\((CP|MAP|AP|EP)\)$/i);
-            if (codeMatch) return true;
-            return hotelInc.includes(inc.replace(/\((CP|MAP|AP|EP)\)$/i, '').trim());
-          })
+        inc => !hotelInclusions.some(hotelInc => {
+          const codeMatch = inc.match(/\((CP|MAP|AP|EP)\)$/i);
+          if (codeMatch) return true;
+          return hotelInc.includes(inc.replace(/\((CP|MAP|AP|EP)\)$/i, '').trim());
+        })
       )
     );
     const colWidth = (contentWidth - 8) / 2;
@@ -282,15 +251,13 @@ async function previewPackagePDF() {
     // Calculate total number of lines for all inclusions/exclusions
     let totalIncExcLines = 0;
     for (let i = 0; i < maxRows; i++) {
-      let inclusionLines = allInclusions[i]
-        ? doc.splitTextToSize(allInclusions[i], colWidth - 10)
-        : [];
+      let inclusionLines = allInclusions[i] ? doc.splitTextToSize(allInclusions[i], colWidth - 10) : [];
       let exclusionLines = exclusions[i] ? doc.splitTextToSize(exclusions[i], colWidth - 10) : [];
       totalIncExcLines += Math.max(inclusionLines.length, exclusionLines.length, 1);
     }
     // --- Draw background box for entire Package Overview section ---
     let overviewBoxY = yPosition;
-    let overviewBoxHeight = overviewHeaderBoxHeight + 2 + 6 + 4 + totalIncExcLines * 7.5 + 8; // header + gap + subheaders + gap + data + padding
+    let overviewBoxHeight = overviewHeaderBoxHeight + 2 + 6 + 4 + (totalIncExcLines * 7.5) + 8; // header + gap + subheaders + gap + data + padding
     doc.setFillColor(206, 241, 236);
     doc.roundedRect(margin - 2, overviewBoxY - 2, contentWidth + 4, overviewBoxHeight, 6, 6, 'F');
     // Now draw the section header and content on top of the box
@@ -299,22 +266,20 @@ async function previewPackagePDF() {
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(15);
     doc.setFont('helvetica', 'bold');
-    doc.text('Package Overview', margin + 4, yPosition + overviewHeaderBoxHeight / 2 + 2.5);
+    doc.text('Package Overview', margin + 4, yPosition + overviewHeaderBoxHeight/2 + 2.5);
     yPosition += overviewHeaderBoxHeight + 2;
-    yPosition += 6;
+    yPosition += 6; 
     doc.setTextColor(21, 171, 139);
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.text("What's Included:", margin, yPosition);
-    doc.text("What's Not Included:", margin + colWidth + 10, yPosition);
+    doc.text('What\'s Included:', margin, yPosition);
+    doc.text('What\'s Not Included:', margin + colWidth + 10, yPosition);
     doc.setFont('helvetica', 'normal');
-    yPosition += 4;
+    yPosition += 4; 
     doc.setFontSize(11);
     let rowY = yPosition + 6;
     for (let i = 0; i < maxRows; i++) {
-      let inclusionLines = allInclusions[i]
-        ? doc.splitTextToSize(allInclusions[i], colWidth - 10)
-        : [];
+      let inclusionLines = allInclusions[i] ? doc.splitTextToSize(allInclusions[i], colWidth - 10) : [];
       let exclusionLines = exclusions[i] ? doc.splitTextToSize(exclusions[i], colWidth - 10) : [];
       let maxLines = Math.max(inclusionLines.length, exclusionLines.length, 1);
       for (let l = 0; l < maxLines; l++) {
@@ -347,7 +312,7 @@ async function previewPackagePDF() {
         const dayNodes = timeline.querySelectorAll('.day-item');
         domItinerary = Array.from(dayNodes).map((node, idx) => {
           const dayNumEl = node.querySelector('.day-number');
-          const dayNum = dayNumEl ? dayNumEl.textContent.trim() : idx + 1;
+          const dayNum = dayNumEl ? dayNumEl.textContent.trim() : (idx + 1);
           const titleEl = node.querySelector('.day-header h5');
           const title = titleEl ? titleEl.textContent.trim() : '';
           const descEl = node.querySelector('.day-description');
@@ -355,33 +320,22 @@ async function previewPackagePDF() {
           return { day: dayNum, title, description };
         });
       }
-    } catch (e) {
-      domItinerary = [];
-    }
+    } catch (e) { domItinerary = []; }
     // Use DOM itinerary if available, else pkg.itinerary
-    const itineraryData =
-      domItinerary && domItinerary.length > 0 ? domItinerary : pkg.itinerary || [];
+    const itineraryData = (domItinerary && domItinerary.length > 0) ? domItinerary : (pkg.itinerary || []);
     // Helper to draw itinerary section header and background box for the current page
     function drawItineraryHeaderAndBox(boxY, boxHeight, showHeader, isSubsequentPage) {
       let adjBoxY = boxY;
       if (isSubsequentPage) adjBoxY -= 8; // move up on 2nd+ pages
       doc.setFillColor(206, 241, 236); //rgb(206, 241, 236)
-      doc.roundedRect(
-        margin - 2,
-        adjBoxY - 2,
-        contentWidth + 4,
-        boxHeight + (isSubsequentPage ? 8 : 0),
-        6,
-        6,
-        'F'
-      );
+      doc.roundedRect(margin - 2, adjBoxY - 2, contentWidth + 4, boxHeight + (isSubsequentPage ? 8 : 0), 6, 6, 'F');
       if (showHeader) {
         doc.setFillColor(21, 171, 139);
         doc.roundedRect(margin, boxY, contentWidth, 9, 4, 4, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
-        doc.text('Detailed Itinerary', margin + 4, boxY + 9 / 2 + 2.5);
+        doc.text('Detailed Itinerary', margin + 4, boxY + 9/2 + 2.5);
       }
       // Do not update yPosition here; extra space will be added to renderY in the loop
     }
@@ -428,7 +382,7 @@ async function previewPackagePDF() {
         simY += h;
       }
       // Calculate boxHeight as the actual content height for this page
-      let boxHeight = simY - boxY + itineraryBoxPadding;
+      let boxHeight = (simY - boxY) + itineraryBoxPadding;
       // Only add header height on first page (already included in startY)
       // Do not add extra header height to boxHeight
       drawItineraryHeaderAndBox(boxY, boxHeight, isFirstItineraryPage, !isFirstItineraryPage);
@@ -490,11 +444,7 @@ async function previewPackagePDF() {
       doc.setTextColor(100, 100, 100);
       doc.text('Itinerary details will be provided upon booking confirmation.', margin, yPosition);
       yPosition += 5;
-      doc.text(
-        'Our travel experts will create a personalized schedule based on your preferences.',
-        margin,
-        yPosition
-      );
+      doc.text('Our travel experts will create a personalized schedule based on your preferences.', margin, yPosition);
       yPosition += 5;
     }
 
@@ -510,28 +460,19 @@ async function previewPackagePDF() {
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.text('EMI Payment Schedule', margin + 4, yPosition + emiHeaderBoxHeight / 2 + 2.5);
+    doc.text('EMI Payment Schedule', margin + 4, yPosition + emiHeaderBoxHeight/2 + 2.5);
     yPosition += emiHeaderBoxHeight + 2;
     yPosition += 2.5;
 
     // Prepare EMI table data
-    const selectedEmiOption =
-      pkg.emi_options && pkg.emi_options.length > 0
-        ? pkg.emi_options.find(emi => emi.selected) || pkg.emi_options[0]
-        : null;
-    let months = selectedEmiOption
-      ? selectedEmiOption.months || cardData.emi.months
-      : cardData.emi.months;
-    let emiAmount = selectedEmiOption
-      ? (selectedEmiOption.emi_amount ?? cardData.price)
-      : cardData.price;
+    const selectedEmiOption = pkg.emi_options && pkg.emi_options.length > 0 ?
+      pkg.emi_options.find(emi => emi.selected) || pkg.emi_options[0] : null;
+    let months = selectedEmiOption ? (selectedEmiOption.months || cardData.emi.months) : cardData.emi.months;
+    let emiAmount = selectedEmiOption ? (selectedEmiOption.emi_amount ?? cardData.price) : cardData.price;
     if (typeof emiAmount !== 'number') {
       emiAmount = Number((emiAmount || '').toString().replace(/[^\d.]/g, '')) || 0;
     }
-    let processingFee =
-      selectedEmiOption && selectedEmiOption.processing_fee
-        ? selectedEmiOption.processing_fee
-        : 500;
+    let processingFee = selectedEmiOption && selectedEmiOption.processing_fee ? selectedEmiOption.processing_fee : 500;
     const today = new Date();
     // First payment (today) includes processing fee
     const firstPayment = emiAmount + processingFee;
@@ -539,27 +480,23 @@ async function previewPackagePDF() {
     emiRows.push([
       today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
       '1st EMI + Processing Fee',
-      `INR ${String(firstPayment).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
+      `INR ${String(firstPayment).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
     ]);
     for (let i = 2; i <= months; i++) {
       const paymentDate = new Date(today);
       paymentDate.setMonth(paymentDate.getMonth() + (i - 1));
       emiRows.push([
-        paymentDate.toLocaleDateString('en-IN', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-        }),
+        paymentDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
         `${i}${getOrdinalSuffix(i)} EMI`,
-        `INR ${String(emiAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
+        `INR ${String(emiAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
       ]);
     }
     // Add total row
-    const totalAmount = emiAmount * months + processingFee;
+    const totalAmount = (emiAmount * months) + processingFee;
     emiRows.push([
       '',
       'Total Amount',
-      `INR ${String(totalAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
+      `INR ${String(totalAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
     ]);
 
     // Custom table rendering (no autoTable)
@@ -581,12 +518,7 @@ async function previewPackagePDF() {
     doc.text('Amount', tableCol3, yPosition + 5, { align: 'right' });
     // Draw vertical column lines for header
     doc.line(tableCol2 - 8, yPosition, tableCol2 - 8, yPosition + rowHeight * (emiRows.length + 1));
-    doc.line(
-      tableCol3 - 20,
-      yPosition,
-      tableCol3 - 20,
-      yPosition + rowHeight * (emiRows.length + 1)
-    );
+    doc.line(tableCol3 - 20, yPosition, tableCol3 - 20, yPosition + rowHeight * (emiRows.length + 1));
     yPosition += rowHeight;
     // Table rows
     doc.setFont('helvetica', 'normal');
@@ -606,11 +538,7 @@ async function previewPackagePDF() {
       // Text
       doc.setFont('helvetica', i === emiRows.length - 1 ? 'bold' : 'normal');
       doc.setFontSize(i === emiRows.length - 1 ? 11 : 10);
-      doc.setTextColor(
-        i === emiRows.length - 1 ? 21 : 60,
-        i === emiRows.length - 1 ? 171 : 60,
-        i === emiRows.length - 1 ? 139 : 60
-      );
+      doc.setTextColor(i === emiRows.length - 1 ? 21 : 60, i === emiRows.length - 1 ? 171 : 60, i === emiRows.length - 1 ? 139 : 60);
       doc.text(emiRows[i][0], tableCol1 + 8, yPosition + 5, { align: 'center' });
       doc.text(emiRows[i][1], tableCol2, yPosition + 5);
       if (i === emiRows.length - 1) {
@@ -623,21 +551,10 @@ async function previewPackagePDF() {
     // Table outer border
     doc.setDrawColor(200, 200, 200);
     doc.setLineWidth(0.3);
-    doc.rect(
-      margin,
-      yPosition - rowHeight * (emiRows.length + 1),
-      contentWidth,
-      rowHeight * (emiRows.length + 1),
-      'S'
-    );
+    doc.rect(margin, yPosition - rowHeight * (emiRows.length + 1), contentWidth, rowHeight * (emiRows.length + 1), 'S');
     // Draw vertical column lines for the whole table
     doc.line(tableCol2 - 8, yPosition - rowHeight * (emiRows.length + 1), tableCol2 - 8, yPosition);
-    doc.line(
-      tableCol3 - 20,
-      yPosition - rowHeight * (emiRows.length + 1),
-      tableCol3 - 20,
-      yPosition
-    );
+    doc.line(tableCol3 - 20, yPosition - rowHeight * (emiRows.length + 1), tableCol3 - 20, yPosition);
     yPosition += 10;
 
     // Add General Terms & Conditions above FINAL PRICE
@@ -645,7 +562,7 @@ async function previewPackagePDF() {
     const terms = [
       '• Prices are subject to change without prior notice',
       '• Hotel check-in/check-out times are as per hotel policy',
-      '• Rates are valid for the mentioned dates only',
+      '• Rates are valid for the mentioned dates only'
     ];
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
@@ -675,21 +592,17 @@ async function previewPackagePDF() {
     doc.setFontSize(13);
     // Shadow effect: draw shadow text first (slightly offset, dark color)
     doc.setTextColor(60, 60, 60);
-    doc.text(finalPriceText, margin + contentWidth / 2 + 1, yPosition + boxHeight / 2 + 4, {
-      align: 'center',
-    });
+    doc.text(finalPriceText, margin + contentWidth / 2 + 1, yPosition + boxHeight / 2 + 4, { align: 'center' });
     // Main text: white, on top
     doc.setTextColor(255, 255, 255);
-    doc.text(finalPriceText, margin + contentWidth / 2, yPosition + boxHeight / 2 + 3, {
-      align: 'center',
-    });
+    doc.text(finalPriceText, margin + contentWidth / 2, yPosition + boxHeight / 2 + 3, { align: 'center' });
     yPosition += boxHeight + 6;
 
     // Open PDF in new tab instead of downloading
     const pdfBlob = doc.output('blob');
     const pdfUrl = URL.createObjectURL(pdfBlob);
     window.open(pdfUrl, '_blank');
-
+    
     notificationManager.show('PDF preview opened in new tab!', 'success');
   } catch (error) {
     console.error('Error creating PDF preview:', error);
@@ -698,8 +611,7 @@ async function previewPackagePDF() {
 
   // Helper for ordinal suffix
   function getOrdinalSuffix(num) {
-    const j = num % 10,
-      k = num % 100;
+    const j = num % 10, k = num % 100;
     if (j == 1 && k != 11) return 'st';
     if (j == 2 && k != 12) return 'nd';
     if (j == 3 && k != 13) return 'rd';
@@ -719,4 +631,4 @@ async function previewPackagePDF() {
 }
 
 // Make function globally available
-window.previewPackagePDF = previewPackagePDF;
+window.previewPackagePDF = previewPackagePDF; 

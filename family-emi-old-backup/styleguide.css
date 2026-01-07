@@ -1,0 +1,71 @@
+:root {
+  /* Primary Colors */
+  --x-1st: rgba(24, 30, 75, 1);        /* Dark Blue */
+  --x-2nd: #15ab8b;       /* Purple */
+  --x-3: rgba(240, 187, 31, 1);        /* Gold */
+  --x-4: rgba(241, 90, 43, 1);         /* Orange */
+  --x-5: rgba(0, 99, 128, 1);          /* Teal */
+
+  /* Accent Colors */
+  --green: #15ab8b;      /* Success Green */
+  --yellow: rgba(242, 201, 76, 1);     /* Warning Yellow */
+  --d-2: rgba(213, 174, 228, 1);       /* Light Purple */
+
+  /* Text Colors */
+  --black: rgba(8, 8, 9, 1);           /* Primary Text */
+  --text-clr: rgba(94, 98, 130, 1);    /* Secondary Text */
+  --text-2: rgba(132, 130, 154, 1);    /* Tertiary Text */
+  --text-heading-color: rgba(30, 29, 76, 1); /* Heading Text */
+
+  /* Background Colors */
+  --white: rgba(255, 255, 255, 1);     /* White Background */
+  --circle: rgba(245, 245, 245, 1);    /* Light Gray */
+  --x-3rd: rgba(229, 229, 229, 1);     /* Border Gray */
+
+  /* Modern UI Colors */
+  --primary: #15ab8b;                  /* Purple Primary */
+  --secondary: #118a70;                /* Blue Secondary */
+  --success: #15ab8b;                  /* Green Success */
+  --warning: #F59E0B;                  /* Orange Warning */
+  --error: #EF4444;                    /* Red Error */
+  --info: #06B6D4;                     /* Cyan Info */
+
+  /* Gray Scale */
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+}

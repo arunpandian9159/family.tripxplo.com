@@ -14,7 +14,9 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="globals.v2.css" />
+    <link rel="stylesheet" href="styleguide.v2.css" />
+    <link rel="stylesheet" href="style.v2.css" />
 
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -26,19 +28,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <!-- Configuration -->
-    <script src="../client/config.js"></script>
+    <script src="js/config.js"></script>
 
     <!-- API Service -->
-    <script src="../client/apiService.js"></script>
+    <script src="js/apiService.js"></script>
 
     <!-- Database Integration -->
-    <script src="../server/services/databaseService.js"></script>
+    <script src="js/databaseService.v2.js"></script>
 
     <!-- Package Card Generator -->
-    <script src="../client/packageCardGenerator.js"></script>
+    <script src="js/packageCardGenerator.js"></script>
 
     <!-- Preview PDF Function -->
-    <script src="../client/pdfGenerator.js"></script>
+    <script src="preview-pdf-function.js"></script>
   </head>
   <body>
     <div class="family-emi-website">
@@ -624,6 +626,7 @@
               </div>
             </div>
           </div>
+        </div>
 
         <!-- Contact Details Modal -->
         <div class="modal-overlay" id="contactDetailsModal">

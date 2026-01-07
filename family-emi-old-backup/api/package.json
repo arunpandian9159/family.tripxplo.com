@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Backend API for TripXplo Family EMI Website",
   "type": "module",
-  "main": "server/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "node --watch server/server.js",
-    "pm2:start": "pm2 start server/server.js --name family-api",
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "pm2:start": "pm2 start server.js --name family-api",
     "pm2:stop": "pm2 stop family-api",
     "pm2:restart": "pm2 restart family-api",
     "pm2:delete": "pm2 delete family-api"
