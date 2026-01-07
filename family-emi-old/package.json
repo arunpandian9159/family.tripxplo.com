@@ -1,25 +1,33 @@
 {
-  "name": "family-emi-api",
-  "version": "1.0.0",
-  "description": "Backend API for TripXplo Family EMI Website",
-  "type": "module",
-  "main": "server/server.js",
+  "name": "family-emi-old",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "node --watch server/server.js",
-    "pm2:start": "pm2 start server/server.js --name family-api",
-    "pm2:stop": "pm2 stop family-api",
-    "pm2:restart": "pm2 restart family-api",
-    "pm2:delete": "pm2 delete family-api"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "@supabase/supabase-js": "^2.49.4",
-    "dotenv": "^16.3.1",
-    "bcrypt": "^5.1.1"
+    "@supabase/supabase-js": "^2.89.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.24.7",
+    "lucide-react": "^0.562.0",
+    "next": "16.1.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "tailwind-merge": "^3.4.0"
   },
-  "engines": {
-    "node": ">=18.0.0"
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

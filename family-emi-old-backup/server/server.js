@@ -166,13 +166,17 @@ app.get('/api/test-db', async (req, res) => {
 
 // Database connections
 const crmDB = createClient(
-  process.env.CRM_DB_URL || 'https://tlfwcnikdlwoliqzavxj.supabase.co',
-  process.env.CRM_ANON_KEY
+  process.env.VITE_SUPABASE_URL_CRM ||
+    process.env.CRM_DB_URL ||
+    'https://tlfwcnikdlwoliqzavxj.supabase.co',
+  process.env.VITE_SUPABASE_ANON_KEY_CRM || process.env.CRM_ANON_KEY
 );
 
 const quoteDB = createClient(
-  process.env.QUOTE_DB_URL || 'https://lkqbrlrmrsnbtkoryazq.supabase.co',
-  process.env.QUOTE_ANON_KEY
+  process.env.VITE_SUPABASE_URL_QUOTE ||
+    process.env.QUOTE_DB_URL ||
+    'https://lkqbrlrmrsnbtkoryazq.supabase.co',
+  process.env.VITE_SUPABASE_ANON_KEY_QUOTE || process.env.QUOTE_ANON_KEY
 );
 
 // Utility Functions
