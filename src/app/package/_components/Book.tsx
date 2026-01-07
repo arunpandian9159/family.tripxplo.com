@@ -1,18 +1,19 @@
-'use client';
-import React from 'react';
-import { ChevronUp, Shield, Zap, Gift, CreditCard } from 'lucide-react';
-import { formatIndianCurrency } from '@/lib/format';
-
-interface BookProps {
-  packageId?: string;
-  price?: number;
-  adult?: number;
-  child?: number;
-  packagePrice?: number;
-  gstPrice?: number;
-  gstPer?: number;
-  perPerson?: number;
-}
+"use client";
+import React, { useState } from "react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { ChevronUp, Shield, Zap, Gift } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { formatIndianCurrency } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/app/store/features/userSlice";
+import { useAuth } from "@/app/hooks/useAuth";
+import LoginModal from "./LoginModal";
 
 export default function Book({
   packageId,
@@ -23,73 +24,98 @@ export default function Book({
   gstPrice,
   gstPer,
   perPerson,
-}: BookProps) {
+}: {
+  packageId?: string;
+  price?: number;
+  adult?: number;
+  child?: number;
+  packagePrice?: number;
+  gstPrice?: number;
+  gstPer?: number;
+  perPerson?: number;
+}) {
   const safePrice = price || 0;
   const safePackagePrice = packagePrice || 0;
   const safeGstPrice = gstPrice || 0;
   const safeGstPer = gstPer || 0;
   const safeAdult = adult || 2;
   const safeChild = child || 0;
-  const safePerPerson = perPerson || Math.round(safePrice / (safeAdult + safeChild * 0.5) || 0);
-
-  // Calculate EMI (6 months no-cost EMI)
-  const emiAmount = safePrice > 0 ? Math.round(safePrice / 6) : 0;
+  const safePerPerson =
+    perPerson || Math.round(safePrice / (safeAdult + safeChild * 0.5) || 0);
+  const dispatch = useDispatch();
+  const { isAuthenticated, user, isLoading, refetch } = useAuth();
+  const router = useRouter();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   async function handlePackageClick() {
-    // For now, just show an alert - booking functionality to be implemented
-    alert('Booking functionality coming soon! Please contact us for bookings.');
+    if (!isAuthenticated && !isLoading) {
+      // Show login modal instead of redirecting
+      setShowLoginModal(true);
+    } else {
+      if (!isLoading && isAuthenticated) {
+        dispatch(setUser(user));
+        router.push(`${packageId}/booking-overview`);
+      }
+    }
+  }
+
+  async function handleLoginSuccess() {
+    // Refetch user data after successful login
+    const result = await refetch();
+    setShowLoginModal(false);
+
+    // Navigate to booking overview with the refetched user data
+    if (result.data?.result) {
+      dispatch(setUser(result.data.result));
+    }
+    router.push(`${packageId}/booking-overview`);
   }
 
   return (
     <>
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={handleLoginSuccess}
+      />
+
       {/* Desktop Sticky Card */}
       <div className="hidden lg:block sticky top-24">
         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
           {/* Header with gradient */}
-          <div className="relative px-6 py-5 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white overflow-hidden">
+          <div className="relative px-6 py-5 bg-linear-to-r from-coral-500 to-rose-500 text-white overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
 
             <div className="relative">
               <div className="flex items-center gap-2 mb-2">
-                <Gift size={16} className="text-emerald-200" />
-                <span className="text-xs font-medium text-emerald-100 uppercase tracking-wider">
+                <Gift size={16} className="text-coral-200" />
+                <span className="text-xs font-medium text-coral-100 uppercase tracking-wider">
                   Starting From
                 </span>
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">{formatIndianCurrency(safePerPerson)}</span>
+                <span className="text-3xl font-bold">
+                  {formatIndianCurrency(safePerPerson)}
+                </span>
                 <span className="text-sm text-white/80">/ person</span>
               </div>
-              <p className="text-xs text-emerald-100 mt-1">
+              <p className="text-xs text-coral-100 mt-1">
                 Total: {formatIndianCurrency(safePrice)} (taxes included)
               </p>
             </div>
           </div>
 
-          {/* EMI Banner */}
-          {emiAmount > 0 && (
-            <div className="px-6 py-3 bg-linear-to-r from-[#15ab8b]/10 to-[#1ec9a5]/10 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <CreditCard size={18} className="text-[#15ab8b]" />
-                <div>
-                  <span className="text-sm font-semibold text-slate-900">EMI Available: </span>
-                  <span className="text-sm font-bold text-[#15ab8b]">
-                    {formatIndianCurrency(emiAmount)}/month
-                  </span>
-                </div>
-              </div>
-              <p className="text-xs text-slate-500 mt-1">No-cost EMI on select cards • 6 months</p>
-            </div>
-          )}
-
           {/* Price Breakdown */}
           <div className="p-6 space-y-4">
             {/* Per Person Price */}
-            <div className="flex items-center justify-between py-3 bg-emerald-50 rounded-xl px-4 -mx-2">
-              <span className="text-sm font-medium text-emerald-700">Per Person</span>
-              <span className="text-lg font-bold text-emerald-600">
+            <div className="flex items-center justify-between py-3 bg-coral-50 rounded-xl px-4 -mx-2">
+              <span className="text-sm font-medium text-coral-700">
+                Per Person
+              </span>
+              <span className="text-lg font-bold text-coral-600">
                 {formatIndianCurrency(safePerPerson)}
               </span>
             </div>
@@ -98,8 +124,10 @@ export default function Book({
             <div className="flex items-center justify-between py-3 border-b border-dashed border-slate-200">
               <span className="text-sm text-slate-500">Travelers</span>
               <span className="text-sm font-medium text-slate-800">
-                {safeAdult} Adult{safeAdult > 1 ? 's' : ''}
-                {safeChild > 0 ? `, ${safeChild} Child${safeChild > 1 ? 'ren' : ''}` : ''}
+                {safeAdult} Adult{safeAdult > 1 ? "s" : ""}
+                {safeChild > 0
+                  ? `, ${safeChild} Child${safeChild > 1 ? "ren" : ""}`
+                  : ""}
               </span>
             </div>
 
@@ -113,7 +141,9 @@ export default function Book({
 
             {/* Taxes */}
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-500">Taxes & Fees ({safeGstPer}%)</span>
+              <span className="text-sm text-slate-500">
+                Taxes & Fees ({safeGstPer}%)
+              </span>
               <span className="text-sm font-medium text-slate-800">
                 {formatIndianCurrency(safeGstPrice)}
               </span>
@@ -132,7 +162,7 @@ export default function Book({
           <div className="px-6 pb-6">
             <button
               onClick={handlePackageClick}
-              className="w-full py-4 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] hover:from-[#0f8a6f] hover:to-[#15ab8b] text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30 active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full py-4 bg-linear-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-coral-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-coral-500/30 active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <Zap size={18} />
               Book Now
@@ -156,11 +186,15 @@ export default function Book({
         <div className="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
           <div className="flex items-start gap-3">
             <div className="p-2 bg-emerald-100 rounded-lg">
-              <CreditCard size={16} className="text-emerald-600" />
+              <Gift size={16} className="text-emerald-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-emerald-800">Easy EMI Options</p>
-              <p className="text-xs text-emerald-600 mt-0.5">Pay in easy monthly installments!</p>
+              <p className="text-sm font-medium text-emerald-800">
+                No Last Minute Rush
+              </p>
+              <p className="text-xs text-emerald-600 mt-0.5">
+                Reserve with Just ₹1 Rupee!
+              </p>
             </div>
           </div>
         </div>
@@ -170,25 +204,88 @@ export default function Book({
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 shadow-[0_-8px_30px_-15px_rgba(0,0,0,0.2)]">
         <div className="p-4 flex items-center justify-between gap-4">
           {/* Price Section */}
-          <div className="flex flex-col items-start">
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-slate-900">
-                {formatIndianCurrency(safePerPerson)}
-              </span>
-              <span className="text-xs text-slate-500">/person</span>
-            </div>
-            <span className="text-xs text-slate-500">Total: {formatIndianCurrency(safePrice)}</span>
-            {emiAmount > 0 && (
-              <span className="text-xs text-[#15ab8b] font-medium">
-                EMI: {formatIndianCurrency(emiAmount)}/mo
-              </span>
-            )}
-          </div>
+          <Drawer>
+            <DrawerTrigger asChild>
+              <button className="flex flex-col items-start">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl font-bold text-slate-900">
+                    {formatIndianCurrency(safePerPerson)}
+                  </span>
+                  <span className="text-xs text-slate-500">/person</span>
+                  <ChevronUp size={16} className="text-slate-400" />
+                </div>
+                <span className="text-xs text-slate-500">
+                  Total: {formatIndianCurrency(safePrice)}
+                </span>
+              </button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader className="border-b border-slate-100">
+                <DrawerTitle className="text-lg font-bold text-slate-900">
+                  Price Breakdown
+                </DrawerTitle>
+              </DrawerHeader>
+              <div className="p-6 space-y-4">
+                {/* Per Person Price */}
+                <div className="flex items-center justify-between py-3 bg-coral-50 rounded-xl px-4">
+                  <span className="font-medium text-coral-700">Per Person</span>
+                  <span className="text-lg font-bold text-coral-600">
+                    {formatIndianCurrency(safePerPerson)}
+                  </span>
+                </div>
+
+                {/* Travelers */}
+                <div className="flex items-center justify-between py-3 border-b border-dashed border-slate-200">
+                  <span className="text-slate-500">Travelers</span>
+                  <span className="font-medium text-slate-800">
+                    {safeAdult} Adult{safeAdult > 1 ? "s" : ""}
+                    {safeChild > 0
+                      ? `, ${safeChild} Child${safeChild > 1 ? "ren" : ""}`
+                      : ""}
+                  </span>
+                </div>
+
+                {/* Base Price */}
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Base Price</span>
+                  <span className="font-medium text-slate-800">
+                    {formatIndianCurrency(safePackagePrice)}
+                  </span>
+                </div>
+
+                {/* Taxes */}
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">
+                    Taxes & Fees ({safeGstPer}%)
+                  </span>
+                  <span className="font-medium text-slate-800">
+                    {formatIndianCurrency(safeGstPrice)}
+                  </span>
+                </div>
+
+                {/* Total */}
+                <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+                  <span className="text-lg font-bold text-slate-900">
+                    Total Amount
+                  </span>
+                  <span className="text-xl font-bold text-slate-900">
+                    {formatIndianCurrency(safePrice)}
+                  </span>
+                </div>
+
+                {/* Trust Badge */}
+                <div className="flex items-center justify-center gap-2 pt-4 text-slate-400">
+                  <Shield size={14} />
+                  <span className="text-xs">Secure & Safe Payments</span>
+                </div>
+              </div>
+            </DrawerContent>
+          </Drawer>
 
           {/* Book Button */}
           <button
             onClick={handlePackageClick}
-            className="flex-1 max-w-[180px] py-3.5 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 active:scale-[0.98] transition-transform"
+            className="flex-1 max-w-[180px] py-3.5 bg-linear-to-r from-coral-500 to-rose-500 text-white font-bold rounded-xl shadow-lg shadow-coral-500/25 active:scale-[0.98] transition-transform"
           >
             Book Now
           </button>

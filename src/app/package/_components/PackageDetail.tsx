@@ -1,14 +1,16 @@
-'use client';
-import React from 'react';
-import Inclusions from './Inclusions';
-import Exclusions from './Exclusions';
-import PackageHighlight from './PackageHighlight';
-import HotelData from './HotelData';
-import IternaryStory from './IternaryStory';
-import Book from './Book';
-import Cab from './Cab';
-import PackageImage from './PackageImage';
-import type { PackageDetail as PackageDetailType } from '@/lib/types';
+"use client";
+import React, { useEffect } from "react";
+import Inclusions from "./Inclusions";
+import Exclusions from "./Exclusions";
+import PackageHighlight from "./PackageHighlight";
+import HotelData from "./HotelData";
+import IternaryStory from "./IternaryStory";
+import Book from "./Book";
+import Cab from "./Cab";
+import PackageImage from "./PackageImage";
+import { PackType } from "@/app/types/pack";
+import { useDispatch, useSelector } from "react-redux";
+import { setActivity } from "@/app/store/features/activitySlice";
 import {
   Building2,
   Map,
@@ -16,17 +18,16 @@ import {
   CheckCircle2,
   XCircle,
   Sparkles,
+  ChevronRight,
   Plane,
   Train,
   Utensils,
   Coffee,
-  UtensilsCrossed,
-} from 'lucide-react';
+  UtensilsCrossed
+} from "lucide-react";
 
-interface PackageDetailProps {
-  pack: PackageDetailType;
-  adults?: number;
-  children?: number;
+interface PropsType {
+  pack: PackType;
 }
 
 // Section Header Component
@@ -34,12 +35,14 @@ const SectionHeader = ({
   icon: Icon,
   title,
   subtitle,
-  iconBg = 'from-[#15ab8b] to-[#1ec9a5]',
+  iconBg = "from-coral-500 to-rose-500",
+  action
 }: {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: React.ComponentType<any>;
   title: string;
   subtitle?: string;
   iconBg?: string;
+  action?: React.ReactNode;
 }) => (
   <div className="flex items-start justify-between mb-6">
     <div className="flex items-start gap-4">
@@ -51,6 +54,7 @@ const SectionHeader = ({
         {subtitle && <p className="text-sm text-slate-500 mt-0.5">{subtitle}</p>}
       </div>
     </div>
+    {action}
   </div>
 );
 
@@ -63,16 +67,35 @@ const SectionDivider = () => (
     <div className="relative flex justify-center">
       <div className="bg-white px-4">
         <div className="flex gap-1.5">
-          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-coral-400 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
         </div>
       </div>
     </div>
   </div>
 );
 
-export default function PackageDetail({ pack, adults = 2, children = 0 }: PackageDetailProps) {
+const PackageDetail = ({ pack }: PropsType) => {
+  const roomCapacityAdults = useSelector(
+    (store: any) => store.roomSelect?.room?.totalAdults || 2
+  );
+  const roomCapacityChild = useSelector(
+    (store: any) => store.roomSelect?.room?.totalChilds || 0
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (pack?.packageId) {
+      const data = {
+        packageName: pack?.packageName,
+        packageId: pack?.packageId,
+        activity: pack?.activity,
+      };
+      dispatch(setActivity(data));
+    }
+  }, [pack, dispatch]);
+
   // Handle empty pack data
   if (!pack || !pack.packageId) {
     return (
@@ -88,11 +111,10 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
   }
 
   // Check if package is without flight/train based on exclusions
-  const isWithoutFlight = pack?.exclusionDetail?.some(
-    exc =>
-      exc?.name?.toLowerCase().includes('flight') ||
-      exc?.name?.toLowerCase().includes('airfare') ||
-      exc?.name?.toLowerCase().includes('air ticket')
+  const isWithoutFlight = pack?.exclusionDetail?.some(exc =>
+    exc?.name?.toLowerCase().includes('flight') ||
+    exc?.name?.toLowerCase().includes('airfare') ||
+    exc?.name?.toLowerCase().includes('air ticket')
   );
   const isWithoutTrain = pack?.exclusionDetail?.some(exc =>
     exc?.name?.toLowerCase().includes('train')
@@ -121,8 +143,10 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
         <div className="flex flex-col lg:flex-row gap-8">
+
           {/* Main Content Column */}
           <div className="flex-1 min-w-0 space-y-0">
+
             {/* Overview Card */}
             <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 lg:p-8 animate-slide-up">
               <SectionHeader
@@ -140,11 +164,8 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
                     {isWithoutFlight && <Plane size={16} className="text-amber-600" />}
                     {isWithoutTrain && <Train size={16} className="text-amber-600" />}
                     <span className="text-sm font-medium text-amber-700">
-                      {isWithoutFlight && isWithoutTrain
-                        ? 'Land Package Only'
-                        : isWithoutFlight
-                        ? 'Without Flight'
-                        : 'Without Train'}
+                      {isWithoutFlight && isWithoutTrain ? 'Land Package Only' :
+                        isWithoutFlight ? 'Without Flight' : 'Without Train'}
                     </span>
                   </div>
                 )}
@@ -160,17 +181,13 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
                     {hasBreakfast && (
                       <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
                         <Coffee size={16} className="text-emerald-600" />
-                        <span className="text-sm font-medium text-emerald-700">
-                          Breakfast Included
-                        </span>
+                        <span className="text-sm font-medium text-emerald-700">Breakfast Included</span>
                       </div>
                     )}
                     {hasDinner && (
                       <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
                         <Utensils size={16} className="text-emerald-600" />
-                        <span className="text-sm font-medium text-emerald-700">
-                          Dinner Included
-                        </span>
+                        <span className="text-sm font-medium text-emerald-700">Dinner Included</span>
                       </div>
                     )}
                   </>
@@ -182,8 +199,8 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
                 destinations={pack?.destination}
                 noOfDays={pack?.noOfDays}
                 noOfNights={pack?.noOfNight}
-                totalAdult={adults}
-                totalChild={children}
+                totalAdult={roomCapacityAdults}
+                totalChild={roomCapacityChild}
                 hotelCount={pack?.hotelCount}
                 startsFrom={pack?.startFrom}
               />
@@ -194,22 +211,16 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
             {/* Hotels Section */}
             {pack?.hotelMeal && pack.hotelMeal.length > 0 && (
               <>
-                <div className="animate-slide-up">
+                <div className="animate-slide-up stagger-1">
                   <SectionHeader
                     icon={Building2}
                     title="Hotels & Stays"
-                    subtitle={`${pack.hotelMeal.length} handpicked ${
-                      pack.hotelMeal.length === 1 ? 'stay' : 'stays'
-                    }`}
+                    subtitle={`${pack.hotelMeal.length} handpicked ${pack.hotelMeal.length === 1 ? 'stay' : 'stays'}`}
                     iconBg="from-blue-500 to-indigo-500"
                   />
                   <div className="space-y-5">
                     {pack.hotelMeal.map((hotel, index) => (
-                      <HotelData
-                        key={hotel?.hotelRoomId || index}
-                        hotel={hotel}
-                        index={index + 1}
-                      />
+                      <HotelData key={hotel?._id || index} hotel={hotel} index={index + 1} />
                     ))}
                   </div>
                 </div>
@@ -218,22 +229,25 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
             )}
 
             {/* Itinerary Section */}
-            <div className="animate-slide-up">
+            <div className="animate-slide-up stagger-2">
               <SectionHeader
                 icon={Map}
                 title="Your Itinerary"
                 subtitle="Day-by-day planned activities"
                 iconBg="from-emerald-500 to-teal-500"
               />
-              <IternaryStory destinations={pack?.destination} activity={pack?.activity} />
+              <IternaryStory
+                destinations={pack?.destination}
+                activity={pack?.activity}
+              />
             </div>
 
             <SectionDivider />
 
             {/* Transfers Section */}
-            {pack?.vehicleDetail && pack.vehicleDetail.length > 0 && (
+            {pack?.vehicleDetail?.length > 0 && (
               <>
-                <div className="animate-slide-up">
+                <div className="animate-slide-up stagger-3">
                   <SectionHeader
                     icon={Car}
                     title="Transfers"
@@ -241,8 +255,8 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
                     iconBg="from-amber-500 to-orange-500"
                   />
                   <div className="space-y-5">
-                    {pack.vehicleDetail.map((vehicle, index) => (
-                      <Cab key={vehicle?.vehicleId || index} vehicle={vehicle} />
+                    {pack?.vehicleDetail?.map((vehicle, index) => (
+                      <Cab key={index} vehicle={vehicle} />
                     ))}
                   </div>
                 </div>
@@ -251,7 +265,7 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
             )}
 
             {/* Inclusions & Exclusions Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up stagger-4">
               {/* Inclusions Card */}
               <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 hover:shadow-xl transition-shadow duration-300">
                 <SectionHeader
@@ -272,6 +286,7 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
                 <Exclusions exclusions={pack?.exclusionDetail} />
               </div>
             </div>
+
           </div>
 
           {/* Sidebar (Booking Card) */}
@@ -279,8 +294,8 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
             <Book
               packageId={pack?.packageId}
               price={pack?.finalPackagePrice}
-              adult={adults}
-              child={children}
+              adult={roomCapacityAdults}
+              child={roomCapacityChild}
               gstPer={pack?.gstPer}
               gstPrice={pack?.gstPrice}
               packagePrice={pack?.totalPackagePrice}
@@ -291,4 +306,6 @@ export default function PackageDetail({ pack, adults = 2, children = 0 }: Packag
       </div>
     </div>
   );
-}
+};
+
+export default PackageDetail;

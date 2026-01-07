@@ -1,27 +1,54 @@
-'use client';
-import React from 'react';
-import { Check } from 'lucide-react';
-import type { InclusionExclusion } from '@/lib/types';
+"use client";
+import React from "react";
+import { Inclusion } from "@/app/types/pack";
+import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
+import Image from "next/image";
+import { Check, Sparkles } from "lucide-react";
 
-interface InclusionsProps {
-  inclusions?: InclusionExclusion[];
-}
-
-export default function Inclusions({ inclusions }: InclusionsProps) {
-  if (!inclusions || inclusions.length === 0) {
-    return <p className="text-sm text-slate-400 italic">No inclusions specified</p>;
+const Inclusions = ({ inclusions }: { inclusions: Inclusion[] }) => {
+  if (!inclusions || !Array.isArray(inclusions) || inclusions.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <div className="inline-flex p-3 bg-slate-100 rounded-full mb-3">
+          <Check size={20} className="text-slate-400" />
+        </div>
+        <p className="text-sm text-slate-400">No inclusions listed</p>
+      </div>
+    );
   }
 
   return (
-    <ul className="space-y-3">
-      {inclusions.map((item, idx) => (
-        <li key={item.inclusionId || idx} className="flex items-start gap-3">
-          <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
-            <Check className="w-3 h-3 text-emerald-600" />
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      {inclusions.map((inc, index) => {
+        if (!inc || typeof inc !== 'object') return null;
+        const name = inc?.name || 'Inclusion';
+        const image = inc?.image || '';
+        
+        return (
+          <div
+            key={inc?._id || index}
+            className="group flex flex-col items-center justify-center p-4 bg-linear-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 text-center gap-3 hover:shadow-md hover:border-emerald-200 transition-all duration-300"
+          >
+            <div className="relative w-10 h-10 p-2 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">
+              {image ? (
+                <Image
+                  src={NEXT_PUBLIC_IMAGE_URL + image}
+                  alt={name}
+                  fill
+                  className="object-contain p-1.5"
+                />
+              ) : (
+                <Check className="w-full h-full text-emerald-500" />
+              )}
+            </div>
+            <span className="text-xs font-semibold text-emerald-800 line-clamp-2 leading-tight">
+              {name}
+            </span>
           </div>
-          <span className="text-sm text-slate-700">{item.name}</span>
-        </li>
-      ))}
-    </ul>
+        );
+      })}
+    </div>
   );
-}
+};
+
+export default Inclusions;

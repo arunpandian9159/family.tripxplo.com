@@ -1,103 +1,151 @@
-'use client';
-import React from 'react';
-import Image from 'next/image';
-import { Car, Users, Briefcase, Snowflake } from 'lucide-react';
-import type { VehicleDetail } from '@/lib/types';
+"use client";
 
-const NEXT_PUBLIC_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
+import { setReplaceCab } from "@/app/store/features/cabChangeSlice";
+import { VehicleDetail } from "@/app/types/vehicle";
+import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
+import {
+  ArrowRightLeft,
+  Users,
+  Briefcase,
+  Snowflake,
+  Check,
+  Car
+} from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import ChangeCabModal from "./modals/ChangeCabModal";
 
-interface CabProps {
-  vehicle: VehicleDetail;
-}
+export default function Cab({ vehicle }: { vehicle: VehicleDetail }) {
+  const dispatch = useDispatch();
+  const [imageError, setImageError] = useState(false);
+  const [isCabModalOpen, setIsCabModalOpen] = useState(false);
 
-export default function Cab({ vehicle }: CabProps) {
-  const vehicleImage = vehicle.image || '';
-  const hasImage = vehicleImage && vehicleImage.length > 0;
+  if (!vehicle || typeof vehicle !== 'object') {
+    return null;
+  }
+
+  function openCabModal() {
+    dispatch(setReplaceCab(vehicle));
+    setIsCabModalOpen(true);
+  }
+
+  const vehicleName = vehicle?.vehicleName || 'Vehicle';
+  const vehicleImage = vehicle?.image || '';
+  const vehicleInclusions = Array.isArray(vehicle?.inclusion) ? vehicle.inclusion : [];
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300">
-      <div className="flex flex-col md:flex-row">
-        {/* Vehicle Image */}
-        <div className="relative w-full md:w-48 h-40 md:h-auto shrink-0">
-          {hasImage ? (
-            <Image
-              src={
-                vehicleImage.startsWith('http')
-                  ? vehicleImage
-                  : `${NEXT_PUBLIC_IMAGE_URL}${vehicleImage}`
-              }
-              alt={vehicle.vehicleName || 'Vehicle'}
-              fill
-              className="object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-linear-to-br from-amber-50 to-orange-100 flex items-center justify-center">
-              <Car className="w-12 h-12 text-amber-400" />
+    <>
+      <div className="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 bg-linear-to-r from-slate-50 to-white border-b border-slate-100">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-linear-to-br from-blue-500 to-indigo-500 rounded-xl text-white shadow-md">
+              <Car size={18} />
             </div>
-          )}
+            <div>
+              <h3 className="font-semibold text-slate-800">Transfer</h3>
+              <p className="text-xs text-slate-400">Cab included in package</p>
+            </div>
+          </div>
+          <button
+            onClick={openCabModal}
+            className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
+          >
+            <ArrowRightLeft size={14} />
+            Change Cab
+          </button>
         </div>
 
-        {/* Vehicle Details */}
-        <div className="flex-1 p-5">
-          <h3 className="text-lg font-bold text-slate-900 mb-3">
-            {vehicle.vehicleName || 'Vehicle'}
-          </h3>
+        {/* Body */}
+        <div className="p-5">
+          <div className="flex flex-col sm:flex-row gap-5">
+            {/* Image */}
+            <div className="relative w-full sm:w-48 h-36 rounded-xl overflow-hidden shrink-0 bg-linear-to-br from-slate-100 to-slate-50">
+              {vehicleImage && !imageError ? (
+                <Image
+                  src={NEXT_PUBLIC_IMAGE_URL + vehicleImage}
+                  fill
+                  alt={vehicleName}
+                  className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <Car size={48} className="text-slate-300" />
+                </div>
+              )}
+            </div>
 
-          {/* Features */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {/* Seater */}
-            {vehicle.seater && (
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-sm">
-                <Users className="w-3.5 h-3.5" />
-                <span className="font-medium">{vehicle.seater} Seater</span>
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              {/* Vehicle Name & Company */}
+              <div className="mb-4">
+                <h4 className="text-xl font-bold text-slate-900 mb-1">{vehicleName}</h4>
+                <p className="text-sm text-slate-500">
+                  {vehicle?.vehicleCompany || 'Vehicle Company'}
+                </p>
               </div>
-            )}
 
-            {/* Luggage */}
-            {vehicle.luggage && (
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 text-purple-700 rounded-lg text-sm">
-                <Briefcase className="w-3.5 h-3.5" />
-                <span className="font-medium">{vehicle.luggage} Bags</span>
-              </div>
-            )}
+              {/* Features */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {/* Seater */}
+                <div className="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 rounded-lg border border-blue-100">
+                  <Users size={14} className="text-blue-500" />
+                  <span className="text-xs font-medium text-blue-700">
+                    {vehicle?.seater || 0} Seater
+                  </span>
+                </div>
 
-            {/* AC */}
-            {vehicle.isAc && (
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-50 text-cyan-700 rounded-lg text-sm">
-                <Snowflake className="w-3.5 h-3.5" />
-                <span className="font-medium">AC</span>
+                {/* Luggage */}
+                <div className="inline-flex items-center gap-2 px-3 py-2 bg-violet-50 rounded-lg border border-violet-100">
+                  <Briefcase size={14} className="text-violet-500" />
+                  <span className="text-xs font-medium text-violet-700">
+                    {vehicle?.luggage || 0} Luggage
+                  </span>
+                </div>
+
+                {/* AC Type */}
+                <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg border ${vehicle?.acType
+                    ? 'bg-cyan-50 border-cyan-100'
+                    : 'bg-slate-50 border-slate-100'
+                  }`}>
+                  <Snowflake size={14} className={vehicle?.acType ? 'text-cyan-500' : 'text-slate-400'} />
+                  <span className={`text-xs font-medium ${vehicle?.acType ? 'text-cyan-700' : 'text-slate-500'
+                    }`}>
+                    {vehicle?.acType ? 'AC' : 'Non-AC'}
+                  </span>
+                </div>
               </div>
-            )}
+
+              {/* Inclusions */}
+              {vehicleInclusions.length > 0 && (
+                <div className="pt-4 border-t border-slate-100">
+                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-2">Included</p>
+                  <div className="flex flex-wrap gap-2">
+                    {vehicleInclusions.map((inclusion, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-md border border-emerald-100"
+                      >
+                        <Check size={10} />
+                        {inclusion}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-
-          {/* Transfer Info */}
-          {vehicle.transferInfo && vehicle.transferInfo.length > 0 && (
-            <div className="mt-3">
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Transfers</p>
-              <div className="flex flex-wrap gap-2">
-                {vehicle.transferInfo.slice(0, 3).map((info, idx) => (
-                  <span key={idx} className="text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded">
-                    {info}
-                  </span>
-                ))}
-                {vehicle.transferInfo.length > 3 && (
-                  <span className="text-xs text-slate-400">
-                    +{vehicle.transferInfo.length - 3} more
-                  </span>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Inclusions */}
-          {vehicle.inclusion && vehicle.inclusion.length > 0 && (
-            <div className="mt-3 pt-3 border-t border-slate-100">
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Included</p>
-              <p className="text-sm text-slate-600">{vehicle.inclusion.join(', ')}</p>
-            </div>
-          )}
         </div>
       </div>
-    </div>
+
+      {/* Modal */}
+      <ChangeCabModal
+        isOpen={isCabModalOpen}
+        onClose={() => setIsCabModalOpen(false)}
+        vehicle={vehicle}
+      />
+    </>
   );
 }

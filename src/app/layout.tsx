@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Toaster } from 'react-hot-toast';
 import { SearchProvider } from '@/context/SearchContext';
+import { ReduxProvider } from '@/app/store/provider';
+import { ReactQueryProvider } from '@/app/providers/ReactQueryProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -25,7 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <SearchProvider>{children}</SearchProvider>
+        <ReactQueryProvider>
+          <ReduxProvider>
+            <SearchProvider>{children}</SearchProvider>
+          </ReduxProvider>
+        </ReactQueryProvider>
         <Toaster
           position="top-center"
           toastOptions={{
