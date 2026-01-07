@@ -36,34 +36,34 @@ const Navbar = ({ staticMode = false }: NavbarProps) => {
       }`}
     >
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-14 lg:h-16">
           {/* Logo */}
           <a href="/" className="flex items-center group">
             <Image
               src="/logo.png"
               alt="Family Tripxplo"
-              width={160}
-              height={50}
+              width={140}
+              height={45}
               className="transition-transform duration-300 group-hover:scale-105"
               priority
             />
           </a>
 
           {/* Right Side - Navigation + Login + Mobile Menu */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1">
               {navLinks.map(link => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-[#15ab8b]/10 ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-[#15ab8b]/10 ${
                     isScrolled
                       ? 'text-slate-700 hover:text-[#15ab8b]'
                       : 'text-slate-700 hover:text-[#15ab8b]'
                   }`}
                 >
-                  <link.icon className="w-4 h-4 text-[#15ab8b]" />
+                  <link.icon className="w-3.5 h-3.5 text-[#15ab8b]" />
                   {link.name}
                 </a>
               ))}
@@ -72,9 +72,9 @@ const Navbar = ({ staticMode = false }: NavbarProps) => {
             {/* Login Button - Desktop */}
             <a
               href="/login"
-              className="hidden lg:flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white font-semibold rounded-xl shadow-lg shadow-[#15ab8b]/30 hover:shadow-xl hover:shadow-[#15ab8b]/40 transform hover:-translate-y-0.5 transition-all duration-300"
+              className="hidden lg:flex items-center gap-1.5 px-4 py-2 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white text-sm font-semibold rounded-xl shadow-lg shadow-[#15ab8b]/30 hover:shadow-xl hover:shadow-[#15ab8b]/40 transform hover:-translate-y-0.5 transition-all duration-300"
             >
-              <LogIn className="w-4 h-4" />
+              <LogIn className="w-3.5 h-3.5" />
               <span>Login</span>
             </a>
 
