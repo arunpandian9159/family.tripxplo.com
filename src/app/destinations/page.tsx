@@ -146,7 +146,7 @@ function DestinationsContent() {
 
   return (
     <div className="min-h-screen bg-slate-50 pb-24 lg:pb-8">
-      <Navbar />
+      <Navbar staticMode />
 
       {/* Hero Header with Cover Image */}
       <div className="relative pt-20 lg:pt-28 pb-12 lg:pb-16 overflow-hidden">

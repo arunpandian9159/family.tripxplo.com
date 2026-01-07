@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Menu, X, MapPin, CreditCard, Users, LogIn, Home } from 'lucide-react';
 
-const Navbar = () => {
+interface NavbarProps {
+  staticMode?: boolean;
+}
+
+const Navbar = ({ staticMode = false }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -17,16 +21,18 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#', icon: Home },
-    { name: 'Destinations', href: '#packages', icon: MapPin },
-    { name: 'EMI Plans', href: '#why-emi', icon: CreditCard },
-    { name: 'Testimonials', href: '#testimonials', icon: Users },
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Destinations', href: '/destinations', icon: MapPin },
+    { name: 'EMI Plans', href: '/#why-emi', icon: CreditCard },
+    { name: 'Testimonials', href: '/#testimonials', icon: Users },
   ];
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'bg-white/95 backdrop-blur-lg shadow-lg shadow-black/5' : 'bg-transparent'
+      className={`${
+        staticMode ? 'sticky top-0 bg-white shadow-sm' : 'fixed top-0 bg-transparent'
+      } left-0 right-0 z-50 transition-all duration-500 ${
+        !staticMode && isScrolled ? 'bg-white/95 backdrop-blur-lg shadow-lg shadow-black/5' : ''
       }`}
     >
       <div className="container mx-auto px-4 lg:px-8">

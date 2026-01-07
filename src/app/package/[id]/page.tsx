@@ -64,7 +64,7 @@ function PackageDetailsContent({ params }: PageProps) {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50">
-        <Navbar />
+        <Navbar staticMode />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="flex flex-col items-center gap-4">
             <Loader2 className="w-10 h-10 animate-spin text-[#15ab8b]" />
@@ -78,7 +78,7 @@ function PackageDetailsContent({ params }: PageProps) {
   if (error || !pkg) {
     return (
       <div className="min-h-screen bg-slate-50">
-        <Navbar />
+        <Navbar staticMode />
         <div className="max-w-7xl mx-auto px-4 py-24 text-center">
           <div className="w-20 h-20 mx-auto mb-6 bg-red-100 rounded-full flex items-center justify-center">
             <X className="w-10 h-10 text-red-500" />
@@ -100,7 +100,7 @@ function PackageDetailsContent({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <Navbar />
+      <Navbar staticMode />
       <PackageDetail pack={pkg} adults={parseInt(noAdult, 10)} children={parseInt(noChild, 10)} />
     </div>
   );
