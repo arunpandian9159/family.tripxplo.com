@@ -67,7 +67,7 @@ const timeConfig: Record<
   },
   noon: {
     icon: Sun,
-    gradient: "from-orange-400 to-rose-400",
+    gradient: "from-orange-400 to-emerald-600",
     bgLight: "bg-orange-50",
     textColor: "text-orange-600",
     label: "Afternoon",
@@ -75,11 +75,11 @@ const timeConfig: Record<
   },
   evening: {
     icon: Sunset,
-    gradient: "from-rose-400 to-purple-400",
-    bgLight: "bg-rose-50",
-    textColor: "text-rose-600",
+    gradient: "from-emerald-600 to-purple-400",
+    bgLight: "bg-emerald-50",
+    textColor: "text-emerald-600",
     label: "Evening",
-    borderColor: "border-rose-200",
+    borderColor: "border-emerald-400",
   },
   night: {
     icon: Moon,
@@ -126,7 +126,7 @@ const Iternary = ({ events, day }: IternaryProps) => {
               event={event}
               day={day}
             />
-          ),
+          )
         )}
       </div>
     </div>
@@ -259,7 +259,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
 
           {/* Footer */}
           <AlertDialogFooter className="p-4 lg:p-6 pt-0 bg-white">
-            <AlertDialogCancel className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-semibold border-0 hover:from-emerald-600 hover:to-rose-600 shadow-lg shadow-emerald-500/25 transition-all hover:shadow-xl">
+            <AlertDialogCancel className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-semibold border-0 hover:from-emerald-600 hover:to-emerald-600 shadow-lg shadow-emerald-500/25 transition-all hover:shadow-xl">
               Close
             </AlertDialogCancel>
           </AlertDialogFooter>
@@ -374,10 +374,10 @@ const AddActivityModal = ({
   const dispatch = useDispatch<AppDispatch>();
   const activityData = useSelector((store: any) => store.activity);
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room,
+    (store: any) => store.roomSelect.room
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage,
+    (store: any) => store.searchPackage
   );
 
   const config = getTimeConfig(timePeriod);
@@ -401,13 +401,13 @@ const AddActivityModal = ({
       }).toString();
 
       const response = await apiRequest<any[]>(
-        `packages/${activityData.packageId}/activities?${queryParams}`,
+        `packages/${activityData.packageId}/activities?${queryParams}`
       );
 
       if (response.success && response.data) {
         const filteredActivities =
           response.data[0]?.activityDetails?.filter(
-            (item: any) => item?.destinationId === destinationId,
+            (item: any) => item?.destinationId === destinationId
           ) || [];
         setActivities(filteredActivities);
       }
@@ -435,7 +435,7 @@ const AddActivityModal = ({
   };
 
   const filteredActivities = activities.filter((activity) =>
-    activity.name?.toLowerCase().includes(searchTerm.toLowerCase()),
+    activity.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

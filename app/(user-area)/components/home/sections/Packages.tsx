@@ -8,7 +8,7 @@ import PopularEMIPackages from "./PopularEMIPackages";
 
 const Packages = () => {
   return (
-    <section className="py-20 lg:py-28 bg-linear-to-b from-white to-slate-50 relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-1/2 left-0 w-72 h-72 bg-[#d1fbd2]/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       <div className="absolute top-1/3 right-0 w-80 h-80 bg-[#15ab8b]/10 rounded-full blur-3xl translate-x-1/2 pointer-events-none" />

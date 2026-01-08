@@ -97,9 +97,9 @@ const planConfig = {
     shadow: "shadow-slate-500/20",
   },
   Platinum: {
-    gradient: "bg-gradient-to-r from-rose-500 via-red-400 to-rose-600",
-    ring: "ring-rose-400/50",
-    shadow: "shadow-rose-500/20",
+    gradient: "bg-gradient-to-r from-emerald-700 via-red-400 to-emerald-600",
+    ring: "ring-emerald-600/50",
+    shadow: "shadow-emerald-700/20",
   },
 };
 
@@ -135,9 +135,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
       className={cn(
         "group bg-white rounded-2xl border overflow-hidden cursor-pointer transition-all duration-300",
         "hover:shadow-xl hover:-translate-y-1",
-        plan
-          ? `ring-2 ${plan.ring}`
-          : "border-slate-100 hover:border-slate-200",
+        plan ? `ring-2 ${plan.ring}` : "border-slate-100 hover:border-slate-200"
       )}
     >
       {/* Main Content */}
@@ -160,7 +158,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
               className={cn(
                 "absolute top-3 left-3 px-3 py-1.5 rounded-full text-white text-xs font-bold shadow-lg",
                 plan.gradient,
-                plan.shadow,
+                plan.shadow
               )}
             >
               {pkg.planName}
@@ -188,7 +186,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
             <span
               className={cn(
                 "flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white",
-                status.bg,
+                status.bg
               )}
             >
               <StatusIcon
@@ -308,7 +306,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
           status.bgLight,
           status.text,
           "border-t",
-          status.border,
+          status.border
         )}
       >
         <StatusIcon

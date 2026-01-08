@@ -44,8 +44,8 @@ export default function IternaryStory({
     },
     evening: {
       icon: Sunset,
-      color: "text-rose-500",
-      bg: "bg-rose-50",
+      color: "text-emerald-700",
+      bg: "bg-emerald-50",
       label: "Evening",
     },
     night: {

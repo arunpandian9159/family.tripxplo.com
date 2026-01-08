@@ -127,8 +127,8 @@ const config = {
           "50%": { transform: "translateY(-12px)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px 0 rgba(255, 95, 95, 0.4)" },
-          "50%": { boxShadow: "0 0 35px 8px rgba(255, 95, 95, 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px 0 rgba(30, 192, 137, 0.4)" },
+          "50%": { boxShadow: "0 0 35px 8px rgba(30, 192, 137, 0.6)" },
         },
         "slide-up": {
           from: { opacity: "0", transform: "translateY(20px)" },
@@ -183,13 +183,13 @@ const config = {
         "glow-emerald": "0 0 40px -8px rgba(30, 192, 137, 0.35)",
         card: "0 4px 20px -2px rgba(0, 0, 0, 0.06)",
         "card-hover": "0 12px 40px -8px rgba(0, 0, 0, 0.12)",
-        button: "0 4px 14px -2px rgba(255, 95, 95, 0.25)",
+        button: "0 4px 14px -2px rgba(30, 192, 137, 0.25)",
         "button-emerald": "0 4px 14px -2px rgba(30, 192, 137, 0.25)",
         // Legacy shadows
         pkgShadow: "4px 8px 25.8px 0px rgba(0, 0, 0, 0.06)",
         "pkg-imgShadow": "2px 4px 13.2px 0px rgba(0, 0, 0, 0.06)",
         goldShadow: "7px 3px 13px 0px rgba(0, 0, 0, 0.22)",
-        bookingOverviewShadow: "4px 8px 39.7px 0px rgba(255, 120, 101, 0.15)",
+        bookingOverviewShadow: "4px 8px 39.7px 0px rgba(30, 192, 137, 0.15)",
       },
       backgroundImage: {
         "gradient-emerald": "linear-gradient(135deg, #1EC089 0%, #34D399 100%)",

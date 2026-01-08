@@ -41,10 +41,10 @@ export default function PackageImage({
 
   // Get current search parameters from Redux
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect?.room,
+    (store: any) => store.roomSelect?.room
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage,
+    (store: any) => store.searchPackage
   );
   const pack = useSelector((store: any) => store.package);
 
@@ -242,7 +242,7 @@ export default function PackageImage({
             </>
           ) : (
             // Fallback gradient when no image
-            <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-rose-600 to-purple-700" />
+            <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-600 to-purple-700" />
           )}
 
           {/* Dark Overlay for text readability */}

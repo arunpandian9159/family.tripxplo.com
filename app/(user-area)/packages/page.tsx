@@ -128,7 +128,7 @@ const PackagesPage = () => {
         const response = await packagesApi.featured(MAX_ITEMS);
         if (response.success && response.data) {
           setAllPackages(
-            (response.data as { packages: FeaturedPackage[] }).packages || [],
+            (response.data as { packages: FeaturedPackage[] }).packages || []
           );
         }
       } catch (error) {
@@ -148,7 +148,7 @@ const PackagesPage = () => {
       searchQuery === "" ||
       pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       pkg.destinations?.some((d) =>
-        d.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+        d.name?.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
     // Category filter
@@ -213,7 +213,7 @@ const PackagesPage = () => {
     // Simulate loading delay for smoother UX
     setTimeout(() => {
       setDisplayedCount((prev) =>
-        Math.min(prev + ITEMS_PER_PAGE, sortedPackages.length),
+        Math.min(prev + ITEMS_PER_PAGE, sortedPackages.length)
       );
       setLoadingMore(false);
     }, 300);
@@ -254,7 +254,7 @@ const PackagesPage = () => {
 
         {/* Decorative Elements */}
         <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-10 w-48 h-48 bg-rose-400/20 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-10 w-48 h-48 bg-emerald-600/20 rounded-full blur-2xl" />
 
         <Container className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -336,7 +336,7 @@ const PackagesPage = () => {
                     "px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 whitespace-nowrap",
                     activeFilter === category.value
                       ? "bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm"
-                      : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300",
+                      : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
                   )}
                 >
                   {category.label}
@@ -380,7 +380,7 @@ const PackagesPage = () => {
                           "w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors",
                           sortBy === option.value
                             ? "text-emerald-600 font-medium bg-emerald-50"
-                            : "text-slate-700",
+                            : "text-slate-700"
                         )}
                       >
                         {option.label}
@@ -399,7 +399,7 @@ const PackagesPage = () => {
                   "p-2 rounded-lg transition-all",
                   viewMode === "grid"
                     ? "bg-emerald-500 text-white"
-                    : "text-slate-400 hover:text-slate-600",
+                    : "text-slate-400 hover:text-slate-600"
                 )}
               >
                 <Grid className="w-4 h-4" />
@@ -410,7 +410,7 @@ const PackagesPage = () => {
                   "p-2 rounded-lg transition-all",
                   viewMode === "list"
                     ? "bg-emerald-500 text-white"
-                    : "text-slate-400 hover:text-slate-600",
+                    : "text-slate-400 hover:text-slate-600"
                 )}
               >
                 <List className="w-4 h-4" />
@@ -466,7 +466,7 @@ const PackagesPage = () => {
                 "grid gap-6 animate-fade-in",
                 viewMode === "grid"
                   ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                  : "grid-cols-1 max-w-4xl mx-auto",
+                  : "grid-cols-1 max-w-4xl mx-auto"
               )}
             >
               {displayedPackages.map((pkg, index) => (
@@ -482,7 +482,7 @@ const PackagesPage = () => {
                   style={{
                     animationDelay: `${Math.min(
                       (index % ITEMS_PER_PAGE) * 0.05,
-                      0.3,
+                      0.3
                     )}s`,
                   }}
                 >

@@ -82,10 +82,10 @@ const SectionDivider = () => (
 
 const PackageDetail = ({ pack }: PropsType) => {
   const roomCapacityAdults = useSelector(
-    (store: any) => store.roomSelect?.room?.totalAdults || 2,
+    (store: any) => store.roomSelect?.room?.totalAdults || 2
   );
   const roomCapacityChild = useSelector(
-    (store: any) => store.roomSelect?.room?.totalChilds || 0,
+    (store: any) => store.roomSelect?.room?.totalChilds || 0
   );
   const dispatch = useDispatch();
 
@@ -121,10 +121,10 @@ const PackageDetail = ({ pack }: PropsType) => {
     (exc) =>
       exc?.name?.toLowerCase().includes("flight") ||
       exc?.name?.toLowerCase().includes("airfare") ||
-      exc?.name?.toLowerCase().includes("air ticket"),
+      exc?.name?.toLowerCase().includes("air ticket")
   );
   const isWithoutTrain = pack?.exclusionDetail?.some((exc) =>
-    exc?.name?.toLowerCase().includes("train"),
+    exc?.name?.toLowerCase().includes("train")
   );
 
   // Extract meal plan info from hotels
@@ -132,7 +132,7 @@ const PackageDetail = ({ pack }: PropsType) => {
     const mealPlans =
       pack?.hotelMeal?.map((hotel) => hotel?.mealPlan?.toLowerCase()) || [];
     const hasBreakfast = mealPlans.some(
-      (mp) => mp === "cp" || mp === "map" || mp === "ap",
+      (mp) => mp === "cp" || mp === "map" || mp === "ap"
     );
     const hasDinner = mealPlans.some((mp) => mp === "map" || mp === "ap");
     const hasAllMeals = mealPlans.some((mp) => mp === "ap");
@@ -179,8 +179,8 @@ const PackageDetail = ({ pack }: PropsType) => {
                       {isWithoutFlight && isWithoutTrain
                         ? "Land Package Only"
                         : isWithoutFlight
-                          ? "Without Flight"
-                          : "Without Train"}
+                        ? "Without Flight"
+                        : "Without Train"}
                     </span>
                   </div>
                 )}
@@ -308,7 +308,7 @@ const PackageDetail = ({ pack }: PropsType) => {
                 <SectionHeader
                   icon={XCircle}
                   title="Not Included"
-                  iconBg="from-rose-500 to-red-500"
+                  iconBg="from-emerald-700 to-red-500"
                 />
                 <Exclusions exclusions={pack?.exclusionDetail} />
               </div>

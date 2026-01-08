@@ -102,7 +102,7 @@ const WhyEMI = () => {
             >
               {/* Hover gradient overlay */}
               <div
-                className={`absolute inset-0 bg-linear-to-br ${benefit.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
+                className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
               />
 
               {/* Icon */}
@@ -156,10 +156,14 @@ const WhyEMI = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-4 bg-linear-to-r from-[#15ab8b] to-[#1ec9a5] text-white px-8 py-4 rounded-2xl shadow-lg">
+          <div className="inline-flex items-center gap-4 bg-gradient-to-r from-[#15ab8b] to-[#1ec9a5] text-white px-8 py-4 rounded-2xl shadow-lg">
             <div className="text-left">
-              <p className="text-sm opacity-90">Start your journey today</p>
-              <p className="text-xl font-bold">EMI from ₹2,999/month</p>
+              <p className="text-sm text-white opacity-90">
+                Start your journey today
+              </p>
+              <p className="text-xl font-bold text-white">
+                EMI from ₹2,999/month
+              </p>
             </div>
             <button className="bg-white text-[#15ab8b] px-6 py-2 rounded-xl font-bold hover:bg-slate-50 transition-colors">
               Explore

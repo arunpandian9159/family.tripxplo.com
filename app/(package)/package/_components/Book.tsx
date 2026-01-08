@@ -162,7 +162,7 @@ export default function Book({
           <div className="px-6 pb-6">
             <button
               onClick={handlePackageClick}
-              className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30 active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30 active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <Zap size={18} />
               Book Now

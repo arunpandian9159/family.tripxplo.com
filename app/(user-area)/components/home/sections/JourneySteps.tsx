@@ -51,7 +51,7 @@ const JourneySteps = () => {
   return (
     <section className="py-16 lg:py-24 bg-[#0d1829] relative overflow-hidden">
       {/* Subtle background gradient overlay */}
-      <div className="absolute inset-0 bg-linear-to-b from-[#0a1320] via-[#0d1829] to-[#0d1829]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a1320] via-[#0d1829] to-[#0d1829]" />
 
       {/* Decorative elements */}
       <div className="absolute top-0 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -121,7 +121,7 @@ const JourneySteps = () => {
         </div>
 
         {/* Connecting line for desktop */}
-        <div className="hidden lg:block absolute top-[55%] left-[15%] right-[15%] h-px bg-linear-to-r from-transparent via-slate-700 to-transparent -z-1" />
+        <div className="hidden lg:block absolute top-[55%] left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent -z-1" />
       </div>
     </section>
   );

@@ -43,10 +43,10 @@ const PackagesPage = () => {
 
   const [offset, setOffset] = useState<number>(0);
   const destination = useAppSelector(
-    (state) => state.searchPackage.destination,
+    (state) => state.searchPackage.destination
   );
   const destinationId = useAppSelector(
-    (state) => state.searchPackage.destinationId,
+    (state) => state.searchPackage.destinationId
   );
   const themeId = useAppSelector((state) => state.themeSelect.themeId);
 
@@ -214,7 +214,7 @@ const PackagesPage = () => {
         ) : (
           !isLoading && (
             <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-50 to-rose-50 flex items-center justify-center mb-6">
+              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-50 to-emerald-50 flex items-center justify-center mb-6">
                 <Package className="w-12 h-12 text-emerald-500" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">

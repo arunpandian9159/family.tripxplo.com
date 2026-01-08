@@ -49,7 +49,7 @@ const PopularEMIPackages = () => {
       try {
         const today = new Date().toISOString().split("T")[0];
         const response = await fetch(
-          `/api/v1/packages?limit=20&noAdult=2&noChild=2&noRoomCount=1&startDate=${today}`,
+          `/api/v1/packages?limit=20&noAdult=2&noChild=2&noRoomCount=1&startDate=${today}`
         );
 
         if (response.ok) {
@@ -186,7 +186,7 @@ const PopularEMIPackages = () => {
                   />
 
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
                   {/* Duration Badge */}
                   <div className="absolute top-3 right-3">

@@ -63,9 +63,9 @@ const planConfig = {
     bg: "bg-slate-50",
   },
   Platinum: {
-    gradient: "bg-gradient-to-r from-rose-500 via-red-400 to-rose-600",
-    text: "text-rose-600",
-    bg: "bg-rose-50",
+    gradient: "bg-gradient-to-r from-emerald-700 via-red-400 to-emerald-600",
+    text: "text-emerald-600",
+    bg: "bg-emerald-50",
   },
 };
 
@@ -173,7 +173,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                 <div
                   className={cn(
                     "absolute top-2 left-2 px-2 py-0.5 rounded-full text-white text-[10px] font-bold",
-                    plan.gradient,
+                    plan.gradient
                   )}
                 >
                   {pack.planName}
@@ -317,10 +317,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                         isCompleted && "bg-emerald-500",
                         isFailed && "bg-red-500",
                         isActive && "bg-amber-500 animate-pulse",
-                        !isCompleted &&
-                          !isFailed &&
-                          !isActive &&
-                          "bg-slate-200",
+                        !isCompleted && !isFailed && !isActive && "bg-slate-200"
                       )}
                     >
                       {isCompleted && (
@@ -345,8 +342,8 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                           isCompleted
                             ? "bg-emerald-500"
                             : isFailed
-                              ? "bg-red-300"
-                              : "bg-slate-200 border-l-2 border-dashed border-slate-300",
+                            ? "bg-red-300"
+                            : "bg-slate-200 border-l-2 border-dashed border-slate-300"
                         )}
                       />
                     )}
@@ -363,7 +360,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                         !isCompleted &&
                           !isFailed &&
                           !isActive &&
-                          "text-slate-400",
+                          "text-slate-400"
                       )}
                     >
                       {event.heading}
@@ -405,7 +402,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
       <div
         className={cn(
           "mt-4 p-4 rounded-xl flex items-center justify-center gap-3",
-          status?.bgLight || "bg-slate-50",
+          status?.bgLight || "bg-slate-50"
         )}
       >
         {pack?.status === "confirmed" && (

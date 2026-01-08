@@ -36,7 +36,7 @@ const PackageHighlight = ({
   const planColors: Record<string, string> = {
     gold: "from-amber-500 to-orange-500",
     silver: "from-slate-400 to-slate-500",
-    platinum: "from-rose-500 to-red-500",
+    platinum: "from-emerald-700 to-red-500",
     standard: "from-emerald-500 to-teal-500",
   };
 

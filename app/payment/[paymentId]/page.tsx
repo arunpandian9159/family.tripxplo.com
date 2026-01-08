@@ -35,7 +35,7 @@ export default function PaymentPage() {
   const paymentId = params.paymentId as string;
 
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(
-    null,
+    null
   );
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -150,7 +150,7 @@ export default function PaymentPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-rose-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-emerald-50/20">
       {/* Header */}
       <div className="bg-white border-b border-slate-100 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -278,8 +278,8 @@ export default function PaymentPage() {
                     {selectedMethod === "upi"
                       ? "UPI"
                       : selectedMethod === "netbanking"
-                        ? "Net Banking"
-                        : selectedMethod}
+                      ? "Net Banking"
+                      : selectedMethod}
                   </span>
                 </div>
 
@@ -299,7 +299,7 @@ export default function PaymentPage() {
                 <button
                   onClick={handlePayment}
                   disabled={processing}
-                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {processing ? (
                     <>

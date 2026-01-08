@@ -218,7 +218,7 @@ export default function LoginModal({
                         "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                         "transition-all duration-200 touch-manipulation",
                         errors.email &&
-                          "border-red-500 bg-red-50 focus:ring-red-500/20",
+                          "border-red-500 bg-red-50 focus:ring-red-500/20"
                       )}
                       placeholder="you@example.com"
                       autoComplete="email"
@@ -253,7 +253,7 @@ export default function LoginModal({
                         "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                         "transition-all duration-200 touch-manipulation",
                         errors.password &&
-                          "border-red-500 bg-red-50 focus:ring-red-500/20",
+                          "border-red-500 bg-red-50 focus:ring-red-500/20"
                       )}
                       placeholder="••••••••"
                       autoComplete="current-password"
@@ -281,7 +281,7 @@ export default function LoginModal({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
+                  className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
                 >
                   {loading ? (
                     <>

@@ -86,7 +86,7 @@ const Footer = () => {
     const newDate = new Date();
     newDate.setDate(newDate.getDate() + 10);
     const localDate = new Date(
-      newDate.getTime() - newDate.getTimezoneOffset() * 60000,
+      newDate.getTime() - newDate.getTimezoneOffset() * 60000
     );
     dispatch(changeDate(localDate.toISOString()));
     dispatch(initialLoad());
@@ -221,7 +221,7 @@ const Footer = () => {
 
                             <div className="space-y-6">
                               {/* Intro */}
-                              <div className="prose prose-sm">
+                              <div className="prose pemerald-sm">
                                 <p className="text-slate-600 leading-relaxed">
                                   At TripXplo, we are not just selling packages,
                                   we are crafting memories. We are looking for

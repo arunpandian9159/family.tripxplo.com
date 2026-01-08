@@ -50,7 +50,7 @@ const registerSchema = yup.object().shape({
     .string()
     .matches(
       /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/,
-      "Password must be at least 6 characters with letters and numbers",
+      "Password must be at least 6 characters with letters and numbers"
     )
     .required("Password is required"),
   fullName: yup
@@ -113,7 +113,7 @@ export default function AuthModal({
   };
 
   const onRegisterSubmit = async (
-    values: yup.InferType<typeof registerSchema>,
+    values: yup.InferType<typeof registerSchema>
   ) => {
     try {
       setLoading(true);
@@ -297,7 +297,7 @@ export default function AuthModal({
                           "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           loginForm.formState.errors.email &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="you@example.com"
                         autoComplete="email"
@@ -332,7 +332,7 @@ export default function AuthModal({
                           "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           loginForm.formState.errors.password &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="••••••••"
                         autoComplete="current-password"
@@ -360,7 +360,7 @@ export default function AuthModal({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3.5 sm:py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
+                    className="w-full py-3.5 sm:py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
                   >
                     {loading ? (
                       <>
@@ -421,7 +421,7 @@ export default function AuthModal({
                           "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.fullName &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="John Doe"
                         autoComplete="name"
@@ -455,7 +455,7 @@ export default function AuthModal({
                           "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.email &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="you@example.com"
                         autoComplete="email"
@@ -490,7 +490,7 @@ export default function AuthModal({
                           "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.password &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="••••••••"
                         autoComplete="new-password"
@@ -524,7 +524,7 @@ export default function AuthModal({
                           "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.mobileNo &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="9876543210"
                         autoComplete="tel"
@@ -558,7 +558,7 @@ export default function AuthModal({
                           "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.gender &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                       >
                         <option value="">Select Gender</option>
@@ -578,7 +578,7 @@ export default function AuthModal({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 sm:py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-3 touch-manipulation min-h-[48px]"
+                    className="w-full py-3 sm:py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-3 touch-manipulation min-h-[48px]"
                   >
                     {loading ? (
                       <>

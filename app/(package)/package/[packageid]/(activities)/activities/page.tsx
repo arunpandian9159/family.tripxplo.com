@@ -200,7 +200,7 @@ const Page = () => {
               />
             </>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-rose-600 to-purple-700" />
+            <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-600 to-purple-700" />
           )}
 
           {/* Dark Overlay */}
@@ -307,7 +307,7 @@ const Page = () => {
           {/* Timeline Content */}
           <div className="relative mt-8">
             {/* Timeline Line */}
-            <div className="absolute left-5 lg:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-200 via-rose-200 to-emerald-200 rounded-full" />
+            <div className="absolute left-5 lg:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-200 via-emerald-400 to-emerald-200 rounded-full" />
 
             {/* Days */}
             {activity?.length > 0 ? (

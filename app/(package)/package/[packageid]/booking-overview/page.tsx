@@ -113,7 +113,7 @@ export default function PackageBooking() {
   }, []);
 
   const availableRedeemCoins = useSelector(
-    (store: any) => store.userSlice.redeemCoins,
+    (store: any) => store.userSlice.redeemCoins
   );
 
   const [packageId, setPackageId] = useState<string>("");
@@ -130,10 +130,10 @@ export default function PackageBooking() {
 
   const { currentPackageId } = useAppSelector((store) => store.packageDetails);
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room,
+    (store: any) => store.roomSelect.room
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage,
+    (store: any) => store.searchPackage
   );
 
   useEffect(() => {
@@ -153,7 +153,7 @@ export default function PackageBooking() {
     // Validate required data
     if (!pack?.packageId) {
       toast.error(
-        "Package information not found. Please go back and try again.",
+        "Package information not found. Please go back and try again."
       );
       return;
     }
@@ -219,7 +219,7 @@ export default function PackageBooking() {
       if (result?.paymentLink?.data?.instrumentResponse?.redirectInfo?.url) {
         // Redirect to payment page
         router.push(
-          result.paymentLink.data.instrumentResponse.redirectInfo.url,
+          result.paymentLink.data.instrumentResponse.redirectInfo.url
         );
       } else if (result?.booking?.id) {
         // Booking created but no payment link - show success and redirect to booking
@@ -634,7 +634,7 @@ export default function PackageBooking() {
                   {packageCoupons.length > 0 && !isCouponApplied && (
                     <button
                       onClick={() => setShowCouponsModal(true)}
-                      className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-emerald-50 to-rose-50 rounded-xl border border-emerald-100 hover:border-emerald-200 transition-all"
+                      className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-emerald-50 to-emerald-50 rounded-xl border border-emerald-100 hover:border-emerald-200 transition-all"
                     >
                       <div className="flex items-center gap-3">
                         <div className="p-2 bg-emerald-100 rounded-lg">
@@ -675,7 +675,7 @@ export default function PackageBooking() {
                       {!isRedeemApplied ? (
                         <button
                           onClick={applyRedeem}
-                          className="px-5 py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-rose-600 transition-all shadow-md"
+                          className="px-5 py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-600 transition-all shadow-md"
                         >
                           Apply
                         </button>
@@ -801,7 +801,7 @@ export default function PackageBooking() {
                   <button
                     onClick={handleBooking}
                     disabled={!selectedPaymentOption || isProcessing}
-                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isProcessing ? (
                       <>
