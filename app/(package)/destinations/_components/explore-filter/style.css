@@ -1,0 +1,43 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #ffffff00;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card {
+  width: 100%;
+  height: 30vw;
+  background-color: aquamarine;
+  border-radius: 30px;
+}
+.m-card {
+  width: 90%;
+  background-color: #ffffff00;
+}
+.ext-card {
+  margin: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+@media (max-width: 700px) {
+  .card {
+    height: 40vw;
+  }
+}
