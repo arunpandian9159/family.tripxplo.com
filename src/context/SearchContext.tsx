@@ -29,9 +29,9 @@ interface SearchContextType {
 
 const defaultSearchParams: SearchParams = {
   destinationId: '',
-  destinationName: 'Manali',
+  destinationName: '',
   interestId: '',
-  interestName: 'Couple',
+  interestName: 'Family',
   perRoom: 2,
   startDate: new Date().toISOString().split('T')[0],
   noAdult: 2,

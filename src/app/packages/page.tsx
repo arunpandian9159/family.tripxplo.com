@@ -10,8 +10,8 @@ import { Container } from '@/components/ui/container';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SkeletonPackageCard } from '@/components/ui/skeleton';
-import ExploreFilter from './_components/ExploreFilter';
-import FilterCardList from './_components/FilterCardList';
+import ExploreFilter from '@/app/destinations/_components/ExploreFilter';
+import FilterCardList from '@/app/destinations/_components/FilterCardList';
 import GlobalHeader from '@/app/components/GlobalHeader';
 import { useSearch } from '@/context/SearchContext';
 
@@ -25,9 +25,9 @@ const destinationImages: Record<string, string> = {
   kashmir: '/kashmir.jpg',
 };
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 100;
 
-function DestinationsContent() {
+function PackagesContent() {
   const router = useRouter();
   const { searchParams } = useSearch();
 
@@ -373,7 +373,7 @@ function DestinationsContent() {
   );
 }
 
-export default function DestinationsPage() {
+export default function PackagesPage() {
   return (
     <Suspense
       fallback={
@@ -382,7 +382,7 @@ export default function DestinationsPage() {
         </div>
       }
     >
-      <DestinationsContent />
+      <PackagesContent />
     </Suspense>
   );
 }

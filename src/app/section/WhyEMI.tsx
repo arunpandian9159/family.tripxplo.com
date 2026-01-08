@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { RefreshCw, Clock, ShieldCheck, Gift } from 'lucide-react';
+import Image from 'next/image';
 
 const benefits = [
   {
-    icon: RefreshCw,
+    image: '/plan-swap.png',
     title: 'Easy Plan Swap',
     description:
       'Change your travel plans anytime with our flexible booking options. No hidden charges.',
@@ -16,7 +16,7 @@ const benefits = [
     iconColor: 'text-blue-500',
   },
   {
-    icon: Clock,
+    image: '/no-last-minute-rush.png',
     title: 'No Last Minute Rush',
     description: 'Book ahead and enjoy stress-free planning. Pay in easy EMIs over time.',
     gradient: 'from-orange-500 to-amber-500',
@@ -25,7 +25,7 @@ const benefits = [
     iconColor: 'text-orange-500',
   },
   {
-    icon: ShieldCheck,
+    image: '/secure-accomodation.png',
     title: 'Guaranteed Availability',
     description: 'Your bookings are secured. Get confirmed hotels, flights, and activities.',
     gradient: 'from-[#15ab8b] to-emerald-500',
@@ -34,7 +34,7 @@ const benefits = [
     iconColor: 'text-[#15ab8b]',
   },
   {
-    icon: Gift,
+    image: '/rewards.png',
     title: 'Rewards on Booking',
     description: 'Earn exclusive rewards, discounts, and loyalty points on every booking.',
     gradient: 'from-purple-500 to-pink-500',
@@ -104,9 +104,15 @@ const WhyEMI = () => {
 
               {/* Icon */}
               <div
-                className={`relative w-14 h-14 ${benefit.iconBg} rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}
+                className={`relative mx-auto rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}
               >
-                <benefit.icon className={`w-7 h-7 ${benefit.iconColor}`} />
+                <Image
+                  src={benefit.image}
+                  alt={benefit.title}
+                  width={170}
+                  height={170}
+                  className="object-contain"
+                />
               </div>
 
               {/* Content */}
