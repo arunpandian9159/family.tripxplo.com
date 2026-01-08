@@ -1,6 +1,7 @@
 import { searchPackage } from "@/app/types";
 import { createSlice } from "@reduxjs/toolkit";
 const dateNow = new Date();
+dateNow.setHours(0, 0, 0, 0); // Stabilize to start of day
 
 const dateToString = dateNow.toISOString();
 const searchPackageSlice = createSlice({

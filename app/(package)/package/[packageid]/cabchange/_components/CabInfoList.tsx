@@ -133,7 +133,7 @@ const CabInfoList = ({
         {/* Right side - Price and Select button */}
         <div className="flex justify-end items-center gap-2 mt-4">
           {/* {price && ( */}
-          <p className="text-emerald-500 text-lg font-semibold text-[#1EC089]">
+          <p className="text-emerald-500 text-lg font-semibold">
             {cabPlanPrice >= 0
               ? `+ ₹${cabPlanPrice}`
               : `- ₹${Math.abs(cabPlanPrice)}`}

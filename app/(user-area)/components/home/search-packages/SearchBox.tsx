@@ -27,6 +27,7 @@ const popularDestinations = [
 const SearchBox = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [mounted, setMounted] = useState(false);
   const [disable, setDisable] = useState(false);
 
   // Dropdown state management for sequential flow
@@ -42,18 +43,25 @@ const SearchBox = () => {
   );
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     // Enable search button - minimal validation
     // Users can search even without all fields filled
     setDisable(false);
   }, [destinationName, date, roomCapacityData]);
 
   // Derived state to check if all fields are filled for animation
-  const isReadyToSearch = Boolean(
-    destinationName &&
-      destinationName.length > 0 &&
-      date &&
-      roomCapacityData > 0
-  );
+  // Only check if mounted to avoid hydration mismatch
+  const isReadyToSearch =
+    mounted &&
+    Boolean(
+      destinationName &&
+        destinationName.length > 0 &&
+        date &&
+        roomCapacityData > 0
+    );
 
   const handleNextPage = useCallback(() => {
     router.push(`/destinations`);
@@ -176,7 +184,7 @@ const SearchBox = () => {
             key={dest.id}
             onClick={() => handleQuickTag(dest)}
             className={`px-4 py-2 border rounded-full transition-all font-medium ${
-              destinationName === dest.name
+              mounted && destinationName === dest.name
                 ? "bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/25"
                 : "bg-white border-slate-200 text-slate-600 hover:border-emerald-300 hover:text-emerald-600 hover:shadow-sm"
             }`}
