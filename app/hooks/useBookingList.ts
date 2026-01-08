@@ -1,18 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Theme, selectThemeId } from "../store/features/selectThemeSlice";
-import { RootState } from "../store/store";
-import { GetPackageQueryType, getPackages } from "../utils/api/getPackages";
 import { useEffect, useState, useCallback } from "react";
 import { PackageType } from "../types/package";
-import {
-  changeDate,
-  changeDestinationId,
-} from "../store/features/searchPackageSlice";
-import {
-  selectAdultsChild,
-  selectPerRooom,
-} from "../store/features/roomCapacitySlice";
 import { getAllBookings } from "../utils/api/getAllBookings";
+import { GetPackageQueryType } from "../utils/api/getPackages";
 
 export interface DateDestination {
   date: string;
@@ -60,7 +49,7 @@ export const useBookingList = (offset: number) => {
         setIsLoading(false);
       }
     },
-    [offset],
+    [offset]
   );
 
   useEffect(() => {

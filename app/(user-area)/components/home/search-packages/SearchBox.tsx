@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Search, MapPin, Calendar, Users } from "lucide-react";
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PackageThemes from "../package-theme/PackageThemes";
+// PackageThemes removed - this project only shows Family themed packages
 import SearchDestination from "./SearchDestination";
 import DateBox from "./DateBox";
 import OptionsBox from "./OptionsBox";
@@ -34,11 +34,11 @@ const SearchBox = () => {
   const [isGuestsOpen, setIsGuestsOpen] = useState(false);
 
   const destinationName = useAppSelector(
-    (store: any) => store.searchPackage.destination,
+    (store: any) => store.searchPackage.destination
   );
   const date = useAppSelector((store: any) => store.searchPackage.date);
   const roomCapacityData = useSelector(
-    (store: any) => store.roomSelect.room.totalAdults,
+    (store: any) => store.roomSelect.room.totalAdults
   );
 
   useEffect(() => {
@@ -50,9 +50,9 @@ const SearchBox = () => {
   // Derived state to check if all fields are filled for animation
   const isReadyToSearch = Boolean(
     destinationName &&
-    destinationName.length > 0 &&
-    date &&
-    roomCapacityData > 0,
+      destinationName.length > 0 &&
+      date &&
+      roomCapacityData > 0
   );
 
   const handleNextPage = useCallback(() => {
@@ -66,7 +66,7 @@ const SearchBox = () => {
       // After quick tag selection, open calendar
       setTimeout(() => setIsCalendarOpen(true), 150);
     },
-    [dispatch],
+    [dispatch]
   );
 
   // Callback when destination is selected - open calendar
@@ -91,10 +91,7 @@ const SearchBox = () => {
 
   return (
     <div className="flex flex-col items-center w-full max-w-5xl mx-auto px-4">
-      {/* Themes */}
-      <div className="w-full mb-6 overflow-x-auto no-scrollbar py-2">
-        <PackageThemes scrollRef={null} />
-      </div>
+      {/* Theme selector removed - this project only shows Family themed packages */}
 
       {/* Main Search Card - overflow-visible allows dropdowns to show */}
       <div className="w-full bg-white rounded-3xl shadow-xl border border-slate-100 p-3 lg:p-4 relative overflow-visible">

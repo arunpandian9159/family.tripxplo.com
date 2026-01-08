@@ -5,15 +5,18 @@ import HotelRoom from "@/lib/models/HotelRoom";
 import { successResponse, errorResponse, ErrorCodes } from "@/lib/api-response";
 import { parseQueryParams } from "@/lib/api-middleware";
 
-// GET /api/v1/packages/featured - Get featured packages
+// GET /api/v1/packages/featured - Get featured packages (Family theme only)
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
 
     const { limit } = parseQueryParams(request);
 
+    // Family theme interestId - only show Family themed packages
+    const FAMILY_INTEREST_ID = "f9416600-db43-4f32-91f2-659ef08e3509";
+
     const packages = await Package.aggregate([
-      { $match: { status: true } },
+      { $match: { status: true, interestId: FAMILY_INTEREST_ID } },
       {
         $lookup: {
           from: "destination",
@@ -97,7 +100,7 @@ export async function GET(request: NextRequest) {
 
     // Get hotel room details to calculate base prices
     const allHotelRoomIds = packages.flatMap(
-      (p) => p.hotel?.map((h: { hotelRoomId: string }) => h.hotelRoomId) || [],
+      (p) => p.hotel?.map((h: { hotelRoomId: string }) => h.hotelRoomId) || []
     );
     const hotelRoomData = await HotelRoom.find({
       hotelRoomId: { $in: allHotelRoomIds },
@@ -121,7 +124,7 @@ export async function GET(request: NextRequest) {
           .map((h: { hotelRoomId: string }) => {
             const room = hotelRoomData.find(
               (r) =>
-                (r as { hotelRoomId?: string }).hotelRoomId === h.hotelRoomId,
+                (r as { hotelRoomId?: string }).hotelRoomId === h.hotelRoomId
             );
             if (!room) return 0;
 
@@ -145,7 +148,7 @@ export async function GET(request: NextRequest) {
         if (hotelPrices.length > 0) {
           // Sum of minimum room prices / 2 (assuming 2 adults per room)
           price = Math.round(
-            hotelPrices.reduce((a: number, b: number) => a + b, 0) / 2,
+            hotelPrices.reduce((a: number, b: number) => a + b, 0) / 2
           );
         }
       }
@@ -177,14 +180,14 @@ export async function GET(request: NextRequest) {
 
     return successResponse(
       { packages: formattedPackages },
-      "Featured packages retrieved successfully",
+      "Featured packages retrieved successfully"
     );
   } catch (error) {
     console.error("Get featured packages error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,
-      500,
+      500
     );
   }
 }

@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { Minus, Plus, AlertCircle, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../store/store";
 import {
   initialLoad,
   selectAdultsChild,
@@ -26,11 +25,10 @@ export default function OptionsBox({
 }: OptionsBoxProps) {
   const roomCapacityData = useSelector((store: any) => store.roomSelect.room);
   const roomInitiallyLoaded = useSelector(
-    (store: any) => store.roomSelect.room.initiallyLoaded,
+    (store: any) => store.roomSelect.room.initiallyLoaded
   );
-  const themeSelected = useSelector(
-    (state: RootState) => state.themeSelect.theme,
-  );
+  // Theme is always "Family" in this project
+  const themeSelected = "Family";
 
   const [internalOpen, setInternalOpen] = useState(false);
 
@@ -69,11 +67,10 @@ export default function OptionsBox({
     checkMobile();
     window.addEventListener("resize", checkMobile);
 
-    // Initialize with default values after mount
-    if (themeSelected === "Honeymoon" || themeSelected === "Couple") {
-      setAdults(2);
-      setRooms(1);
-    }
+    // Initialize with Family theme defaults
+    setAdults(2);
+    setChild(2);
+    setRooms(1);
 
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
@@ -84,13 +81,9 @@ export default function OptionsBox({
         if (i) {
           setAdults(adults + 1);
         } else {
-          if (themeSelected === "Honeymoon" && adults - 2 > 0) {
+          // Family theme: allow decrement if adults > 1
+          if (adults > 1) {
             setAdults(adults - 1);
-            break;
-          }
-          if (themeSelected !== "Honeymoon" && adults - 1 > 0) {
-            setAdults(adults - 1);
-            break;
           }
         }
         break;
@@ -136,9 +129,9 @@ export default function OptionsBox({
   // Room calculation logic
   useEffect(() => {
     let r = 0;
+    // Family theme: calculate rooms based on adults and children
     if (child == 0) {
-      if (themeSelected !== "Honeymoon") r = Math.ceil(adults / 3);
-      else r = Math.ceil(adults / 2);
+      r = Math.ceil(adults / 3);
     } else {
       let x = adults;
       let y = child;
@@ -163,27 +156,12 @@ export default function OptionsBox({
           child: child,
           room: r,
         },
-      }),
+      })
     );
   }, [child, adults, themeSelected, dispatch]);
 
   function validateAdults() {
-    if (themeSelected === "Honeymoon") {
-      if (adults <= 2) return false;
-      else return true;
-    }
-    if (themeSelected === "Couple") {
-      if (adults <= 1) return false;
-      else return true;
-    }
-    // For Friends and Family themes, allow decrement if adults > 1
-    if (themeSelected === "Friends") {
-      return adults > 1;
-    }
-    if (themeSelected === "Family") {
-      return adults > 1;
-    }
-    // Default case - allow decrement if adults > 1
+    // Family theme: allow decrement if adults > 1
     return adults > 1;
   }
 
@@ -246,37 +224,14 @@ export default function OptionsBox({
     }
   }, [isMobile, specFocused]);
 
+  // Always use Family theme defaults
   useEffect(() => {
-    switch (themeSelected) {
-      case "Couple": {
-        setAdults(2);
-        setChild(0);
-        setShowChild(true);
-        break;
-      }
-      case "Honeymoon": {
-        setAdults(2);
-        setChild(0);
-        setShowChild(false);
-        break;
-      }
-      case "Friends": {
-        setAdults(4);
-        setChild(0);
-        setShowChild(false);
-        break;
-      }
-      case "Family": {
-        setAdults(2);
-        setChild(2);
-        setShowChild(true);
-        break;
-      }
-      default: {
-        setShowChild(true);
-      }
+    if (!roomInitiallyLoaded) {
+      setAdults(2);
+      setChild(2);
+      setShowChild(true);
     }
-  }, [themeSelected]);
+  }, [roomInitiallyLoaded]);
 
   const handleAdultsChange = (newAdults: number) => {
     setAdults(newAdults);
@@ -287,7 +242,7 @@ export default function OptionsBox({
           child: child,
           room: rooms,
         },
-      }),
+      })
     );
   };
 
@@ -304,7 +259,7 @@ export default function OptionsBox({
           child: newChildren,
           room: rooms,
         },
-      }),
+      })
     );
   };
 
@@ -331,7 +286,7 @@ export default function OptionsBox({
         "w-10 h-10 md:w-9 md:h-9 rounded-xl flex items-center justify-center transition-all",
         disabled
           ? "bg-slate-100 text-slate-300 cursor-not-allowed"
-          : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 active:scale-95",
+          : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 active:scale-95"
       )}
     >
       {children}
@@ -378,7 +333,7 @@ export default function OptionsBox({
           "bg-white shadow-2xl border border-slate-200 overflow-hidden",
           isMobile
             ? "fixed inset-x-0 bottom-0 rounded-t-3xl max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-300 z-[9999]"
-            : "fixed w-[320px] rounded-2xl z-[9999]",
+            : "fixed w-[320px] rounded-2xl z-[9999]"
         )}
         style={
           isMobile
@@ -393,7 +348,7 @@ export default function OptionsBox({
         <div
           className={cn(
             "px-5 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between sticky top-0 z-10",
-            isMobile && "px-6 py-5",
+            isMobile && "px-6 py-5"
           )}
         >
           <div>
@@ -417,9 +372,7 @@ export default function OptionsBox({
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium text-slate-800">Adults</p>
-              {themeSelected !== "Honeymoon" && (
-                <p className="text-xs text-slate-400">Above 12 years</p>
-              )}
+              <p className="text-xs text-slate-400">Above 12 years</p>
             </div>
             <div className="flex items-center gap-3">
               <CounterButton

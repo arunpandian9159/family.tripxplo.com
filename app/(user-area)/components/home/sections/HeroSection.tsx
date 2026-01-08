@@ -36,16 +36,16 @@ const HeroSection = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              Trusted by 50,000+ travelers
+              No-Cost EMI • Zero Down Payment
             </div>
 
             {/* Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight mb-6 animate-slide-up">
-              Discover Your
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[67px] font-bold text-slate-900 tracking-tight mb-6 animate-slide-up">
+              Small Payments
               <br />
               <span className="relative">
                 <span className="relative z-10 bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">
-                  Perfect Trip
+                  Massive Memories
                 </span>
                 <svg
                   className="absolute -bottom-2 left-0 w-full h-3 text-emerald-200"
@@ -64,17 +64,17 @@ const HeroSection = () => {
             </h1>
 
             {/* Description */}
-            <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8 animate-slide-up stagger-1">
-              Explore handcrafted tour packages to stunning destinations. Book
-              your dream vacation with confidence.
+            <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8 animate-slide-up italic leading-relaxed">
+              Luxury shouldn't be a lump sum. We've redesigned travel to fit into
+              your <span className="text-[#15ab8b] font-semibold">monthly budget</span>.
             </p>
 
             {/* Quick Stats */}
             <div className="hidden lg:flex items-center gap-8 animate-slide-up stagger-2">
               {[
-                { icon: MapPin, label: "200+ Destinations" },
-                { icon: Calendar, label: "Flexible Dates" },
-                { icon: Users, label: "Group Discounts" },
+                { icon: MapPin, label: '200+ Destinations' },
+                { icon: Calendar, label: 'Flexible EMI' },
+                { icon: Users, label: 'No Cost EMI' },
               ].map((item, index) => (
                 <div
                   key={index}

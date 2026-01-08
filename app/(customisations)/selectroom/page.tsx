@@ -9,7 +9,6 @@ import {
   selectRoom,
 } from "@/app/store/features/roomCapacitySlice";
 import Link from "next/link";
-import { RootState } from "../../store/store";
 export default function SelectRoom() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -23,19 +22,15 @@ export default function SelectRoom() {
   const [room, setRoom] = useState<
     { id: number; totalAdults: number; totalChilds: number }[]
   >([{ id: 1, totalAdults: 0, totalChilds: 0 }]);
-  const themeSelected = useSelector(
-    (state: RootState) => state.themeSelect.theme
-  );
+  // Theme is always "Family" in this project
+  const themeSelected = "Family";
   const [selectedRoom, setSelectedRoom] = useState(
     perRoomData === 3 || perRoomData === 4 || perRoomData === 6
       ? perRoomData
       : 3
   );
-  const roomSize =
-    themeSelected === "Family" || themeSelected === "Friends"
-      ? [{ size: 3 }]
-      : [{ size: 3 }, { size: 4 }, { size: 6 }];
-  // const roomSize = [{ size: 3 }, { size: 4 }, { size: 6 }];
+  // Family theme: room size is always 3
+  const roomSize = [{ size: 3 }];
 
   const deleteRoom = (id: number) => {
     const updatedRooms = room.filter((roomData) => roomData.id !== id);

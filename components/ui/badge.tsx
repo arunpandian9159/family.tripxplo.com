@@ -9,7 +9,6 @@ const badgeVariants = cva(
       variant: {
         default: "bg-slate-100 text-slate-700",
         emerald: "bg-emerald-100 text-emerald-700",
-        emerald: "bg-emerald-100 text-emerald-700",
         gold: "bg-amber-100 text-amber-700",
         silver: "bg-slate-200 text-slate-600",
         platinum: "bg-slate-800 text-white",

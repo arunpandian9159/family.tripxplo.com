@@ -1,5 +1,3 @@
-import { Interest } from "@/app/(user-area)/components/home/package-theme/PackageThemes";
-import { getInterest } from "@/app/actions/get-interest";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface Theme {
@@ -7,9 +5,13 @@ export interface Theme {
   themeId: string;
 }
 
+// Family theme is the only theme in this project
+// The interestId for Family is from the database
+const FAMILY_INTEREST_ID = "f9416600-db43-4f32-91f2-659ef08e3509";
+
 const initialState: Theme = {
-  theme: "Couple",
-  themeId: "",
+  theme: "Family",
+  themeId: FAMILY_INTEREST_ID,
 };
 const themeSlice = createSlice({
   name: "themeSlice",

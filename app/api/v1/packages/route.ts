@@ -75,7 +75,7 @@ function parseSearchParams(request: NextRequest): SearchParams {
 // Determine season type based on date
 function getSeasonType(
   startDate: string,
-  mealPlan: { seasonType: string; startDate: string[]; endDate: string[] },
+  mealPlan: { seasonType: string; startDate: string[]; endDate: string[] }
 ): boolean {
   if (!startDate || !mealPlan.startDate || !mealPlan.endDate) return false;
 
@@ -124,13 +124,13 @@ function calculateHotelMealPricing(
     sort: number;
     isAddOn: boolean;
   }[],
-  params: SearchParams,
+  params: SearchParams
 ) {
   const hotelMealDetails: Array<Record<string, unknown>> = [];
 
   for (const hotel of packageHotel) {
     const roomData = hotelRoomData.find(
-      (r) => r.hotelRoomId === hotel.hotelRoomId,
+      (r) => r.hotelRoomId === hotel.hotelRoomId
     );
     if (!roomData) continue;
 
@@ -139,13 +139,13 @@ function calculateHotelMealPricing(
       (mp) =>
         mp.mealPlan === hotel.mealPlan &&
         params.startDate &&
-        getSeasonType(params.startDate, mp),
+        getSeasonType(params.startDate, mp)
     );
 
     // Fallback to any meal plan with matching type
     if (!selectedMealPlan) {
       selectedMealPlan = roomData.mealPlan.find(
-        (mp) => mp.mealPlan === hotel.mealPlan,
+        (mp) => mp.mealPlan === hotel.mealPlan
       );
     }
 
@@ -163,18 +163,18 @@ function calculateHotelMealPricing(
     const totalAdultPrice =
       selectedMealPlan.roomPrice * noRoomCount * noOfNight;
     const gstAdultPrice = Math.round(
-      totalAdultPrice * (selectedMealPlan.gstPer / 100),
+      totalAdultPrice * (selectedMealPlan.gstPer / 100)
     );
 
     const totalChildPrice = selectedMealPlan.childPrice * noChild * noOfNight;
     const gstChildPrice = Math.round(
-      totalChildPrice * (selectedMealPlan.gstPer / 100),
+      totalChildPrice * (selectedMealPlan.gstPer / 100)
     );
 
     const totalExtraAdultPrice =
       selectedMealPlan.adultPrice * noExtraAdult * noOfNight;
     const gstExtraAdultPrice = Math.round(
-      totalExtraAdultPrice * (selectedMealPlan.gstPer / 100),
+      totalExtraAdultPrice * (selectedMealPlan.gstPer / 100)
     );
 
     hotelMealDetails.push({
@@ -214,7 +214,7 @@ function calculateHotelMealPricing(
 // Check if a date falls within any of the package's available periods
 function isDateAvailable(
   travelDateStr: string,
-  periods: Array<{ startDate: string; endDate: string }> | undefined,
+  periods: Array<{ startDate: string; endDate: string }> | undefined
 ): boolean {
   // If no date filter provided, package is available
   if (!travelDateStr) return true;
@@ -281,9 +281,9 @@ export async function GET(request: NextRequest) {
       filterQuery["destination.destinationId"] = destinationId;
     }
 
-    if (interestId) {
-      filterQuery.interestId = interestId;
-    }
+    // Family theme interestId - always filter by Family theme in this project
+    const FAMILY_INTEREST_ID = "f9416600-db43-4f32-91f2-659ef08e3509";
+    filterQuery.interestId = interestId || FAMILY_INTEREST_ID;
 
     if (planId) {
       filterQuery.planId = planId;
@@ -455,7 +455,7 @@ export async function GET(request: NextRequest) {
 
     // Get hotel room details for price calculation
     const allHotelRoomIds = packages.flatMap(
-      (p) => p.hotel?.map((h: { hotelRoomId: string }) => h.hotelRoomId) || [],
+      (p) => p.hotel?.map((h: { hotelRoomId: string }) => h.hotelRoomId) || []
     );
     const hotelRoomData = await HotelRoom.find({
       hotelRoomId: { $in: allHotelRoomIds },
@@ -492,7 +492,7 @@ export async function GET(request: NextRequest) {
           }>;
         }[],
         pkg.hotel || [],
-        params,
+        params
       );
 
       // Get vehicle details for this package
@@ -516,7 +516,7 @@ export async function GET(request: NextRequest) {
           ((hm.gstAdultPrice as number) || 0) +
           ((hm.gstChildPrice as number) || 0) +
           ((hm.gstExtraAdultPrice as number) || 0),
-        0,
+        0
       );
 
       // totalAdditionalFee = noOfNight * noRoomCount * additionalFees
@@ -527,7 +527,7 @@ export async function GET(request: NextRequest) {
         (pkg.transPer || 0) * (noAdult + noExtraAdult + noChild);
       const totalVehiclePrice = vehicleDetail.reduce(
         (total, v) => total + (v.price || 0),
-        0,
+        0
       );
 
       // Calculate activity price - use package's activityPrice or sum from events
@@ -538,11 +538,11 @@ export async function GET(request: NextRequest) {
             const eventTotal = (act.event || []).reduce(
               (evtTotal: number, evt: { price?: number }) =>
                 evtTotal + (evt.price || 0),
-              0,
+              0
             );
             return total + eventTotal;
           },
-          0,
+          0
         );
       }
 
@@ -558,7 +558,7 @@ export async function GET(request: NextRequest) {
         totalVehiclePrice +
         totalActivityPrice;
       const agentAmount = Math.round(
-        totalCalculationPrice * (agentCommissionPer / 100),
+        totalCalculationPrice * (agentCommissionPer / 100)
       );
       const totalPackagePrice = totalCalculationPrice + agentAmount;
       const gstPrice = Math.round(totalPackagePrice * (gstPer / 100));
@@ -672,14 +672,14 @@ export async function GET(request: NextRequest) {
       page,
       limit,
       "Packages retrieved successfully",
-      { hasNextPage: page < totalPages, offset },
+      { hasNextPage: page < totalPages, offset }
     );
   } catch (error) {
     console.error("Get packages error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,
-      500,
+      500
     );
   }
 }
