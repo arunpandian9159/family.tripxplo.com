@@ -39,7 +39,7 @@ export default function IternaryStory({
         <div className="px-6 py-5 border-b border-slate-100 bg-linear-to-r from-emerald-50 to-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-linear-to-br from-emerald-500 to-rose-500 rounded-xl text-white shadow-lg shadow-emerald-500/25">
+              <div className="p-2.5 bg-linear-to-br from-emerald-500 to-emerald-800 rounded-xl text-white shadow-lg shadow-emerald-500/25">
                 <Calendar size={20} />
               </div>
               <div>
