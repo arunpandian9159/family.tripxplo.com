@@ -166,22 +166,22 @@
   }
 
   /* Gradient Text */
-  .gradient-text-coral {
-    @apply bg-gradient-to-r from-coral-500 to-coral-400 bg-clip-text text-transparent;
+  .gradient-text-emerald {
+    @apply bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent;
   }
   .gradient-text-emerald {
     @apply bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent;
   }
 
   /* Gradient Backgrounds */
-  .gradient-coral {
-    @apply bg-gradient-to-r from-coral-500 to-coral-400;
+  .gradient-emerald {
+    @apply bg-gradient-to-r from-emerald-500 to-emerald-400;
   }
   .gradient-emerald {
     @apply bg-gradient-to-r from-emerald-600 to-emerald-400;
   }
   .gradient-sunset {
-    @apply bg-gradient-to-br from-coral-400 via-coral-500 to-rose-600;
+    @apply bg-gradient-to-br from-emerald-400 via-emerald-500 to-rose-600;
   }
   .gradient-ocean {
     @apply bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600;
@@ -194,7 +194,7 @@
 
   /* Focus Ring */
   .focus-ring {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-coral-500 focus-visible:ring-offset-2;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2;
   }
 
   /* Card Hover Effect */
@@ -216,9 +216,9 @@
   /* Primary Button */
   .btn-primary {
     @apply inline-flex items-center justify-center px-6 py-3 
-           bg-gradient-to-r from-coral-500 to-coral-400 
+           bg-gradient-to-r from-emerald-500 to-emerald-400 
            text-white font-semibold rounded-xl
-           shadow-md hover:shadow-lg hover:shadow-coral-500/25
+           shadow-md hover:shadow-lg hover:shadow-emerald-500/25
            transition-all duration-300 
            active:scale-[0.98]
            disabled:opacity-50 disabled:cursor-not-allowed;
@@ -249,7 +249,7 @@
     @apply w-full px-4 py-3 
            bg-white border border-slate-200 rounded-xl
            text-slate-800 placeholder:text-slate-400
-           focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500
+           focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500
            transition-all duration-200;
   }
 
@@ -262,8 +262,8 @@
   .badge {
     @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
   }
-  .badge-coral {
-    @apply badge bg-coral-100 text-coral-700;
+  .badge-emerald {
+    @apply badge bg-emerald-100 text-emerald-700;
   }
   .badge-emerald {
     @apply badge bg-emerald-100 text-emerald-700;

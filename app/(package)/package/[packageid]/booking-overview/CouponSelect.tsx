@@ -59,12 +59,12 @@ const CouponSelect: React.FC<CouponSelectProps> = ({
     <div
       className={cn(
         "border-2 border-dotted w-full p-4 rounded-lg flex items-center max-h-64",
-        isSelected && "border-[#FF7865]",
+        isSelected && "border-[#1EC089]"
       )}
     >
       <div className="flex justify-between w-full">
         <div className="flex flex-col space-y-2">
-          <h1 className="font-semibold text-[#FF7865]">
+          <h1 className="font-semibold text-[#1EC089]">
             {couponName.toUpperCase()}
           </h1>
           <h1 className="text-xs text-muted-foreground w-4/5">
@@ -88,7 +88,7 @@ const CouponSelect: React.FC<CouponSelectProps> = ({
             </button>
           ) : (
             <button
-              className="text-xs font-semibold text-[#FF7865] rounded-lg"
+              className="text-xs font-semibold text-[#1EC089] rounded-lg"
               onClick={() => handleApplyCoupon(couponCode)}
             >
               Apply

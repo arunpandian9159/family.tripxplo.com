@@ -70,7 +70,7 @@ const CabInfoList = ({
       changeVehicleAndCalculatePrice({
         prevVehicle: prevCab,
         newVehicle: cab,
-      }),
+      })
     );
     router.back();
   }
@@ -107,20 +107,20 @@ const CabInfoList = ({
             </div>
 
             <div>
-              <p className="text-[#FF5F5F] mb-2 sm:mb-4 text-[11px] sm:text-[12px] line-clamp-2">
+              <p className="text-[#1EC089] mb-2 sm:mb-4 text-[11px] sm:text-[12px] line-clamp-2">
                 {cab?.transferInfo
                   ?.join("")
                   ?.replace("Sightseeing", "Sightseeing, ")}
               </p>
               <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                 <div className="flex items-center gap-1 sm:gap-2">
-                  <RockingChair className="text-[#FF5F5F] text-xs" />
+                  <RockingChair className="text-[#1EC089] text-xs" />
                   <span className="text-gray-600 text-xs">
                     {cab.seater} Seater
                   </span>
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2">
-                  <Luggage className="text-[#FF5F5F] text-xs" />
+                  <Luggage className="text-[#1EC089] text-xs" />
                   <span className="text-gray-600 text-xs">
                     {cab.luggage} Luggage
                   </span>
@@ -133,7 +133,7 @@ const CabInfoList = ({
         {/* Right side - Price and Select button */}
         <div className="flex justify-end items-center gap-2 mt-4">
           {/* {price && ( */}
-          <p className="text-emerald-500 text-lg font-semibold text-[#FF5F5F]">
+          <p className="text-emerald-500 text-lg font-semibold text-[#1EC089]">
             {cabPlanPrice >= 0
               ? `+ ₹${cabPlanPrice}`
               : `- ₹${Math.abs(cabPlanPrice)}`}

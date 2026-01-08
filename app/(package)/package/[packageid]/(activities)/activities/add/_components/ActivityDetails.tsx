@@ -63,7 +63,7 @@ export default function ActivityDetails({
             </div>
 
             <div className=" flex  justify-between items-center mt-[18px] h-[49px] w-[278px] border-t border-t-myBookingsLine">
-              <p className="inline-flex justify-center items-center h-[14px] w-[65px]  border border-[#FF7865] rounded-[3.5px] shadow-addActivityPrivateActivityShadow text-[#FF7865] text-[7px] font-medium leading-[11px]  ">
+              <p className="inline-flex justify-center items-center h-[14px] w-[65px]  border border-[#1EC089] rounded-[3.5px] shadow-addActivityPrivateActivityShadow text-[#1EC089] text-[7px] font-medium leading-[11px]  ">
                 {activity?.isPrivate ? "Private" : "Public"} Activity
               </p>
               <div className="flex items-center">
@@ -86,7 +86,7 @@ export default function ActivityDetails({
                   className="h-[15px] w-[37px] font-montserrat text-[12px] font-semibold leading-[16.2px] tracking-[0.36px] bg-clip-text text-transparent "
                   style={{
                     backgroundImage:
-                      " linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                      " linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
                   }}
                 >
                   {activity?.price ? activity?.price : 0}

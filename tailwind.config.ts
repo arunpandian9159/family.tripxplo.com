@@ -27,19 +27,6 @@ const config = {
         "2xl": "1536px",
       },
       colors: {
-        // Brand Colors
-        coral: {
-          50: "#fff7f5",
-          100: "#ffebe6",
-          200: "#ffd5cc",
-          300: "#ffb3a6",
-          400: "#ff8f78",
-          500: "#ff5f5f",
-          600: "#ed4242",
-          700: "#c72a2a",
-          800: "#a52626",
-          900: "#882626",
-        },
         emerald: {
           50: "#ecfdf5",
           100: "#d1fae5",
@@ -53,9 +40,8 @@ const config = {
           900: "#145341",
         },
         // App specific color aliases
-        "app-primary": "#FF5F5F",
+        "app-primary": "#1EC089",
         "app-secondary": "#1EC089",
-        "app-coral": "#FF5F5F",
         "app-emerald": "#1EC089",
         // Semantic colors
         border: "hsl(var(--border))",
@@ -194,7 +180,6 @@ const config = {
       },
       boxShadow: {
         glass: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
-        "glow-coral": "0 0 40px -8px rgba(255, 95, 95, 0.35)",
         "glow-emerald": "0 0 40px -8px rgba(30, 192, 137, 0.35)",
         card: "0 4px 20px -2px rgba(0, 0, 0, 0.06)",
         "card-hover": "0 12px 40px -8px rgba(0, 0, 0, 0.12)",
@@ -207,10 +192,9 @@ const config = {
         bookingOverviewShadow: "4px 8px 39.7px 0px rgba(255, 120, 101, 0.15)",
       },
       backgroundImage: {
-        "gradient-coral": "linear-gradient(135deg, #FF5F5F 0%, #FF8F78 100%)",
         "gradient-emerald": "linear-gradient(135deg, #1EC089 0%, #34D399 100%)",
         "gradient-sunset":
-          "linear-gradient(135deg, #FF8F78 0%, #FF5F5F 50%, #ED4242 100%)",
+          "linear-gradient(135deg, #FF8F78 0%, #1EC089 50%, #ED4242 100%)",
         "gradient-ocean":
           "linear-gradient(135deg, #34D399 0%, #1EC089 50%, #16A373 100%)",
         "gradient-mesh":

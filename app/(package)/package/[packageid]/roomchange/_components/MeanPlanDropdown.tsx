@@ -57,13 +57,13 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
 
   return (
     <div className="relative inline-block">
-      {/* bg-gradient-to-r from-[#FF5F5F] to-[#FF7865] hover:from-[#FF7865] hover:to-[#FF5F5F]  transform hover:scale-105 transition-all duration-300
+      {/* bg-gradient-to-r from-[#1EC089] to-[#1EC089] hover:from-[#1EC089] hover:to-[#1EC089]  transform hover:scale-105 transition-all duration-300
     group */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         // style={{ background: "rgba(106, 119, 139, 0.12)" }}
         className={`flex gap-1 items-center justify-center ${
-          isOpen ? "bg-[#ff5f5f]  shadow-md" : "bg-[#6A778B1F] "
+          isOpen ? "bg-[#1EC089]  shadow-md" : "bg-[#6A778B1F] "
         } items-center  ml-2 p-1 py-2
   
     
@@ -94,7 +94,7 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
           />
           <div
             style={{ boxShadow: " var(--Gray-5, #E0E0E0)" }}
-            className="absolute border-[#FF5F5F] z-20 -right-7 md:-right-32   mt-1 w-56 md:w-80  bg-white border rounded-[12px] shadow-lg "
+            className="absolute border-[#1EC089] z-20 -right-7 md:-right-32   mt-1 w-56 md:w-80  bg-white border rounded-[12px] shadow-lg "
           >
             <div className="py-1">
               {mealPlans.map((mealPlan, index) => (
@@ -114,7 +114,7 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
                           selectedMealPlan.mealPlan === mealPlan.mealPlan &&
                           selectedMealPlan.totalAdultPrice ===
                             mealPlan.totalAdultPrice
-                            ? "text-[#FF5F5F]"
+                            ? "text-[#1EC089]"
                             : "text-[#5D6670]"
                         }`}
                       >
@@ -129,7 +129,7 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
                     {selectedMealPlan.mealPlan === mealPlan.mealPlan &&
                       selectedMealPlan.totalAdultPrice ===
                         mealPlan.totalAdultPrice && (
-                        <Check className="w-4 h-4  text-[#FF5F5F]" />
+                        <Check className="w-4 h-4  text-[#1EC089]" />
                       )}
                   </button>
                   {index != mealPlans.length - 1 && (

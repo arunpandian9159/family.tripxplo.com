@@ -193,13 +193,13 @@ const Profile = () => {
                     <h1 className="text-slate-600 text-sm lg:text-base">
                       Name
                     </h1>
-                    <h1 className="text-[#FF5F5F] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium">
+                    <h1 className="text-[#1EC089] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium">
                       {userProfile.fullName}
                     </h1>
                   </div>
                   <Drawer>
                     <DrawerTrigger>
-                      <div className="p-2 lg:p-3 rounded-full bg-[#ff5f5f] flex items-center justify-center text-white">
+                      <div className="p-2 lg:p-3 rounded-full bg-[#1EC089] flex items-center justify-center text-white">
                         <Pencil className="lg:w-4 lg:h-4 w-3 h-3" />
                       </div>
                     </DrawerTrigger>
@@ -220,7 +220,7 @@ const Profile = () => {
                             handleUpdateField("fullName", editFullName)
                           }
                           disabled={isUpdating}
-                          className="bg-[#ff5f5f] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
+                          className="bg-[#1EC089] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
                         >
                           {isUpdating ? "Updating..." : "Update Name"}
                         </button>
@@ -237,13 +237,13 @@ const Profile = () => {
                     <h1 className="text-slate-600 text-sm lg:text-base">
                       Email
                     </h1>
-                    <h1 className="text-[#FF5F5F] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium truncate max-w-[200px] lg:max-w-[300px]">
+                    <h1 className="text-[#1EC089] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium truncate max-w-[200px] lg:max-w-[300px]">
                       {userProfile.email}
                     </h1>
                   </div>
                   <Drawer>
                     <DrawerTrigger>
-                      <div className="p-2 lg:p-3 rounded-full bg-[#ff5f5f] flex items-center justify-center text-white">
+                      <div className="p-2 lg:p-3 rounded-full bg-[#1EC089] flex items-center justify-center text-white">
                         <Pencil className="lg:w-4 lg:h-4 w-3 h-3" />
                       </div>
                     </DrawerTrigger>
@@ -262,7 +262,7 @@ const Profile = () => {
                         <button
                           onClick={() => handleUpdateField("email", editEmail)}
                           disabled={isUpdating}
-                          className="bg-[#ff5f5f] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
+                          className="bg-[#1EC089] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
                         >
                           {isUpdating ? "Updating..." : "Update Email"}
                         </button>
@@ -279,13 +279,13 @@ const Profile = () => {
                     <h1 className="text-slate-600 text-sm lg:text-base">
                       Mobile Number
                     </h1>
-                    <h1 className="text-[#FF5F5F] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium">
+                    <h1 className="text-[#1EC089] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium">
                       {userProfile.mobileNo}
                     </h1>
                   </div>
                   <Drawer>
                     <DrawerTrigger>
-                      <div className="p-2 lg:p-3 rounded-full bg-[#ff5f5f] flex items-center justify-center text-white">
+                      <div className="p-2 lg:p-3 rounded-full bg-[#1EC089] flex items-center justify-center text-white">
                         <Pencil className="lg:w-4 lg:h-4 w-3 h-3" />
                       </div>
                     </DrawerTrigger>
@@ -306,7 +306,7 @@ const Profile = () => {
                             handleUpdateField("mobileNo", editMobileNo)
                           }
                           disabled={isUpdating}
-                          className="bg-[#ff5f5f] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
+                          className="bg-[#1EC089] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
                         >
                           {isUpdating ? "Updating..." : "Update Mobile Number"}
                         </button>
@@ -323,13 +323,13 @@ const Profile = () => {
                     <h1 className="text-slate-600 text-sm lg:text-base">
                       Pin Code
                     </h1>
-                    <h1 className="text-[#FF5F5F] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium">
+                    <h1 className="text-[#1EC089] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium">
                       {userProfile.pinCode}
                     </h1>
                   </div>
                   <Drawer>
                     <DrawerTrigger>
-                      <div className="p-2 lg:p-3 rounded-full bg-[#ff5f5f] flex items-center justify-center text-white">
+                      <div className="p-2 lg:p-3 rounded-full bg-[#1EC089] flex items-center justify-center text-white">
                         <Pencil className="lg:w-4 lg:h-4 w-3 h-3" />
                       </div>
                     </DrawerTrigger>
@@ -350,7 +350,7 @@ const Profile = () => {
                             handleUpdateField("pinCode", editPinCode)
                           }
                           disabled={isUpdating}
-                          className="bg-[#ff5f5f] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
+                          className="bg-[#1EC089] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
                         >
                           {isUpdating ? "Updating..." : "Update Pin Code"}
                         </button>
@@ -367,13 +367,13 @@ const Profile = () => {
                     <h1 className="text-slate-600 text-sm lg:text-base">
                       Date of Birth
                     </h1>
-                    <h1 className="text-[#FF5F5F] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium">
+                    <h1 className="text-[#1EC089] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium">
                       {formattedDate}
                     </h1>
                   </div>
                   <AlertDialog>
                     <AlertDialogTrigger>
-                      <div className="p-2 lg:p-3 rounded-full bg-[#ff5f5f] flex items-center justify-center text-white">
+                      <div className="p-2 lg:p-3 rounded-full bg-[#1EC089] flex items-center justify-center text-white">
                         <Pencil className="lg:w-4 lg:h-4 w-3 h-3" />
                       </div>
                     </AlertDialogTrigger>
@@ -390,7 +390,7 @@ const Profile = () => {
                         />
                         <AlertDialogAction
                           onClick={handleUpdateDate}
-                          className="bg-[#ff5f5f] text-white px-6 py-3 rounded-full w-full lg:text-lg"
+                          className="bg-[#1EC089] text-white px-6 py-3 rounded-full w-full lg:text-lg"
                           disabled={isUpdating}
                         >
                           {isUpdating ? "Updating..." : "Update Date of Birth"}
@@ -408,13 +408,13 @@ const Profile = () => {
                     <h1 className="text-slate-600 text-sm lg:text-base">
                       Gender
                     </h1>
-                    <h1 className="text-[#FF5F5F] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium capitalize">
+                    <h1 className="text-[#1EC089] drop-shadow-black drop-shadow-sm text-xl lg:text-2xl font-medium capitalize">
                       {userProfile.gender || "Not set"}
                     </h1>
                   </div>
                   <Drawer>
                     <DrawerTrigger>
-                      <div className="p-2 lg:p-3 rounded-full bg-[#ff5f5f] flex items-center justify-center text-white">
+                      <div className="p-2 lg:p-3 rounded-full bg-[#1EC089] flex items-center justify-center text-white">
                         <Pencil className="lg:w-4 lg:h-4 w-3 h-3" />
                       </div>
                     </DrawerTrigger>
@@ -438,7 +438,7 @@ const Profile = () => {
                             handleUpdateField("gender", editGender)
                           }
                           disabled={isUpdating}
-                          className="bg-[#ff5f5f] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
+                          className="bg-[#1EC089] text-white px-6 py-3 rounded-full w-full lg:text-lg disabled:opacity-50"
                         >
                           {isUpdating ? "Updating..." : "Update Gender"}
                         </button>

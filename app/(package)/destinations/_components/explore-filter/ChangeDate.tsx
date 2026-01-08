@@ -18,7 +18,7 @@ interface ChangeDateSchema {
 
 const ChangeDate: React.FC<ChangeDateSchema> = ({ date }) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date(date),
+    new Date(date)
   );
   const [dateOpen, setDateOpen] = useState(false);
   const dispatch = useDispatch();
@@ -45,10 +45,10 @@ const ChangeDate: React.FC<ChangeDateSchema> = ({ date }) => {
             variant={"outline"}
             className={cn(
               "w-full justify-start text-left font-normal",
-              !selectedDate && "text-muted-foreground",
+              !selectedDate && "text-muted-foreground"
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4 text-[#ff7865]" />
+            <CalendarIcon className="mr-2 h-4 w-4 text-[#1EC089]" />
             {selectedDate ? (
               format(selectedDate, "PPP")
             ) : (
@@ -59,7 +59,7 @@ const ChangeDate: React.FC<ChangeDateSchema> = ({ date }) => {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="border-2 border-solid rounded-[14px] border-[#FF5F5F] scale-x-100 justify-center flex w-full px-10"
+          className="border-2 border-solid rounded-[14px] border-[#1EC089] scale-x-100 justify-center flex w-full px-10"
           style={{
             boxShadow: "8px 3px 22px 10px rgba(150, 150, 150, 0.11)",
           }}

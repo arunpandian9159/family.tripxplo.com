@@ -52,7 +52,7 @@ const PackageCardList = ({
           <div className="p-2">
             <div className="flex flex-col">
               <div className="flex justify-between items-center">
-                <h1 className="text-[14px] truncate pr-5 font-semibold text-[#FF7865]">
+                <h1 className="text-[14px] truncate pr-5 font-semibold text-[#1EC089]">
                   {name}
                 </h1>
               </div>
@@ -108,7 +108,7 @@ const PackageCardList = ({
         <div className="mt-2 flex-1 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between">
-              <h1 className="text-[#FF7865] font-medium text-xl">{name}</h1>
+              <h1 className="text-[#1EC089] font-medium text-xl">{name}</h1>
               <h1 className="text-neutral-700 font-medium whitespace-nowrap text-lg p-0 flex items-center flex-col">
                 &#8377;{price}{" "}
                 <span className="text-xs text-[#27B182]">per person</span>

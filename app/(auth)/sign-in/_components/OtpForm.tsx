@@ -10,7 +10,7 @@ const OtpForm = () => {
         <div className="flex justify-beteen items-center px-3">
           <input type="text" className="text-xs " placeholder="Enter OTP" />
           <div>
-            <h1 className="text-sm text-[#FF5F5F] whitespace-nowrap">
+            <h1 className="text-sm text-[#1EC089] whitespace-nowrap">
               Send OTP
             </h1>
           </div>

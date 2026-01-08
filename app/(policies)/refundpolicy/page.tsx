@@ -6,7 +6,7 @@ export default function RefundPolicy() {
   return (
     <div className="flex flex-col items-center justify-center  min-h-screen">
       <div className="border h-auto shadow-lg p-6 w-4/5 md:w-1/3 rounded-lg gap-3 bg-white flex flex-col">
-        <h1 className="text-xl text-[#FF7865]">
+        <h1 className="text-xl text-[#1EC089]">
           Cancellations & Refund Policy
         </h1>
         <h1 className="text-sm mt-2">
@@ -17,7 +17,7 @@ export default function RefundPolicy() {
           refund. Cancellations made within 15 days before the tour date are not
           eligible for a refund.
         </h1>
-        <h1 className="text-xl text-[#FF7865]">Refund Duration:</h1>
+        <h1 className="text-xl text-[#1EC089]">Refund Duration:</h1>
         <h1 className="text-sm ">
           All refunds are credited to original mode of payment within 21 working
           days from the day of cancellation of the trip.

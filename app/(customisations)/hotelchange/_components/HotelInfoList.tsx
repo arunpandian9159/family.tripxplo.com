@@ -58,7 +58,7 @@ const FilterCardList = ({
             {nights}N - {name}
           </p>
           <p
-            className=" inline-flex  items-center h-[14px] px-[5.833px] rounded-[3.5px] border-[#FF7865] border-[0.817px] text-[#FF7865] text-[7px] font-normal leading-[11.667px]  "
+            className=" inline-flex  items-center h-[14px] px-[5.833px] rounded-[3.5px] border-[#1EC089] border-[0.817px] text-[#1EC089] text-[7px] font-normal leading-[11.667px]  "
             style={{
               boxShadow:
                 "1.167px 2.333px 8.342px 0px rgba(255, 120, 101, 0.20)",
@@ -88,14 +88,14 @@ const FilterCardList = ({
           <div className="flex flex-col h-[42px] justify-between">
             <p className=" flex items-center text-[#6A778B] text-[8px] font-normal leading-normal">
               <CalendarDays
-                className="text-[#FF7865] mr-[4px] drop-shadow-pkgdoneShadow"
+                className="text-[#1EC089] mr-[4px] drop-shadow-pkgdoneShadow"
                 size={15}
               />{" "}
               Wed, 12 Jun - Fri, 14 Jun
             </p>
             <p className=" flex items-center text-[#6A778B] text-[8px] font-normal leading-normal">
               <Soup
-                className="text-[#FF7865] mr-[4px] drop-shadow-pkgdoneShadow"
+                className="text-[#1EC089] mr-[4px] drop-shadow-pkgdoneShadow"
                 size={15}
               />{" "}
               Breakfast + Dinner
@@ -132,7 +132,7 @@ const FilterCardList = ({
               className="h-[15px] w-[37px] font-montserrat text-[12px] font-semibold leading-[16.2px] tracking-[0.36px] bg-clip-text text-transparent "
               style={{
                 backgroundImage:
-                  " linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                  " linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               }}
             >
               {cost}

@@ -5,7 +5,7 @@ export default function PrivacyPolicy() {
       <div className="border h-auto  shadow-lg p-6 w-4/5  rounded-lg gap-3  flex flex-col">
         <div className="flex flex-col snap-y snap-mandatory overflow-y-auto">
           <div className="flex-shrink-0 snap-start overflow-hidden">
-            <h1 className="text-xl font-semibold mb-4 text-[#FF7865]">
+            <h1 className="text-xl font-semibold mb-4 text-[#1EC089]">
               Privacy Policy
             </h1>
 

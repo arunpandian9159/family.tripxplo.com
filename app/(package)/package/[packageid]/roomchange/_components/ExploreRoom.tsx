@@ -6,7 +6,7 @@ import PackagesLoadingFull from "@/app/(user-area)/components/loading/PackagesLo
 import { useAvailableRooms } from "@/app/hooks/useAvailableRooms";
 const ExploreRoom = () => {
   const prevHotel = useSelector(
-    (store: any) => store.hotelChange?.replaceHotel,
+    (store: any) => store.hotelChange?.replaceHotel
   );
   const loading = useSelector((store: any) => store.package.isLoading);
   const { rooms, isLoading, err } = useAvailableRooms();
@@ -23,7 +23,7 @@ const ExploreRoom = () => {
     <PackagesLoadingFull />
   ) : (
     <>
-      <h1 className=" pt-28 lg:my-5 pb-4 text-[#FF5F5F] text-center font-Poppins text-[18px] font-semibold not-italic leading-normal tracking-[0.18px]">
+      <h1 className=" pt-28 lg:my-5 pb-4 text-[#1EC089] text-center font-Poppins text-[18px] font-semibold not-italic leading-normal tracking-[0.18px]">
         {prevHotel.hotelName}
       </h1>
       {filteredRooms?.length > 0 && (

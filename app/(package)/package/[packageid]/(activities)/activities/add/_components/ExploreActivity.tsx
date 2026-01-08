@@ -15,7 +15,7 @@ const ExploreFilter = () => {
   const destination = searchParams.get("destination");
   const availableActivity = useAvailableActivity(
     activityData.packageId,
-    destination as string,
+    destination as string
   );
   return availableActivity.isLoading ? (
     <PackagesLoadingFull />
@@ -26,7 +26,7 @@ const ExploreFilter = () => {
         style={{
           textShadow: "2px 4px 14.3px rgba(255, 120, 101, 0.20)",
           backgroundImage:
-            "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+            "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
           backgroundClip: "text",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",

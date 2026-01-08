@@ -32,7 +32,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
       style={{
         border: "2px solid transparent",
         backgroundImage:
-          "linear-gradient(white, white), linear-gradient(135deg, #ff8f78, #ff5f5f)",
+          "linear-gradient(white, white), linear-gradient(135deg, #ff8f78, #1EC089)",
         backgroundOrigin: "border-box",
         backgroundClip: "padding-box, border-box",
       }}
@@ -105,7 +105,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <button
             className="px-5 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
             style={{
-              background: "linear-gradient(135deg, #ff8f78, #ff5f5f)",
+              background: "linear-gradient(135deg, #ff8f78, #1EC089)",
               boxShadow: "0 4px 14px -2px rgba(255, 143, 120, 0.4)",
             }}
           >

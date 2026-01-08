@@ -14,22 +14,22 @@ export default function SelectRoom() {
   const router = useRouter();
   const dispatch = useDispatch();
   const roomCapacityData = useSelector(
-    (store: any) => store.roomSelect.room.roomSchema,
+    (store: any) => store.roomSelect.room.roomSchema
   );
   const perRoomData = useSelector(
-    (store: any) => store.roomSelect.room.perRoom,
+    (store: any) => store.roomSelect.room.perRoom
   );
   const [isLoading, setLoading] = useState(true);
   const [room, setRoom] = useState<
     { id: number; totalAdults: number; totalChilds: number }[]
   >([{ id: 1, totalAdults: 0, totalChilds: 0 }]);
   const themeSelected = useSelector(
-    (state: RootState) => state.themeSelect.theme,
+    (state: RootState) => state.themeSelect.theme
   );
   const [selectedRoom, setSelectedRoom] = useState(
     perRoomData === 3 || perRoomData === 4 || perRoomData === 6
       ? perRoomData
-      : 3,
+      : 3
   );
   const roomSize =
     themeSelected === "Family" || themeSelected === "Friends"
@@ -49,7 +49,7 @@ export default function SelectRoom() {
         const updatedRooms = room.map((roomItem, i) =>
           i === index
             ? { ...roomItem, totalAdults: roomItem.totalAdults + 1 }
-            : roomItem,
+            : roomItem
         );
         setRoom(updatedRooms);
         dispatch(selectRoom({ room: updatedRooms }));
@@ -61,7 +61,7 @@ export default function SelectRoom() {
             const updatedRooms = room.map((roomItem, i) =>
               i === index
                 ? { ...roomItem, totalChilds: roomItem.totalChilds - 1 }
-                : roomItem,
+                : roomItem
             );
             setRoom(updatedRooms);
             dispatch(selectRoom({ room: updatedRooms }));
@@ -73,7 +73,7 @@ export default function SelectRoom() {
         const updatedRooms = room.map((roomItem, i) =>
           i === index
             ? { ...roomItem, totalAdults: roomItem.totalAdults + 1 }
-            : roomItem,
+            : roomItem
         );
         setRoom(updatedRooms);
         dispatch(selectRoom({ room: updatedRooms }));
@@ -85,7 +85,7 @@ export default function SelectRoom() {
             const updatedRooms = room.map((roomItem, i) =>
               i === index
                 ? { ...roomItem, totalChilds: roomItem.totalChilds - 1 }
-                : roomItem,
+                : roomItem
             );
             setRoom(updatedRooms);
             dispatch(selectRoom({ room: updatedRooms }));
@@ -104,7 +104,7 @@ export default function SelectRoom() {
         const updatedRooms = room.map((roomItem, i) =>
           i === index
             ? { ...roomItem, totalChilds: roomItem.totalChilds + 1 }
-            : roomItem,
+            : roomItem
         );
         setRoom(updatedRooms);
         dispatch(selectRoom({ room: updatedRooms }));
@@ -117,7 +117,7 @@ export default function SelectRoom() {
         const updatedRooms = room.map((roomItem, i) =>
           i === index
             ? { ...roomItem, totalChilds: roomItem.totalChilds + 1 }
-            : roomItem,
+            : roomItem
         );
         setRoom(updatedRooms);
         dispatch(selectRoom({ room: updatedRooms }));
@@ -138,7 +138,7 @@ export default function SelectRoom() {
       const updatedRooms = room.map((roomItem, i) =>
         i === index
           ? { ...roomItem, totalAdults: roomItem.totalAdults - 1 }
-          : roomItem,
+          : roomItem
       );
       setRoom(updatedRooms);
       dispatch(selectRoom({ room: updatedRooms }));
@@ -150,7 +150,7 @@ export default function SelectRoom() {
       const updatedRooms = room.map((roomItem, i) =>
         i === index
           ? { ...roomItem, totalChilds: roomItem.totalChilds - 1 }
-          : roomItem,
+          : roomItem
       );
       setRoom(updatedRooms);
       dispatch(selectRoom({ room: updatedRooms }));
@@ -205,7 +205,7 @@ export default function SelectRoom() {
               totalAdults: selectedRoom !== 3 ? selectedRoom + 1 : selectedRoom,
               totalChilds: selectedRoom !== 3 ? 2 : 1,
             }
-          : roomItem,
+          : roomItem
       );
       setRoom(updates);
     }
@@ -226,7 +226,7 @@ export default function SelectRoom() {
               onClick={clickBack}
               className="border border-neutral-100 shadow-sm rounded-md p-1 cursor-pointer"
             >
-              <ChevronLeft size={24} className="text-[#FF5F5F]" />
+              <ChevronLeft size={24} className="text-[#1EC089]" />
             </button>
           </span>
           <h1
@@ -234,7 +234,7 @@ export default function SelectRoom() {
             style={{
               textShadow: "2px 4px 14.3px rgba(255, 120, 101, 0.20)",
               backgroundImage:
-                "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -251,7 +251,7 @@ export default function SelectRoom() {
         <span className="ml-[20px] flex items-center gap-2">
           <Link href={"/"}>
             <button>
-              <ArrowLeft className="h-[33px] w-[33px] text-[#FF5F5F]" />
+              <ArrowLeft className="h-[33px] w-[33px] text-[#1EC089]" />
             </button>
           </Link>
           <h1
@@ -259,7 +259,7 @@ export default function SelectRoom() {
             style={{
               textShadow: "2px 4px 14.3px rgba(255, 120, 101, 0.20)",
               backgroundImage:
-                "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -291,7 +291,7 @@ export default function SelectRoom() {
               key={data.size}
               onClick={(e) => setSelectedRoom(data.size)}
               className={`w-[40px] h-[40px] text-white rounded-lg p-3 justify-center flex items-center ${
-                selectedRoom === data.size ? "bg-[#FF5F5F]" : "bg-gray-400"
+                selectedRoom === data.size ? "bg-[#1EC089]" : "bg-gray-400"
               }`}
             >
               {data.size}
@@ -311,7 +311,7 @@ export default function SelectRoom() {
                 }}
               >
                 <div className="flex items-center font--Poppins">
-                  <h1 className="px-5 my-2 text-[#FF5F5F] text-[14px] font-semibold">
+                  <h1 className="px-5 my-2 text-[#1EC089] text-[14px] font-semibold">
                     Room {index + 1}
                   </h1>
                   {roomData.id !== 1 && (
@@ -319,7 +319,7 @@ export default function SelectRoom() {
                       onClick={(e) => {
                         deleteRoom(roomData.id);
                       }}
-                      className="ml-auto px-2 text-[#FF7865] text-xs font-medium"
+                      className="ml-auto px-2 text-[#1EC089] text-xs font-medium"
                     >
                       Remove
                     </button>
@@ -413,7 +413,7 @@ export default function SelectRoom() {
 
         <button
           onClick={applyRooms}
-          className="fixed bottom-0 left-5 right-5 flex items-center justify-center rounded-xl p-3 bg-[#FF5F5F]"
+          className="fixed bottom-0 left-5 right-5 flex items-center justify-center rounded-xl p-3 bg-[#1EC089]"
         >
           <h1 className="text-white text-center">Apply</h1>
         </button>

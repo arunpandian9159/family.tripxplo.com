@@ -21,7 +21,7 @@ const HotelDetail = () => {
 
   const packageId = useSelector((store: any) => store.package.data?.packageId);
   const destinationId = useSelector(
-    (store: any) => store.changeHotel?.replaceHotel?.location?.destinationId,
+    (store: any) => store.changeHotel?.replaceHotel?.location?.destinationId
   );
   const loading = useSelector((store: any) => store.package.isLoading);
   const hotelChange = useAvailableHotels(packageId, destinationId);
@@ -45,7 +45,7 @@ const HotelDetail = () => {
             className="text-lg lg:text-xl font-bold"
             style={{
               backgroundImage:
-                "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",

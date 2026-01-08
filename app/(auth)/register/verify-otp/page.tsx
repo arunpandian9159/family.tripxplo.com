@@ -77,7 +77,7 @@ const VerifyOtp = () => {
     <div className="px-5 pt-5">
       <div className="w-full space-y-2">
         <div className="">
-          <h2 className="font-semibold text-lg text-[#FF5F5F]">
+          <h2 className="font-semibold text-lg text-[#1EC089]">
             OTP verification
           </h2>
           <p className="text-sm mt-3">

@@ -27,7 +27,7 @@ const ChangeInterest: React.FC<ChangeInterestProps> = ({ interestName }) => {
         {interestName}
       </div>
       {open && (
-        <div className="absolute top-full left-0 z-10 shadow-lg bg-white w-full max-h-[200px] overflow-y-auto border border-2 border-[#ff7865] rounded-lg">
+        <div className="absolute top-full left-0 z-10 shadow-lg bg-white w-full max-h-[200px] overflow-y-auto border border-2 border-[#1EC089] rounded-lg">
           {isLoading ? (
             <p className="px-4 py-2">Loading...</p>
           ) : (

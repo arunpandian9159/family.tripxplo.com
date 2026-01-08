@@ -38,7 +38,9 @@ const RoomDetail = () => {
   return (
     <>
       <div
-        className={`w-[312px] h-[${expand ? "370px" : "120px"}]  mb-[30px] rounded-[14px] bg-[#FFF] border-[2px] border-solid border-[#4BCDA1]`}
+        className={`w-[312px] h-[${
+          expand ? "370px" : "120px"
+        }]  mb-[30px] rounded-[14px] bg-[#FFF] border-[2px] border-solid border-[#4BCDA1]`}
         style={{ boxShadow: " 4px 8px 25.8px 0px rgba(51, 214, 159, 0.11)" }}
       >
         <div className="flex flex-col justify-center items-center ">
@@ -135,12 +137,7 @@ const RoomDetail = () => {
           </div>
           <div className=" ml-auto flex items-center justify-center pl-[20px]">
             <span className="p-[2px]">
-              <Image
-                src="/Plus.svg"
-                alt="PlusIcon"
-                width={7}
-                height={15}
-              />{" "}
+              <Image src="/Plus.svg" alt="PlusIcon" width={7} height={15} />{" "}
             </span>
             <span className="p-[2px]">
               <Image src="/Rupees.svg" alt="rupees" width={6} height={7} />
@@ -149,7 +146,7 @@ const RoomDetail = () => {
               className="font-Montserrat text-[10px] font-semibold not-italic leading-[13.5px] tracking-[0.3px] bg-clip-text text-transparent "
               style={{
                 backgroundImage:
-                  " linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                  " linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               }}
             >
               {" "}
@@ -240,7 +237,7 @@ const RoomDetail = () => {
               className="mt-[18px] ml-[19px] font-Poppins text-[10px] font-semibold not-italic leading-normal tracking-[0.1px] bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                  "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               }}
             >
               2 Meals - Breakfast & Dinner
@@ -257,7 +254,7 @@ const RoomDetail = () => {
               className=" mt-[18px] ml-[19px] font-Poppins text-[10px] font-semibold not-italic leading-normal tracking-[0.1px] bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                  "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               }}
             >
               Facilities

@@ -12,7 +12,7 @@ const Payment = () => {
             className=" pl-[23px] font-Poppins text-[18px] font-bold not-italic leading-normal tracking-[0.18px] bg-clip-text text-transparent"
             style={{
               backgroundImage:
-                " linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                " linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
             }}
           >
             Payment Options
@@ -189,12 +189,12 @@ const Payment = () => {
             </span>
           </div>
           <div
-            className="w-[164px] mt-[9px] flex items-center h-[24px] flex-shrink-0 rounded-[8px] border border-solid border-[#FF5F5F] "
+            className="w-[164px] mt-[9px] flex items-center h-[24px] flex-shrink-0 rounded-[8px] border border-solid border-[#1EC089] "
             style={{
               boxShadow: "2px 4px 20.9px 0px rgba(101, 255, 200, 0.22)",
             }}
           >
-            <span className="pl-[12px] flex text-[#FF7865] font-Poppins text-[8px] not-italic font-semibold leading-normal tracking-[0.08px] ">
+            <span className="pl-[12px] flex text-[#1EC089] font-Poppins text-[8px] not-italic font-semibold leading-normal tracking-[0.08px] ">
               1000{" "}
             </span>
             <p className="text-[6A778B] pl-[5px] font-Poppins text-[8px] not-italic font-semibold leading-normal tracking-[0.08px]">
@@ -204,7 +204,7 @@ const Payment = () => {
               className=" pl-auto pr-[10px] font-Poppins text-[8px] not-italic font-semibold tracking-[0.08px] bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                  "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               }}
             >
               Redeem

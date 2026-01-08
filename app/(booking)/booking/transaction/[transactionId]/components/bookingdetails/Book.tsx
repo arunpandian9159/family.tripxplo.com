@@ -12,7 +12,7 @@ export default function Book() {
             <p className="flex items-center w-[80px] h-[27px] text-[#5D6670] text-[22px] font-semibold leading-[29.7px] tracking-[0.66px] font-[Montserrat]">
               <FaIndianRupeeSign size={14} className="pr-[5px]" /> 8,999
             </p>
-            <p className="absolute bottom-[6px] right-[18px] ml-auto w-[52px] h-[9px] text-[#FF7865] text-[9px] font-medium leading-normal tracking-[0.09px]">
+            <p className="absolute bottom-[6px] right-[18px] ml-auto w-[52px] h-[9px] text-[#1EC089] text-[9px] font-medium leading-normal tracking-[0.09px]">
               per person
             </p>
           </div>

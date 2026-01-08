@@ -6,7 +6,7 @@ export default function TermsAndCondition() {
     <div className="flex flex-col items-center justify-center min-h-screen py-5">
       <div className="border h-auto   p-6 w-4/5 shadow-lg rounded-lg gap-3  flex flex-col">
         <div className="flex flex-col snap-y snap-mandatory overflow-y-auto">
-          <h1 className="text-xl snap-start flex-shrink-0 mb-4 text-[#FF7865] font-semibold">
+          <h1 className="text-xl snap-start flex-shrink-0 mb-4 text-[#1EC089] font-semibold">
             Terms and Conditions
           </h1>
           <div className="text-sm mt-3 snap-start flex-shrink-0 overflow-hidden">

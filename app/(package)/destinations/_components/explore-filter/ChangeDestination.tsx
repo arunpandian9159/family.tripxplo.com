@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 const ChangeDestination: React.FC = () => {
   const dispatch = useDispatch();
   const destination = useAppSelector(
-    (state) => state.searchPackage.destination,
+    (state) => state.searchPackage.destination
   );
   const [inputText, setInputText] = useState("");
   const [allDestinations, setAllDestinations] = useState([]);
@@ -68,7 +68,7 @@ const ChangeDestination: React.FC = () => {
           />
         </div>
         {isInputFocused && (
-          <div className="absolute top-full left-0 z-10 shadow-lg bg-white w-full max-h-[200px] overflow-y-auto border border-2 border-[#ff7865] rounded-lg">
+          <div className="absolute top-full left-0 z-10 shadow-lg bg-white w-full max-h-[200px] overflow-y-auto border border-2 border-[#1EC089] rounded-lg">
             {/* Replace with your popup content */}
             <p className="px-4 py-2">Popup Content Here</p>
           </div>

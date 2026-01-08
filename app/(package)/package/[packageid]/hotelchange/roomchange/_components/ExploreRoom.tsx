@@ -9,7 +9,7 @@ import PackagesLoadingFull from "../../../../../../(user-area)/components/loadin
 const ExploreRoom = () => {
   const [loading, setLoading] = useState(true);
   const hotel: HotelChangeDataType = useSelector(
-    (store: any) => store.hotelChange.hotelData,
+    (store: any) => store.hotelChange.hotelData
   );
   const isLoading = useSelector((store: any) => store.package.isLoading);
   useEffect(() => {
@@ -19,7 +19,7 @@ const ExploreRoom = () => {
     <PackagesLoadingFull />
   ) : (
     <>
-      <h1 className=" pt-28 mb-[30px] text-[#FF5F5F] text-center font-Poppins text-[18px] font-semibold not-italic leading-normal tracking-[0.18px]">
+      <h1 className=" pt-28 mb-[30px] text-[#1EC089] text-center font-Poppins text-[18px] font-semibold not-italic leading-normal tracking-[0.18px]">
         {hotel?.hotelName}
       </h1>
       <h1 className=" mb-[30px] text-[#5D6670] text-center font-Poppins text-[18px] font-semibold not-italic leading-normal tracking-[0.18px]">

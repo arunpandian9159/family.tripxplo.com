@@ -60,8 +60,8 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex gap-2 justify-center items-center px-3 py-2 ml-3
-    bg-gradient-to-r from-[#FF5F5F] to-[#FF7865] 
-    hover:from-[#FF7865] hover:to-[#FF5F5F]
+    bg-gradient-to-r from-[#1EC089] to-[#1EC089] 
+    hover:from-[#1EC089] hover:to-[#1EC089]
     rounded-full shadow-md hover:shadow-lg
     transform hover:scale-105 transition-all duration-300
     group"
@@ -106,7 +106,7 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
                       {formatPrice(
-                        mealPlan.totalAdultPrice + mealPlan.gstAdultPrice,
+                        mealPlan.totalAdultPrice + mealPlan.gstAdultPrice
                       )}
                     </p>
                   </div>

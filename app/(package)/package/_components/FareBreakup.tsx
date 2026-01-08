@@ -54,7 +54,7 @@ const FareBreakup = ({
           className="text-center font-Poppins text-[18px] font-semibold leading-normal tracking-[0.18px] bg-clip-text text-transparent"
           style={{
             backgroundImage:
-              " linear-gradient(87deg, #FF5F5F -25.84%, #FF5F5F -25.82%, #FF9080 118.31%)",
+              " linear-gradient(87deg, #1EC089 -25.84%, #1EC089 -25.82%, #1EC089 118.31%)",
           }}
         >
           Fare Breakup

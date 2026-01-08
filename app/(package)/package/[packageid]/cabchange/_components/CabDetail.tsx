@@ -16,7 +16,7 @@ const CabDetail = () => {
   }
   const packageId = useSelector((store: any) => store.package.data?.packageId);
   const destinationId = useSelector(
-    (store: any) => store.changeHotel?.replaceHotel?.location?.destinationId,
+    (store: any) => store.changeHotel?.replaceHotel?.location?.destinationId
   );
   const loading = useSelector((store: any) => store.package.isLoading);
   const cabChange = useAvailableCab(packageId, destinationId);
@@ -30,7 +30,7 @@ const CabDetail = () => {
         >
           <span className="pl-4 lg:pl-6 flex items-center">
             <button onClick={clickBack}>
-              <ArrowLeft className="h-[30px] w-[30px] text-[#FF5F5F]" />
+              <ArrowLeft className="h-[30px] w-[30px] text-[#1EC089]" />
             </button>
           </span>
           <h1
@@ -38,7 +38,7 @@ const CabDetail = () => {
             style={{
               textShadow: "2px 4px 14.3px rgba(255, 120, 101, 0.20)",
               backgroundImage:
-                "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",

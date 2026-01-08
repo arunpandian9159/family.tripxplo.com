@@ -59,7 +59,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
   const useAppDispatch = () => useDispatch<AppDispatch>();
   const dispatch = useAppDispatch();
   const prevHotel = useSelector(
-    (store: any) => store.hotelChange?.replaceHotel,
+    (store: any) => store.hotelChange?.replaceHotel
   );
   const router = useRouter();
   function selectRoom() {
@@ -68,19 +68,19 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
         mealPlan: selectedMealPlan,
         hotelRoom: room,
         prevHotel: prevHotel,
-      }),
+      })
     );
     router.push("/package/" + packageId);
   }
 
   const [selectedMealPlan, setSelectedMealPlan] = useState<HotelMealType>(
-    {} as HotelMealType,
+    {} as HotelMealType
   );
   useEffect(() => {
     // const selectedmp = room?.mealPlan.find((data)=> prevHotel?.mealPlan?.includes(data.mealPlan));
     // console.log("selectedmp", selectedmp);
     const prevHotelMp = room.mealPlan?.find((data) =>
-      prevHotel?.mealPlan?.includes(data.mealPlan),
+      prevHotel?.mealPlan?.includes(data.mealPlan)
     );
 
     if (prevHotelMp !== undefined) {
@@ -105,13 +105,13 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
 
     return {
       container: {
-        borderColor: isIncluded ? "#FF9080" : "#e5e7eb",
+        borderColor: isIncluded ? "#1EC089" : "#e5e7eb",
       },
       icon: {
-        color: isIncluded ? "#FF9080" : "#6b7280",
+        color: isIncluded ? "#1EC089" : "#6b7280",
       },
       text: {
-        color: isIncluded ? "#FF9080" : "#6b7280",
+        color: isIncluded ? "#1EC089" : "#6b7280",
       },
     };
   };
@@ -184,12 +184,16 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                             />
                           )}
                           <p
-                            className={`font-montserrat text-[12px] lg:text-[15px] font-semibold ${mealPlanPrice < 0 ? "text-emerald-600" : "bg-clip-text text-transparent"}`}
+                            className={`font-montserrat text-[12px] lg:text-[15px] font-semibold ${
+                              mealPlanPrice < 0
+                                ? "text-emerald-600"
+                                : "bg-clip-text text-transparent"
+                            }`}
                             style={
                               mealPlanPrice >= 0
                                 ? {
                                     backgroundImage:
-                                      "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                                      "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
                                   }
                                 : undefined
                             }
@@ -302,7 +306,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
               className="my-[15px] ml-[19px] font-Poppins text-[13px] lg:text-[16px] font-semibold tracking-[0.1px] bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                  "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
               }}
             >
               Meal Plan:
@@ -371,7 +375,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
             className="mt-[18px] ml-[19px] font-Poppins text-[13px] lg:text-[16px] font-semibold tracking-[0.1px] bg-clip-text text-transparent"
             style={{
               backgroundImage:
-                "linear-gradient(87deg, #FF5F5F -25.84%, #FF9080 118.31%)",
+                "linear-gradient(87deg, #1EC089 -25.84%, #1EC089 118.31%)",
             }}
           >
             Amenities
