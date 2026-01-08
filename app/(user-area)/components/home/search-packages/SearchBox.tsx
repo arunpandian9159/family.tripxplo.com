@@ -34,11 +34,11 @@ const SearchBox = () => {
   const [isGuestsOpen, setIsGuestsOpen] = useState(false);
 
   const destinationName = useAppSelector(
-    (store: any) => store.searchPackage.destination
+    (store: any) => store.searchPackage.destination,
   );
   const date = useAppSelector((store: any) => store.searchPackage.date);
   const roomCapacityData = useSelector(
-    (store: any) => store.roomSelect.room.totalAdults
+    (store: any) => store.roomSelect.room.totalAdults,
   );
 
   useEffect(() => {
@@ -50,9 +50,9 @@ const SearchBox = () => {
   // Derived state to check if all fields are filled for animation
   const isReadyToSearch = Boolean(
     destinationName &&
-      destinationName.length > 0 &&
-      date &&
-      roomCapacityData > 0
+    destinationName.length > 0 &&
+    date &&
+    roomCapacityData > 0,
   );
 
   const handleNextPage = useCallback(() => {
@@ -66,7 +66,7 @@ const SearchBox = () => {
       // After quick tag selection, open calendar
       setTimeout(() => setIsCalendarOpen(true), 150);
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Callback when destination is selected - open calendar

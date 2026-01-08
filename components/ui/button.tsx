@@ -44,11 +44,12 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
@@ -70,7 +71,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "button";
 
@@ -95,13 +96,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
       </Comp>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 
 // Icon Button - simplified variant
-interface IconButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: React.ReactNode;
   variant?: "default" | "ghost" | "outline" | "primary" | "secondary";
   size?: "sm" | "default" | "lg";
@@ -111,7 +111,7 @@ interface IconButtonProps
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   (
     { icon, variant = "ghost", size = "default", label, className, ...props },
-    ref
+    ref,
   ) => {
     const sizeMap = {
       sm: "icon-sm" as const,
@@ -131,7 +131,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         {icon}
       </Button>
     );
-  }
+  },
 );
 IconButton.displayName = "IconButton";
 

@@ -40,7 +40,7 @@ export function Card({
         hoverable &&
           "transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 cursor-pointer",
         onClick && "w-full text-left",
-        className
+        className,
       )}
     >
       {children}
@@ -167,7 +167,7 @@ export function StatsCard({
             <p
               className={cn(
                 "text-sm font-medium mt-2",
-                trend.positive ? "text-emerald-600" : "text-red-500"
+                trend.positive ? "text-emerald-600" : "text-red-500",
               )}
             >
               {trend.positive ? "+" : "-"}

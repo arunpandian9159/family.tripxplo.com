@@ -70,7 +70,7 @@ const CabInfoList = ({
       changeVehicleAndCalculatePrice({
         prevVehicle: prevCab,
         newVehicle: cab,
-      })
+      }),
     );
     router.back();
   }

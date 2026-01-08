@@ -295,7 +295,7 @@ function getProgressToNextTier(points: number, currentTierIndex: number) {
   const pointsForNextTier = nextTier.minPoints - currentTier.minPoints;
   const progress = Math.min(
     (pointsInCurrentTier / pointsForNextTier) * 100,
-    100
+    100,
   );
   const pointsNeeded = nextTier.minPoints - points;
 
@@ -333,11 +333,11 @@ function DashboardSkeleton() {
 function UserRewardsDashboard({ user }: { user: any }) {
   const userRewards = mockUserRewards;
   const { tier: currentTier, index: tierIndex } = getUserTier(
-    userRewards.points
+    userRewards.points,
   );
   const { progress, pointsNeeded, nextTier } = getProgressToNextTier(
     userRewards.points,
-    tierIndex
+    tierIndex,
   );
   const TierIcon = currentTier.icon;
   const firstName = (user?.fullName || user?.name || "Traveler").split(" ")[0];
@@ -359,7 +359,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                   className={cn(
                     "w-20 h-20 rounded-2xl flex items-center justify-center relative",
                     "bg-gradient-to-br",
-                    currentTier.color
+                    currentTier.color,
                   )}
                 >
                   <TierIcon className="w-10 h-10 text-white" />
@@ -386,7 +386,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                     Member since{" "}
                     {new Date(userRewards.memberSince).toLocaleDateString(
                       "en-IN",
-                      { month: "long", year: "numeric" }
+                      { month: "long", year: "numeric" },
                     )}
                   </p>
                 </div>
@@ -422,7 +422,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                   <div
                     className={cn(
                       "h-full rounded-full bg-gradient-to-r transition-all duration-1000",
-                      nextTier.color
+                      nextTier.color,
                     )}
                     style={{ width: `${progress}%` }}
                   />
@@ -548,7 +548,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                       activity.type === "review" && "bg-blue-50 text-blue-600",
                       activity.type === "referral" &&
                         "bg-emerald-50 text-emerald-600",
-                      activity.type === "bonus" && "bg-amber-50 text-amber-600"
+                      activity.type === "bonus" && "bg-amber-50 text-amber-600",
                     )}
                   >
                     <ActivityIcon className="w-5 h-5" />
@@ -600,7 +600,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                     "flex flex-col items-center text-center p-3 rounded-xl transition-all",
                     achievement.earned
                       ? "bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200"
-                      : "bg-slate-50 opacity-50"
+                      : "bg-slate-50 opacity-50",
                   )}
                 >
                   <div
@@ -608,7 +608,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                       "w-12 h-12 rounded-full flex items-center justify-center mb-2",
                       achievement.earned
                         ? "bg-amber-500 text-white"
-                        : "bg-slate-200 text-slate-400"
+                        : "bg-slate-200 text-slate-400",
                     )}
                   >
                     <AchievementIcon className="w-6 h-6" />
@@ -634,7 +634,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
           <div
             className={cn(
               "w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br",
-              currentTier.color
+              currentTier.color,
             )}
           >
             <TierIcon className="w-6 h-6 text-white" />
@@ -776,7 +776,7 @@ const Rewards = () => {
                 className={cn(
                   "w-full md:w-auto",
                   isNotified &&
-                    "border-emerald-500 text-emerald-500 hover:bg-emerald-50"
+                    "border-emerald-500 text-emerald-500 hover:bg-emerald-50",
                 )}
               >
                 {isNotified ? (
@@ -824,7 +824,7 @@ const Rewards = () => {
                       "overflow-hidden h-full relative",
                       tier.borderColor,
                       isCurrentTier && "ring-2 ring-offset-2",
-                      isCurrentTier && tier.ringColor
+                      isCurrentTier && tier.ringColor,
                     )}
                   >
                     {isCurrentTier && (
@@ -842,7 +842,7 @@ const Rewards = () => {
                     <div
                       className={cn(
                         "bg-gradient-to-br p-6 text-white",
-                        tier.color
+                        tier.color,
                       )}
                     >
                       <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-3">
@@ -907,7 +907,7 @@ const Rewards = () => {
                 <div
                   className={cn(
                     "w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform",
-                    way.iconBg
+                    way.iconBg,
                   )}
                 >
                   <way.icon className="w-6 h-6" />
@@ -1063,7 +1063,7 @@ const Rewards = () => {
                   "px-8",
                   isNotified
                     ? "bg-white/20 border-2 border-white text-white hover:bg-white/30"
-                    : "bg-white text-emerald-600 hover:bg-white/90 shadow-lg"
+                    : "bg-white text-emerald-600 hover:bg-white/90 shadow-lg",
                 )}
               >
                 {isNotified ? (

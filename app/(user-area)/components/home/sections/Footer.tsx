@@ -86,7 +86,7 @@ const Footer = () => {
     const newDate = new Date();
     newDate.setDate(newDate.getDate() + 10);
     const localDate = new Date(
-      newDate.getTime() - newDate.getTimezoneOffset() * 60000
+      newDate.getTime() - newDate.getTimezoneOffset() * 60000,
     );
     dispatch(changeDate(localDate.toISOString()));
     dispatch(initialLoad());

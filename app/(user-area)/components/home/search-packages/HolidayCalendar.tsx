@@ -33,7 +33,7 @@ export function HolidayCalendar({
   className,
 }: HolidayCalendarProps) {
   const [currentMonth, setCurrentMonth] = React.useState<Date>(
-    selected || new Date()
+    selected || new Date(),
   );
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -114,7 +114,8 @@ export function HolidayCalendar({
               // Today indicator
               isTodayDate && !isSelected && !holiday && "bg-slate-100",
               // Disabled state
-              isDisabled && "opacity-40 cursor-not-allowed hover:bg-transparent"
+              isDisabled &&
+                "opacity-40 cursor-not-allowed hover:bg-transparent",
             )}
           >
             {/* Day number */}
@@ -122,7 +123,7 @@ export function HolidayCalendar({
               className={cn(
                 "text-sm font-semibold leading-none",
                 holiday && isCurrentMonth && "text-emerald-600",
-                isSelected && !holiday && "text-white"
+                isSelected && !holiday && "text-white",
               )}
             >
               {format(currentDay, "d")}
@@ -133,13 +134,13 @@ export function HolidayCalendar({
               <span
                 className={cn(
                   "text-[9px] leading-[1.2] text-emerald-700 font-medium mt-0.5 line-clamp-3 w-full break-words hyphens-auto",
-                  isSelected && "text-emerald-800"
+                  isSelected && "text-emerald-800",
                 )}
               >
                 {holiday.name}
               </span>
             )}
-          </button>
+          </button>,
         );
 
         day = addDays(day, 1);
@@ -148,7 +149,7 @@ export function HolidayCalendar({
       rows.push(
         <div key={day.toISOString()} className="flex justify-between gap-0.5">
           {week}
-        </div>
+        </div>,
       );
     }
 

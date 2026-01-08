@@ -43,10 +43,10 @@ const PackagesPage = () => {
 
   const [offset, setOffset] = useState<number>(0);
   const destination = useAppSelector(
-    (state) => state.searchPackage.destination
+    (state) => state.searchPackage.destination,
   );
   const destinationId = useAppSelector(
-    (state) => state.searchPackage.destinationId
+    (state) => state.searchPackage.destinationId,
   );
   const themeId = useAppSelector((state) => state.themeSelect.themeId);
 

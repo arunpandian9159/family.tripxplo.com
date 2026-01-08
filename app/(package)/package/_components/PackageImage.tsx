@@ -41,10 +41,10 @@ export default function PackageImage({
 
   // Get current search parameters from Redux
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect?.room
+    (store: any) => store.roomSelect?.room,
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage
+    (store: any) => store.searchPackage,
   );
   const pack = useSelector((store: any) => store.package);
 

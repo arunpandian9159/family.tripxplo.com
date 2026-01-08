@@ -52,7 +52,7 @@ const getDestinationTag = (name: string) => {
   const featured = FEATURED_DESTINATIONS.find(
     (f) =>
       name.toLowerCase().includes(f.name.toLowerCase()) ||
-      f.name.toLowerCase().includes(name.toLowerCase())
+      f.name.toLowerCase().includes(name.toLowerCase()),
   );
   return featured || null;
 };
@@ -63,7 +63,7 @@ const SearchDestination = ({
 }: SearchDestinationProps) => {
   const dispatch = useDispatch();
   const destination = useAppSelector(
-    (state) => state.searchPackage.destination
+    (state) => state.searchPackage.destination,
   );
   const inputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
@@ -144,7 +144,7 @@ const SearchDestination = ({
       setInputText(input);
       fetchDestinations(input.trim());
     },
-    [fetchDestinations]
+    [fetchDestinations],
   );
 
   const selectDestination = useCallback(
@@ -158,7 +158,7 @@ const SearchDestination = ({
         setTimeout(() => onDestinationSelect(), 100);
       }
     },
-    [dispatch, onDestinationSelect]
+    [dispatch, onDestinationSelect],
   );
 
   useEffect(() => {
@@ -215,12 +215,12 @@ const SearchDestination = ({
       const aIndex = FEATURED_DESTINATIONS.findIndex(
         (f) =>
           a.name.toLowerCase().includes(f.name.toLowerCase()) ||
-          f.name.toLowerCase().includes(a.name.toLowerCase())
+          f.name.toLowerCase().includes(a.name.toLowerCase()),
       );
       const bIndex = FEATURED_DESTINATIONS.findIndex(
         (f) =>
           b.name.toLowerCase().includes(f.name.toLowerCase()) ||
-          f.name.toLowerCase().includes(b.name.toLowerCase())
+          f.name.toLowerCase().includes(b.name.toLowerCase()),
       );
 
       // If both are featured, sort by their index in FEATURED_DESTINATIONS
@@ -241,33 +241,35 @@ const SearchDestination = ({
       FEATURED_DESTINATIONS.some(
         (f) =>
           dest.name.toLowerCase().includes(f.name.toLowerCase()) ||
-          f.name.toLowerCase().includes(dest.name.toLowerCase())
-      )
+          f.name.toLowerCase().includes(dest.name.toLowerCase()),
+      ),
     );
   };
 
   const domesticDestinations = sortByFeaturedOrder(
     inputText.trim()
       ? inputDestinations.filter(
-          (dest) => dest.isDomestic !== false && dest.type !== "International"
+          (dest) => dest.isDomestic !== false && dest.type !== "International",
         )
       : filterFeaturedOnly(
           inputDestinations.filter(
-            (dest) => dest.isDomestic !== false && dest.type !== "International"
-          )
-        )
+            (dest) =>
+              dest.isDomestic !== false && dest.type !== "International",
+          ),
+        ),
   );
 
   const internationalDestinations = sortByFeaturedOrder(
     inputText.trim()
       ? inputDestinations.filter(
-          (dest) => dest.isDomestic === false || dest.type === "International"
+          (dest) => dest.isDomestic === false || dest.type === "International",
         )
       : filterFeaturedOnly(
           inputDestinations.filter(
-            (dest) => dest.isDomestic === false || dest.type === "International"
-          )
-        )
+            (dest) =>
+              dest.isDomestic === false || dest.type === "International",
+          ),
+        ),
   );
 
   const renderDestinationItem = (dest: Destination) => {
@@ -370,7 +372,7 @@ const SearchDestination = ({
           "bg-white shadow-2xl border border-slate-200 overflow-hidden",
           isMobile
             ? "fixed inset-x-0 bottom-0 rounded-t-3xl max-h-[85vh] animate-in slide-in-from-bottom duration-300 z-[9999]"
-            : "fixed rounded-2xl max-h-[360px] overflow-y-auto scrollbar-hide z-[9999]"
+            : "fixed rounded-2xl max-h-[360px] overflow-y-auto scrollbar-hide z-[9999]",
         )}
         style={
           isMobile
@@ -388,7 +390,7 @@ const SearchDestination = ({
         <div
           className={cn(
             "px-5 py-3 border-b border-slate-100 sticky top-0 bg-white z-10",
-            isMobile && "px-5 py-4 flex items-center justify-between"
+            isMobile && "px-5 py-4 flex items-center justify-between",
           )}
         >
           <h3 className="text-base font-semibold text-gray-900">Where to?</h3>
@@ -432,7 +434,7 @@ const SearchDestination = ({
       ref={triggerRef}
       className={cn(
         "relative cursor-default h-full flex items-center",
-        className
+        className,
       )}
     >
       {isMobile ? (

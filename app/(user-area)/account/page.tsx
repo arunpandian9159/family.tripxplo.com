@@ -333,7 +333,7 @@ const Account = () => {
                   <div
                     className={cn(
                       "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
-                      item.lightColor
+                      item.lightColor,
                     )}
                   >
                     <item.icon className={cn("w-5 h-5", item.iconColor)} />

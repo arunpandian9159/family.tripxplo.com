@@ -113,7 +113,7 @@ export default function PackageBooking() {
   }, []);
 
   const availableRedeemCoins = useSelector(
-    (store: any) => store.userSlice.redeemCoins
+    (store: any) => store.userSlice.redeemCoins,
   );
 
   const [packageId, setPackageId] = useState<string>("");
@@ -130,10 +130,10 @@ export default function PackageBooking() {
 
   const { currentPackageId } = useAppSelector((store) => store.packageDetails);
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room
+    (store: any) => store.roomSelect.room,
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage
+    (store: any) => store.searchPackage,
   );
 
   useEffect(() => {
@@ -153,7 +153,7 @@ export default function PackageBooking() {
     // Validate required data
     if (!pack?.packageId) {
       toast.error(
-        "Package information not found. Please go back and try again."
+        "Package information not found. Please go back and try again.",
       );
       return;
     }
@@ -219,7 +219,7 @@ export default function PackageBooking() {
       if (result?.paymentLink?.data?.instrumentResponse?.redirectInfo?.url) {
         // Redirect to payment page
         router.push(
-          result.paymentLink.data.instrumentResponse.redirectInfo.url
+          result.paymentLink.data.instrumentResponse.redirectInfo.url,
         );
       } else if (result?.booking?.id) {
         // Booking created but no payment link - show success and redirect to booking

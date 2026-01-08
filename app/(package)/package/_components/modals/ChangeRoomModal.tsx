@@ -211,13 +211,13 @@ const RoomCard = ({
   onSelect: (mealPlan: HotelMealType) => void;
 }) => {
   const [selectedMealPlan, setSelectedMealPlan] = useState<HotelMealType>(
-    {} as HotelMealType
+    {} as HotelMealType,
   );
   const [mealPlanPrice, setMealPlanPrice] = useState(0);
 
   useEffect(() => {
     const prevHotelMp = room.mealPlan?.find((data) =>
-      prevHotel?.mealPlan?.includes(data.mealPlan)
+      prevHotel?.mealPlan?.includes(data.mealPlan),
     );
     if (prevHotelMp) {
       setSelectedMealPlan(prevHotelMp);
@@ -408,7 +408,7 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
   useEffect(() => {
     if (rooms?.length > 0) {
       setFilteredRooms(
-        rooms.filter((room: HotelRoom) => room.mealPlan?.length > 0)
+        rooms.filter((room: HotelRoom) => room.mealPlan?.length > 0),
       );
     }
   }, [rooms]);
@@ -425,7 +425,7 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
           hotelRoom: room,
           hotel: newHotel,
           prevHotel: hotel,
-        })
+        }),
       );
     } else {
       // Same hotel - only change room
@@ -434,7 +434,7 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
           mealPlan: mealPlan,
           hotelRoom: room,
           prevHotel: hotel,
-        })
+        }),
       );
     }
 

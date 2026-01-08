@@ -93,7 +93,7 @@ const Help = () => {
                 <div
                   className={cn(
                     "w-12 h-12 rounded-xl flex items-center justify-center",
-                    option.color
+                    option.color,
                   )}
                 >
                   <option.icon className="w-5 h-5" />

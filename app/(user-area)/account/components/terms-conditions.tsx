@@ -141,7 +141,7 @@ const TermsAndConditions = () => {
                     <div
                       className={cn(
                         "w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0",
-                        section.color
+                        section.color,
                       )}
                     >
                       <section.icon className="w-5 h-5" />
@@ -152,7 +152,7 @@ const TermsAndConditions = () => {
                     <ChevronDown
                       className={cn(
                         "w-5 h-5 text-slate-400 transition-transform duration-200",
-                        expandedSection === section.id && "rotate-180"
+                        expandedSection === section.id && "rotate-180",
                       )}
                     />
                   </button>
@@ -160,7 +160,7 @@ const TermsAndConditions = () => {
                   <div
                     className={cn(
                       "overflow-hidden transition-all duration-200",
-                      expandedSection === section.id ? "max-h-96" : "max-h-0"
+                      expandedSection === section.id ? "max-h-96" : "max-h-0",
                     )}
                   >
                     <div className="px-4 pb-4 pt-0">

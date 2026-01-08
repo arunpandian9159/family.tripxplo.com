@@ -179,7 +179,7 @@ const BookingDetails = ({ events, booking }: BookingDetailsProps) => {
                 <div
                   className={cn(
                     "absolute top-2 left-2 px-2 py-0.5 rounded-full text-white text-[10px] font-bold",
-                    plan.gradient
+                    plan.gradient,
                   )}
                 >
                   {booking.planName}
@@ -327,7 +327,10 @@ const BookingDetails = ({ events, booking }: BookingDetailsProps) => {
                         isCompleted && "bg-emerald-500",
                         isFailed && "bg-red-500",
                         isActive && "bg-amber-500 animate-pulse",
-                        !isCompleted && !isFailed && !isActive && "bg-slate-200"
+                        !isCompleted &&
+                          !isFailed &&
+                          !isActive &&
+                          "bg-slate-200",
                       )}
                     >
                       {isCompleted && (
@@ -352,8 +355,8 @@ const BookingDetails = ({ events, booking }: BookingDetailsProps) => {
                           isCompleted
                             ? "bg-emerald-500"
                             : isFailed
-                            ? "bg-red-300"
-                            : "bg-slate-200 border-l-2 border-dashed border-slate-300"
+                              ? "bg-red-300"
+                              : "bg-slate-200 border-l-2 border-dashed border-slate-300",
                         )}
                       />
                     )}
@@ -370,7 +373,7 @@ const BookingDetails = ({ events, booking }: BookingDetailsProps) => {
                         !isCompleted &&
                           !isFailed &&
                           !isActive &&
-                          "text-slate-400"
+                          "text-slate-400",
                       )}
                     >
                       {event.heading}
@@ -412,7 +415,7 @@ const BookingDetails = ({ events, booking }: BookingDetailsProps) => {
       <div
         className={cn(
           "mt-4 p-4 rounded-xl flex items-center justify-center gap-3",
-          status?.bgLight || "bg-slate-50"
+          status?.bgLight || "bg-slate-50",
         )}
       >
         {booking?.status === "confirmed" && (

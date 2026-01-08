@@ -76,8 +76,8 @@ const FilterHotel = ({
                   {option.key === "rating"
                     ? "★"
                     : option.key === "price_low"
-                    ? "↓₹"
-                    : "↑₹"}
+                      ? "↓₹"
+                      : "↑₹"}
                 </span>
               </button>
             );

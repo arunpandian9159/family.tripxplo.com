@@ -69,13 +69,13 @@ const FilterCardList = ({
         hotelRoom: selectedRoom as HotelRoom,
         hotel: hotel,
         prevHotel: prevHotel,
-      })
+      }),
     );
 
     // Show toast with price difference
     if (mealPlanPrice < 0) {
       toast.success(
-        `Hotel changed! You saved ₹${Math.abs(mealPlanPrice).toLocaleString()}`
+        `Hotel changed! You saved ₹${Math.abs(mealPlanPrice).toLocaleString()}`,
       );
     } else if (mealPlanPrice > 0) {
       toast.success(`Hotel upgraded! +₹${mealPlanPrice.toLocaleString()}`);
@@ -95,7 +95,7 @@ const FilterCardList = ({
   const [reject, setReject] = useState(false);
   useEffect(() => {
     const foundRoom = hotel.hotelRoom?.find(
-      (data) => data?.mealPlan?.length > 0
+      (data) => data?.mealPlan?.length > 0,
     );
     setSelectedRoom(foundRoom);
     if (foundRoom === undefined) {
@@ -104,7 +104,7 @@ const FilterCardList = ({
     }
     let selectedmp = foundRoom?.mealPlan.find(
       (data) =>
-        prevHotel?.mealPlan?.toLowerCase() === data.mealPlan.toLowerCase()
+        prevHotel?.mealPlan?.toLowerCase() === data.mealPlan.toLowerCase(),
     );
 
     if (!selectedmp && foundRoom?.mealPlan && foundRoom.mealPlan.length > 0) {

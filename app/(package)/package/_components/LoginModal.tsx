@@ -218,7 +218,7 @@ export default function LoginModal({
                         "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                         "transition-all duration-200 touch-manipulation",
                         errors.email &&
-                          "border-red-500 bg-red-50 focus:ring-red-500/20"
+                          "border-red-500 bg-red-50 focus:ring-red-500/20",
                       )}
                       placeholder="you@example.com"
                       autoComplete="email"
@@ -253,7 +253,7 @@ export default function LoginModal({
                         "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                         "transition-all duration-200 touch-manipulation",
                         errors.password &&
-                          "border-red-500 bg-red-50 focus:ring-red-500/20"
+                          "border-red-500 bg-red-50 focus:ring-red-500/20",
                       )}
                       placeholder="••••••••"
                       autoComplete="current-password"

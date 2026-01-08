@@ -2,12 +2,13 @@
 
 import React from "react";
 import Image from "next/image";
+import { Container } from "@/components/ui/container";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Star, PlayCircle, Users } from "lucide-react";
-import { FaGoogle, FaInstagram } from "react-icons/fa6";
+import { FaGoogle, FaFacebook, FaInstagram } from "react-icons/fa6"; // Added FaInstagram
 
 const reviews = [
   {
@@ -83,19 +84,19 @@ const GoogleIcon = () => (
   </svg>
 );
 
-const Testimonials = () => {
+const CustomerStories = () => {
   return (
     <div className="bg-black py-20 relative overflow-hidden">
       {/* Background blobs for subtle effect */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="mx-auto">
+      <Container>
         {/* Header */}
         <div className="text-center mb-12 relative z-10">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight mb-6 drop-shadow-xl">
             TripXplo Diaries{" "}
-            <span className="text-[#15ab8b] animate-pulse">♥</span>
+            <span className="text-rose-500 animate-pulse">♥</span>
           </h2>
           <p className="text-slate-400 text-lg mb-8">
             Real stories from our happy travellers
@@ -120,9 +121,9 @@ const Testimonials = () => {
             {/* Divider (Hidden on mobile) */}
             <div className="hidden sm:block w-px h-10 bg-white/20"></div>
 
-            {/* Happy Travelers */}
+            {/* Happy Travelers (Replaced Facebook) */}
             <div className="flex items-center gap-3 bg-white/5 px-5 py-3 rounded-2xl backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors">
-              <Users className="text-2xl text-[#15ab8b]" />
+              <Users className="text-2xl text-rose-500" />
               <div className="flex flex-col items-start leading-none gap-1">
                 <div className="flex text-yellow-400 text-sm gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -138,21 +139,25 @@ const Testimonials = () => {
         </div>
 
         {/* Carousel */}
-        <div className="relative pb-8 [&_.swiper-wrapper]:z-10">
+        <div className="relative pb-8 -mx-4 sm:mx-0">
           <Swiper
             modules={[Navigation, Autoplay]}
             spaceBetween={24}
             slidesPerView={1.2}
             centeredSlides={true}
-            initialSlide={0}
+            initialSlide={0} // Changed initialSlide from 2 to 0
             breakpoints={{
-              640: { slidesPerView: 2.5, centeredSlides: false },
-              768: { slidesPerView: 4, centeredSlides: false },
-              1024: { slidesPerView: 6, centeredSlides: false },
+              640: { slidesPerView: 2.2, centeredSlides: false },
+              768: { slidesPerView: 3.2, centeredSlides: false },
+              1024: { slidesPerView: 4, centeredSlides: false }, // Changed slidesPerView for 1024px breakpoint
+            }}
+            navigation={{
+              nextEl: ".swiper-button-next-custom",
+              prevEl: ".swiper-button-prev-custom",
             }}
             autoplay={{ delay: 3500, disableOnInteraction: false }}
             loop
-            className="overflow-visible"
+            className="px-4 sm:px-0 !overflow-visible"
           >
             {[...reviews, ...reviews, ...reviews].map((review, index) => (
               <SwiperSlide key={`${review.id}-${index}`} className="h-auto">
@@ -160,7 +165,7 @@ const Testimonials = () => {
                   href={review.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block h-full relative aspect-9/16 rounded-4xl overflow-hidden group cursor-pointer border-4 border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 shadow-2xl shadow-black/50"
+                  className="block h-full relative aspect-[9/16] rounded-[2rem] overflow-hidden group cursor-pointer border-4 border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 shadow-2xl shadow-black/50"
                 >
                   <Image
                     src={review.image}
@@ -171,7 +176,7 @@ const Testimonials = () => {
                   />
 
                   {/* Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
 
                   {/* Play Button Overlay (Instagram style) */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 delay-100">
@@ -191,7 +196,7 @@ const Testimonials = () => {
                       </h3>
 
                       {/* Tag */}
-                      <span className="inline-block px-3 py-1 bg-[#15ab8b] rounded-full text-[10px] font-bold text-white uppercase tracking-widest shadow-lg shadow-[#15ab8b]/30">
+                      <span className="inline-block px-3 py-1 bg-rose-500 rounded-full text-[10px] font-bold text-white uppercase tracking-widest shadow-lg shadow-rose-500/30">
                         @TripXplo
                       </span>
                     </div>
@@ -202,6 +207,8 @@ const Testimonials = () => {
                     <div className="flex items-center gap-1.5">
                       {review.platform === "google" ? (
                         <FaGoogle className="text-sm text-white" />
+                      ) : review.platform === "facebook" ? (
+                        <FaFacebook className="text-sm text-blue-400" />
                       ) : (
                         <FaInstagram className="text-sm text-pink-500" />
                       )}
@@ -214,9 +221,16 @@ const Testimonials = () => {
             ))}
           </Swiper>
         </div>
-      </div>
+      </Container>
+
+      {/* Global CSS for Swiper overflow to allow shadows to be seen if using overflow-visible on container */}
+      <style jsx global>{`
+        .swiper-wrapper {
+          z-index: 10;
+        }
+      `}</style>
     </div>
   );
 };
 
-export default Testimonials;
+export default CustomerStories;

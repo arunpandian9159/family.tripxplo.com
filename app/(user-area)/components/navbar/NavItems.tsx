@@ -22,7 +22,7 @@ const NavItems: React.FC<NavItemsProps> = ({ label, href, active }) => {
         "relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
         isActive
           ? "text-emerald-600 bg-emerald-50"
-          : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+          : "text-slate-600 hover:text-slate-900 hover:bg-slate-50",
       )}
     >
       {label}

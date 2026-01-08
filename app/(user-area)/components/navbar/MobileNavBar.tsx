@@ -71,7 +71,7 @@ const MobileNavBar = () => {
             isAuthButton: true,
           },
     ],
-    [isAuthenticated]
+    [isAuthenticated],
   );
 
   const checkActive = (item: NavItem): boolean => {
@@ -125,7 +125,7 @@ const MobileNavBar = () => {
                   className={cn(
                     "flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-2xl transition-all duration-200 touch-manipulation min-w-[56px]",
                     "active:scale-95 active:bg-slate-50",
-                    isActive && "bg-emerald-50/50"
+                    isActive && "bg-emerald-50/50",
                   )}
                   aria-current={isActive ? "page" : undefined}
                 >
@@ -134,7 +134,7 @@ const MobileNavBar = () => {
                       "p-2 rounded-xl transition-all duration-200",
                       isActive
                         ? "bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-md shadow-emerald-500/30"
-                        : "bg-transparent"
+                        : "bg-transparent",
                     )}
                   >
                     <Icon
@@ -142,7 +142,7 @@ const MobileNavBar = () => {
                         "w-5 h-5 transition-all duration-200",
                         isActive
                           ? "text-white scale-105"
-                          : "text-slate-400 group-hover:text-slate-500"
+                          : "text-slate-400 group-hover:text-slate-500",
                       )}
                       strokeWidth={isActive ? 2.5 : 1.8}
                     />
@@ -150,7 +150,7 @@ const MobileNavBar = () => {
                   <span
                     className={cn(
                       "text-[10px] font-semibold transition-colors leading-tight",
-                      isActive ? "text-emerald-600" : "text-slate-400"
+                      isActive ? "text-emerald-600" : "text-slate-400",
                     )}
                   >
                     {item.label}

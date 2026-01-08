@@ -81,7 +81,7 @@ const HotelCard = ({
       return;
     }
     const mp = room?.mealPlan.find((data) =>
-      prevHotel?.mealPlan?.includes(data.mealPlan)
+      prevHotel?.mealPlan?.includes(data.mealPlan),
     );
     setSelectedMealPlan(mp);
     if (!mp) {
@@ -261,7 +261,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
   const loading = useSelector((store: any) => store.package.isLoading);
   const { hotel: availableHotels, isLoading } = useAvailableHotels(
     packageId,
-    destinationId
+    destinationId,
   );
 
   // Filter & Sort state
@@ -284,11 +284,11 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
   const processedHotels = useMemo(() => {
     let hotels = (availableHotels as HotelChangeDataType[]).filter((h) => {
       const selectedRoom = h.hotelRoom?.find(
-        (data) => data?.mealPlan?.length > 0
+        (data) => data?.mealPlan?.length > 0,
       );
       if (!selectedRoom) return false;
       const selectedMealPlan = selectedRoom.mealPlan.find((data) =>
-        hotel?.mealPlan?.includes(data.mealPlan)
+        hotel?.mealPlan?.includes(data.mealPlan),
       );
       return !!selectedMealPlan;
     });
@@ -299,7 +299,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
       hotels = hotels.filter(
         (h) =>
           h.hotelName?.toLowerCase().includes(query) ||
-          h.location?.state?.toLowerCase().includes(query)
+          h.location?.state?.toLowerCase().includes(query),
       );
     }
 
@@ -324,7 +324,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
       const room = h.hotelRoom?.find((d) => d?.mealPlan?.length > 0);
       if (!room) return 0;
       const mp = room.mealPlan.find((d) =>
-        hotel?.mealPlan?.includes(d.mealPlan)
+        hotel?.mealPlan?.includes(d.mealPlan),
       );
       if (!mp) return 0;
       return (
@@ -366,11 +366,11 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
 
   const handleSelectHotel = (selectedHotel: HotelChangeDataType) => {
     const selectedRoom = selectedHotel.hotelRoom?.find(
-      (data) => data?.mealPlan?.length > 0
+      (data) => data?.mealPlan?.length > 0,
     );
     if (!selectedRoom) return;
     const selectedMealPlan = selectedRoom.mealPlan.find((data) =>
-      hotel?.mealPlan?.includes(data.mealPlan)
+      hotel?.mealPlan?.includes(data.mealPlan),
     );
     if (!selectedMealPlan) return;
 
@@ -382,7 +382,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
         hotelRoom: selectedRoom,
         hotel: selectedHotel,
         prevHotel: hotel,
-      })
+      }),
     );
 
     requestAnimationFrame(() => {

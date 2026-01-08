@@ -35,7 +35,7 @@ export default function PaymentPage() {
   const paymentId = params.paymentId as string;
 
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -278,8 +278,8 @@ export default function PaymentPage() {
                     {selectedMethod === "upi"
                       ? "UPI"
                       : selectedMethod === "netbanking"
-                      ? "Net Banking"
-                      : selectedMethod}
+                        ? "Net Banking"
+                        : selectedMethod}
                   </span>
                 </div>
 

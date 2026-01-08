@@ -107,10 +107,10 @@ const Booking = () => {
           (data?.status === "confirmed"
             ? "Confirmed"
             : data?.status === "pending"
-            ? "Pending"
-            : data?.status === "failed"
-            ? "Failed"
-            : "Processing"),
+              ? "Pending"
+              : data?.status === "failed"
+                ? "Failed"
+                : "Processing"),
         subHeading: data?.planName
           ? `${data.planName} Package`
           : "Package Booked",
@@ -118,8 +118,8 @@ const Booking = () => {
           data?.status === "confirmed"
             ? "completed"
             : data?.status === "failed"
-            ? "failed"
-            : "active",
+              ? "failed"
+              : "active",
       },
     ];
 
@@ -139,7 +139,7 @@ const Booking = () => {
       events.push({
         heading: "Balance Payment",
         subHeading: `₹${data.balanceAmount.toLocaleString(
-          "en-IN"
+          "en-IN",
         )} due before travel`,
         status: "pending",
       });

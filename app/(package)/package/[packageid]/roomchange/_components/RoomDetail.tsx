@@ -116,7 +116,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
   const useAppDispatch = () => useDispatch<AppDispatch>();
   const dispatch = useAppDispatch();
   const prevHotel = useSelector(
-    (store: any) => store.hotelChange?.replaceHotel
+    (store: any) => store.hotelChange?.replaceHotel,
   );
   const router = useRouter();
 
@@ -132,13 +132,13 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
         mealPlan: selectedMealPlan,
         hotelRoom: room,
         prevHotel: prevHotel,
-      })
+      }),
     );
 
     // Show toast and navigate without scrolling to top
     if (mealPlanPrice < 0) {
       toast.success(
-        `Room changed! You saved ₹${Math.abs(mealPlanPrice).toLocaleString()}`
+        `Room changed! You saved ₹${Math.abs(mealPlanPrice).toLocaleString()}`,
       );
     } else if (mealPlanPrice > 0) {
       toast.success(`Room upgraded! +₹${mealPlanPrice.toLocaleString()}`);
@@ -150,13 +150,13 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
   };
 
   const [selectedMealPlan, setSelectedMealPlan] = useState<HotelMealType>(
-    {} as HotelMealType
+    {} as HotelMealType,
   );
   useEffect(() => {
     // const selectedmp = room?.mealPlan.find((data)=> prevHotel?.mealPlan?.includes(data.mealPlan));
     // console.log("selectedmp", selectedmp);
     const prevHotelMp = room.mealPlan?.find((data) =>
-      prevHotel?.mealPlan?.includes(data.mealPlan)
+      prevHotel?.mealPlan?.includes(data.mealPlan),
     );
 
     if (prevHotelMp !== undefined) {

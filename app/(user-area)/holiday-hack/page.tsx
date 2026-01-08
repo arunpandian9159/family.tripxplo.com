@@ -251,7 +251,7 @@ export default function HolidayHackPage() {
         return text
           .replace(
             /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F018}-\u{1F270}]|[\u{238C}-\u{2454}]|[\u{20D0}-\u{20FF}]|[\u{FE00}-\u{FE0F}]/gu,
-            ""
+            "",
           )
           .trim();
       };
@@ -306,7 +306,7 @@ export default function HolidayHackPage() {
         `into ${totalDaysOff} Days of Travel!`,
         pageWidth / 2 + 25,
         yPos,
-        { align: "center" }
+        { align: "center" },
       );
       yPos += 8;
 
@@ -316,7 +316,7 @@ export default function HolidayHackPage() {
         "Plan your vacations smartly with Tamil Nadu & Indian holidays",
         pageWidth / 2,
         yPos,
-        { align: "center" }
+        { align: "center" },
       );
       yPos += 12;
 
@@ -348,7 +348,7 @@ export default function HolidayHackPage() {
         boxHeight,
         3,
         3,
-        "F"
+        "F",
       );
       pdf.setFontSize(16);
       pdf.setFont("helvetica", "bold");
@@ -357,7 +357,7 @@ export default function HolidayHackPage() {
         String(totalLeaves),
         margin + boxWidth + 5 + boxWidth / 2,
         yPos + 8,
-        { align: "center" }
+        { align: "center" },
       );
       pdf.setFontSize(8);
       pdf.setTextColor(...(slateLight as [number, number, number]));
@@ -365,7 +365,7 @@ export default function HolidayHackPage() {
         "Leaves Needed",
         margin + boxWidth + 5 + boxWidth / 2,
         yPos + 14,
-        { align: "center" }
+        { align: "center" },
       );
 
       // Days Off
@@ -377,7 +377,7 @@ export default function HolidayHackPage() {
         boxHeight,
         3,
         3,
-        "F"
+        "F",
       );
       pdf.setFontSize(16);
       pdf.setFont("helvetica", "bold");
@@ -386,7 +386,7 @@ export default function HolidayHackPage() {
         String(totalDaysOff),
         margin + 2 * (boxWidth + 5) + boxWidth / 2,
         yPos + 8,
-        { align: "center" }
+        { align: "center" },
       );
       pdf.setFontSize(8);
       pdf.setTextColor(...(slateLight as [number, number, number]));
@@ -394,7 +394,7 @@ export default function HolidayHackPage() {
         "Days Off",
         margin + 2 * (boxWidth + 5) + boxWidth / 2,
         yPos + 14,
-        { align: "center" }
+        { align: "center" },
       );
 
       yPos += boxHeight + 10;
@@ -449,7 +449,7 @@ export default function HolidayHackPage() {
             `${holiday.leavesRequired}L → ${holiday.totalDays}D`,
             xPos + cardWidth - 14,
             yPos + 8,
-            { align: "center" }
+            { align: "center" },
           );
         }
 
@@ -498,7 +498,7 @@ export default function HolidayHackPage() {
         pdf.text(
           `Best for: ${holiday.bestFor}`,
           xPos + 4,
-          yPos + cardHeight - 4
+          yPos + cardHeight - 4,
         );
 
         col++;
@@ -561,7 +561,7 @@ export default function HolidayHackPage() {
         "Visit tripxplo.com | WhatsApp: +91 94424 24492",
         pageWidth / 2,
         yPos + 16,
-        { align: "center" }
+        { align: "center" },
       );
 
       // Save the PDF
@@ -756,7 +756,7 @@ export default function HolidayHackPage() {
                     <div key={idx} className="flex items-center gap-3 text-xs">
                       <span
                         className={`w-8 h-8 flex items-center justify-center rounded-lg font-bold shadow-sm ${getDateTypeColor(
-                          date.type
+                          date.type,
                         )}`}
                       >
                         {date.day}

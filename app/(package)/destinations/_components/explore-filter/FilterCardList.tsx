@@ -187,7 +187,7 @@ const FilterCardList = ({
                     "flex-shrink-0 p-2 rounded-full transition-all duration-300",
                     isWishlisted
                       ? "bg-emerald-50 text-emerald-500 hover:bg-emerald-100"
-                      : "bg-slate-50 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50"
+                      : "bg-slate-50 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50",
                   )}
                 >
                   <Heart
@@ -348,7 +348,7 @@ const FilterCardList = ({
                 "p-2 rounded-full backdrop-blur-md transition-all duration-300 shadow-sm",
                 isWishlisted
                   ? "bg-white text-emerald-500"
-                  : "bg-black/20 text-white hover:bg-white hover:text-emerald-500"
+                  : "bg-black/20 text-white hover:bg-white hover:text-emerald-500",
               )}
             >
               <Heart

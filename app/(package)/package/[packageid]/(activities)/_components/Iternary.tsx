@@ -126,7 +126,7 @@ const Iternary = ({ events, day }: IternaryProps) => {
               event={event}
               day={day}
             />
-          )
+          ),
         )}
       </div>
     </div>
@@ -374,10 +374,10 @@ const AddActivityModal = ({
   const dispatch = useDispatch<AppDispatch>();
   const activityData = useSelector((store: any) => store.activity);
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room
+    (store: any) => store.roomSelect.room,
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage
+    (store: any) => store.searchPackage,
   );
 
   const config = getTimeConfig(timePeriod);
@@ -401,13 +401,13 @@ const AddActivityModal = ({
       }).toString();
 
       const response = await apiRequest<any[]>(
-        `packages/${activityData.packageId}/activities?${queryParams}`
+        `packages/${activityData.packageId}/activities?${queryParams}`,
       );
 
       if (response.success && response.data) {
         const filteredActivities =
           response.data[0]?.activityDetails?.filter(
-            (item: any) => item?.destinationId === destinationId
+            (item: any) => item?.destinationId === destinationId,
           ) || [];
         setActivities(filteredActivities);
       }
@@ -435,7 +435,7 @@ const AddActivityModal = ({
   };
 
   const filteredActivities = activities.filter((activity) =>
-    activity.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    activity.name?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (

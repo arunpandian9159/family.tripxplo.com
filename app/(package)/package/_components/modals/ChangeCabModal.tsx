@@ -91,7 +91,7 @@ const CabCard = ({
   };
 
   const typeColor = getVehicleTypeColor(
-    cab?.vehicleName || cab?.vehicleCompany || ""
+    cab?.vehicleName || cab?.vehicleCompany || "",
   );
 
   // Get AC type label
@@ -272,7 +272,7 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
       changeVehicleAndCalculatePrice({
         newVehicle: cab,
         prevVehicle: vehicle,
-      })
+      }),
     );
 
     // Restore scroll position after modal closes and state updates

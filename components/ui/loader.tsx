@@ -34,7 +34,7 @@ export function Loader({
               key={i}
               className={cn(
                 "rounded-full bg-emerald-500 animate-bounce",
-                config.dot
+                config.dot,
               )}
               style={{ animationDelay: `${i * 0.15}s` }}
             />
@@ -52,13 +52,13 @@ export function Loader({
           <div
             className={cn(
               "rounded-full border-4 border-emerald-100 animate-pulse",
-              config.container
+              config.container,
             )}
           />
           <div
             className={cn(
               "absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin",
-              config.container
+              config.container,
             )}
           />
           <div className="absolute inset-0 flex items-center justify-center">

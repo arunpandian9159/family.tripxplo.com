@@ -55,7 +55,7 @@ const Wishlist = () => {
 
   const handleRemoveFromWishlist = async (
     e: React.MouseEvent,
-    packageId: string
+    packageId: string,
   ) => {
     e.stopPropagation();
     await removePackageFromWishlist(packageId);

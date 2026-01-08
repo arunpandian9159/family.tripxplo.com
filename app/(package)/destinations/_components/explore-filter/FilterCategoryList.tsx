@@ -12,7 +12,7 @@ interface FilterCategoryListProps {
 const FilterCategoryList = ({ label }: FilterCategoryListProps) => {
   const dispatch = useDispatch();
   const category = useAppSelector(
-    (state) => state.filterCategory.filterCategory
+    (state) => state.filterCategory.filterCategory,
   );
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const FilterCategoryList = ({ label }: FilterCategoryListProps) => {
         "px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 whitespace-nowrap",
         category === label
           ? "bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm"
-          : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
+          : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300",
       )}
     >
       {label}
