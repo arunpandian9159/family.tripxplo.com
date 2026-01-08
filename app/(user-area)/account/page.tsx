@@ -70,7 +70,7 @@ const Account = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-24 lg:pb-8">
-        <div className="bg-gradient-to-br from-coral-500 via-coral-500 to-coral-600 pt-8 pb-32">
+        <div className="bg-gradient-to-br from-emerald-500 via-emerald-500 to-emerald-600 pt-8 pb-32">
           <Container>
             <Skeleton className="h-8 w-48 bg-white/20 mb-2" />
             <Skeleton className="h-5 w-64 bg-white/10" />
@@ -135,7 +135,7 @@ const Account = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-24 lg:pb-8">
       {/* Hero Section with Pattern */}
-      <div className="relative bg-gradient-to-br from-coral-500 via-coral-500 to-coral-600 pt-8 pb-32 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-emerald-500 via-emerald-500 to-emerald-600 pt-8 pb-32 overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-white blur-3xl" />
@@ -160,15 +160,15 @@ const Account = () => {
 
         <Container className="relative z-10">
           <div className="flex items-center gap-2 mb-1">
-            <Sparkles className="w-5 h-5 text-coral-200" />
-            <span className="text-coral-100 text-sm font-medium">
+            <Sparkles className="w-5 h-5 text-emerald-200" />
+            <span className="text-emerald-100 text-sm font-medium">
               {greeting}
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
             {firstName} ✨
           </h1>
-          <p className="text-coral-100 flex items-center gap-2">
+          <p className="text-emerald-100 flex items-center gap-2">
             <Clock className="w-4 h-4" />
             Ready for your next adventure?
           </p>
@@ -182,8 +182,8 @@ const Account = () => {
             <div className="flex flex-col sm:flex-row items-center gap-5">
               {/* Avatar with ring */}
               <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-br from-coral-400 to-coral-600 rounded-full blur-md opacity-50 group-hover:opacity-70 transition-opacity" />
-                <div className="relative w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-gradient-to-br from-coral-400 to-coral-500 p-1">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full blur-md opacity-50 group-hover:opacity-70 transition-opacity" />
+                <div className="relative w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-500 p-1">
                   <div className="w-full h-full rounded-full overflow-hidden bg-white">
                     {(user as any)?.profileImg ||
                     (user as any)?.profileImage ? (
@@ -210,7 +210,9 @@ const Account = () => {
                 </div>
                 {/* Edit overlay */}
                 <Link
-                  href={`/account/${(user as any)?.userId || (user as any)?.id}`}
+                  href={`/account/${
+                    (user as any)?.userId || (user as any)?.id
+                  }`}
                   className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                 >
                   <Camera className="w-6 h-6 text-white" />
@@ -255,7 +257,9 @@ const Account = () => {
               {/* Edit Button - Desktop */}
               <div className="hidden sm:block">
                 <Link
-                  href={`/account/${(user as any)?.userId || (user as any)?.id}`}
+                  href={`/account/${
+                    (user as any)?.userId || (user as any)?.id
+                  }`}
                 >
                   <Button variant="outline" size="sm" className="group">
                     <Settings className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" />
@@ -285,7 +289,7 @@ const Account = () => {
           <Card
             hoverable
             padding="none"
-            className="mb-6 overflow-hidden bg-gradient-to-r from-coral-500 to-rose-500 border-0 animate-slide-up"
+            className="mb-6 overflow-hidden bg-gradient-to-r from-emerald-500 to-emerald-700 border-0 animate-slide-up"
             style={{ animationDelay: "0.1s" } as React.CSSProperties}
           >
             <div className="p-5 flex items-center gap-4">
@@ -329,7 +333,7 @@ const Account = () => {
                   <div
                     className={cn(
                       "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
-                      item.lightColor,
+                      item.lightColor
                     )}
                   >
                     <item.icon className={cn("w-5 h-5", item.iconColor)} />
@@ -341,7 +345,7 @@ const Account = () => {
                       </h3>
                       {item.badge && (
                         <Badge
-                          variant="coral"
+                          variant="emerald"
                           size="sm"
                           className="text-[10px] px-1.5 py-0.5"
                         >

@@ -38,7 +38,7 @@ const GlobalHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalView, setAuthModalView] = useState<"signin" | "register">(
-    "signin",
+    "signin"
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -102,7 +102,7 @@ const GlobalHeader = () => {
           "hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled
             ? "bg-white/95 backdrop-blur-lg shadow-md border-b border-slate-100"
-            : "bg-white border-b border-slate-200",
+            : "bg-white border-b border-slate-200"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
@@ -132,20 +132,20 @@ const GlobalHeader = () => {
                       className={cn(
                         "relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
                         active
-                          ? "text-coral-600 bg-coral-50"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                          ? "text-emerald-600 bg-emerald-50"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                       )}
                     >
                       <Icon
                         className={cn(
                           "w-4 h-4",
-                          active ? "text-coral-500" : "text-slate-400",
+                          active ? "text-emerald-500" : "text-slate-400"
                         )}
                         strokeWidth={active ? 2.5 : 2}
                       />
                       <span>{item.label}</span>
                       {active && (
-                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-coral-500 rounded-full" />
+                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-emerald-500 rounded-full" />
                       )}
                     </Link>
                   );
@@ -163,8 +163,8 @@ const GlobalHeader = () => {
                     className={cn(
                       "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
                       pathname.startsWith("/account")
-                        ? "text-coral-600 bg-coral-50"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                        ? "text-emerald-600 bg-emerald-50"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     )}
                   >
                     <UserCircleIcon className="w-5 h-5" />
@@ -175,7 +175,7 @@ const GlobalHeader = () => {
                     onClick={handleLoginClick}
                     className={cn(
                       "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
-                      "bg-gradient-to-r from-coral-500 to-rose-500 text-white hover:shadow-lg hover:shadow-coral-500/25 hover:scale-[1.02] active:scale-100",
+                      "bg-gradient-to-r from-emerald-500 to-emerald-700 text-white hover:shadow-lg hover:shadow-emerald-500/25 hover:scale-[1.02] active:scale-100"
                     )}
                   >
                     <LogIn className="w-5 h-5" />
@@ -197,7 +197,7 @@ const GlobalHeader = () => {
           "lg:hidden fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled
             ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-slate-100"
-            : "bg-white border-b border-slate-100",
+            : "bg-white border-b border-slate-100"
         )}
       >
         <div className="px-4 h-16 flex justify-center items-center relative">
@@ -227,7 +227,7 @@ const GlobalHeader = () => {
         >
           {/* Animated indicator line */}
           <div
-            className="absolute top-0 h-0.5 w-12 bg-gradient-to-r from-coral-400 via-coral-500 to-rose-500 rounded-full transition-all duration-300 ease-out shadow-sm shadow-coral-500/50"
+            className="absolute top-0 h-0.5 w-12 bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-700 rounded-full transition-all duration-300 ease-out shadow-sm shadow-emerald-500/50"
             style={{
               left: `${indicatorPosition}%`,
               transform: "translateX(-50%)",
@@ -247,7 +247,7 @@ const GlobalHeader = () => {
                     className={cn(
                       "flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-2xl transition-all duration-200 touch-manipulation min-w-[56px]",
                       "active:scale-95 active:bg-slate-50",
-                      active && "bg-coral-50/50",
+                      active && "bg-emerald-50/50"
                     )}
                     aria-current={active ? "page" : undefined}
                   >
@@ -255,8 +255,8 @@ const GlobalHeader = () => {
                       className={cn(
                         "p-2 rounded-xl transition-all duration-200",
                         active
-                          ? "bg-gradient-to-br from-coral-500 to-rose-500 shadow-md shadow-coral-500/30"
-                          : "bg-transparent",
+                          ? "bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-md shadow-emerald-500/30"
+                          : "bg-transparent"
                       )}
                     >
                       <Icon
@@ -264,7 +264,7 @@ const GlobalHeader = () => {
                           "w-5 h-5 transition-all duration-200",
                           active
                             ? "text-white scale-105"
-                            : "text-slate-400 group-hover:text-slate-500",
+                            : "text-slate-400 group-hover:text-slate-500"
                         )}
                         strokeWidth={active ? 2.5 : 1.8}
                       />
@@ -272,7 +272,7 @@ const GlobalHeader = () => {
                     <span
                       className={cn(
                         "text-[10px] font-semibold transition-colors leading-tight",
-                        active ? "text-coral-600" : "text-slate-400",
+                        active ? "text-emerald-600" : "text-slate-400"
                       )}
                     >
                       {item.label}
@@ -288,7 +288,7 @@ const GlobalHeader = () => {
                   className={cn(
                     "flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-2xl transition-all duration-200 touch-manipulation min-w-[56px]",
                     "active:scale-95 active:bg-slate-50",
-                    pathname.startsWith("/account") && "bg-coral-50/50",
+                    pathname.startsWith("/account") && "bg-emerald-50/50"
                   )}
                   aria-current={
                     pathname.startsWith("/account") ? "page" : undefined
@@ -298,8 +298,8 @@ const GlobalHeader = () => {
                     className={cn(
                       "p-2 rounded-xl transition-all duration-200",
                       pathname.startsWith("/account")
-                        ? "bg-gradient-to-br from-coral-500 to-rose-500 shadow-md shadow-coral-500/30"
-                        : "bg-transparent",
+                        ? "bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-md shadow-emerald-500/30"
+                        : "bg-transparent"
                     )}
                   >
                     <UserCircleIcon
@@ -307,7 +307,7 @@ const GlobalHeader = () => {
                         "w-5 h-5 transition-all duration-200",
                         pathname.startsWith("/account")
                           ? "text-white scale-105"
-                          : "text-slate-400 group-hover:text-slate-500",
+                          : "text-slate-400 group-hover:text-slate-500"
                       )}
                       strokeWidth={pathname.startsWith("/account") ? 2.5 : 1.8}
                     />
@@ -316,8 +316,8 @@ const GlobalHeader = () => {
                     className={cn(
                       "text-[10px] font-semibold transition-colors leading-tight",
                       pathname.startsWith("/account")
-                        ? "text-coral-600"
-                        : "text-slate-400",
+                        ? "text-emerald-600"
+                        : "text-slate-400"
                     )}
                   >
                     Account

@@ -10,18 +10,6 @@
 
 @layer base {
   :root {
-    /* Primary Brand Colors - Warm Coral Palette */
-    --coral-50: 255 247 245;
-    --coral-100: 255 235 230;
-    --coral-200: 255 213 204;
-    --coral-300: 255 179 166;
-    --coral-400: 255 143 120;
-    --coral-500: 255 95 95;
-    --coral-600: 237 66 66;
-    --coral-700: 199 42 42;
-    --coral-800: 165 38 38;
-    --coral-900: 136 38 38;
-
     /* Secondary - Emerald/Teal Palette */
     --emerald-50: 236 253 245;
     --emerald-100: 209 250 229;

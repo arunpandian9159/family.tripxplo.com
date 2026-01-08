@@ -95,7 +95,7 @@ export default function HotelData({
         {/* Card Header */}
         <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 bg-coral-500 text-white text-sm font-bold rounded-lg">
+            <div className="flex items-center justify-center w-8 h-8 bg-emerald-500 text-white text-sm font-bold rounded-lg">
               {index}
             </div>
             <div>
@@ -108,7 +108,7 @@ export default function HotelData({
           </div>
           <button
             onClick={openHotelModal}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coral-500 to-coral-400 text-white hover:from-coral-600 hover:to-coral-500 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white hover:from-emerald-600 hover:to-emerald-500 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
           >
             <ArrowRightLeft size={14} />
             Change Hotel
@@ -172,7 +172,7 @@ export default function HotelData({
                         // 1. Try to use dynamic calculation based on Search Date + Day Offset
                         // This fixes the "Wrong Day" issue if the backend returns old static dates
                         const searchDateStr = useSelector(
-                          (state: any) => state.searchPackage.date,
+                          (state: any) => state.searchPackage.date
                         );
 
                         // Check if we have necessary data for dynamic calculation
@@ -187,14 +187,14 @@ export default function HotelData({
                             const checkInDate = new Date(tripStartDate);
                             checkInDate.setDate(
                               tripStartDate.getDate() +
-                                (hotel.startDateWise - 1),
+                                (hotel.startDateWise - 1)
                             );
 
                             // Calculate Check-out: CheckIn + Nights
                             // OR TripStart + (EndOffset - 1) if endDateWise is reliable
                             const checkOutDate = new Date(checkInDate);
                             checkOutDate.setDate(
-                              checkInDate.getDate() + (hotel.noOfNight || 1),
+                              checkInDate.getDate() + (hotel.noOfNight || 1)
                             );
 
                             const startStr = checkInDate.toLocaleDateString(
@@ -203,11 +203,11 @@ export default function HotelData({
                                 weekday: "short",
                                 month: "short",
                                 day: "numeric",
-                              },
+                              }
                             );
                             const endStr = checkOutDate.toLocaleDateString(
                               "en-US",
-                              { month: "short", day: "numeric" },
+                              { month: "short", day: "numeric" }
                             );
 
                             return `${startStr} — ${endStr}`;
@@ -222,7 +222,9 @@ export default function HotelData({
                           isNaN(startDate.getTime()) ||
                           isNaN(endDate.getTime())
                         ) {
-                          return `${hotel?.fullStartDate || "Check-in"} — ${hotel?.fullEndDate || "Check-out"}`;
+                          return `${hotel?.fullStartDate || "Check-in"} — ${
+                            hotel?.fullEndDate || "Check-out"
+                          }`;
                         }
 
                         const startStr = startDate.toLocaleDateString("en-US", {
@@ -237,7 +239,9 @@ export default function HotelData({
 
                         return `${startStr} — ${endStr}`;
                       } catch (e) {
-                        return `${hotel?.fullStartDate || "Check-in"} — ${hotel?.fullEndDate || "Check-out"}`;
+                        return `${hotel?.fullStartDate || "Check-in"} — ${
+                          hotel?.fullEndDate || "Check-out"
+                        }`;
                       }
                     })()}
                   </span>

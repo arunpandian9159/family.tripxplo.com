@@ -39,7 +39,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
   const [isMobile, setIsMobile] = useState(false);
 
   const themeSelected = useSelector(
-    (state: RootState) => state.themeSelect.theme,
+    (state: RootState) => state.themeSelect.theme
   );
   const [focused, setFocused] = useState(themeSelected);
   const [selectedTheme, setSelectedTheme] = useState(themeSelected);
@@ -101,7 +101,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
   useEffect(() => {
     if (!selectedThemeId && themes && selectedTheme) {
       const found = themes.find(
-        (t) => t.name.toLowerCase() === selectedTheme.toLowerCase(),
+        (t) => t.name.toLowerCase() === selectedTheme.toLowerCase()
       );
       if (found) setSelectedThemeId(found.id);
     }
@@ -126,7 +126,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
             child: 0,
             room: 1,
           },
-        }),
+        })
       );
       if (theme.perRoom) {
         dispatch(selectPerRooom(theme.perRoom));
@@ -142,7 +142,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
             child: 2,
             room: 1,
           },
-        }),
+        })
       );
     } else if (theme.name === "Friends") {
       setAdults(4);
@@ -155,7 +155,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
             child: 0,
             room: 2,
           },
-        }),
+        })
       );
     }
   };
@@ -188,7 +188,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
           key={i}
           className={cn(
             "rounded-full flex-shrink-0",
-            isMobile ? "w-24 h-11" : "w-28 h-10",
+            isMobile ? "w-24 h-11" : "w-28 h-10"
           )}
         />
       ))}
@@ -212,7 +212,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
         ref={containerRef}
         className={cn(
           "flex items-center gap-2 md:gap-3 overflow-x-auto no-scrollbar py-1",
-          isMobile ? "px-1 snap-x snap-mandatory" : "justify-center px-8",
+          isMobile ? "px-1 snap-x snap-mandatory" : "justify-center px-8"
         )}
         style={{
           scrollbarWidth: "none",
@@ -245,14 +245,14 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
                     : "px-4 py-2.5 rounded-full",
                   // Selected state
                   focused === theme.name
-                    ? "bg-gradient-to-r from-coral-500 to-coral-400 text-white border-transparent shadow-lg shadow-coral-500/30 scale-[1.02]"
-                    : "bg-white border-slate-200 text-slate-600 hover:border-coral-200 hover:bg-coral-50 active:scale-95",
+                    ? "bg-gradient-to-r from-emerald-500 to-emerald-400 text-white border-transparent shadow-lg shadow-emerald-500/30 scale-[1.02]"
+                    : "bg-white border-slate-200 text-slate-600 hover:border-emerald-200 hover:bg-emerald-50 active:scale-95"
                 )}
               >
                 <div
                   className={cn(
                     "relative flex-shrink-0",
-                    isMobile ? "h-5 w-5" : "h-4 w-4",
+                    isMobile ? "h-5 w-5" : "h-4 w-4"
                   )}
                 >
                   {theme.image !== undefined && (
@@ -263,7 +263,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
                         "object-contain transition-all",
                         focused === theme.name
                           ? "brightness-0 invert"
-                          : "opacity-60",
+                          : "opacity-60"
                       )}
                       alt={theme.name}
                       src={`https://tripemilestone.in-maa-1.linodeobjects.com/${theme.image}`}
@@ -273,7 +273,7 @@ const PackageThemes = ({ scrollRef }: PackageThemeProps) => {
                 <span
                   className={cn(
                     "font-semibold whitespace-nowrap",
-                    isMobile ? "text-sm" : "text-sm",
+                    isMobile ? "text-sm" : "text-sm"
                   )}
                 >
                   {theme.name}

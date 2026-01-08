@@ -43,10 +43,10 @@ const PackagesPage = () => {
 
   const [offset, setOffset] = useState<number>(0);
   const destination = useAppSelector(
-    (state) => state.searchPackage.destination,
+    (state) => state.searchPackage.destination
   );
   const destinationId = useAppSelector(
-    (state) => state.searchPackage.destinationId,
+    (state) => state.searchPackage.destinationId
   );
   const themeId = useAppSelector((state) => state.themeSelect.themeId);
 
@@ -131,7 +131,7 @@ const PackagesPage = () => {
             <div className="animate-slide-up">
               <div className="flex items-center gap-2 mb-3">
                 {destination && (
-                  <Badge variant="coral" size="lg">
+                  <Badge variant="emerald" size="lg">
                     <MapPin className="w-3 h-3 mr-1" />
                     {destination}
                   </Badge>
@@ -214,8 +214,8 @@ const PackagesPage = () => {
         ) : (
           !isLoading && (
             <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-coral-50 to-rose-50 flex items-center justify-center mb-6">
-                <Package className="w-12 h-12 text-coral-500" />
+              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-50 to-rose-50 flex items-center justify-center mb-6">
+                <Package className="w-12 h-12 text-emerald-500" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">
                 We'll update the package details shortly ✈️
@@ -227,7 +227,7 @@ const PackagesPage = () => {
                 href="https://crm.tripxplo.com/travel-inquiry"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-coral-500 to-coral-400 text-white font-semibold rounded-xl hover:from-coral-600 hover:to-coral-500 transition-all shadow-lg shadow-coral-500/30 hover:shadow-xl hover:shadow-coral-500/40 active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 active:scale-[0.98]"
               >
                 Fill Travel Inquiry Form
                 <svg
@@ -262,7 +262,7 @@ const PackagesPage = () => {
         {packageListHasNext && !isLoading && (
           <div className="flex justify-center mt-12">
             <div className="flex items-center gap-2 text-slate-500">
-              <div className="w-2 h-2 rounded-full bg-coral-500 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-sm">Loading more packages...</span>
             </div>
           </div>

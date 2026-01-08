@@ -54,7 +54,11 @@ const PackageHighlight = ({
     {
       icon: Users,
       label: "Travelers",
-      value: `${totalAdult} Adult${totalAdult > 1 ? "s" : ""}${totalChild > 0 ? `, ${totalChild} Child${totalChild > 1 ? "ren" : ""}` : ""}`,
+      value: `${totalAdult} Adult${totalAdult > 1 ? "s" : ""}${
+        totalChild > 0
+          ? `, ${totalChild} Child${totalChild > 1 ? "ren" : ""}`
+          : ""
+      }`,
       color: "text-violet-500",
       bgColor: "bg-violet-50",
     },
@@ -62,8 +66,8 @@ const PackageHighlight = ({
       icon: Building2,
       label: "Hotels",
       value: `${hotelCount} ${hotelCount === 1 ? "Stay" : "Stays"}`,
-      color: "text-coral-500",
-      bgColor: "bg-coral-50",
+      color: "text-emerald-500",
+      bgColor: "bg-emerald-50",
     },
     {
       icon: Calendar,
@@ -89,8 +93,8 @@ const PackageHighlight = ({
       {/* Destinations Strip */}
       {safeDestinations.length > 0 && (
         <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-slate-50 to-white rounded-2xl border border-slate-100">
-          <div className="p-2.5 bg-coral-50 rounded-xl">
-            <MapPin size={20} className="text-coral-500" />
+          <div className="p-2.5 bg-emerald-50 rounded-xl">
+            <MapPin size={20} className="text-emerald-500" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
@@ -102,7 +106,7 @@ const PackageHighlight = ({
                 .map((dest, i, arr) => (
                   <React.Fragment key={dest?._id || i}>
                     <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-lg border border-slate-100 shadow-sm">
-                      <span className="text-coral-500 font-bold text-sm">
+                      <span className="text-emerald-500 font-bold text-sm">
                         {dest?.noOfNight}N
                       </span>
                       <span className="text-slate-700 font-medium text-sm">

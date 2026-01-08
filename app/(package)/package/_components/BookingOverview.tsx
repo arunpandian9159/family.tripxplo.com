@@ -44,15 +44,15 @@ export const BookingOverview = ({
   return (
     <div className="lg:px-5">
       <div className="mt-[30px] mb-[130px] lg:mb-[220px]">
-        <h1 className="font-Poppins text-[20px] lg:text-[30px] not-italic font-semibold leading-normal tracking-[0.18px] bg-gradient-to-r from-coral-500 to-coral-400 bg-clip-text text-transparent lg:my-6 drop-shadow-sm">
+        <h1 className="font-Poppins text-[20px] lg:text-[30px] not-italic font-semibold leading-normal tracking-[0.18px] bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent lg:my-6 drop-shadow-sm">
           Booking Overview
         </h1>
         <div className="lg:flex ">
-          <div className="mt-8 w-full lg:w-[550px] lg:flex lg:flex-col  rounded-[20px] border-[2px] border-coral-500 border-solid bg-[#FFF] shadow-bookingOverviewShadow p-3 lg:px-5">
+          <div className="mt-8 w-full lg:w-[550px] lg:flex lg:flex-col  rounded-[20px] border-[2px] border-emerald-500 border-solid bg-[#FFF] shadow-bookingOverviewShadow p-3 lg:px-5">
             <div className="flex items-center justify-center my-[25px] px-5">
               <span></span>
               <div className="  flex flex-col items-center lg:text-left text-[#5D6670] font-Poppins text-[16px] lg:text-[22px] fr  leading-normal tracking-[0.13px]">
-                <h1 className="text-coral-500 font-semibold text-center">
+                <h1 className="text-emerald-500 font-semibold text-center">
                   {" "}
                   {packageName}
                 </h1>
@@ -70,7 +70,7 @@ export const BookingOverview = ({
                           <span className="p-1 rounded-md border-neural-100 shadow-sm border">
                             <UserRound
                               size={12}
-                              className="align-middle text-coral-500"
+                              className="align-middle text-emerald-500"
                             />
                           </span>
                           {adults} Adults
@@ -89,7 +89,7 @@ export const BookingOverview = ({
                             +
                             <Baby
                               size={12}
-                              className="align-middle text-coral-500"
+                              className="align-middle text-emerald-500"
                             />{" "}
                           </span>
                           {child} Child
@@ -100,7 +100,7 @@ export const BookingOverview = ({
                             +
                             <Baby
                               size={12}
-                              className="align-middle text-coral-500"
+                              className="align-middle text-emerald-500"
                             />
                           </span>
                           {child} Children
@@ -141,14 +141,20 @@ export const BookingOverview = ({
                       <div className="flex flex-col items-start gap-1 mt-2">
                         <h1 className="text-[12px] lg:text-[14px] text-neutral-500 flex items-center gap-2 font-medium">
                           <span className="p-1 rounded-md border-neural-100 shadow-sm border">
-                            <Utensils size={10} className=" text-coral-500  " />
+                            <Utensils
+                              size={10}
+                              className=" text-emerald-500  "
+                            />
                           </span>
                           {getMealPlan(h.mealPlan)}
                         </h1>
 
                         <h1 className="text-[12px] lg:text-[14px]  text-neutral-500  gap-2  rounded-lg font-medium    flex items-center  ">
                           <span className="p-1 rounded-md border-neural-100 shadow-sm border">
-                            <BedSingle size={10} className=" text-coral-500" />
+                            <BedSingle
+                              size={10}
+                              className=" text-emerald-500"
+                            />
                           </span>
 
                           <span className="truncate-1">{h.hotelRoomType}</span>
@@ -187,7 +193,7 @@ export const BookingOverview = ({
                       <div className="flex flex-col  ">
                         <h1 className="text-[12px] lg:text-[14px]  text-neutral-500 flex items-center gap-2 flex items-center gap-1  rounded-lg w-fit  font-medium mt-1 ">
                           <span className="p-1 rounded-md border-neural-100 shadow-sm border">
-                            <Sofa size={10} className=" text-coral-500" />
+                            <Sofa size={10} className=" text-emerald-500" />
                           </span>{" "}
                           {v.seater} seater
                         </h1>

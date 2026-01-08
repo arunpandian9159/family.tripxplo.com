@@ -8,7 +8,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "bg-slate-100 text-slate-700",
-        coral: "bg-coral-100 text-coral-700",
+        emerald: "bg-emerald-100 text-emerald-700",
         emerald: "bg-emerald-100 text-emerald-700",
         gold: "bg-amber-100 text-amber-700",
         silver: "bg-slate-200 text-slate-600",
@@ -31,12 +31,11 @@ const badgeVariants = cva(
       variant: "default",
       size: "md",
     },
-  },
+  }
 );
 
 export interface BadgeProps
-  extends
-    React.HTMLAttributes<HTMLSpanElement>,
+  extends React.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof badgeVariants> {
   icon?: React.ReactNode;
 }
@@ -71,10 +70,10 @@ export function PlanBadge({ plan, className }: PlanBadgeProps) {
     plan === "Gold"
       ? "gold"
       : plan === "Silver"
-        ? "silver"
-        : plan === "Platinum"
-          ? "platinum"
-          : "default";
+      ? "silver"
+      : plan === "Platinum"
+      ? "platinum"
+      : "default";
 
   return (
     <Badge variant={variant} className={className}>
@@ -110,7 +109,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
           variant === "success" && "bg-green-500",
           variant === "warning" && "bg-yellow-500",
           variant === "error" && "bg-red-500",
-          variant === "default" && "bg-slate-400",
+          variant === "default" && "bg-slate-400"
         )}
       />
       {label}

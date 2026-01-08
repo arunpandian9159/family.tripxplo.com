@@ -251,7 +251,7 @@ export default function HolidayHackPage() {
         return text
           .replace(
             /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F018}-\u{1F270}]|[\u{238C}-\u{2454}]|[\u{20D0}-\u{20FF}]|[\u{FE00}-\u{FE0F}]/gu,
-            "",
+            ""
           )
           .trim();
       };
@@ -306,7 +306,7 @@ export default function HolidayHackPage() {
         `into ${totalDaysOff} Days of Travel!`,
         pageWidth / 2 + 25,
         yPos,
-        { align: "center" },
+        { align: "center" }
       );
       yPos += 8;
 
@@ -316,7 +316,7 @@ export default function HolidayHackPage() {
         "Plan your vacations smartly with Tamil Nadu & Indian holidays",
         pageWidth / 2,
         yPos,
-        { align: "center" },
+        { align: "center" }
       );
       yPos += 12;
 
@@ -348,7 +348,7 @@ export default function HolidayHackPage() {
         boxHeight,
         3,
         3,
-        "F",
+        "F"
       );
       pdf.setFontSize(16);
       pdf.setFont("helvetica", "bold");
@@ -357,7 +357,7 @@ export default function HolidayHackPage() {
         String(totalLeaves),
         margin + boxWidth + 5 + boxWidth / 2,
         yPos + 8,
-        { align: "center" },
+        { align: "center" }
       );
       pdf.setFontSize(8);
       pdf.setTextColor(...(slateLight as [number, number, number]));
@@ -365,7 +365,7 @@ export default function HolidayHackPage() {
         "Leaves Needed",
         margin + boxWidth + 5 + boxWidth / 2,
         yPos + 14,
-        { align: "center" },
+        { align: "center" }
       );
 
       // Days Off
@@ -377,7 +377,7 @@ export default function HolidayHackPage() {
         boxHeight,
         3,
         3,
-        "F",
+        "F"
       );
       pdf.setFontSize(16);
       pdf.setFont("helvetica", "bold");
@@ -386,7 +386,7 @@ export default function HolidayHackPage() {
         String(totalDaysOff),
         margin + 2 * (boxWidth + 5) + boxWidth / 2,
         yPos + 8,
-        { align: "center" },
+        { align: "center" }
       );
       pdf.setFontSize(8);
       pdf.setTextColor(...(slateLight as [number, number, number]));
@@ -394,7 +394,7 @@ export default function HolidayHackPage() {
         "Days Off",
         margin + 2 * (boxWidth + 5) + boxWidth / 2,
         yPos + 14,
-        { align: "center" },
+        { align: "center" }
       );
 
       yPos += boxHeight + 10;
@@ -449,7 +449,7 @@ export default function HolidayHackPage() {
             `${holiday.leavesRequired}L → ${holiday.totalDays}D`,
             xPos + cardWidth - 14,
             yPos + 8,
-            { align: "center" },
+            { align: "center" }
           );
         }
 
@@ -498,7 +498,7 @@ export default function HolidayHackPage() {
         pdf.text(
           `Best for: ${holiday.bestFor}`,
           xPos + 4,
-          yPos + cardHeight - 4,
+          yPos + cardHeight - 4
         );
 
         col++;
@@ -561,7 +561,7 @@ export default function HolidayHackPage() {
         "Visit tripxplo.com | WhatsApp: +91 94424 24492",
         pageWidth / 2,
         yPos + 16,
-        { align: "center" },
+        { align: "center" }
       );
 
       // Save the PDF
@@ -600,7 +600,7 @@ export default function HolidayHackPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50/50 via-white to-coral-50/50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50/50 via-white to-emerald-50/50">
       {/* Sticky Download Button - Mobile */}
       <div className="fixed bottom-20 right-4 z-40 lg:hidden">
         <button
@@ -618,7 +618,7 @@ export default function HolidayHackPage() {
         {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-coral-200/30 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-6xl mx-auto text-center">
@@ -697,7 +697,7 @@ export default function HolidayHackPage() {
                 className={`group relative bg-white rounded-2xl p-5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden ${
                   holiday.leavesRequired === 0
                     ? "border-l-4 border-l-emerald-500"
-                    : "border-l-4 border-l-coral-500"
+                    : "border-l-4 border-l-emerald-500"
                 }`}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
@@ -706,7 +706,7 @@ export default function HolidayHackPage() {
                   className={`absolute top-0 right-0 w-24 h-24 opacity-10 ${
                     holiday.leavesRequired === 0
                       ? "bg-gradient-to-br from-emerald-500 to-transparent"
-                      : "bg-gradient-to-br from-coral-500 to-transparent"
+                      : "bg-gradient-to-br from-emerald-500 to-transparent"
                   }`}
                 />
 
@@ -723,7 +723,7 @@ export default function HolidayHackPage() {
                         ✨ FREE
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-coral-500 to-red-500 text-white text-xs font-bold rounded-lg shadow-sm">
+                      <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-emerald-500 to-red-500 text-white text-xs font-bold rounded-lg shadow-sm">
                         {holiday.leavesRequired}L → {holiday.totalDays}D
                       </span>
                     )}
@@ -756,7 +756,7 @@ export default function HolidayHackPage() {
                     <div key={idx} className="flex items-center gap-3 text-xs">
                       <span
                         className={`w-8 h-8 flex items-center justify-center rounded-lg font-bold shadow-sm ${getDateTypeColor(
-                          date.type,
+                          date.type
                         )}`}
                       >
                         {date.day}
@@ -778,7 +778,7 @@ export default function HolidayHackPage() {
 
                 {/* Recommended Trip */}
                 <div className="flex items-center gap-2 pt-3 border-t border-slate-100">
-                  <MapPin className="w-4 h-4 text-coral-500" />
+                  <MapPin className="w-4 h-4 text-emerald-500" />
                   <span className="text-xs text-slate-500">Best for:</span>
                   <span className="text-xs font-semibold text-slate-700">
                     {holiday.bestFor}
@@ -808,7 +808,7 @@ export default function HolidayHackPage() {
 
       {/* Footer CTA */}
       <footer className="px-4 pb-28 lg:pb-12">
-        <div className="max-w-2xl mx-auto bg-gradient-to-r from-coral-500 to-coral-400 rounded-2xl p-6 md:p-8 text-center text-white shadow-xl">
+        <div className="max-w-2xl mx-auto bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-2xl p-6 md:p-8 text-center text-white shadow-xl">
           <Plane className="w-10 h-10 mx-auto mb-4 animate-float" />
           <h2 className="text-xl md:text-2xl font-bold mb-2">
             Plan Your 2026 with TripXplo!
@@ -819,7 +819,7 @@ export default function HolidayHackPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/packages"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-coral-600 font-semibold rounded-xl hover:bg-white/90 transition-all duration-300"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-600 font-semibold rounded-xl hover:bg-white/90 transition-all duration-300"
             >
               <Calendar className="w-5 h-5" />
               Browse Packages

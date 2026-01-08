@@ -62,7 +62,7 @@ export default function DateBox({
         onOpenChange(open);
       }
     },
-    [onOpenChange],
+    [onOpenChange]
   );
 
   const updateDropdownPosition = useCallback(() => {
@@ -79,7 +79,7 @@ export default function DateBox({
     if (!newDate) return;
 
     const localDate = new Date(
-      newDate.getTime() - newDate.getTimezoneOffset() * 60000,
+      newDate.getTime() - newDate.getTimezoneOffset() * 60000
     );
 
     setDate(localDate);
@@ -160,7 +160,7 @@ export default function DateBox({
           "bg-white shadow-2xl border border-slate-200 overflow-hidden",
           isMobile
             ? "fixed inset-x-0 bottom-0 rounded-t-3xl max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-300 z-[9999]"
-            : "fixed rounded-2xl z-[9999]",
+            : "fixed rounded-2xl z-[9999]"
         )}
         style={
           isMobile
@@ -174,8 +174,8 @@ export default function DateBox({
         {/* Header */}
         <div
           className={cn(
-            "px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-coral-50/30 flex items-center justify-between sticky top-0 z-10",
-            isMobile && "px-6 py-5",
+            "px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-emerald-50/30 flex items-center justify-between sticky top-0 z-10",
+            isMobile && "px-6 py-5"
           )}
         >
           <div>

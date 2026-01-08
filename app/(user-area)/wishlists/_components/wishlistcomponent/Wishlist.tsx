@@ -55,7 +55,7 @@ const Wishlist = () => {
 
   const handleRemoveFromWishlist = async (
     e: React.MouseEvent,
-    packageId: string,
+    packageId: string
   ) => {
     e.stopPropagation();
     await removePackageFromWishlist(packageId);
@@ -72,8 +72,8 @@ const Wishlist = () => {
     return (
       <>
         <div className="flex flex-col items-center justify-center py-20">
-          <div className="p-6 bg-coral-50 rounded-full mb-6">
-            <Heart className="w-12 h-12 text-coral-400" />
+          <div className="p-6 bg-emerald-50 rounded-full mb-6">
+            <Heart className="w-12 h-12 text-emerald-400" />
           </div>
           <h3 className="text-xl font-semibold text-slate-800 mb-2">
             Login to view your wishlist
@@ -106,7 +106,7 @@ const Wishlist = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <Loader2 className="w-10 h-10 text-coral-500 animate-spin mb-4" />
+        <Loader2 className="w-10 h-10 text-emerald-500 animate-spin mb-4" />
         <p className="text-slate-500">Loading your wishlist...</p>
       </div>
     );
@@ -116,8 +116,8 @@ const Wishlist = () => {
   if (items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <div className="p-6 bg-coral-50 rounded-full mb-6">
-          <Heart className="w-12 h-12 text-coral-400" />
+        <div className="p-6 bg-emerald-50 rounded-full mb-6">
+          <Heart className="w-12 h-12 text-emerald-400" />
         </div>
         <h3 className="text-xl font-semibold text-slate-800 mb-2">
           No saved packages yet
@@ -170,7 +170,7 @@ const Wishlist = () => {
               {/* Wishlist Button (Remove) */}
               <button
                 onClick={(e) => handleRemoveFromWishlist(e, data.packageId)}
-                className="absolute top-4 right-4 p-2.5 bg-coral-500 text-white rounded-full hover:bg-coral-600 transition-all duration-300 shadow-lg"
+                className="absolute top-4 right-4 p-2.5 bg-emerald-500 text-white rounded-full hover:bg-emerald-600 transition-all duration-300 shadow-lg"
               >
                 <Heart className="w-4 h-4" fill="currentColor" />
               </button>
@@ -195,7 +195,7 @@ const Wishlist = () => {
             {/* Content Section */}
             <div className="p-4 flex flex-col flex-grow">
               {/* Title */}
-              <h3 className="font-bold text-lg text-slate-900 line-clamp-2 group-hover:text-coral-500 transition-colors mb-3">
+              <h3 className="font-bold text-lg text-slate-900 line-clamp-2 group-hover:text-emerald-500 transition-colors mb-3">
                 {data.name}
               </h3>
 
@@ -247,7 +247,7 @@ const Wishlist = () => {
                     e.stopPropagation();
                     handleViewPackage(data.packageId);
                   }}
-                  className="px-4 py-2.5 bg-gradient-to-r from-coral-500 to-coral-400 text-white text-sm font-semibold rounded-xl hover:from-coral-600 hover:to-coral-500 transition-all shadow-md shadow-coral-500/20 hover:shadow-lg hover:shadow-coral-500/30 active:scale-[0.98]"
+                  className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-sm font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98]"
                 >
                   View Details
                 </button>

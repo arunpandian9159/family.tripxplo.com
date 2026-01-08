@@ -135,9 +135,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
       className={cn(
         "group bg-white rounded-2xl border overflow-hidden cursor-pointer transition-all duration-300",
         "hover:shadow-xl hover:-translate-y-1",
-        plan
-          ? `ring-2 ${plan.ring}`
-          : "border-slate-100 hover:border-slate-200",
+        plan ? `ring-2 ${plan.ring}` : "border-slate-100 hover:border-slate-200"
       )}
     >
       {/* Main Content */}
@@ -160,7 +158,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
               className={cn(
                 "absolute top-3 left-3 px-3 py-1.5 rounded-full text-white text-xs font-bold shadow-lg",
                 plan.gradient,
-                plan.shadow,
+                plan.shadow
               )}
             >
               {pkg.planName}
@@ -180,7 +178,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
         <div className="flex-1 p-4 sm:p-5 flex flex-col">
           {/* Title & Status Row */}
           <div className="flex items-start justify-between gap-3 mb-3">
-            <h3 className="font-bold text-lg text-slate-900 line-clamp-2 group-hover:text-coral-500 transition-colors flex-1">
+            <h3 className="font-bold text-lg text-slate-900 line-clamp-2 group-hover:text-emerald-500 transition-colors flex-1">
               {pkg?.packageName || "Package"}
             </h3>
 
@@ -188,7 +186,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
             <span
               className={cn(
                 "flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white",
-                status.bg,
+                status.bg
               )}
             >
               <StatusIcon
@@ -200,7 +198,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
 
           {/* Destinations */}
           <div className="flex flex-wrap items-center gap-1.5 mb-4">
-            <MapPin className="w-4 h-4 text-coral-500 flex-shrink-0" />
+            <MapPin className="w-4 h-4 text-emerald-500 flex-shrink-0" />
             {destinations.length > 0 ? (
               <>
                 {destinations.slice(0, 3).map((dest, index) => (
@@ -262,7 +260,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
             <div className="flex flex-col gap-1">
               {/* Travel Date */}
               <div className="flex items-center gap-1.5 text-slate-500">
-                <CalendarDays className="w-4 h-4 text-coral-400" />
+                <CalendarDays className="w-4 h-4 text-emerald-400" />
                 <span className="text-sm font-medium">
                   {pkg?.fullStartDate || "Date TBD"}
                   {pkg?.fullEndDate && ` - ${pkg.fullEndDate}`}
@@ -292,7 +290,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
                 e.stopPropagation();
                 pushPath(pkg?.bookingId);
               }}
-              className="px-5 py-2.5 bg-gradient-to-r from-coral-500 to-coral-400 text-white text-sm font-semibold rounded-xl hover:from-coral-600 hover:to-coral-500 transition-all shadow-md shadow-coral-500/20 hover:shadow-lg hover:shadow-coral-500/30 active:scale-[0.98] flex items-center gap-2"
+              className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-sm font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98] flex items-center gap-2"
             >
               View Details
               <ArrowRight className="w-4 h-4" />
@@ -308,7 +306,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
           status.bgLight,
           status.text,
           "border-t",
-          status.border,
+          status.border
         )}
       >
         <StatusIcon

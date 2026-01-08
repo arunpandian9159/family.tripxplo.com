@@ -35,7 +35,7 @@ export default function PaymentPage() {
   const paymentId = params.paymentId as string;
 
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(
-    null,
+    null
   );
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -93,7 +93,7 @@ export default function PaymentPage() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-coral-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-emerald-500 animate-spin mx-auto mb-4" />
           <p className="text-slate-600">Loading payment details...</p>
         </div>
       </div>
@@ -113,7 +113,7 @@ export default function PaymentPage() {
           </p>
           <button
             onClick={() => router.back()}
-            className="px-6 py-3 bg-coral-500 text-white font-semibold rounded-xl hover:bg-coral-600 transition-colors"
+            className="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-xl hover:bg-emerald-600 transition-colors"
           >
             Go Back
           </button>
@@ -150,7 +150,7 @@ export default function PaymentPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-coral-50/30 to-rose-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-rose-50/20">
       {/* Header */}
       <div className="bg-white border-b border-slate-100 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -188,7 +188,7 @@ export default function PaymentPage() {
                     key={method.id}
                     className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
                       selectedMethod === method.id
-                        ? "border-coral-500 bg-coral-50"
+                        ? "border-emerald-500 bg-emerald-50"
                         : "border-slate-200 hover:border-slate-300"
                     }`}
                   >
@@ -203,7 +203,7 @@ export default function PaymentPage() {
                     <div
                       className={`p-2.5 rounded-lg ${
                         selectedMethod === method.id
-                          ? "bg-coral-500 text-white"
+                          ? "bg-emerald-500 text-white"
                           : "bg-slate-100 text-slate-600"
                       }`}
                     >
@@ -216,7 +216,7 @@ export default function PaymentPage() {
                       <p className="text-sm text-slate-500">{method.desc}</p>
                     </div>
                     {selectedMethod === method.id && (
-                      <CheckCircle2 className="w-5 h-5 text-coral-500" />
+                      <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                     )}
                   </label>
                 ))}
@@ -243,10 +243,10 @@ export default function PaymentPage() {
           <div className="lg:w-[360px] mt-6 lg:mt-0">
             <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden sticky top-24">
               {/* Header */}
-              <div className="px-6 py-5 bg-gradient-to-r from-coral-500 to-rose-500 text-white">
+              <div className="px-6 py-5 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white">
                 <div className="flex items-center gap-2 mb-2">
-                  <Lock className="w-4 h-4 text-coral-200" />
-                  <span className="text-xs font-medium text-coral-100 uppercase tracking-wider">
+                  <Lock className="w-4 h-4 text-emerald-200" />
+                  <span className="text-xs font-medium text-emerald-100 uppercase tracking-wider">
                     Payment Summary
                   </span>
                 </div>
@@ -255,7 +255,7 @@ export default function PaymentPage() {
                     {formatIndianCurrency(paymentDetails.amount)}
                   </span>
                 </div>
-                <p className="text-xs text-coral-100 mt-1">Total Payable</p>
+                <p className="text-xs text-emerald-100 mt-1">Total Payable</p>
               </div>
 
               {/* Details */}
@@ -278,8 +278,8 @@ export default function PaymentPage() {
                     {selectedMethod === "upi"
                       ? "UPI"
                       : selectedMethod === "netbanking"
-                        ? "Net Banking"
-                        : selectedMethod}
+                      ? "Net Banking"
+                      : selectedMethod}
                   </span>
                 </div>
 
@@ -299,7 +299,7 @@ export default function PaymentPage() {
                 <button
                   onClick={handlePayment}
                   disabled={processing}
-                  className="w-full py-4 bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-coral-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {processing ? (
                     <>

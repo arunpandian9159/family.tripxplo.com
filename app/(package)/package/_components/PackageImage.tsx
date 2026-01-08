@@ -41,10 +41,10 @@ export default function PackageImage({
 
   // Get current search parameters from Redux
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect?.room,
+    (store: any) => store.roomSelect?.room
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage,
+    (store: any) => store.searchPackage
   );
   const pack = useSelector((store: any) => store.package);
 
@@ -130,7 +130,9 @@ export default function PackageImage({
       typeof window !== "undefined"
         ? window.location.origin
         : "https://www.tripxplo.com";
-    const shareUrl = `${baseUrl}/package/${identifier}${queryString ? `?${queryString}` : ""}`;
+    const shareUrl = `${baseUrl}/package/${identifier}${
+      queryString ? `?${queryString}` : ""
+    }`;
 
     const shareData = {
       title: generateShareTitle(packageName),
@@ -231,14 +233,16 @@ export default function PackageImage({
                 alt={packageName}
                 priority
                 sizes="100vw"
-                className={`object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                className={`object-cover transition-opacity duration-500 ${
+                  imageLoaded ? "opacity-100" : "opacity-0"
+                }`}
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
               />
             </>
           ) : (
             // Fallback gradient when no image
-            <div className="w-full h-full bg-gradient-to-br from-coral-600 via-rose-600 to-purple-700" />
+            <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-rose-600 to-purple-700" />
           )}
 
           {/* Dark Overlay for text readability */}
@@ -263,7 +267,7 @@ export default function PackageImage({
                 onClick={handleWishlistClick}
                 className={`p-3 min-w-[44px] min-h-[44px] rounded-xl backdrop-blur-md transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 ${
                   isWishlisted
-                    ? "bg-coral-500 text-white"
+                    ? "bg-emerald-500 text-white"
                     : "bg-white/10 hover:bg-white/20 text-white"
                 }`}
               >
@@ -304,7 +308,7 @@ export default function PackageImage({
             {/* Location */}
             {location && (
               <div className="flex items-center gap-2 mt-3 text-white/80">
-                <MapPin size={16} className="text-coral-400" />
+                <MapPin size={16} className="text-emerald-400" />
                 <span className="text-sm md:text-base">{location}</span>
               </div>
             )}

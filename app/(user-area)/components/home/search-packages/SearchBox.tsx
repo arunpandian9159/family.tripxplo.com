@@ -34,11 +34,11 @@ const SearchBox = () => {
   const [isGuestsOpen, setIsGuestsOpen] = useState(false);
 
   const destinationName = useAppSelector(
-    (store: any) => store.searchPackage.destination,
+    (store: any) => store.searchPackage.destination
   );
   const date = useAppSelector((store: any) => store.searchPackage.date);
   const roomCapacityData = useSelector(
-    (store: any) => store.roomSelect.room.totalAdults,
+    (store: any) => store.roomSelect.room.totalAdults
   );
 
   useEffect(() => {
@@ -50,9 +50,9 @@ const SearchBox = () => {
   // Derived state to check if all fields are filled for animation
   const isReadyToSearch = Boolean(
     destinationName &&
-    destinationName.length > 0 &&
-    date &&
-    roomCapacityData > 0,
+      destinationName.length > 0 &&
+      date &&
+      roomCapacityData > 0
   );
 
   const handleNextPage = useCallback(() => {
@@ -66,7 +66,7 @@ const SearchBox = () => {
       // After quick tag selection, open calendar
       setTimeout(() => setIsCalendarOpen(true), 150);
     },
-    [dispatch],
+    [dispatch]
   );
 
   // Callback when destination is selected - open calendar
@@ -102,8 +102,8 @@ const SearchBox = () => {
           {/* Destination */}
           <div className="flex-1 relative group min-w-0 overflow-visible">
             <div className="flex items-center h-14 lg:h-16 px-4 rounded-2xl bg-slate-50/50 hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-coral-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-coral-100 transition-colors">
-                <MapPin className="w-5 h-5 text-coral-500" />
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-emerald-100 transition-colors">
+                <MapPin className="w-5 h-5 text-emerald-500" />
               </div>
               <SearchDestination
                 className="flex-1 ml-3"
@@ -160,8 +160,8 @@ const SearchBox = () => {
               size="lg"
               className={`w-full lg:w-auto h-14 lg:h-16 px-8 rounded-2xl shadow-lg transition-all duration-300 ${
                 isReadyToSearch
-                  ? "animate-slow-glow ring-2 ring-coral-200"
-                  : "shadow-coral-500/25"
+                  ? "animate-slow-glow ring-2 ring-emerald-200"
+                  : "shadow-emerald-500/25"
               }`}
             >
               <Search className="w-5 h-5" />
@@ -180,8 +180,8 @@ const SearchBox = () => {
             onClick={() => handleQuickTag(dest)}
             className={`px-4 py-2 border rounded-full transition-all font-medium ${
               destinationName === dest.name
-                ? "bg-coral-500 border-coral-500 text-white shadow-md shadow-coral-500/25"
-                : "bg-white border-slate-200 text-slate-600 hover:border-coral-300 hover:text-coral-600 hover:shadow-sm"
+                ? "bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/25"
+                : "bg-white border-slate-200 text-slate-600 hover:border-emerald-300 hover:text-emerald-600 hover:shadow-sm"
             }`}
           >
             {dest.name}

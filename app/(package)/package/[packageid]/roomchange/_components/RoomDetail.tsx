@@ -57,7 +57,7 @@ const PriceChangeNotification = ({
         className={`flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl ${
           isSaving
             ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white"
-            : "bg-gradient-to-r from-coral-500 to-rose-500 text-white"
+            : "bg-gradient-to-r from-emerald-500 to-emerald-700 text-white"
         }`}
       >
         {isSaving ? (
@@ -116,7 +116,7 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
   const useAppDispatch = () => useDispatch<AppDispatch>();
   const dispatch = useAppDispatch();
   const prevHotel = useSelector(
-    (store: any) => store.hotelChange?.replaceHotel,
+    (store: any) => store.hotelChange?.replaceHotel
   );
   const router = useRouter();
 
@@ -132,13 +132,13 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
         mealPlan: selectedMealPlan,
         hotelRoom: room,
         prevHotel: prevHotel,
-      }),
+      })
     );
 
     // Show toast and navigate without scrolling to top
     if (mealPlanPrice < 0) {
       toast.success(
-        `Room changed! You saved ₹${Math.abs(mealPlanPrice).toLocaleString()}`,
+        `Room changed! You saved ₹${Math.abs(mealPlanPrice).toLocaleString()}`
       );
     } else if (mealPlanPrice > 0) {
       toast.success(`Room upgraded! +₹${mealPlanPrice.toLocaleString()}`);
@@ -150,13 +150,13 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
   };
 
   const [selectedMealPlan, setSelectedMealPlan] = useState<HotelMealType>(
-    {} as HotelMealType,
+    {} as HotelMealType
   );
   useEffect(() => {
     // const selectedmp = room?.mealPlan.find((data)=> prevHotel?.mealPlan?.includes(data.mealPlan));
     // console.log("selectedmp", selectedmp);
     const prevHotelMp = room.mealPlan?.find((data) =>
-      prevHotel?.mealPlan?.includes(data.mealPlan),
+      prevHotel?.mealPlan?.includes(data.mealPlan)
     );
 
     if (prevHotelMp !== undefined) {
@@ -277,7 +277,11 @@ const RoomDetail = ({ room }: { room: HotelRoom }) => {
                           />
                         )}
                         <p
-                          className={`font-montserrat text-[9px] sm:text-[12px] lg:text-[15px] sm:font-semibold ${mealPlanPrice < 0 ? "text-emerald-600" : "bg-clip-text text-transparent"}`}
+                          className={`font-montserrat text-[9px] sm:text-[12px] lg:text-[15px] sm:font-semibold ${
+                            mealPlanPrice < 0
+                              ? "text-emerald-600"
+                              : "bg-clip-text text-transparent"
+                          }`}
                           style={
                             mealPlanPrice >= 0
                               ? {

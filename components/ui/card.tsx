@@ -40,7 +40,7 @@ export function Card({
         hoverable &&
           "transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 cursor-pointer",
         onClick && "w-full text-left",
-        className,
+        className
       )}
     >
       {children}
@@ -129,7 +129,7 @@ export function FeatureCard({
 }: FeatureCardProps) {
   return (
     <Card hoverable className={cn("group", className)}>
-      <div className="p-3 w-14 h-14 rounded-xl bg-coral-50 text-coral-500 flex items-center justify-center mb-4 group-hover:bg-coral-100 transition-colors">
+      <div className="p-3 w-14 h-14 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center mb-4 group-hover:bg-emerald-100 transition-colors">
         {icon}
       </div>
       <CardTitle>{title}</CardTitle>
@@ -167,7 +167,7 @@ export function StatsCard({
             <p
               className={cn(
                 "text-sm font-medium mt-2",
-                trend.positive ? "text-emerald-600" : "text-red-500",
+                trend.positive ? "text-emerald-600" : "text-red-500"
               )}
             >
               {trend.positive ? "+" : "-"}

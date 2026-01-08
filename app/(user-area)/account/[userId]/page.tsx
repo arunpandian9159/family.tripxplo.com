@@ -123,7 +123,7 @@ const Profile = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen w-full flex justify-center items-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-coral-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
       </div>
     );
   }
@@ -131,7 +131,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen w-full bg-gray-50 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-br from-coral-500 to-coral-600 pt-6 pb-16">
+      <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 pt-6 pb-16">
         <div className="max-w-4xl mx-auto px-4">
           <button
             onClick={() => router.push("/account")}
@@ -143,7 +143,7 @@ const Profile = () => {
           <h1 className="text-2xl font-bold text-white">
             Personal Information
           </h1>
-          <p className="text-coral-100">Manage your profile details</p>
+          <p className="text-emerald-100">Manage your profile details</p>
         </div>
       </div>
 
@@ -153,7 +153,7 @@ const Profile = () => {
             {/* Profile Header */}
             <div className="flex flex-col items-center space-y-6 lg:space-y-8 mb-8">
               <div className="relative lg:w-32 lg:h-32 w-24 h-24">
-                <div className="w-full h-full rounded-full bg-gradient-to-br from-coral-400 to-coral-500 p-1">
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-emerald-400 to-emerald-500 p-1">
                   <div className="w-full h-full rounded-full overflow-hidden bg-white">
                     {(user as any).profileImg || (user as any).profileImage ? (
                       <Image

@@ -50,7 +50,7 @@ const registerSchema = yup.object().shape({
     .string()
     .matches(
       /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/,
-      "Password must be at least 6 characters with letters and numbers",
+      "Password must be at least 6 characters with letters and numbers"
     )
     .required("Password is required"),
   fullName: yup
@@ -113,7 +113,7 @@ export default function AuthModal({
   };
 
   const onRegisterSubmit = async (
-    values: yup.InferType<typeof registerSchema>,
+    values: yup.InferType<typeof registerSchema>
   ) => {
     try {
       setLoading(true);
@@ -178,7 +178,7 @@ export default function AuthModal({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Left Panel - Decorative (Hidden on mobile) */}
-          <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-coral-500 via-coral-500 to-rose-500 relative overflow-hidden">
+          <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-emerald-500 via-emerald-500 to-emerald-700 relative overflow-hidden">
             {/* Background decorations */}
             <div className="absolute inset-0">
               <div className="absolute top-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
@@ -194,7 +194,7 @@ export default function AuthModal({
                 <h2 className="text-2xl font-bold text-white mb-3">
                   {view === "signin" ? "Welcome Back!" : "Join TripXplo!"}
                 </h2>
-                <p className="text-coral-100 text-sm">
+                <p className="text-emerald-100 text-sm">
                   {view === "signin"
                     ? "Sign in to access exclusive travel packages and manage your bookings."
                     : "Create an account to unlock amazing travel deals and experiences."}
@@ -241,7 +241,7 @@ export default function AuthModal({
             <div className="flex-1 flex flex-col justify-start sm:justify-center max-w-sm mx-auto w-full pt-12 sm:pt-0 pb-6 sm:pb-0">
               {/* Mobile Header - Compact gradient banner */}
               <div className="sm:hidden mb-4">
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-coral-500 to-rose-500">
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700">
                   <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
                     <Plane className="w-5 h-5 text-white" />
                   </div>
@@ -294,10 +294,10 @@ export default function AuthModal({
                         {...loginForm.register("email")}
                         className={cn(
                           "w-full pl-9 sm:pl-10 pr-4 py-3 sm:py-3 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                          "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
+                          "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           loginForm.formState.errors.email &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="you@example.com"
                         autoComplete="email"
@@ -329,10 +329,10 @@ export default function AuthModal({
                         {...loginForm.register("password")}
                         className={cn(
                           "w-full pl-9 sm:pl-10 pr-4 py-3 sm:py-3 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                          "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
+                          "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           loginForm.formState.errors.password &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="••••••••"
                         autoComplete="current-password"
@@ -349,7 +349,7 @@ export default function AuthModal({
                   <div className="flex justify-end">
                     <Link
                       href="/forgot-password"
-                      className="text-xs text-coral-600 hover:text-coral-700 font-medium transition-colors py-1 touch-manipulation"
+                      className="text-xs text-emerald-600 hover:text-emerald-700 font-medium transition-colors py-1 touch-manipulation"
                       onClick={onClose}
                     >
                       Forgot password?
@@ -360,7 +360,7 @@ export default function AuthModal({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3.5 sm:py-3.5 bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 active:from-coral-700 active:to-rose-700 text-white font-semibold rounded-xl shadow-lg shadow-coral-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
+                    className="w-full py-3.5 sm:py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
                   >
                     {loading ? (
                       <>
@@ -418,10 +418,10 @@ export default function AuthModal({
                         {...registerForm.register("fullName")}
                         className={cn(
                           "w-full pl-9 pr-4 py-2.5 sm:py-2.5 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                          "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
+                          "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.fullName &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="John Doe"
                         autoComplete="name"
@@ -452,10 +452,10 @@ export default function AuthModal({
                         {...registerForm.register("email")}
                         className={cn(
                           "w-full pl-9 pr-4 py-2.5 sm:py-2.5 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                          "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
+                          "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.email &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="you@example.com"
                         autoComplete="email"
@@ -487,10 +487,10 @@ export default function AuthModal({
                         {...registerForm.register("password")}
                         className={cn(
                           "w-full pl-9 pr-4 py-2.5 sm:py-2.5 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                          "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
+                          "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.password &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="••••••••"
                         autoComplete="new-password"
@@ -521,10 +521,10 @@ export default function AuthModal({
                         {...registerForm.register("mobileNo")}
                         className={cn(
                           "w-full pl-9 pr-4 py-2.5 sm:py-2.5 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                          "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
+                          "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.mobileNo &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                         placeholder="9876543210"
                         autoComplete="tel"
@@ -555,10 +555,10 @@ export default function AuthModal({
                         {...registerForm.register("gender")}
                         className={cn(
                           "w-full pl-9 pr-4 py-2.5 sm:py-2.5 rounded-xl border bg-slate-50 text-slate-900 text-base sm:text-sm appearance-none",
-                          "focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white",
+                          "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
                           "transition-all duration-200 touch-manipulation",
                           registerForm.formState.errors.gender &&
-                            "border-red-500 bg-red-50 focus:ring-red-500/20",
+                            "border-red-500 bg-red-50 focus:ring-red-500/20"
                         )}
                       >
                         <option value="">Select Gender</option>
@@ -578,7 +578,7 @@ export default function AuthModal({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 sm:py-3 bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 active:from-coral-700 active:to-rose-700 text-white font-semibold rounded-xl shadow-lg shadow-coral-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-3 touch-manipulation min-h-[48px]"
+                    className="w-full py-3 sm:py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-3 touch-manipulation min-h-[48px]"
                   >
                     {loading ? (
                       <>
@@ -620,7 +620,7 @@ export default function AuthModal({
                     <button
                       type="button"
                       onClick={() => switchView("register")}
-                      className="text-coral-600 hover:text-coral-700 font-semibold transition-colors py-1 px-1 touch-manipulation"
+                      className="text-emerald-600 hover:text-emerald-700 font-semibold transition-colors py-1 px-1 touch-manipulation"
                     >
                       Create account
                     </button>
@@ -631,7 +631,7 @@ export default function AuthModal({
                     <button
                       type="button"
                       onClick={() => switchView("signin")}
-                      className="text-coral-600 hover:text-coral-700 font-semibold transition-colors py-1 px-1 touch-manipulation"
+                      className="text-emerald-600 hover:text-emerald-700 font-semibold transition-colors py-1 px-1 touch-manipulation"
                     >
                       Sign in
                     </button>

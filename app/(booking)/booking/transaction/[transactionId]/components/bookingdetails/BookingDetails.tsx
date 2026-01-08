@@ -173,7 +173,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                 <div
                   className={cn(
                     "absolute top-2 left-2 px-2 py-0.5 rounded-full text-white text-[10px] font-bold",
-                    plan.gradient,
+                    plan.gradient
                   )}
                 >
                   {pack.planName}
@@ -236,8 +236,8 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
         <div className="p-5 space-y-3">
           {/* Destinations */}
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-coral-50 flex items-center justify-center flex-shrink-0">
-              <MapPin size={16} className="text-coral-500" />
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+              <MapPin size={16} className="text-emerald-500" />
             </div>
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2">
@@ -248,7 +248,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                       className="text-sm font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full"
                     >
                       {dest.destinationName}
-                      <span className="text-coral-500 ml-1">
+                      <span className="text-emerald-500 ml-1">
                         ({dest.noOfNight}N)
                       </span>
                     </span>
@@ -317,10 +317,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                         isCompleted && "bg-emerald-500",
                         isFailed && "bg-red-500",
                         isActive && "bg-amber-500 animate-pulse",
-                        !isCompleted &&
-                          !isFailed &&
-                          !isActive &&
-                          "bg-slate-200",
+                        !isCompleted && !isFailed && !isActive && "bg-slate-200"
                       )}
                     >
                       {isCompleted && (
@@ -345,8 +342,8 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                           isCompleted
                             ? "bg-emerald-500"
                             : isFailed
-                              ? "bg-red-300"
-                              : "bg-slate-200 border-l-2 border-dashed border-slate-300",
+                            ? "bg-red-300"
+                            : "bg-slate-200 border-l-2 border-dashed border-slate-300"
                         )}
                       />
                     )}
@@ -363,7 +360,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
                         !isCompleted &&
                           !isFailed &&
                           !isActive &&
-                          "text-slate-400",
+                          "text-slate-400"
                       )}
                     >
                       {event.heading}
@@ -405,7 +402,7 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
       <div
         className={cn(
           "mt-4 p-4 rounded-xl flex items-center justify-center gap-3",
-          status?.bgLight || "bg-slate-50",
+          status?.bgLight || "bg-slate-50"
         )}
       >
         {pack?.status === "confirmed" && (

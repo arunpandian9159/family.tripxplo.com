@@ -81,7 +81,7 @@ const HotelCard = ({
       return;
     }
     const mp = room?.mealPlan.find((data) =>
-      prevHotel?.mealPlan?.includes(data.mealPlan),
+      prevHotel?.mealPlan?.includes(data.mealPlan)
     );
     setSelectedMealPlan(mp);
     if (!mp) {
@@ -196,7 +196,7 @@ const HotelCard = ({
             {hotel.viewPoint.slice(0, 2).map((vp, i) => (
               <span
                 key={i}
-                className="px-2 py-0.5 bg-coral-50 text-coral-600 text-[10px] font-medium rounded-full border border-coral-100"
+                className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-medium rounded-full border border-emerald-100"
               >
                 {vp}
               </span>
@@ -218,7 +218,7 @@ const HotelCard = ({
             {mealPlanPrice !== 0 ? (
               <span
                 className={`text-sm font-bold ${
-                  mealPlanPrice > 0 ? "text-coral-500" : "text-emerald-500"
+                  mealPlanPrice > 0 ? "text-emerald-500" : "text-emerald-500"
                 }`}
               >
                 {mealPlanPrice > 0 ? "+" : "-"} ₹
@@ -261,7 +261,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
   const loading = useSelector((store: any) => store.package.isLoading);
   const { hotel: availableHotels, isLoading } = useAvailableHotels(
     packageId,
-    destinationId,
+    destinationId
   );
 
   // Filter & Sort state
@@ -284,11 +284,11 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
   const processedHotels = useMemo(() => {
     let hotels = (availableHotels as HotelChangeDataType[]).filter((h) => {
       const selectedRoom = h.hotelRoom?.find(
-        (data) => data?.mealPlan?.length > 0,
+        (data) => data?.mealPlan?.length > 0
       );
       if (!selectedRoom) return false;
       const selectedMealPlan = selectedRoom.mealPlan.find((data) =>
-        hotel?.mealPlan?.includes(data.mealPlan),
+        hotel?.mealPlan?.includes(data.mealPlan)
       );
       return !!selectedMealPlan;
     });
@@ -299,7 +299,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
       hotels = hotels.filter(
         (h) =>
           h.hotelName?.toLowerCase().includes(query) ||
-          h.location?.state?.toLowerCase().includes(query),
+          h.location?.state?.toLowerCase().includes(query)
       );
     }
 
@@ -324,7 +324,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
       const room = h.hotelRoom?.find((d) => d?.mealPlan?.length > 0);
       if (!room) return 0;
       const mp = room.mealPlan.find((d) =>
-        hotel?.mealPlan?.includes(d.mealPlan),
+        hotel?.mealPlan?.includes(d.mealPlan)
       );
       if (!mp) return 0;
       return (
@@ -366,11 +366,11 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
 
   const handleSelectHotel = (selectedHotel: HotelChangeDataType) => {
     const selectedRoom = selectedHotel.hotelRoom?.find(
-      (data) => data?.mealPlan?.length > 0,
+      (data) => data?.mealPlan?.length > 0
     );
     if (!selectedRoom) return;
     const selectedMealPlan = selectedRoom.mealPlan.find((data) =>
-      hotel?.mealPlan?.includes(data.mealPlan),
+      hotel?.mealPlan?.includes(data.mealPlan)
     );
     if (!selectedMealPlan) return;
 
@@ -382,7 +382,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
         hotelRoom: selectedRoom,
         hotel: selectedHotel,
         prevHotel: hotel,
-      }),
+      })
     );
 
     requestAnimationFrame(() => {
@@ -431,7 +431,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
                   placeholder="Search by Hotel Name or Location"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-64 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-400"
+                  className="w-64 pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400"
                 />
               </div>
               <button
@@ -459,7 +459,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
                     }
                     className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-all ${
                       starRating === rating
-                        ? "bg-coral-500 text-white border-coral-500"
+                        ? "bg-emerald-500 text-white border-emerald-500"
                         : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
                     }`}
                   >
@@ -490,7 +490,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
                     }
                     className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-all ${
                       userRating === opt.value
-                        ? "bg-coral-500 text-white border-coral-500"
+                        ? "bg-emerald-500 text-white border-emerald-500"
                         : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
                     }`}
                   >
@@ -511,7 +511,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-coral-500/20 cursor-pointer"
+                className="px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
               >
                 <option value="popularity">Popularity</option>
                 <option value="rating_high">Rating: High to Low</option>
@@ -531,8 +531,8 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
         <div className="overflow-y-auto p-6 max-h-[calc(90vh-200px)]">
           {isLoading || loading ? (
             <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl">
-              <div className="w-12 h-12 rounded-full bg-coral-50 flex items-center justify-center mb-4">
-                <Loader2 className="h-6 w-6 animate-spin text-coral-500" />
+              <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
+                <Loader2 className="h-6 w-6 animate-spin text-emerald-500" />
               </div>
               <p className="text-slate-500 font-medium">Loading hotels...</p>
             </div>
@@ -554,7 +554,7 @@ const ChangeHotelModal: React.FC<ChangeHotelModalProps> = ({
                     setStarRating(null);
                     setUserRating(null);
                   }}
-                  className="mt-4 px-4 py-2 text-sm text-coral-500 hover:text-coral-600 font-medium"
+                  className="mt-4 px-4 py-2 text-sm text-emerald-500 hover:text-emerald-600 font-medium"
                 >
                   Clear all filters
                 </button>

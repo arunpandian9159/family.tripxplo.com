@@ -58,7 +58,7 @@ const SectionHeader = ({
   icon: Icon,
   title,
   subtitle,
-  iconBg = "from-coral-500 to-rose-500",
+  iconBg = "from-emerald-500 to-emerald-700",
 }: {
   icon: React.ComponentType<any>;
   title: string;
@@ -87,9 +87,9 @@ const SectionDivider = () => (
     <div className="relative flex justify-center">
       <div className="bg-slate-50 px-4">
         <div className="flex gap-1.5">
-          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-coral-400 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@ export default function PackageBooking() {
   }, []);
 
   const availableRedeemCoins = useSelector(
-    (store: any) => store.userSlice.redeemCoins,
+    (store: any) => store.userSlice.redeemCoins
   );
 
   const [packageId, setPackageId] = useState<string>("");
@@ -130,10 +130,10 @@ export default function PackageBooking() {
 
   const { currentPackageId } = useAppSelector((store) => store.packageDetails);
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room,
+    (store: any) => store.roomSelect.room
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage,
+    (store: any) => store.searchPackage
   );
 
   useEffect(() => {
@@ -153,7 +153,7 @@ export default function PackageBooking() {
     // Validate required data
     if (!pack?.packageId) {
       toast.error(
-        "Package information not found. Please go back and try again.",
+        "Package information not found. Please go back and try again."
       );
       return;
     }
@@ -219,7 +219,7 @@ export default function PackageBooking() {
       if (result?.paymentLink?.data?.instrumentResponse?.redirectInfo?.url) {
         // Redirect to payment page
         router.push(
-          result.paymentLink.data.instrumentResponse.redirectInfo.url,
+          result.paymentLink.data.instrumentResponse.redirectInfo.url
         );
       } else if (result?.booking?.id) {
         // Booking created but no payment link - show success and redirect to booking
@@ -303,7 +303,9 @@ export default function PackageBooking() {
                 src={`${NEXT_PUBLIC_IMAGE_URL}${pack.packageImg[0]}`}
                 fill
                 alt={pack?.packageName}
-                className={`object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                className={`object-cover transition-opacity duration-500 ${
+                  imageLoaded ? "opacity-100" : "opacity-0"
+                }`}
                 onLoad={() => setImageLoaded(true)}
               />
             </>
@@ -377,7 +379,9 @@ export default function PackageBooking() {
                 {/* Package Image */}
                 <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden flex-shrink-0">
                   <Image
-                    src={`${NEXT_PUBLIC_IMAGE_URL}${pack?.packageImg?.[0] || ""}`}
+                    src={`${NEXT_PUBLIC_IMAGE_URL}${
+                      pack?.packageImg?.[0] || ""
+                    }`}
                     fill
                     className="object-cover"
                     alt={pack?.packageName}
@@ -392,13 +396,13 @@ export default function PackageBooking() {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div className="flex items-center gap-2 text-sm text-slate-600">
-                      <Clock size={14} className="text-coral-500" />
+                      <Clock size={14} className="text-emerald-500" />
                       <span>
                         {pack?.noOfNight}N / {pack?.noOfDays}D
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-slate-600">
-                      <UserRound size={14} className="text-coral-500" />
+                      <UserRound size={14} className="text-emerald-500" />
                       <span>
                         {roomCapacityData?.totalAdults} Adults
                         {roomCapacityData?.totalChilds > 0 &&
@@ -426,8 +430,8 @@ export default function PackageBooking() {
               {/* Trip Dates & Destinations */}
               <div className="mt-4 pt-4 border-t border-slate-100 space-y-3">
                 <div className="flex items-center gap-2">
-                  <div className="p-1.5 bg-coral-50 rounded-lg">
-                    <Calendar size={14} className="text-coral-500" />
+                  <div className="p-1.5 bg-emerald-50 rounded-lg">
+                    <Calendar size={14} className="text-emerald-500" />
                   </div>
                   <span className="text-sm text-slate-700 font-medium">
                     {pack?.fullStartDate} - {pack?.fullEndDate}
@@ -570,7 +574,7 @@ export default function PackageBooking() {
                   icon={Tag}
                   title="Discounts & Rewards"
                   subtitle="Apply coupons or redeem coins"
-                  iconBg="from-coral-500 to-rose-500"
+                  iconBg="from-emerald-500 to-emerald-700"
                 />
 
                 {/* Coupon Section */}
@@ -588,7 +592,7 @@ export default function PackageBooking() {
                           onChange={(e) => setCoupon(e.target.value)}
                           disabled={isCouponApplied}
                           placeholder="Enter coupon code"
-                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white transition-all disabled:opacity-60"
+                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all disabled:opacity-60"
                         />
                       </div>
                       {!isCouponApplied ? (
@@ -630,11 +634,11 @@ export default function PackageBooking() {
                   {packageCoupons.length > 0 && !isCouponApplied && (
                     <button
                       onClick={() => setShowCouponsModal(true)}
-                      className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-coral-50 to-rose-50 rounded-xl border border-coral-100 hover:border-coral-200 transition-all"
+                      className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-emerald-50 to-rose-50 rounded-xl border border-emerald-100 hover:border-emerald-200 transition-all"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-coral-100 rounded-lg">
-                          <Percent size={18} className="text-coral-600" />
+                        <div className="p-2 bg-emerald-100 rounded-lg">
+                          <Percent size={18} className="text-emerald-600" />
                         </div>
                         <div className="text-left">
                           <p className="font-semibold text-slate-800">
@@ -645,7 +649,7 @@ export default function PackageBooking() {
                           </p>
                         </div>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-coral-500" />
+                      <ChevronRight className="w-5 h-5 text-emerald-500" />
                     </button>
                   )}
 
@@ -665,13 +669,13 @@ export default function PackageBooking() {
                           onChange={(e) => setRedeem(Number(e.target.value))}
                           disabled={isRedeemApplied}
                           placeholder="Enter coins to redeem"
-                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 focus:bg-white transition-all disabled:opacity-60"
+                          className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all disabled:opacity-60"
                         />
                       </div>
                       {!isRedeemApplied ? (
                         <button
                           onClick={applyRedeem}
-                          className="px-5 py-3 bg-gradient-to-r from-coral-500 to-rose-500 text-white font-semibold rounded-xl hover:from-coral-600 hover:to-rose-600 transition-all shadow-md"
+                          className="px-5 py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-rose-600 transition-all shadow-md"
                         >
                           Apply
                         </button>
@@ -725,12 +729,12 @@ export default function PackageBooking() {
             <div className="sticky top-24">
               <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
                 {/* Header */}
-                <div className="relative px-6 py-5 bg-gradient-to-r from-coral-500 to-rose-500 text-white">
+                <div className="relative px-6 py-5 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
                   <div className="relative">
                     <div className="flex items-center gap-2 mb-2">
-                      <Gift size={16} className="text-coral-200" />
-                      <span className="text-xs font-medium text-coral-100 uppercase tracking-wider">
+                      <Gift size={16} className="text-emerald-200" />
+                      <span className="text-xs font-medium text-emerald-100 uppercase tracking-wider">
                         Price Summary
                       </span>
                     </div>
@@ -739,7 +743,7 @@ export default function PackageBooking() {
                         {formatIndianCurrency(finalPrice)}
                       </span>
                     </div>
-                    <p className="text-xs text-coral-100 mt-1">
+                    <p className="text-xs text-emerald-100 mt-1">
                       {selectedPaymentOption === "advance"
                         ? "Reservation amount"
                         : "Total payable"}
@@ -797,7 +801,7 @@ export default function PackageBooking() {
                   <button
                     onClick={handleBooking}
                     disabled={!selectedPaymentOption || isProcessing}
-                    className="w-full py-4 bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-coral-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isProcessing ? (
                       <>
@@ -893,7 +897,7 @@ export default function PackageBooking() {
           <button
             onClick={handleBooking}
             disabled={!selectedPaymentOption || isProcessing}
-            className="flex-1 max-w-[180px] py-3.5 bg-gradient-to-r from-coral-500 to-rose-500 text-white font-bold rounded-xl shadow-lg shadow-coral-500/25 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 max-w-[180px] py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isProcessing ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -910,7 +914,7 @@ export default function PackageBooking() {
           <DialogHeader className="p-6 pb-4 border-b border-slate-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-coral-500 to-rose-500 rounded-xl text-white">
+                <div className="p-2 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl text-white">
                   <Percent size={20} />
                 </div>
                 <DialogTitle className="text-xl font-bold text-slate-900">
@@ -930,10 +934,10 @@ export default function PackageBooking() {
             {packageCoupons.map((c) => (
               <div
                 key={c._id}
-                className="p-4 rounded-xl border-2 border-dashed border-slate-200 hover:border-coral-300 transition-colors"
+                className="p-4 rounded-xl border-2 border-dashed border-slate-200 hover:border-emerald-300 transition-colors"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-bold text-coral-600 text-lg">
+                  <span className="font-bold text-emerald-600 text-lg">
                     {c.couponName}
                   </span>
                   <button
@@ -942,17 +946,21 @@ export default function PackageBooking() {
                       handleCouponApply();
                       setShowCouponsModal(false);
                     }}
-                    className="px-4 py-1.5 bg-gradient-to-r from-coral-500 to-rose-500 text-white text-sm font-semibold rounded-lg"
+                    className="px-4 py-1.5 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white text-sm font-semibold rounded-lg"
                   >
                     Apply
                   </button>
                 </div>
                 <p className="text-sm text-slate-500 mb-2">
                   {c.description ||
-                    `Use code ${c.code} for ${c.valueType === "percentage" ? `${c.value}%` : `₹${c.value}`} off`}
+                    `Use code ${c.code} for ${
+                      c.valueType === "percentage"
+                        ? `${c.value}%`
+                        : `₹${c.value}`
+                    } off`}
                 </p>
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-1 bg-coral-100 text-coral-700 text-xs font-semibold rounded">
+                  <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded">
                     {c.code}
                   </span>
                   <span className="text-xs text-slate-400">

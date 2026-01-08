@@ -69,10 +69,10 @@ const BookingContent = () => {
           (data?.status === "confirmed"
             ? "Confirmed"
             : data?.status === "pending"
-              ? "Pending"
-              : data?.status === "failed"
-                ? "Failed"
-                : "Processing"),
+            ? "Pending"
+            : data?.status === "failed"
+            ? "Failed"
+            : "Processing"),
         subHeading: data?.planName
           ? `${data.planName} Package`
           : "Package Booked",
@@ -80,8 +80,8 @@ const BookingContent = () => {
           data?.status === "confirmed"
             ? "completed"
             : data?.status === "failed"
-              ? "failed"
-              : "active",
+            ? "failed"
+            : "active",
       },
     ];
 
@@ -100,7 +100,9 @@ const BookingContent = () => {
       });
       events.push({
         heading: "Balance Payment",
-        subHeading: `₹${data.balanceAmount.toLocaleString("en-IN")} due before travel`,
+        subHeading: `₹${data.balanceAmount.toLocaleString(
+          "en-IN"
+        )} due before travel`,
         status: "pending",
       });
     } else {
@@ -126,7 +128,7 @@ const BookingContent = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
         <div className="text-center animate-fade-in">
-          <Loader2 className="w-12 h-12 text-coral-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-emerald-500 animate-spin mx-auto mb-4" />
           <p className="text-slate-600 font-medium">
             Loading booking details...
           </p>
@@ -152,7 +154,7 @@ const BookingContent = () => {
           </p>
           <button
             onClick={() => router.push("/mybookings")}
-            className="px-6 py-3 bg-gradient-to-r from-coral-500 to-coral-400 text-white font-semibold rounded-xl hover:from-coral-600 hover:to-coral-500 transition-all shadow-md shadow-coral-500/20 hover:shadow-lg hover:shadow-coral-500/30 active:scale-[0.98]"
+            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98]"
           >
             Back to My Bookings
           </button>
@@ -169,7 +171,7 @@ const BookingContent = () => {
       <div className="bg-white border-b border-slate-200 shadow-sm">
         <div className="section-container py-8">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-br from-coral-500 to-coral-400 rounded-2xl shadow-lg shadow-coral-500/20">
+            <div className="p-3 bg-gradient-to-br from-emerald-500 to-emerald-400 rounded-2xl shadow-lg shadow-emerald-500/20">
               <Receipt className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -212,7 +214,7 @@ const Booking = () => {
     <Suspense
       fallback={
         <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-          <Loader2 className="w-12 h-12 text-coral-500 animate-spin" />
+          <Loader2 className="w-12 h-12 text-emerald-500 animate-spin" />
         </div>
       }
     >

@@ -106,12 +106,12 @@ const rewardTiers = [
     points: "5,000+",
     minPoints: 5001,
     maxPoints: 999999,
-    color: "from-coral-500 to-coral-400",
-    bgColor: "bg-coral-500",
-    lightBg: "bg-coral-50",
-    textColor: "text-coral-600",
-    borderColor: "border-coral-200",
-    ringColor: "ring-coral-500",
+    color: "from-emerald-500 to-emerald-400",
+    bgColor: "bg-emerald-500",
+    lightBg: "bg-emerald-50",
+    textColor: "text-emerald-600",
+    borderColor: "border-emerald-200",
+    ringColor: "ring-emerald-500",
     benefits: [
       "20% off on all bookings",
       "VIP concierge service",
@@ -129,7 +129,7 @@ const earnWays = [
     title: "Book Trips",
     points: "1 point per ₹100",
     description: "Earn points on every package you book",
-    iconBg: "bg-coral-50 text-coral-600",
+    iconBg: "bg-emerald-50 text-emerald-600",
   },
   {
     icon: Users,
@@ -295,7 +295,7 @@ function getProgressToNextTier(points: number, currentTierIndex: number) {
   const pointsForNextTier = nextTier.minPoints - currentTier.minPoints;
   const progress = Math.min(
     (pointsInCurrentTier / pointsForNextTier) * 100,
-    100,
+    100
   );
   const pointsNeeded = nextTier.minPoints - points;
 
@@ -333,11 +333,11 @@ function DashboardSkeleton() {
 function UserRewardsDashboard({ user }: { user: any }) {
   const userRewards = mockUserRewards;
   const { tier: currentTier, index: tierIndex } = getUserTier(
-    userRewards.points,
+    userRewards.points
   );
   const { progress, pointsNeeded, nextTier } = getProgressToNextTier(
     userRewards.points,
-    tierIndex,
+    tierIndex
   );
   const TierIcon = currentTier.icon;
   const firstName = (user?.fullName || user?.name || "Traveler").split(" ")[0];
@@ -348,7 +348,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
       <Card className="p-0 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-0">
         <div className="relative p-6 lg:p-8">
           {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-coral-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl" />
 
           <div className="relative z-10">
@@ -359,7 +359,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                   className={cn(
                     "w-20 h-20 rounded-2xl flex items-center justify-center relative",
                     "bg-gradient-to-br",
-                    currentTier.color,
+                    currentTier.color
                   )}
                 >
                   <TierIcon className="w-10 h-10 text-white" />
@@ -386,7 +386,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                     Member since{" "}
                     {new Date(userRewards.memberSince).toLocaleDateString(
                       "en-IN",
-                      { month: "long", year: "numeric" },
+                      { month: "long", year: "numeric" }
                     )}
                   </p>
                 </div>
@@ -396,7 +396,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
               <div className="flex flex-col items-center lg:items-end">
                 <p className="text-slate-400 text-sm mb-1">Available Points</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-coral-400 to-amber-400 bg-clip-text text-transparent">
+                  <span className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-emerald-400 to-amber-400 bg-clip-text text-transparent">
                     {userRewards.points.toLocaleString()}
                   </span>
                   <span className="text-slate-500 text-sm">pts</span>
@@ -414,7 +414,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                   <span className="text-sm text-slate-400">
                     Progress to {nextTier.name}
                   </span>
-                  <span className="text-sm font-medium text-coral-400">
+                  <span className="text-sm font-medium text-emerald-400">
                     {pointsNeeded.toLocaleString()} pts to go
                   </span>
                 </div>
@@ -422,7 +422,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                   <div
                     className={cn(
                       "h-full rounded-full bg-gradient-to-r transition-all duration-1000",
-                      nextTier.color,
+                      nextTier.color
                     )}
                     style={{ width: `${progress}%` }}
                   />
@@ -464,8 +464,8 @@ function UserRewardsDashboard({ user }: { user: any }) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card hoverable className="p-5 group">
           <div className="flex items-center justify-between mb-3">
-            <div className="w-10 h-10 rounded-xl bg-coral-50 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Plane className="w-5 h-5 text-coral-600" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Plane className="w-5 h-5 text-emerald-600" />
             </div>
             <ArrowUpRight className="w-4 h-4 text-slate-300" />
           </div>
@@ -544,11 +544,11 @@ function UserRewardsDashboard({ user }: { user: any }) {
                     className={cn(
                       "w-10 h-10 rounded-xl flex items-center justify-center",
                       activity.type === "booking" &&
-                        "bg-coral-50 text-coral-600",
+                        "bg-emerald-50 text-emerald-600",
                       activity.type === "review" && "bg-blue-50 text-blue-600",
                       activity.type === "referral" &&
                         "bg-emerald-50 text-emerald-600",
-                      activity.type === "bonus" && "bg-amber-50 text-amber-600",
+                      activity.type === "bonus" && "bg-amber-50 text-amber-600"
                     )}
                   >
                     <ActivityIcon className="w-5 h-5" />
@@ -584,7 +584,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                 <Award className="w-5 h-5 text-slate-600" />
                 <h3 className="font-semibold text-slate-900">Achievements</h3>
               </div>
-              <Badge variant="coral" size="sm">
+              <Badge variant="emerald" size="sm">
                 {userRewards.achievements.filter((a) => a.earned).length}/
                 {userRewards.achievements.length}
               </Badge>
@@ -600,7 +600,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                     "flex flex-col items-center text-center p-3 rounded-xl transition-all",
                     achievement.earned
                       ? "bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200"
-                      : "bg-slate-50 opacity-50",
+                      : "bg-slate-50 opacity-50"
                   )}
                 >
                   <div
@@ -608,7 +608,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
                       "w-12 h-12 rounded-full flex items-center justify-center mb-2",
                       achievement.earned
                         ? "bg-amber-500 text-white"
-                        : "bg-slate-200 text-slate-400",
+                        : "bg-slate-200 text-slate-400"
                     )}
                   >
                     <AchievementIcon className="w-6 h-6" />
@@ -634,7 +634,7 @@ function UserRewardsDashboard({ user }: { user: any }) {
           <div
             className={cn(
               "w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br",
-              currentTier.color,
+              currentTier.color
             )}
           >
             <TierIcon className="w-6 h-6 text-white" />
@@ -681,13 +681,13 @@ const Rewards = () => {
     <div className="min-h-screen bg-slate-50 pb-24 lg:pb-8">
       {/* Background Decorations */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-40 -right-32 w-96 h-96 bg-coral-200/20 rounded-full blur-3xl" />
+        <div className="absolute top-40 -right-32 w-96 h-96 bg-emerald-200/20 rounded-full blur-3xl" />
         <div className="absolute top-96 -left-20 w-80 h-80 bg-emerald-200/15 rounded-full blur-3xl" />
         <div className="absolute bottom-40 right-1/4 w-64 h-64 bg-amber-200/10 rounded-full blur-3xl" />
       </div>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-coral-500 to-coral-600 pt-8 pb-32 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-emerald-500 to-emerald-600 pt-8 pb-32 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
 
@@ -704,7 +704,7 @@ const Rewards = () => {
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
                 TripXplo Rewards
               </h1>
-              <p className="text-coral-100 text-lg max-w-md mb-6">
+              <p className="text-emerald-100 text-lg max-w-md mb-6">
                 {isAuthenticated
                   ? "Track your points, unlock exclusive benefits, and get rewarded for every adventure."
                   : "Earn points on every trip and unlock exclusive benefits, discounts, and VIP perks."}
@@ -721,7 +721,7 @@ const Rewards = () => {
                     <div className="text-2xl font-bold text-white">
                       {stat.value}
                     </div>
-                    <div className="text-coral-200 text-sm">{stat.label}</div>
+                    <div className="text-emerald-200 text-sm">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -758,7 +758,7 @@ const Rewards = () => {
           <Card className="p-6 lg:p-8 mb-8 bg-gradient-to-r from-slate-900 to-slate-800 border-0 animate-slide-up">
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center flex-shrink-0">
-                <Bell className="w-8 h-8 text-coral-400" />
+                <Bell className="w-8 h-8 text-emerald-400" />
               </div>
               <div className="flex-1 text-center md:text-left">
                 <h2 className="text-xl font-bold text-white mb-1">
@@ -776,7 +776,7 @@ const Rewards = () => {
                 className={cn(
                   "w-full md:w-auto",
                   isNotified &&
-                    "border-emerald-500 text-emerald-500 hover:bg-emerald-50",
+                    "border-emerald-500 text-emerald-500 hover:bg-emerald-50"
                 )}
               >
                 {isNotified ? (
@@ -824,7 +824,7 @@ const Rewards = () => {
                       "overflow-hidden h-full relative",
                       tier.borderColor,
                       isCurrentTier && "ring-2 ring-offset-2",
-                      isCurrentTier && tier.ringColor,
+                      isCurrentTier && tier.ringColor
                     )}
                   >
                     {isCurrentTier && (
@@ -842,7 +842,7 @@ const Rewards = () => {
                     <div
                       className={cn(
                         "bg-gradient-to-br p-6 text-white",
-                        tier.color,
+                        tier.color
                       )}
                     >
                       <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-3">
@@ -907,7 +907,7 @@ const Rewards = () => {
                 <div
                   className={cn(
                     "w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform",
-                    way.iconBg,
+                    way.iconBg
                   )}
                 >
                   <way.icon className="w-6 h-6" />
@@ -915,7 +915,7 @@ const Rewards = () => {
                 <h3 className="font-semibold text-slate-900 mb-1">
                   {way.title}
                 </h3>
-                <p className="text-coral-500 font-bold text-sm mb-2">
+                <p className="text-emerald-500 font-bold text-sm mb-2">
                   {way.points}
                 </p>
                 <p className="text-slate-500 text-sm">{way.description}</p>
@@ -981,8 +981,8 @@ const Rewards = () => {
         {/* Coming Soon Features */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-coral-50 rounded-xl">
-              <Sparkles className="w-5 h-5 text-coral-600" />
+            <div className="p-2 bg-emerald-50 rounded-xl">
+              <Sparkles className="w-5 h-5 text-emerald-600" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900">
               What&apos;s Coming
@@ -1020,7 +1020,7 @@ const Rewards = () => {
         </div>
 
         {/* Final CTA */}
-        <Card className="p-8 bg-gradient-to-r from-coral-500 to-coral-400 border-0 text-center mb-8">
+        <Card className="p-8 bg-gradient-to-r from-emerald-500 to-emerald-400 border-0 text-center mb-8">
           <div className="max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium mb-4">
               <Gift className="w-4 h-4" />
@@ -1031,7 +1031,7 @@ const Rewards = () => {
                 ? "Start Earning More Points"
                 : "Get 100 Bonus Points"}
             </h2>
-            <p className="text-coral-100 mb-6">
+            <p className="text-emerald-100 mb-6">
               {isAuthenticated
                 ? "Book your next adventure, leave reviews, or refer friends to earn bonus points!"
                 : "Be among the first to join TripXplo Rewards and receive 100 bonus points to kickstart your journey."}
@@ -1041,7 +1041,7 @@ const Rewards = () => {
                 <Link href="/destinations">
                   <Button
                     size="lg"
-                    className="bg-white text-coral-600 hover:bg-white/90 w-full sm:w-auto"
+                    className="bg-white text-emerald-600 hover:bg-white/90 w-full sm:w-auto"
                   >
                     <Plane className="w-5 h-5 mr-2" />
                     Explore Packages
@@ -1063,7 +1063,7 @@ const Rewards = () => {
                   "px-8",
                   isNotified
                     ? "bg-white/20 border-2 border-white text-white hover:bg-white/30"
-                    : "bg-white text-coral-600 hover:bg-white/90 shadow-lg",
+                    : "bg-white text-emerald-600 hover:bg-white/90 shadow-lg"
                 )}
               >
                 {isNotified ? (

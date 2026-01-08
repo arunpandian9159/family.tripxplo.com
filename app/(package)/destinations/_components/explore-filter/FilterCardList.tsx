@@ -133,7 +133,7 @@ const FilterCardList = ({
                 {/* Destinations with Nights */}
                 <div className="mb-3">
                   <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-coral-500 flex-shrink-0 mt-0.5" />
+                    <MapPin className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-wrap items-center gap-1.5">
                         {pkg.destination
@@ -186,8 +186,8 @@ const FilterCardList = ({
                   className={cn(
                     "flex-shrink-0 p-2 rounded-full transition-all duration-300",
                     isWishlisted
-                      ? "bg-coral-50 text-coral-500 hover:bg-coral-100"
-                      : "bg-slate-50 text-slate-400 hover:text-coral-500 hover:bg-coral-50",
+                      ? "bg-emerald-50 text-emerald-500 hover:bg-emerald-100"
+                      : "bg-slate-50 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50"
                   )}
                 >
                   <Heart
@@ -273,7 +273,7 @@ const FilterCardList = ({
                   e.stopPropagation();
                   handleViewDetails();
                 }}
-                className="px-6 py-3 bg-gradient-to-r from-coral-500 to-coral-400 text-white text-sm font-semibold rounded-xl hover:from-coral-600 hover:to-coral-500 transition-all shadow-md shadow-coral-500/20 hover:shadow-lg hover:shadow-coral-500/30 active:scale-[0.98] flex items-center gap-2"
+                className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-sm font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98] flex items-center gap-2"
               >
                 View Details
                 <svg
@@ -347,8 +347,8 @@ const FilterCardList = ({
               className={cn(
                 "p-2 rounded-full backdrop-blur-md transition-all duration-300 shadow-sm",
                 isWishlisted
-                  ? "bg-white text-coral-500"
-                  : "bg-black/20 text-white hover:bg-white hover:text-coral-500",
+                  ? "bg-white text-emerald-500"
+                  : "bg-black/20 text-white hover:bg-white hover:text-emerald-500"
               )}
             >
               <Heart
@@ -376,7 +376,7 @@ const FilterCardList = ({
           <div className="flex flex-col gap-2">
             {/* Destinations List */}
             <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-coral-500 flex-shrink-0 mt-1" />
+              <MapPin className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-1" />
               <p className="text-sm text-slate-600 font-medium leading-relaxed">
                 {pkg.destination
                   ?.filter((d) => d.noOfNight > 0)
@@ -472,7 +472,7 @@ const FilterCardList = ({
                 e.stopPropagation();
                 handleViewDetails();
               }}
-              className="px-5 py-2.5 bg-gradient-to-r from-coral-500 to-coral-400 text-white text-xs font-bold uppercase tracking-wide rounded-xl hover:from-coral-600 hover:to-coral-500 transition-all shadow-lg shadow-coral-500/20 active:scale-[0.98] flex items-center gap-2"
+              className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-xs font-bold uppercase tracking-wide rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-lg shadow-emerald-500/20 active:scale-[0.98] flex items-center gap-2"
             >
               View Details
               <svg

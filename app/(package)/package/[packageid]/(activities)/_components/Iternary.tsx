@@ -126,7 +126,7 @@ const Iternary = ({ events, day }: IternaryProps) => {
               event={event}
               day={day}
             />
-          ),
+          )
         )}
       </div>
     </div>
@@ -174,7 +174,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
             {/* Content */}
             <div className="p-4 lg:p-5">
               {/* Activity Name */}
-              <h4 className="font-bold text-slate-800 text-sm lg:text-base line-clamp-1 mb-2 group-hover:text-coral-600 transition-colors">
+              <h4 className="font-bold text-slate-800 text-sm lg:text-base line-clamp-1 mb-2 group-hover:text-emerald-600 transition-colors">
                 {event?.name}
               </h4>
 
@@ -259,7 +259,7 @@ const AllocatedActivityCard = ({ event }: { event: ActivityEvent }) => {
 
           {/* Footer */}
           <AlertDialogFooter className="p-4 lg:p-6 pt-0 bg-white">
-            <AlertDialogCancel className="w-full py-4 rounded-xl bg-gradient-to-r from-coral-500 to-rose-500 text-white font-semibold border-0 hover:from-coral-600 hover:to-rose-600 shadow-lg shadow-coral-500/25 transition-all hover:shadow-xl">
+            <AlertDialogCancel className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-semibold border-0 hover:from-emerald-600 hover:to-rose-600 shadow-lg shadow-emerald-500/25 transition-all hover:shadow-xl">
               Close
             </AlertDialogCancel>
           </AlertDialogFooter>
@@ -374,10 +374,10 @@ const AddActivityModal = ({
   const dispatch = useDispatch<AppDispatch>();
   const activityData = useSelector((store: any) => store.activity);
   const roomCapacityData: Room = useSelector(
-    (store: any) => store.roomSelect.room,
+    (store: any) => store.roomSelect.room
   );
   const dateAndDestination: DateDestination = useSelector(
-    (store: any) => store.searchPackage,
+    (store: any) => store.searchPackage
   );
 
   const config = getTimeConfig(timePeriod);
@@ -401,13 +401,13 @@ const AddActivityModal = ({
       }).toString();
 
       const response = await apiRequest<any[]>(
-        `packages/${activityData.packageId}/activities?${queryParams}`,
+        `packages/${activityData.packageId}/activities?${queryParams}`
       );
 
       if (response.success && response.data) {
         const filteredActivities =
           response.data[0]?.activityDetails?.filter(
-            (item: any) => item?.destinationId === destinationId,
+            (item: any) => item?.destinationId === destinationId
           ) || [];
         setActivities(filteredActivities);
       }
@@ -435,7 +435,7 @@ const AddActivityModal = ({
   };
 
   const filteredActivities = activities.filter((activity) =>
-    activity.name?.toLowerCase().includes(searchTerm.toLowerCase()),
+    activity.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -478,7 +478,7 @@ const AddActivityModal = ({
                 placeholder="Search activities..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
               />
             </div>
           </div>
@@ -488,7 +488,7 @@ const AddActivityModal = ({
         <div className="p-6 overflow-y-auto max-h-[60vh]">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-16">
-              <Loader2 className="w-10 h-10 text-coral-500 animate-spin mb-4" />
+              <Loader2 className="w-10 h-10 text-emerald-500 animate-spin mb-4" />
               <p className="text-slate-500 font-medium">
                 Loading activities...
               </p>
@@ -601,7 +601,7 @@ const ActivityCard = ({
 
       {/* Content */}
       <div className="p-4">
-        <h4 className="font-bold text-slate-800 line-clamp-1 mb-2 group-hover:text-coral-600 transition-colors">
+        <h4 className="font-bold text-slate-800 line-clamp-1 mb-2 group-hover:text-emerald-600 transition-colors">
           {activity?.name}
         </h4>
 
@@ -627,8 +627,8 @@ const ActivityCard = ({
             {activity?.price > 0 ? (
               <>
                 <span className="text-xs text-slate-400">+</span>
-                <IndianRupee className="w-3.5 h-3.5 text-coral-500" />
-                <span className="font-bold text-coral-600">
+                <IndianRupee className="w-3.5 h-3.5 text-emerald-500" />
+                <span className="font-bold text-emerald-600">
                   {activity.price}
                 </span>
               </>

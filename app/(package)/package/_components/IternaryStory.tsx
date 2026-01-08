@@ -66,10 +66,10 @@ export default function IternaryStory({
       {/* Itinerary Preview Card */}
       <div className="bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-coral-50 to-white">
+        <div className="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-emerald-50 to-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-coral-500 to-rose-500 rounded-xl text-white shadow-lg shadow-coral-500/25">
+              <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl text-white shadow-lg shadow-emerald-500/25">
                 <Calendar size={20} />
               </div>
               <div>

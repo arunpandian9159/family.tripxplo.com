@@ -29,7 +29,7 @@ const ExploreFilter = () => {
       <div className="bg-white border-b border-slate-200 shadow-sm">
         <div className="section-container py-8">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-br from-coral-500 to-coral-400 rounded-2xl shadow-lg shadow-coral-500/20">
+            <div className="p-3 bg-gradient-to-br from-emerald-500 to-emerald-400 rounded-2xl shadow-lg shadow-emerald-500/20">
               <Compass className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -60,8 +60,8 @@ const ExploreFilter = () => {
               ))
             : !isLoading && (
                 <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
-                  <div className="p-6 bg-coral-50 rounded-full mb-6">
-                    <TicketX size={48} className="text-coral-400" />
+                  <div className="p-6 bg-emerald-50 rounded-full mb-6">
+                    <TicketX size={48} className="text-emerald-400" />
                   </div>
                   <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">
                     No bookings yet
@@ -72,7 +72,7 @@ const ExploreFilter = () => {
                   </p>
                   <button
                     onClick={() => router.push("/")}
-                    className="px-6 py-3 bg-gradient-to-r from-coral-500 to-coral-400 text-white font-semibold rounded-xl hover:from-coral-600 hover:to-coral-500 transition-all shadow-md shadow-coral-500/20 hover:shadow-lg hover:shadow-coral-500/30 active:scale-[0.98] flex items-center gap-2"
+                    className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98] flex items-center gap-2"
                   >
                     Explore Packages
                     <ArrowRight className="w-4 h-4" />

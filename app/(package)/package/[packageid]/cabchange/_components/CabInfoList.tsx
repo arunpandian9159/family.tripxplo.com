@@ -70,7 +70,7 @@ const CabInfoList = ({
       changeVehicleAndCalculatePrice({
         prevVehicle: prevCab,
         newVehicle: cab,
-      }),
+      })
     );
     router.back();
   }
@@ -133,7 +133,7 @@ const CabInfoList = ({
         {/* Right side - Price and Select button */}
         <div className="flex justify-end items-center gap-2 mt-4">
           {/* {price && ( */}
-          <p className="text-coral-500 text-lg font-semibold text-[#FF5F5F]">
+          <p className="text-emerald-500 text-lg font-semibold text-[#FF5F5F]">
             {cabPlanPrice >= 0
               ? `+ ₹${cabPlanPrice}`
               : `- ₹${Math.abs(cabPlanPrice)}`}

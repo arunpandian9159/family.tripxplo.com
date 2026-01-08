@@ -91,7 +91,7 @@ const CabCard = ({
   };
 
   const typeColor = getVehicleTypeColor(
-    cab?.vehicleName || cab?.vehicleCompany || "",
+    cab?.vehicleName || cab?.vehicleCompany || ""
   );
 
   // Get AC type label
@@ -175,7 +175,9 @@ const CabCard = ({
           <div className="flex flex-col items-center p-2 bg-slate-50 rounded-lg">
             <Snowflake
               size={14}
-              className={`mb-1 ${cab?.isAc ? "text-cyan-500" : "text-slate-300"}`}
+              className={`mb-1 ${
+                cab?.isAc ? "text-cyan-500" : "text-slate-300"
+              }`}
             />
             <span className="text-xs font-bold text-slate-700">
               {cab?.isAc ? "Yes" : "No"}
@@ -221,7 +223,9 @@ const CabCard = ({
           <div>
             {priceDiff !== 0 ? (
               <span
-                className={`text-lg font-bold ${priceDiff > 0 ? "text-coral-500" : "text-emerald-500"}`}
+                className={`text-lg font-bold ${
+                  priceDiff > 0 ? "text-emerald-500" : "text-emerald-500"
+                }`}
               >
                 {priceDiff > 0 ? "+" : "-"}₹{Math.abs(Math.ceil(priceDiff))}
               </span>
@@ -236,7 +240,7 @@ const CabCard = ({
           {!isSelected && (
             <button
               onClick={onSelect}
-              className="px-4 py-2 bg-gradient-to-r from-coral-500 to-coral-400 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-coral-500/20 transition-all press-effect"
+              className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-emerald-500/20 transition-all press-effect"
             >
               Select Cab
             </button>
@@ -268,7 +272,7 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
       changeVehicleAndCalculatePrice({
         newVehicle: cab,
         prevVehicle: vehicle,
-      }),
+      })
     );
 
     // Restore scroll position after modal closes and state updates
@@ -295,7 +299,7 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
               </DialogTitle>
               <p className="text-sm text-slate-500 mt-0.5">
                 Current:{" "}
-                <span className="text-coral-500 font-semibold">
+                <span className="text-emerald-500 font-semibold">
                   {vehicle?.vehicleName}
                 </span>
                 {" · "}
@@ -315,8 +319,8 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
         <div className="overflow-y-auto p-6 max-h-[calc(90vh-80px)]">
           {isLoading || loading ? (
             <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-coral-100 to-coral-50 flex items-center justify-center mb-4">
-                <Loader2 className="h-7 w-7 animate-spin text-coral-500" />
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mb-4">
+                <Loader2 className="h-7 w-7 animate-spin text-emerald-500" />
               </div>
               <p className="text-slate-600 font-semibold">Loading Vehicles</p>
               <p className="text-slate-400 text-sm mt-1">

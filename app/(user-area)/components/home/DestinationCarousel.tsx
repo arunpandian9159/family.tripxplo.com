@@ -50,7 +50,7 @@ const DestinationCarousel = () => {
   return (
     <div className="relative w-full max-w-[600px] aspect-[16/10] mx-auto">
       {/* Background Glow */}
-      <div className="absolute inset-0 bg-coral-100/50 blur-[60px] rounded-full scale-75 animate-pulse-slow pointer-events-none" />
+      <div className="absolute inset-0 bg-emerald-100/50 blur-[60px] rounded-full scale-75 animate-pulse-slow pointer-events-none" />
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -100,7 +100,7 @@ const DestinationCarousel = () => {
           <div
             key={idx}
             className={`h-1.5 rounded-full transition-all duration-500 ${
-              idx === currentIndex ? "w-8 bg-coral-500" : "w-1.5 bg-slate-200"
+              idx === currentIndex ? "w-8 bg-emerald-500" : "w-1.5 bg-slate-200"
             }`}
           />
         ))}

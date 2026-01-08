@@ -33,8 +33,8 @@ export function Loader({
             <div
               key={i}
               className={cn(
-                "rounded-full bg-coral-500 animate-bounce",
-                config.dot,
+                "rounded-full bg-emerald-500 animate-bounce",
+                config.dot
               )}
               style={{ animationDelay: `${i * 0.15}s` }}
             />
@@ -51,18 +51,18 @@ export function Loader({
         <div className="relative">
           <div
             className={cn(
-              "rounded-full border-4 border-coral-100 animate-pulse",
-              config.container,
+              "rounded-full border-4 border-emerald-100 animate-pulse",
+              config.container
             )}
           />
           <div
             className={cn(
-              "absolute inset-0 rounded-full border-4 border-transparent border-t-coral-500 animate-spin",
-              config.container,
+              "absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin",
+              config.container
             )}
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <Plane className={cn("text-coral-500", config.icon)} />
+            <Plane className={cn("text-emerald-500", config.icon)} />
           </div>
         </div>
         {text && <p className="text-sm text-slate-500">{text}</p>}
@@ -73,7 +73,7 @@ export function Loader({
   // Default spinner
   return (
     <div className={cn("flex flex-col items-center gap-3", className)}>
-      <Loader2 className={cn("animate-spin text-coral-500", config.icon)} />
+      <Loader2 className={cn("animate-spin text-emerald-500", config.icon)} />
       {text && <p className="text-sm text-slate-500">{text}</p>}
     </div>
   );
@@ -92,10 +92,10 @@ export function PageLoader({
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
       <div className="relative mb-8">
-        <div className="w-20 h-20 rounded-full border-4 border-coral-100" />
-        <div className="absolute inset-0 w-20 h-20 rounded-full border-4 border-transparent border-t-coral-500 animate-spin" />
+        <div className="w-20 h-20 rounded-full border-4 border-emerald-100" />
+        <div className="absolute inset-0 w-20 h-20 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-coral-500 to-coral-400 flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-400 flex items-center justify-center shadow-lg">
             <Plane className="w-6 h-6 text-white" />
           </div>
         </div>
@@ -106,7 +106,7 @@ export function PageLoader({
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="w-2 h-2 rounded-full bg-coral-400 animate-bounce"
+            className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce"
             style={{ animationDelay: `${i * 0.15}s` }}
           />
         ))}

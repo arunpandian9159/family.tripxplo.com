@@ -43,7 +43,7 @@ const FilterHotel = ({
             placeholder="Search hotels..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-9 pr-8 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-400 transition-all"
+            className="w-full pl-9 pr-8 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all"
           />
           {searchQuery && (
             <button
@@ -76,8 +76,8 @@ const FilterHotel = ({
                   {option.key === "rating"
                     ? "★"
                     : option.key === "price_low"
-                      ? "↓₹"
-                      : "↑₹"}
+                    ? "↓₹"
+                    : "↑₹"}
                 </span>
               </button>
             );

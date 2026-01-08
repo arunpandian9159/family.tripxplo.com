@@ -26,10 +26,10 @@ export default function OptionsBox({
 }: OptionsBoxProps) {
   const roomCapacityData = useSelector((store: any) => store.roomSelect.room);
   const roomInitiallyLoaded = useSelector(
-    (store: any) => store.roomSelect.room.initiallyLoaded,
+    (store: any) => store.roomSelect.room.initiallyLoaded
   );
   const themeSelected = useSelector(
-    (state: RootState) => state.themeSelect.theme,
+    (state: RootState) => state.themeSelect.theme
   );
 
   const [internalOpen, setInternalOpen] = useState(false);
@@ -163,7 +163,7 @@ export default function OptionsBox({
           child: child,
           room: r,
         },
-      }),
+      })
     );
   }, [child, adults, themeSelected, dispatch]);
 
@@ -287,7 +287,7 @@ export default function OptionsBox({
           child: child,
           room: rooms,
         },
-      }),
+      })
     );
   };
 
@@ -304,7 +304,7 @@ export default function OptionsBox({
           child: newChildren,
           room: rooms,
         },
-      }),
+      })
     );
   };
 
@@ -331,7 +331,7 @@ export default function OptionsBox({
         "w-10 h-10 md:w-9 md:h-9 rounded-xl flex items-center justify-center transition-all",
         disabled
           ? "bg-slate-100 text-slate-300 cursor-not-allowed"
-          : "bg-coral-50 text-coral-600 hover:bg-coral-100 active:scale-95",
+          : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 active:scale-95"
       )}
     >
       {children}
@@ -378,7 +378,7 @@ export default function OptionsBox({
           "bg-white shadow-2xl border border-slate-200 overflow-hidden",
           isMobile
             ? "fixed inset-x-0 bottom-0 rounded-t-3xl max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-300 z-[9999]"
-            : "fixed w-[320px] rounded-2xl z-[9999]",
+            : "fixed w-[320px] rounded-2xl z-[9999]"
         )}
         style={
           isMobile
@@ -393,7 +393,7 @@ export default function OptionsBox({
         <div
           className={cn(
             "px-5 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between sticky top-0 z-10",
-            isMobile && "px-6 py-5",
+            isMobile && "px-6 py-5"
           )}
         >
           <div>

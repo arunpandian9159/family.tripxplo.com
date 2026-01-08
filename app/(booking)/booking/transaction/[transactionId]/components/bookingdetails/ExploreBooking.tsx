@@ -74,7 +74,7 @@ const Booking = () => {
           </p>
           <button
             onClick={clickBack}
-            className="px-6 py-3 bg-gradient-to-r from-coral-500 to-coral-400 text-white font-semibold rounded-xl hover:from-coral-600 hover:to-coral-500 transition-all shadow-md shadow-coral-500/20 hover:shadow-lg hover:shadow-coral-500/30 active:scale-[0.98]"
+            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98]"
           >
             Back to My Bookings
           </button>
@@ -88,7 +88,7 @@ const Booking = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
         <div className="text-center animate-fade-in">
-          <Loader2 className="w-12 h-12 text-coral-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-emerald-500 animate-spin mx-auto mb-4" />
           <p className="text-slate-600 font-medium">
             Loading booking details...
           </p>
@@ -107,10 +107,10 @@ const Booking = () => {
           (data?.status === "confirmed"
             ? "Confirmed"
             : data?.status === "pending"
-              ? "Pending"
-              : data?.status === "failed"
-                ? "Failed"
-                : "Processing"),
+            ? "Pending"
+            : data?.status === "failed"
+            ? "Failed"
+            : "Processing"),
         subHeading: data?.planName
           ? `${data.planName} Package`
           : "Package Booked",
@@ -118,8 +118,8 @@ const Booking = () => {
           data?.status === "confirmed"
             ? "completed"
             : data?.status === "failed"
-              ? "failed"
-              : "active",
+            ? "failed"
+            : "active",
       },
     ];
 
@@ -138,7 +138,9 @@ const Booking = () => {
       });
       events.push({
         heading: "Balance Payment",
-        subHeading: `₹${data.balanceAmount.toLocaleString("en-IN")} due before travel`,
+        subHeading: `₹${data.balanceAmount.toLocaleString(
+          "en-IN"
+        )} due before travel`,
         status: "pending",
       });
     } else {
@@ -171,10 +173,10 @@ const Booking = () => {
               onClick={clickBack}
               className="p-2 -ml-2 rounded-xl hover:bg-slate-100 transition-colors"
             >
-              <ArrowLeft className="w-6 h-6 text-coral-500" />
+              <ArrowLeft className="w-6 h-6 text-emerald-500" />
             </button>
             <div>
-              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-coral-500 to-coral-400 bg-clip-text text-transparent">
+              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                 Booking Details
               </h1>
               <p className="text-slate-500 text-sm hidden sm:block">

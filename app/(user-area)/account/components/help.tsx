@@ -93,7 +93,7 @@ const Help = () => {
                 <div
                   className={cn(
                     "w-12 h-12 rounded-xl flex items-center justify-center",
-                    option.color,
+                    option.color
                   )}
                 >
                   <option.icon className="w-5 h-5" />
@@ -105,7 +105,7 @@ const Help = () => {
                     </h3>
                     <ExternalLink className="w-3.5 h-3.5 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <p className="text-sm text-coral-500 font-medium truncate">
+                  <p className="text-sm text-emerald-500 font-medium truncate">
                     {option.value}
                   </p>
                   <div className="flex items-center gap-1 mt-1">
@@ -141,7 +141,7 @@ const Help = () => {
           <div className="mt-6 pt-4 border-t border-slate-100 text-center">
             <p className="text-sm text-slate-500 mb-1">
               Thank you for choosing{" "}
-              <span className="font-semibold text-coral-500">TripXplo</span>
+              <span className="font-semibold text-emerald-500">TripXplo</span>
             </p>
             <p className="text-xs text-slate-400">
               We&apos;re here to make your travel experience smooth and

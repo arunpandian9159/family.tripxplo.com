@@ -65,7 +65,7 @@ const TermsAndConditions = () => {
       icon: Globe,
       title: "Website and Web App Usage",
       content: `Your use of any information or materials on the TripXplo website and Web app is entirely at your own risk. You are prohibited from altering, duplicating, distributing, transmitting, reproducing, publishing, licensing, or selling any information, software, products, or services obtained from this website or app. TripXplo reserves the right to modify, revise, and delete any contents without prior notice.`,
-      color: "bg-coral-50 text-coral-500",
+      color: "bg-emerald-50 text-emerald-500",
     },
     {
       id: "media",
@@ -141,7 +141,7 @@ const TermsAndConditions = () => {
                     <div
                       className={cn(
                         "w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0",
-                        section.color,
+                        section.color
                       )}
                     >
                       <section.icon className="w-5 h-5" />
@@ -152,7 +152,7 @@ const TermsAndConditions = () => {
                     <ChevronDown
                       className={cn(
                         "w-5 h-5 text-slate-400 transition-transform duration-200",
-                        expandedSection === section.id && "rotate-180",
+                        expandedSection === section.id && "rotate-180"
                       )}
                     />
                   </button>
@@ -160,7 +160,7 @@ const TermsAndConditions = () => {
                   <div
                     className={cn(
                       "overflow-hidden transition-all duration-200",
-                      expandedSection === section.id ? "max-h-96" : "max-h-0",
+                      expandedSection === section.id ? "max-h-96" : "max-h-0"
                     )}
                   >
                     <div className="px-4 pb-4 pt-0">
@@ -188,7 +188,7 @@ const TermsAndConditions = () => {
                     information. For more details, please read our{" "}
                     <a
                       href="/privacypolicy"
-                      className="text-coral-500 hover:underline"
+                      className="text-emerald-500 hover:underline"
                     >
                       Privacy Policy
                     </a>

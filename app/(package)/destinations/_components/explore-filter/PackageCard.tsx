@@ -62,7 +62,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
       <div className="flex-1 p-5 flex flex-col justify-between">
         {/* Package Name */}
         <div>
-          <h3 className="font-bold text-lg text-slate-800 line-clamp-2 group-hover:text-coral-500 transition-colors">
+          <h3 className="font-bold text-lg text-slate-800 line-clamp-2 group-hover:text-emerald-500 transition-colors">
             {packageName}
           </h3>
 

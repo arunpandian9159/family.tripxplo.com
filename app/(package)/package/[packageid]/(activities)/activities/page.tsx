@@ -27,7 +27,7 @@ const SectionHeader = ({
   icon: Icon,
   title,
   subtitle,
-  iconBg = "from-coral-500 to-rose-500",
+  iconBg = "from-emerald-500 to-emerald-700",
 }: {
   icon: React.ComponentType<any>;
   title: string;
@@ -60,9 +60,9 @@ const SectionDivider = () => (
     <div className="relative flex justify-center">
       <div className="bg-slate-50 px-4">
         <div className="flex gap-1.5">
-          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-coral-400 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-coral-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
         </div>
       </div>
     </div>
@@ -192,13 +192,15 @@ const Page = () => {
                 alt={packageName}
                 priority
                 sizes="100vw"
-                className={`object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                className={`object-cover transition-opacity duration-500 ${
+                  imageLoaded ? "opacity-100" : "opacity-0"
+                }`}
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
               />
             </>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-coral-600 via-rose-600 to-purple-700" />
+            <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-rose-600 to-purple-700" />
           )}
 
           {/* Dark Overlay */}
@@ -223,7 +225,7 @@ const Page = () => {
                 onClick={() => setIsLiked(!isLiked)}
                 className={`p-2.5 rounded-xl backdrop-blur-md transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 ${
                   isLiked
-                    ? "bg-coral-500 text-white"
+                    ? "bg-emerald-500 text-white"
                     : "bg-white/10 hover:bg-white/20 text-white"
                 }`}
               >
@@ -263,7 +265,7 @@ const Page = () => {
             {/* Stats */}
             <div className="flex items-center gap-4 mt-3">
               <div className="flex items-center gap-2 text-white/80">
-                <Calendar size={16} className="text-coral-400" />
+                <Calendar size={16} className="text-emerald-400" />
                 <span className="text-sm">{activity?.length || 0} Days</span>
               </div>
               <div className="flex items-center gap-2 text-white/80">
@@ -305,7 +307,7 @@ const Page = () => {
           {/* Timeline Content */}
           <div className="relative mt-8">
             {/* Timeline Line */}
-            <div className="absolute left-5 lg:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-coral-200 via-rose-200 to-emerald-200 rounded-full" />
+            <div className="absolute left-5 lg:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-200 via-rose-200 to-emerald-200 rounded-full" />
 
             {/* Days */}
             {activity?.length > 0 ? (
@@ -315,7 +317,7 @@ const Page = () => {
                     {/* Day Header */}
                     <div className="flex items-start gap-4 lg:gap-6 mb-4">
                       {/* Timeline Node */}
-                      <div className="relative z-10 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-coral-500 to-rose-500 rounded-xl shadow-lg shadow-coral-500/25 flex-shrink-0">
+                      <div className="relative z-10 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl shadow-lg shadow-emerald-500/25 flex-shrink-0">
                         <span className="text-white font-bold text-sm lg:text-base">
                           {data?.day}
                         </span>
@@ -328,7 +330,7 @@ const Page = () => {
                             Day {data?.day}
                           </h3>
                           {data?.fullStartDate && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-coral-50 text-coral-600 text-xs font-semibold rounded-md">
+                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded-md">
                               <Clock className="w-3 h-3" />
                               {data.fullStartDate}
                             </span>

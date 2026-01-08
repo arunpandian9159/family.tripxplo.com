@@ -9,13 +9,13 @@ import { MapPin, Calendar, Users } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-b from-white via-coral-50/30 to-white">
+    <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-b from-white via-emerald-50/30 to-white">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Gradient Orbs */}
-        <div className="absolute top-20 -left-32 w-96 h-96 bg-coral-200/30 rounded-full blur-3xl" />
+        <div className="absolute top-20 -left-32 w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl" />
         <div className="absolute top-40 right-0 w-80 h-80 bg-emerald-200/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/2 w-[600px] h-64 bg-coral-100/40 rounded-full blur-3xl -translate-x-1/2" />
+        <div className="absolute bottom-0 left-1/2 w-[600px] h-64 bg-emerald-100/40 rounded-full blur-3xl -translate-x-1/2" />
 
         {/* Grid Pattern */}
         <div
@@ -31,10 +31,10 @@ const HeroSection = () => {
           {/* Content Side */}
           <div className="flex-1 text-center lg:text-left">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-coral-50 border border-coral-100 rounded-full text-coral-600 text-sm font-medium mb-6 animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-600 text-sm font-medium mb-6 animate-fade-in">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-coral-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-coral-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
               Trusted by 50,000+ travelers
             </div>
@@ -44,11 +44,11 @@ const HeroSection = () => {
               Discover Your
               <br />
               <span className="relative">
-                <span className="relative z-10 bg-gradient-to-r from-coral-500 to-coral-400 bg-clip-text text-transparent">
+                <span className="relative z-10 bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                   Perfect Trip
                 </span>
                 <svg
-                  className="absolute -bottom-2 left-0 w-full h-3 text-coral-200"
+                  className="absolute -bottom-2 left-0 w-full h-3 text-emerald-200"
                   viewBox="0 0 200 12"
                   fill="none"
                   preserveAspectRatio="none"
@@ -80,7 +80,7 @@ const HeroSection = () => {
                   key={index}
                   className="flex items-center gap-2 text-slate-600"
                 >
-                  <item.icon className="w-5 h-5 text-coral-500" />
+                  <item.icon className="w-5 h-5 text-emerald-500" />
                   <span className="text-sm font-medium">{item.label}</span>
                 </div>
               ))}

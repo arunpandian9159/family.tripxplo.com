@@ -128,7 +128,7 @@ const PackagesPage = () => {
         const response = await packagesApi.featured(MAX_ITEMS);
         if (response.success && response.data) {
           setAllPackages(
-            (response.data as { packages: FeaturedPackage[] }).packages || [],
+            (response.data as { packages: FeaturedPackage[] }).packages || []
           );
         }
       } catch (error) {
@@ -148,7 +148,7 @@ const PackagesPage = () => {
       searchQuery === "" ||
       pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       pkg.destinations?.some((d) =>
-        d.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+        d.name?.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
     // Category filter
@@ -213,7 +213,7 @@ const PackagesPage = () => {
     // Simulate loading delay for smoother UX
     setTimeout(() => {
       setDisplayedCount((prev) =>
-        Math.min(prev + ITEMS_PER_PAGE, sortedPackages.length),
+        Math.min(prev + ITEMS_PER_PAGE, sortedPackages.length)
       );
       setLoadingMore(false);
     }, 300);
@@ -249,7 +249,7 @@ const PackagesPage = () => {
         </div>
 
         {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-coral-600 via-coral-500 to-rose-500" />
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent" />
 
         {/* Decorative Elements */}
@@ -310,7 +310,7 @@ const PackagesPage = () => {
               placeholder="Search packages or destinations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-12 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500 transition-all shadow-sm"
+              className="w-full pl-12 pr-12 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all shadow-sm"
             />
             {searchQuery && (
               <button
@@ -335,8 +335,8 @@ const PackagesPage = () => {
                   className={cn(
                     "px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 whitespace-nowrap",
                     activeFilter === category.value
-                      ? "bg-coral-50 border-coral-200 text-coral-700 shadow-sm"
-                      : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300",
+                      ? "bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm"
+                      : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
                   )}
                 >
                   {category.label}
@@ -379,8 +379,8 @@ const PackagesPage = () => {
                         className={cn(
                           "w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors",
                           sortBy === option.value
-                            ? "text-coral-600 font-medium bg-coral-50"
-                            : "text-slate-700",
+                            ? "text-emerald-600 font-medium bg-emerald-50"
+                            : "text-slate-700"
                         )}
                       >
                         {option.label}
@@ -398,8 +398,8 @@ const PackagesPage = () => {
                 className={cn(
                   "p-2 rounded-lg transition-all",
                   viewMode === "grid"
-                    ? "bg-coral-500 text-white"
-                    : "text-slate-400 hover:text-slate-600",
+                    ? "bg-emerald-500 text-white"
+                    : "text-slate-400 hover:text-slate-600"
                 )}
               >
                 <Grid className="w-4 h-4" />
@@ -409,8 +409,8 @@ const PackagesPage = () => {
                 className={cn(
                   "p-2 rounded-lg transition-all",
                   viewMode === "list"
-                    ? "bg-coral-500 text-white"
-                    : "text-slate-400 hover:text-slate-600",
+                    ? "bg-emerald-500 text-white"
+                    : "text-slate-400 hover:text-slate-600"
                 )}
               >
                 <List className="w-4 h-4" />
@@ -435,11 +435,11 @@ const PackagesPage = () => {
               </span>
             )}
             {activeFilter !== "all" && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-coral-50 text-coral-700 rounded-full text-sm">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-sm">
                 {FILTER_CATEGORIES.find((c) => c.value === activeFilter)?.label}
                 <button
                   onClick={() => setActiveFilter("all")}
-                  className="ml-1 hover:text-coral-900"
+                  className="ml-1 hover:text-emerald-900"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -451,7 +451,7 @@ const PackagesPage = () => {
                 setActiveFilter("all");
                 setSortBy("default");
               }}
-              className="text-sm text-coral-600 hover:text-coral-700 font-medium"
+              className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
             >
               Clear all
             </button>
@@ -466,7 +466,7 @@ const PackagesPage = () => {
                 "grid gap-6 animate-fade-in",
                 viewMode === "grid"
                   ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                  : "grid-cols-1 max-w-4xl mx-auto",
+                  : "grid-cols-1 max-w-4xl mx-auto"
               )}
             >
               {displayedPackages.map((pkg, index) => (
@@ -480,7 +480,10 @@ const PackagesPage = () => {
                   onClick={() => handleNextPage(pkg.id)}
                   className="h-full cursor-pointer animate-slide-up"
                   style={{
-                    animationDelay: `${Math.min((index % ITEMS_PER_PAGE) * 0.05, 0.3)}s`,
+                    animationDelay: `${Math.min(
+                      (index % ITEMS_PER_PAGE) * 0.05,
+                      0.3
+                    )}s`,
                   }}
                 >
                   <FilterCardList
@@ -504,7 +507,7 @@ const PackagesPage = () => {
             {hasMore && !loadingMore && (
               <div className="flex justify-center mt-12">
                 <div className="flex items-center gap-2 text-slate-500">
-                  <div className="w-2 h-2 rounded-full bg-coral-500 animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-sm">Scroll for more packages...</span>
                 </div>
               </div>

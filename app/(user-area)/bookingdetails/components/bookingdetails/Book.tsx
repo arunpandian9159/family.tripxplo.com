@@ -65,8 +65,8 @@ export default function Book({ booking }: BookProps) {
               {isPaid || isConfirmed
                 ? "Fully Paid"
                 : booking?.balanceAmount && booking.balanceAmount > 0
-                  ? "Balance Due"
-                  : "Total Amount"}
+                ? "Balance Due"
+                : "Total Amount"}
             </span>
           </div>
 
@@ -77,7 +77,7 @@ export default function Book({ booking }: BookProps) {
               "px-6 py-3 font-semibold rounded-xl transition-all flex items-center gap-2 active:scale-[0.98]",
               isPaid || isConfirmed
                 ? "bg-gradient-to-r from-emerald-500 to-emerald-400 text-white shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30"
-                : "bg-gradient-to-r from-coral-500 to-coral-400 text-white shadow-md shadow-coral-500/20 hover:shadow-lg hover:shadow-coral-500/30",
+                : "bg-gradient-to-r from-emerald-500 to-emerald-400 text-white shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30"
             )}
           >
             {isPaid || isConfirmed ? (
