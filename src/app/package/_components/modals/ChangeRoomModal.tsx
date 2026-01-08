@@ -30,6 +30,102 @@ import {
 import { AppDispatch } from '@/app/store/store';
 import { HotelChangeDataType } from '@/app/types/hotel';
 
+/**
+ * Helper function to check if a given date falls within any of the meal plan date ranges.
+ * @param mealPlan - The meal plan object containing startDate and endDate arrays
+ * @param checkDate - The date to check (as a string in YYYY-MM-DD format or Date object)
+ * @returns true if the date is within any of the date ranges, false otherwise
+ */
+const isDateWithinMealPlanRange = (mealPlan: HotelMealType, checkDate: string | Date): boolean => {
+  if (!mealPlan?.startDate?.length || !mealPlan?.endDate?.length) {
+    // If no date constraints, consider it valid
+    return true;
+  }
+
+  // Normalize the check date to a Date object at midnight
+  let dateToCheck: Date;
+  if (typeof checkDate === 'string') {
+    // Parse YYYY-MM-DD format manually to avoid timezone issues
+    const match = checkDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (match) {
+      dateToCheck = new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
+    } else {
+      dateToCheck = new Date(checkDate);
+    }
+  } else {
+    dateToCheck = new Date(checkDate);
+  }
+
+  if (isNaN(dateToCheck.getTime())) {
+    // If date is invalid, consider it valid to avoid hiding all options
+    return true;
+  }
+
+  // Set time to midnight for accurate comparison
+  dateToCheck.setHours(0, 0, 0, 0);
+
+  // Check if the date falls within any of the date range pairs
+  for (let i = 0; i < mealPlan.startDate.length; i++) {
+    const startDateStr = mealPlan.startDate[i];
+    const endDateStr = mealPlan.endDate[i];
+
+    if (!startDateStr || !endDateStr) continue;
+
+    // Parse start date
+    let startDate: Date;
+    const startMatch = startDateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (startMatch) {
+      startDate = new Date(
+        parseInt(startMatch[1]),
+        parseInt(startMatch[2]) - 1,
+        parseInt(startMatch[3])
+      );
+    } else {
+      startDate = new Date(startDateStr);
+    }
+
+    // Parse end date
+    let endDate: Date;
+    const endMatch = endDateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (endMatch) {
+      endDate = new Date(parseInt(endMatch[1]), parseInt(endMatch[2]) - 1, parseInt(endMatch[3]));
+    } else {
+      endDate = new Date(endDateStr);
+    }
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) continue;
+
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+
+    // Check if dateToCheck is within the range (inclusive)
+    if (dateToCheck >= startDate && dateToCheck <= endDate) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+/**
+ * Filters meal plans in a room to only include those with valid date ranges for the selected date.
+ * @param room - The hotel room with meal plans
+ * @param checkDate - The date to check
+ * @returns A new room object with filtered meal plans, or null if no valid meal plans exist
+ */
+const filterRoomMealPlansByDate = (room: HotelRoom, checkDate: string): HotelRoom | null => {
+  if (!room?.mealPlan?.length) return null;
+
+  const filteredMealPlans = room.mealPlan.filter(mp => isDateWithinMealPlanRange(mp, checkDate));
+
+  if (filteredMealPlans.length === 0) return null;
+
+  return {
+    ...room,
+    mealPlan: filteredMealPlans,
+  };
+};
+
 interface ChangeRoomModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -363,14 +459,26 @@ const RoomCard = ({
 const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({ isOpen, onClose, hotel, newHotel }) => {
   const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector((store: any) => store.package.isLoading);
+  // Get the selected date from Redux store for date-based filtering
+  const searchDate = useSelector((store: any) => store.searchPackage?.date || '');
   const { rooms, isLoading } = useAvailableRooms();
   const [filteredRooms, setFilteredRooms] = useState<HotelRoom[]>([]);
 
   useEffect(() => {
     if (rooms?.length > 0) {
-      setFilteredRooms(rooms.filter((room: HotelRoom) => room.mealPlan?.length > 0));
+      // Get the effective date for filtering (use searchDate or fallback to today)
+      const effectiveDate = searchDate?.slice(0, 10) || new Date().toISOString().slice(0, 10);
+
+      // First filter rooms that have meal plans, then filter by date
+      const roomsWithDateFilter = rooms
+        .map((room: HotelRoom) => filterRoomMealPlansByDate(room, effectiveDate))
+        .filter((room): room is HotelRoom => room !== null && room.mealPlan?.length > 0);
+
+      setFilteredRooms(roomsWithDateFilter);
+    } else {
+      setFilteredRooms([]);
     }
-  }, [rooms]);
+  }, [rooms, searchDate]);
 
   const handleSelectRoom = (room: HotelRoom, mealPlan: HotelMealType) => {
     // Store current scroll position before state update

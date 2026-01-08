@@ -17,16 +17,18 @@ import {
   Building2,
   Users,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useSearch } from '@/context/SearchContext';
 
 type ModalType = 'about' | 'careers' | 'contact' | 'refund' | null;
 
 const footerLinks = {
   destinations: [
-    { name: 'Bali', href: '#' },
-    { name: 'Goa', href: '#' },
-    { name: 'Manali', href: '#' },
-    { name: 'Kashmir', href: '#' },
-    { name: 'Andaman', href: '#' },
+    { name: 'Bali', destinationId: '4ebe5f1e-99d4-4dbb-a4e5-538a353ba81c' },
+    { name: 'Goa', destinationId: '1961511a-2d52-4dc4-95f5-9478c3e9a04f' },
+    { name: 'Manali', destinationId: '9380c50d-62ee-443b-a5c9-6beb90770e8f' },
+    { name: 'Kashmir', destinationId: '009b592f-9b73-4990-8068-1c299d1f15e5' },
+    { name: 'Andaman', destinationId: 'e431c796-3946-4d73-a9b9-99a7b138680d' },
   ],
   company: [
     { name: 'About Us', href: '#', modalType: 'about' as ModalType },
@@ -63,6 +65,29 @@ const socialLinks = [
 
 const Footer = () => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const router = useRouter();
+  const { setSearchParams } = useSearch();
+
+  const handleDestinationClick = (name: string, destinationId: string) => {
+    // Calculate date 10 days from now
+    const newDate = new Date();
+    newDate.setDate(newDate.getDate() + 10);
+    const startDate = newDate.toISOString().split('T')[0];
+
+    // Update search context with the selected destination
+    setSearchParams({
+      destinationId: destinationId,
+      destinationName: name,
+      startDate: startDate,
+      // Keep default values for other params
+      noAdult: 2,
+      noChild: 0,
+      noRoomCount: 1,
+      perRoom: 2,
+    });
+
+    router.push('/destinations');
+  };
 
   const openModal = (modalType: ModalType) => {
     setActiveModal(modalType);
@@ -153,13 +178,13 @@ const Footer = () => {
               <ul className="space-y-3">
                 {footerLinks.destinations.map(link => (
                   <li key={link.name}>
-                    <Link
-                      href={link.href}
+                    <button
+                      onClick={() => handleDestinationClick(link.name, link.destinationId)}
                       className="text-sm text-slate-400 hover:text-[#15ab8b] transition-colors inline-flex items-center gap-1 group"
                     >
                       {link.name}
                       <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>

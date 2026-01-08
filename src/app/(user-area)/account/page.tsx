@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
+import Image from 'next/image';
 import {
   HelpCircle,
   LogOut,
@@ -25,37 +25,37 @@ import {
   TrendingUp,
   CreditCard,
   Bell,
-} from "lucide-react";
-import toast from "react-hot-toast";
-import { useAuth } from "@/app/hooks/useAuth";
-import { ClearToken } from "@/app/utils/constants/accessToken";
-import { useDispatch } from "react-redux";
-import { removePackageId } from "@/app/store/features/packageDetailsSlice";
-import TermsAndConditions from "./components/terms-conditions";
-import Help from "./components/help";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Container } from "@/components/ui/container";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Skeleton, SkeletonProfile } from "@/components/ui/skeleton";
+} from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useAuth } from '@/app/hooks/useAuth';
+import { ClearToken } from '@/app/utils/constants/accessToken';
+import { useDispatch } from 'react-redux';
+import { removePackageId } from '@/app/store/features/packageDetailsSlice';
+import TermsAndConditions from './components/terms-conditions';
+import Help from './components/help';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { Container } from '@/components/ui/container';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Skeleton, SkeletonProfile } from '@/components/ui/skeleton';
 
 const Account = () => {
   const router = useRouter();
   const { user, isAuthenticated, isLoading } = useAuth();
   const dispatch = useDispatch();
-  const [greeting, setGreeting] = useState("Hello");
+  const [greeting, setGreeting] = useState('Hello');
 
   useEffect(() => {
     const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good morning");
-    else if (hour < 17) setGreeting("Good afternoon");
-    else setGreeting("Good evening");
+    if (hour < 12) setGreeting('Good morning');
+    else if (hour < 17) setGreeting('Good afternoon');
+    else setGreeting('Good evening');
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) router.push("/");
+    if (!isAuthenticated && !isLoading) router.push('/');
   }, [isLoading, isAuthenticated, router]);
 
   const handleLogout = async () => {
@@ -63,8 +63,8 @@ const Account = () => {
     localStorage.clear();
     sessionStorage.clear();
     dispatch(removePackageId());
-    toast.success("Logged out successfully");
-    await signOut({ redirect: true, callbackUrl: "/" });
+    toast.success('Logged out successfully');
+    await signOut({ redirect: true, callbackUrl: '/' });
   };
 
   if (isLoading) {
@@ -81,7 +81,7 @@ const Account = () => {
             <SkeletonProfile />
           </Card>
           <div className="space-y-3">
-            {[1, 2, 3, 4].map((i) => (
+            {[1, 2, 3, 4].map(i => (
               <Skeleton key={i} className="h-20 rounded-2xl" />
             ))}
           </div>
@@ -90,41 +90,41 @@ const Account = () => {
     );
   }
 
-  const firstName = ((user as any)?.fullName || (user as any)?.name || "Traveler").split(" ")[0];
+  const firstName = ((user as any)?.fullName || (user as any)?.name || 'Traveler').split(' ')[0];
 
   const menuItems = [
     {
-      title: "Personal Information",
-      description: "Manage your profile details",
+      title: 'Personal Information',
+      description: 'Manage your profile details',
       icon: User,
       href: `/account/${(user as any)?.userId || (user as any)?.id}`,
-      lightColor: "bg-blue-50",
-      iconColor: "text-blue-500",
+      lightColor: 'bg-blue-50',
+      iconColor: 'text-blue-500',
     },
     {
-      title: "My Bookings",
-      description: "View your travel history",
+      title: 'My Bookings',
+      description: 'View your travel history',
       icon: Ticket,
-      href: "/mybookings",
-      lightColor: "bg-emerald-50",
-      iconColor: "text-emerald-500",
+      href: '/mybookings',
+      lightColor: 'bg-emerald-50',
+      iconColor: 'text-emerald-500',
     },
     {
-      title: "Wishlists",
-      description: "Saved destinations & packages",
+      title: 'Wishlists',
+      description: 'Saved destinations & packages',
       icon: Heart,
-      href: "/wishlists",
-      lightColor: "bg-pink-50",
-      iconColor: "text-pink-500",
+      href: '/wishlists',
+      lightColor: 'bg-pink-50',
+      iconColor: 'text-pink-500',
     },
     {
-      title: "Rewards",
-      description: "Earn points on every trip",
+      title: 'Rewards',
+      description: 'Earn points on every trip',
       icon: Gift,
-      href: "/rewards",
-      lightColor: "bg-amber-50",
-      iconColor: "text-amber-500",
-      badge: "New",
+      href: '/rewards',
+      lightColor: 'bg-amber-50',
+      iconColor: 'text-amber-500',
+      badge: 'New',
     },
   ];
 
@@ -137,12 +137,21 @@ const Account = () => {
           <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-white blur-3xl" />
           <div className="absolute bottom-10 right-20 w-48 h-48 rounded-full bg-white blur-3xl" />
         </div>
-        
+
         {/* Floating icons */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <Plane className="absolute top-16 right-16 w-8 h-8 text-white/20 animate-float" style={{ animationDelay: "0s" }} />
-          <MapPin className="absolute top-24 left-1/4 w-6 h-6 text-white/15 animate-float" style={{ animationDelay: "0.5s" }} />
-          <Star className="absolute bottom-20 right-1/3 w-5 h-5 text-white/20 animate-float" style={{ animationDelay: "1s" }} />
+          <Plane
+            className="absolute top-16 right-16 w-8 h-8 text-white/20 animate-float"
+            style={{ animationDelay: '0s' }}
+          />
+          <MapPin
+            className="absolute top-24 left-1/4 w-6 h-6 text-white/15 animate-float"
+            style={{ animationDelay: '0.5s' }}
+          />
+          <Star
+            className="absolute bottom-20 right-1/3 w-5 h-5 text-white/20 animate-float"
+            style={{ animationDelay: '1s' }}
+          />
         </div>
 
         <Container className="relative z-10">
@@ -172,7 +181,7 @@ const Account = () => {
                   <div className="w-full h-full rounded-full overflow-hidden bg-white">
                     {(user as any)?.profileImg || (user as any)?.profileImage ? (
                       <Image
-                        src={(user as any)?.profileImg || (user as any)?.profileImage || ""}
+                        src={(user as any)?.profileImg || (user as any)?.profileImage || ''}
                         fill
                         alt="Profile"
                         className="object-cover"
@@ -189,7 +198,7 @@ const Account = () => {
                   <div className="w-2 h-2 bg-white rounded-full" />
                 </div>
                 {/* Edit overlay */}
-                <Link 
+                <Link
                   href={`/account/${(user as any)?.userId || (user as any)?.id}`}
                   className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                 >
@@ -201,7 +210,7 @@ const Account = () => {
               <div className="flex-1 text-center sm:text-left">
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 mb-2">
                   <h2 className="text-xl lg:text-2xl font-bold text-slate-900">
-                    {(user as any)?.fullName || (user as any)?.name || "Welcome!"}
+                    {(user as any)?.fullName || (user as any)?.name || 'Welcome!'}
                   </h2>
                   <Badge variant="emerald" size="sm" className="flex items-center gap-1">
                     <Shield className="w-3 h-3" />
@@ -237,7 +246,10 @@ const Account = () => {
 
             {/* Edit Button - Mobile */}
             <div className="sm:hidden mt-4">
-              <Link href={`/account/${(user as any)?.userId || (user as any)?.id}`} className="block">
+              <Link
+                href={`/account/${(user as any)?.userId || (user as any)?.id}`}
+                className="block"
+              >
                 <Button variant="outline" size="sm" className="w-full">
                   <Settings className="w-4 h-4 mr-2" />
                   Edit Profile
@@ -249,11 +261,11 @@ const Account = () => {
 
         {/* Explore CTA Banner */}
         <Link href="/destinations">
-          <Card 
-            hoverable 
-            padding="none" 
+          <Card
+            hoverable
+            padding="none"
             className="mb-6 overflow-hidden bg-linear-to-r from-coral-500 to-rose-500 border-0 animate-slide-up"
-            style={{ animationDelay: "0.1s" } as React.CSSProperties}
+            style={{ animationDelay: '0.1s' } as React.CSSProperties}
           >
             <div className="p-5 flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -287,17 +299,19 @@ const Account = () => {
                 style={{ animationDelay: `${(index + 2) * 0.1}s` } as React.CSSProperties}
               >
                 <div className="flex items-center gap-4 p-4">
-                  <div className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
-                    item.lightColor
-                  )}>
-                    <item.icon className={cn("w-5 h-5", item.iconColor)} />
+                  <div
+                    className={cn(
+                      'w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110',
+                      item.lightColor
+                    )}
+                  >
+                    <item.icon className={cn('w-5 h-5', item.iconColor)} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold text-slate-900 truncate">{item.title}</h3>
                       {item.badge && (
-                        <Badge variant="coral" size="sm" className="text-[10px] px-1.5 py-0.5">
+                        <Badge variant="emerald" size="sm" className="text-[10px] px-1.5 py-0.5">
                           {item.badge}
                         </Badge>
                       )}

@@ -42,15 +42,12 @@ const PopularEMIPackages = () => {
       try {
         const today = new Date().toISOString().split('T')[0];
         const response = await fetch(
-          `/api/v1/packages?limit=10&noAdult=2&noChild=2&noRoomCount=1&startDate=${today}`
+          `/api/v1/packages?limit=20&noAdult=2&noChild=2&noRoomCount=1&startDate=${today}`
         );
 
         if (response.ok) {
           const data = await response.json();
-          console.log('API Response:', data);
           if (data.success && data.result?.docs) {
-            console.log('Packages data:', data.result.docs);
-            console.log('Packages count:', data.result.docs.length);
             setPackages(data.result.docs || []);
           }
         }
@@ -91,9 +88,12 @@ const PopularEMIPackages = () => {
     }
   };
 
-  const getImageUrl = (img?: string) => {
+  const getImageUrl = (img?: string | string[]) => {
     if (!img) return '/home.png';
-    return img.startsWith('http') ? img : `https://tripxplo.com${img}`;
+    // Handle array of images - take the first one
+    const imageUrl = Array.isArray(img) ? img[0] : img;
+    if (!imageUrl) return '/home.png';
+    return imageUrl.startsWith('http') ? imageUrl : `https://tripemilestone.in-maa-1.linodeobjects.com/${imageUrl}`;
   };
 
   // Calculate EMI (12 months, 0% interest for display)
