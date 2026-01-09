@@ -237,31 +237,17 @@ const PopularEMIPackages = () => {
                   {/* Price & EMI */}
                   <div className="flex items-end justify-between">
                     <div>
-                      <span className="text-xs text-slate-400 font-medium">
-                        Starting from
-                      </span>
-                      <div className="flex items-baseline gap-1">
-                        {displayPrice > 0 ? (
-                          <>
-                            <span className="text-xl font-bold text-slate-900">
-                              ₹{formatIndianNumber(displayPrice)}
-                            </span>
-                            <span className="text-xs text-slate-500">
-                              /person
-                            </span>
-                          </>
-                        ) : (
-                          <span className="text-sm font-medium text-gold-600">
-                            View Details
-                          </span>
-                        )}
+                      <div className="flex items-center gap-1 mb-1 text-sm text-slate-500 font-medium">
+                          <span className="text-black font-bold">
+                            EMI
+                          </span>                       
+                        from
                       </div>
-                      {/* EMI Display */}
+                      {/* EMI Display - Above */}
                       {displayPrice > 0 && (
-                        <div className="flex items-center gap-1 mt-1">
-                          <CreditCard className="w-3 h-3 text-gold-600" />
-                          <span className="text-xs font-semibold text-gold-600">
-                            EMI ₹{formatIndianNumber(emiPrice)}/mo
+                        <div className="flex items-center gap-1">
+                          <span className="text-xl font-bold text-gold-600">
+                            ₹{formatIndianNumber(emiPrice)}/mo
                           </span>
                         </div>
                       )}

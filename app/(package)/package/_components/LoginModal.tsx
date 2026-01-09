@@ -97,7 +97,7 @@ export default function LoginModal({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Left Panel - Decorative (Hidden on mobile) */}
-          <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-emerald-500 via-emerald-500 to-emerald-700 relative overflow-hidden">
+          <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-gold-500 via-gold-500 to-gold-700 relative overflow-hidden">
             {/* Background decorations */}
             <div className="absolute inset-0">
               <div className="absolute top-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
@@ -113,7 +113,7 @@ export default function LoginModal({
                 <h2 className="text-2xl font-bold text-white mb-3">
                   Almost There!
                 </h2>
-                <p className="text-emerald-100 text-sm">
+                <p className="text-amber-100 text-sm">
                   Sign in to complete your booking and access exclusive member
                   benefits.
                 </p>
@@ -129,7 +129,7 @@ export default function LoginModal({
                       key={i}
                       className="flex items-center gap-2.5 text-white/90 text-sm"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-emerald-300 flex-shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-amber-200 flex-shrink-0" />
                       <span>{benefit}</span>
                     </div>
                   ))}
@@ -152,7 +152,7 @@ export default function LoginModal({
             <div className="flex-1 flex flex-col justify-start sm:justify-center max-w-sm mx-auto w-full pt-12 sm:pt-0 pb-6 sm:pb-0">
               {/* Mobile Header - Compact gradient banner */}
               <div className="sm:hidden mb-4">
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700">
+                <div className="flex items-center gap-3 p-3 rounded-xl gold-gradient">
                   <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
                     <Plane className="w-5 h-5 text-white" />
                   </div>
@@ -215,7 +215,7 @@ export default function LoginModal({
                       {...register("email")}
                       className={cn(
                         "w-full pl-9 sm:pl-10 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                        "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
+                        "focus:outline-none focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 focus:bg-white",
                         "transition-all duration-200 touch-manipulation",
                         errors.email &&
                           "border-red-500 bg-red-50 focus:ring-red-500/20"
@@ -250,7 +250,7 @@ export default function LoginModal({
                       {...register("password")}
                       className={cn(
                         "w-full pl-9 sm:pl-10 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-900 placeholder:text-slate-400 text-base sm:text-sm",
-                        "focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white",
+                        "focus:outline-none focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 focus:bg-white",
                         "transition-all duration-200 touch-manipulation",
                         errors.password &&
                           "border-red-500 bg-red-50 focus:ring-red-500/20"
@@ -270,7 +270,7 @@ export default function LoginModal({
                 <div className="flex justify-end">
                   <Link
                     href="/forgot-password"
-                    className="text-xs text-emerald-600 hover:text-emerald-700 font-medium transition-colors py-1 touch-manipulation"
+                    className="text-xs text-gold-600 hover:text-gold-700 font-medium transition-colors py-1 touch-manipulation"
                     onClick={onClose}
                   >
                     Forgot password?
@@ -281,7 +281,7 @@ export default function LoginModal({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
+                  className="w-full py-3.5 gold-gradient hover:opacity-90 active:scale-[0.98] text-white font-semibold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
                 >
                   {loading ? (
                     <>
@@ -302,7 +302,7 @@ export default function LoginModal({
                 Don&apos;t have an account?{" "}
                 <button
                   type="button"
-                  className="text-emerald-600 hover:text-emerald-700 font-semibold transition-colors py-1 px-1 touch-manipulation"
+                  className="text-gold-600 hover:text-gold-700 font-semibold transition-colors py-1 px-1 touch-manipulation"
                   onClick={() => {
                     onClose();
                     sessionStorage.setItem("openAuthModal", "register");
