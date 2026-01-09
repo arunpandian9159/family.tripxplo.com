@@ -6,6 +6,13 @@ export interface Room {
     totalRooms: number;
     totalAdults: number;
     totalChilds: number;
+    // New age category fields
+    children611: number; // Children 6-11 years
+    children25: number; // Child below 5 (2-5 years)
+    infants: number; // Infants under 2 years
+    // Family type tracking
+    familyTypeName: string;
+    isFamilyTypeSelected: boolean; // false = detected, true = selected (after Apply)
     roomSchema: InputRoomWithId[];
     initiallyLoaded: boolean;
   };
@@ -19,6 +26,10 @@ interface InputAdultChild {
   adult: number;
   child: number;
   room: number;
+  // New age category fields
+  children611?: number;
+  children25?: number;
+  infants?: number;
 }
 const initialState: Room = {
   room: {
@@ -26,6 +37,11 @@ const initialState: Room = {
     totalRooms: 0,
     totalAdults: 0,
     totalChilds: 0,
+    children611: 0,
+    children25: 0,
+    infants: 0,
+    familyTypeName: "",
+    isFamilyTypeSelected: false,
     roomSchema: [
       {
         id: 1,
@@ -45,6 +61,11 @@ const selectRoomSlice = createSlice({
       state.room.totalRooms = 0;
       state.room.totalAdults = 0;
       state.room.totalChilds = 0;
+      state.room.children611 = 0;
+      state.room.children25 = 0;
+      state.room.infants = 0;
+      state.room.familyTypeName = "";
+      state.room.isFamilyTypeSelected = false;
       state.room.initiallyLoaded = true;
     },
     selectRoom(state, action) {
@@ -52,11 +73,11 @@ const selectRoomSlice = createSlice({
       state.room.totalRooms = rooms.room.length;
       state.room.totalAdults = rooms.room.reduce(
         (total, room) => total + room.totalAdults,
-        0,
+        0
       );
       state.room.totalChilds = rooms.room.reduce(
         (total, room) => total + room.totalChilds,
-        0,
+        0
       );
       state.room.roomSchema = rooms.room.map((r) => {
         if (isNaN(r.totalAdults)) {
@@ -75,11 +96,23 @@ const selectRoomSlice = createSlice({
       const rooms: { room: InputAdultChild } = action.payload;
       state.room.totalRooms = rooms.room?.room;
       state.room.totalAdults = rooms.room?.adult;
-      state.room.totalChilds = rooms.room?.child;
+      // Store individual age categories
+      state.room.children611 = rooms.room?.children611 ?? 0;
+      state.room.children25 = rooms.room?.children25 ?? 0;
+      state.room.infants = rooms.room?.infants ?? 0;
+      // totalChilds = sum of all child categories for API compatibility
+      state.room.totalChilds =
+        (rooms.room?.children611 ?? 0) +
+        (rooms.room?.children25 ?? 0) +
+        (rooms.room?.infants ?? 0);
       state.room.roomSchema = [{ id: 1, totalAdults: 0, totalChilds: 0 }];
     },
     selectInitiallyLoaded(state, action) {
       state.room.initiallyLoaded = action.payload;
+    },
+    setFamilyType(state, action) {
+      state.room.familyTypeName = action.payload.name;
+      state.room.isFamilyTypeSelected = action.payload.isSelected ?? false;
     },
   },
 });
@@ -89,5 +122,6 @@ export const {
   selectAdultsChild,
   selectPerRooom,
   selectInitiallyLoaded,
+  setFamilyType,
 } = selectRoomSlice.actions;
 export default selectRoomSlice.reducer;

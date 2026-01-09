@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Search, MapPin, Calendar, Users } from "lucide-react";
+import { Search, MapPin, Calendar, Users, Sparkles } from "lucide-react";
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // PackageThemes removed - this project only shows Family themed packages
@@ -40,6 +40,14 @@ const SearchBox = () => {
   const date = useAppSelector((store: any) => store.searchPackage.date);
   const roomCapacityData = useSelector(
     (store: any) => store.roomSelect.room.totalAdults
+  );
+
+  // Family type data from Redux
+  const familyTypeName = useSelector(
+    (store: any) => store.roomSelect.room.familyTypeName
+  );
+  const isFamilyTypeSelected = useSelector(
+    (store: any) => store.roomSelect.room.isFamilyTypeSelected
   );
 
   useEffect(() => {
@@ -100,6 +108,21 @@ const SearchBox = () => {
   return (
     <div className="flex flex-col items-center w-full max-w-5xl mx-auto px-4">
       {/* Theme selector removed - this project only shows Family themed packages */}
+
+      {/* Family Type Badge - shown when detected/selected */}
+      {mounted && familyTypeName && (
+        <div className="w-full flex justify-center mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-full shadow-sm">
+            <Sparkles className="w-4 h-4 text-emerald-500" />
+            <span className="text-sm font-medium text-emerald-700">
+              {isFamilyTypeSelected ? "Selected" : "Detected"}:
+            </span>
+            <span className="text-sm font-semibold text-emerald-800">
+              {familyTypeName}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Main Search Card - overflow-visible allows dropdowns to show */}
       <div className="w-full bg-white rounded-3xl shadow-xl border border-slate-100 p-3 lg:p-4 relative overflow-visible">

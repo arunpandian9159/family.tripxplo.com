@@ -2,15 +2,25 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { Minus, Plus, AlertCircle, X } from "lucide-react";
+import {
+  Minus,
+  Plus,
+  AlertCircle,
+  X,
+  Users,
+  Baby,
+  Sparkles,
+} from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   initialLoad,
   selectAdultsChild,
   selectInitiallyLoaded,
+  setFamilyType,
 } from "@/app/store/features/roomCapacitySlice";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { detectFamilyType } from "@/lib/models/familytype";
 
 interface OptionsBoxProps {
   className?: string;
@@ -45,13 +55,21 @@ export default function OptionsBox({
   const [warningTxt, setWarningTxt] = useState("");
   const [rooms, setRooms] = useState(0);
   const [adults, setAdults] = useState(0);
-  const [child, setChild] = useState(0);
+  // New age category states
+  const [children611, setChildren611] = useState(0); // Children 6-11 years
+  const [children25, setChildren25] = useState(0); // Child below 5 (2-5 years)
+  const [infants, setInfants] = useState(0); // Infants under 2 years
+
   const [minRooms, setMinRooms] = useState(1);
-  const [showChild, setShowChild] = useState(true);
   const [guests, setGuests] = useState(4);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+
+  // Family type detection state
+  const [detectedFamilyType, setDetectedFamilyType] = useState("");
+  const [isApplied, setIsApplied] = useState(false);
+
   const dispatch = useDispatch();
   const popoverRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -69,13 +87,40 @@ export default function OptionsBox({
 
     // Initialize with Family theme defaults
     setAdults(2);
-    setChild(2);
+    setChildren611(0);
+    setChildren25(0);
+    setInfants(0);
     setRooms(1);
 
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Detect family type whenever guest counts change and sync to Redux
+  useEffect(() => {
+    if (mounted) {
+      const familyType = detectFamilyType(
+        adults,
+        children611,
+        children25,
+        infants
+      );
+      const name = familyType.name;
+      setDetectedFamilyType(name);
+
+      // Update Redux so SearchBox can show detected/selected type
+      dispatch(
+        setFamilyType({
+          name,
+          isSelected: isApplied,
+        })
+      );
+    }
+  }, [adults, children611, children25, infants, mounted, isApplied, dispatch]);
+
   function handleIncrementorDecrementor(i: boolean, value: string) {
+    // When any guest count changes, reset applied state to show "detected"
+    setIsApplied(false);
+
     switch (value) {
       case "adult": {
         if (i) {
@@ -88,12 +133,32 @@ export default function OptionsBox({
         }
         break;
       }
-      case "child": {
+      case "children611": {
         if (i) {
-          setChild(child + 1);
+          setChildren611(children611 + 1);
         } else {
-          if (child - 1 >= 0) {
-            setChild(child - 1);
+          if (children611 > 0) {
+            setChildren611(children611 - 1);
+          }
+        }
+        break;
+      }
+      case "children25": {
+        if (i) {
+          setChildren25(children25 + 1);
+        } else {
+          if (children25 > 0) {
+            setChildren25(children25 - 1);
+          }
+        }
+        break;
+      }
+      case "infants": {
+        if (i) {
+          setInfants(infants + 1);
+        } else {
+          if (infants > 0) {
+            setInfants(infants - 1);
           }
         }
         break;
@@ -117,6 +182,9 @@ export default function OptionsBox({
     if (adults >= rooms) {
       setSpecFocused(false);
       setWarningTxt("");
+      setIsApplied(true);
+      // Dispatch family type as selected
+      dispatch(setFamilyType({ name: detectedFamilyType, isSelected: true }));
     } else {
       setWarningTxt("Invalid number of rooms");
     }
@@ -126,15 +194,16 @@ export default function OptionsBox({
     if (!roomInitiallyLoaded) dispatch(initialLoad());
   }, [themeSelected, dispatch, roomInitiallyLoaded]);
 
-  // Room calculation logic
+  // Room calculation logic - using all child categories
   useEffect(() => {
+    const totalChildren = children611 + children25 + infants;
     let r = 0;
-    // Family theme: calculate rooms based on adults and children
-    if (child == 0) {
+    // Family theme: calculate rooms based on adults and total children
+    if (totalChildren == 0) {
       r = Math.ceil(adults / 3);
     } else {
       let x = adults;
-      let y = child;
+      let y = totalChildren;
       r = 0;
       while (x >= 3 && y >= 1) {
         x = x - 3;
@@ -153,12 +222,15 @@ export default function OptionsBox({
       selectAdultsChild({
         room: {
           adult: adults,
-          child: child,
+          child: totalChildren,
           room: r,
+          children611: children611,
+          children25: children25,
+          infants: infants,
         },
       })
     );
-  }, [child, adults, themeSelected, dispatch]);
+  }, [children611, children25, infants, adults, themeSelected, dispatch]);
 
   function validateAdults() {
     // Family theme: allow decrement if adults > 1
@@ -170,7 +242,7 @@ export default function OptionsBox({
       const rect = triggerRef.current.getBoundingClientRect();
       setDropdownPosition({
         top: rect.bottom + 8,
-        left: Math.max(rect.right - 320, 16), // Align to right, but don't go off screen
+        left: Math.max(rect.right - 380, 16), // Wider dropdown, align to right
       });
     }
   }, [isMobile]);
@@ -228,47 +300,26 @@ export default function OptionsBox({
   useEffect(() => {
     if (!roomInitiallyLoaded) {
       setAdults(2);
-      setChild(2);
-      setShowChild(true);
+      setChildren611(0);
+      setChildren25(0);
+      setInfants(0);
     }
   }, [roomInitiallyLoaded]);
 
-  const handleAdultsChange = (newAdults: number) => {
-    setAdults(newAdults);
-    dispatch(
-      selectAdultsChild({
-        room: {
-          adult: newAdults,
-          child: child,
-          room: rooms,
-        },
-      })
-    );
-  };
-
-  const handleChildrenChange = (newChildren: number) => {
-    if (!showChild) {
-      setChild(0);
-      return;
-    }
-    setChild(newChildren);
-    dispatch(
-      selectAdultsChild({
-        room: {
-          adult: adults,
-          child: newChildren,
-          room: rooms,
-        },
-      })
-    );
-  };
-
   useEffect(() => {
     // Dispatch room data to Redux for all themes
-    const room = { adult: adults, child: child, room: rooms };
+    const totalChildren = children611 + children25 + infants;
+    const room = {
+      adult: adults,
+      child: totalChildren,
+      room: rooms,
+      children611: children611,
+      children25: children25,
+      infants: infants,
+    };
     dispatch(selectAdultsChild({ room }));
     dispatch(selectInitiallyLoaded(true));
-  }, [adults, child, rooms, dispatch]);
+  }, [adults, children611, children25, infants, rooms, dispatch]);
 
   const CounterButton = ({
     onClick,
@@ -303,14 +354,15 @@ export default function OptionsBox({
       );
     }
 
+    const totalChildren = children611 + children25 + infants;
+
     // Use local state for all themes
     return rooms > 0 ? (
       <span className="text-sm lg:text-base font-medium text-slate-800">
         {rooms} {rooms == 1 ? "Room" : "Rooms"}, {adults}{" "}
         {adults == 1 ? "Adult" : "Adults"}
-        {showChild &&
-          child > 0 &&
-          `, ${child} ${child == 1 ? "Child" : "Children"}`}
+        {totalChildren > 0 &&
+          `, ${totalChildren} ${totalChildren == 1 ? "Child" : "Children"}`}
       </span>
     ) : (
       <span className="text-sm lg:text-base text-slate-400">Select guests</span>
@@ -333,7 +385,7 @@ export default function OptionsBox({
           "bg-white shadow-2xl border border-slate-200 overflow-hidden",
           isMobile
             ? "fixed inset-x-0 bottom-0 rounded-t-3xl max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-300 z-[9999]"
-            : "fixed w-[320px] rounded-2xl z-[9999]"
+            : "fixed w-[520px] rounded-2xl z-[9999]"
         )}
         style={
           isMobile
@@ -347,110 +399,194 @@ export default function OptionsBox({
         {/* Header */}
         <div
           className={cn(
-            "px-5 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between sticky top-0 z-10",
+            "px-5 py-4 bg-slate-50 border-b border-slate-100 sticky top-0 z-10",
             isMobile && "px-6 py-5"
           )}
         >
-          <div>
-            <h3 className="font-semibold text-slate-800">Guests & Rooms</h3>
-            <p className="text-xs text-slate-500">
-              Max {guests} guests per room
-            </p>
-          </div>
-          {isMobile && (
-            <button
-              onClick={() => setSpecFocused(false)}
-              className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
-            >
-              <X className="w-5 h-5 text-slate-600" />
-            </button>
+          {/* Show detected/selected family type */}
+          {mounted && detectedFamilyType && (
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="w-4 h-4 text-emerald-500" />
+              <p className="text-xs font-medium text-emerald-600">
+                {isApplied ? "Selected" : "Detected"}: {detectedFamilyType}
+              </p>
+            </div>
           )}
+
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-slate-800">Guests & Rooms</h3>
+            {isMobile && (
+              <button
+                onClick={() => setSpecFocused(false)}
+                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
+              >
+                <X className="w-5 h-5 text-slate-600" />
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className={cn("p-5 space-y-5", isMobile && "p-6 pb-8 space-y-6")}>
-          {/* Adults */}
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-slate-800">Adults</p>
-              <p className="text-xs text-slate-400">Above 12 years</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <CounterButton
-                onClick={() => handleIncrementorDecrementor(false, "adult")}
-                disabled={!validateAdults()}
-              >
-                <Minus className="w-4 h-4" />
-              </CounterButton>
-              <span className="w-8 text-center font-semibold text-slate-800 text-lg">
-                {adults}
-              </span>
-              <CounterButton
-                onClick={() => handleIncrementorDecrementor(true, "adult")}
-                disabled={false}
-              >
-                <Plus className="w-4 h-4" />
-              </CounterButton>
-            </div>
-          </div>
-
-          {/* Children */}
-          {showChild && (
-            <>
-              <div className="h-px bg-slate-100" />
+        <div className={cn("p-5", isMobile && "p-6 pb-8")}>
+          {/* Two Column Grid Layout */}
+          <div
+            className={cn(
+              "grid gap-4",
+              isMobile ? "grid-cols-1 space-y-4" : "grid-cols-2 gap-x-6 gap-y-4"
+            )}
+          >
+            {/* Left Column - Guest Types */}
+            <div className="space-y-4">
+              {/* Adults */}
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-slate-800">Children</p>
-                  <p className="text-xs text-slate-400">5 to 11 years</p>
+                  <p className="font-medium text-slate-800">Adults</p>
+                  <p className="text-xs text-slate-400">(12+ years)</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <CounterButton
-                    onClick={() => handleIncrementorDecrementor(false, "child")}
-                    disabled={child <= 0}
+                    onClick={() => handleIncrementorDecrementor(false, "adult")}
+                    disabled={!validateAdults()}
                   >
                     <Minus className="w-4 h-4" />
                   </CounterButton>
-                  <span className="w-8 text-center font-semibold text-slate-800 text-lg">
-                    {child}
+                  <span className="w-6 text-center font-semibold text-slate-800">
+                    {adults}
                   </span>
                   <CounterButton
-                    onClick={() => handleIncrementorDecrementor(true, "child")}
+                    onClick={() => handleIncrementorDecrementor(true, "adult")}
                     disabled={false}
                   >
                     <Plus className="w-4 h-4" />
                   </CounterButton>
                 </div>
               </div>
-            </>
-          )}
 
-          {/* Rooms */}
-          <div className="h-px bg-slate-100" />
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-slate-800">Rooms</p>
+              <div className="h-px bg-slate-100" />
+
+              {/* Children 6-11 */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-slate-800">Children</p>
+                  <p className="text-xs text-slate-400">(6-11 years)</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CounterButton
+                    onClick={() =>
+                      handleIncrementorDecrementor(false, "children611")
+                    }
+                    disabled={children611 <= 0}
+                  >
+                    <Minus className="w-4 h-4" />
+                  </CounterButton>
+                  <span className="w-6 text-center font-semibold text-slate-800">
+                    {children611}
+                  </span>
+                  <CounterButton
+                    onClick={() =>
+                      handleIncrementorDecrementor(true, "children611")
+                    }
+                    disabled={false}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </CounterButton>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <CounterButton
-                onClick={() => handleIncrementorDecrementor(false, "room")}
-                disabled={rooms <= minRooms}
-              >
-                <Minus className="w-4 h-4" />
-              </CounterButton>
-              <span className="w-8 text-center font-semibold text-slate-800 text-lg">
-                {rooms}
-              </span>
-              <CounterButton
-                onClick={() => handleIncrementorDecrementor(true, "room")}
-                disabled={rooms >= adults}
-              >
-                <Plus className="w-4 h-4" />
-              </CounterButton>
+
+            {/* Right Column - Child Age Categories & Rooms */}
+            <div className="space-y-4">
+              {/* Child below 5 */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-slate-800">Child below 5</p>
+                  <p className="text-xs text-slate-400">(2-5 years)</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CounterButton
+                    onClick={() =>
+                      handleIncrementorDecrementor(false, "children25")
+                    }
+                    disabled={children25 <= 0}
+                  >
+                    <Minus className="w-4 h-4" />
+                  </CounterButton>
+                  <span className="w-6 text-center font-semibold text-slate-800">
+                    {children25}
+                  </span>
+                  <CounterButton
+                    onClick={() =>
+                      handleIncrementorDecrementor(true, "children25")
+                    }
+                    disabled={false}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </CounterButton>
+                </div>
+              </div>
+
+              <div className="h-px bg-slate-100" />
+
+              {/* Infants */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-slate-800">Infants</p>
+                  <p className="text-xs text-slate-400">(Under 2 years)</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CounterButton
+                    onClick={() =>
+                      handleIncrementorDecrementor(false, "infants")
+                    }
+                    disabled={infants <= 0}
+                  >
+                    <Minus className="w-4 h-4" />
+                  </CounterButton>
+                  <span className="w-6 text-center font-semibold text-slate-800">
+                    {infants}
+                  </span>
+                  <CounterButton
+                    onClick={() =>
+                      handleIncrementorDecrementor(true, "infants")
+                    }
+                    disabled={false}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </CounterButton>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Rooms - Centered below columns */}
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-center gap-4">
+              <div className="text-center">
+                <p className="font-medium text-slate-800">Rooms</p>
+                <p className="text-xs text-slate-400">Max {guests} guests per room</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <CounterButton
+                  onClick={() => handleIncrementorDecrementor(false, "room")}
+                  disabled={rooms <= minRooms}
+                >
+                  <Minus className="w-4 h-4" />
+                </CounterButton>
+                <span className="w-6 text-center font-semibold text-slate-800">
+                  {rooms}
+                </span>
+                <CounterButton
+                  onClick={() => handleIncrementorDecrementor(true, "room")}
+                  disabled={rooms >= adults}
+                >
+                  <Plus className="w-4 h-4" />
+                </CounterButton>
+              </div>
             </div>
           </div>
 
           {/* Warning */}
           {warningTxt && (
-            <div className="flex items-center gap-2 text-red-500 text-sm bg-red-50 p-3 rounded-xl">
+            <div className="flex items-center gap-2 text-red-500 text-sm bg-red-50 p-3 rounded-xl mt-4">
               <AlertCircle className="w-4 h-4" />
               {warningTxt}
             </div>
@@ -460,7 +596,7 @@ export default function OptionsBox({
           <Button
             onClick={() => handleApply()}
             variant="primary"
-            className="w-full"
+            className="w-full mt-4"
           >
             Apply
           </Button>
