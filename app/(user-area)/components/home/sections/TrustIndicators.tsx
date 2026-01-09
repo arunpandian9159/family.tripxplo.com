@@ -38,8 +38,8 @@ const AnimatedCounter = ({
   useEffect(() => {
     if (!inView) return;
 
-    const duration = 2000;
-    const steps = 60;
+    const duration = 500;
+    const steps = 40;
     const increment = value / steps;
     let current = 0;
 
@@ -87,7 +87,7 @@ const TrustIndicators = () => {
   }, []);
 
   return (
-    <section className="py-12 lg:py-16 bg-gradient-to-b from-cream-100 to-white relative overflow-hidden">
+    <section className="py-12 lg:py-16 gold-gradient">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div
@@ -103,55 +103,20 @@ const TrustIndicators = () => {
         {/* Stats Row */}
         <div
           ref={ref}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
         >
           {stats.map((stat, index) => (
             <div key={stat.label} className="text-center group">
-              <div className="inline-flex items-center justify-center w-12 h-12 mb-3 rounded-xl bg-gold-100 text-gold-600 group-hover:scale-110 transition-transform duration-300">
-                <stat.icon className="w-6 h-6" />
-              </div>
-              <div className="text-3xl lg:text-4xl font-bold text-slate-900 mb-1">
+              <div className="text-3xl lg:text-4xl font-bold text-gold-900 mb-1">
                 <AnimatedCounter
                   value={stat.value}
                   suffix={stat.suffix}
                   inView={isInView}
                 />
               </div>
-              <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
+              <p className="text-sm text-slate-800 font-medium">{stat.label}</p>
             </div>
           ))}
-        </div>
-
-        {/* Trust Badges Row */}
-        <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-8">
-          {trustBadges.map((badge, index) => (
-            <div
-              key={badge.label}
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-slate-100 hover:shadow-md hover:border-slate-200 transition-all duration-300"
-            >
-              <badge.icon className={`w-5 h-5 ${badge.color}`} />
-              <span className="text-sm font-medium text-slate-700">
-                {badge.label}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Payment Partners */}
-        <div className="mt-10 text-center">
-          <p className="text-xs text-slate-400 uppercase tracking-wider mb-4">
-            Trusted Payment Partners
-          </p>
-          <div className="flex justify-center items-center gap-8 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-            {/* Razorpay */}
-            <div className="text-slate-600 font-bold text-lg">Razorpay</div>
-            {/* Visa */}
-            <div className="text-slate-600 font-bold text-lg">VISA</div>
-            {/* Mastercard */}
-            <div className="text-slate-600 font-bold text-lg">Mastercard</div>
-            {/* UPI */}
-            <div className="text-slate-600 font-bold text-lg">UPI</div>
-          </div>
         </div>
       </div>
     </section>

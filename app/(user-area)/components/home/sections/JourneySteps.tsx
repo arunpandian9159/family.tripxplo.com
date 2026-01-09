@@ -62,7 +62,7 @@ const JourneySteps = () => {
         {/* Steps Grid */}
         <div className="relative">
           {/* Connecting line - Desktop only */}
-          <div className="hidden lg:block absolute top-[72px] left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-gold-500/0 via-gold-500/50 to-gold-500/0" />
+          <div className="hidden lg:block absolute top-[40px] left-[1%] right-[1%] h-0.5 bg-gradient-to-r from-gold-500/0 via-gold-500/50 to-gold-500/0" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
             {steps.map((step, index) => (

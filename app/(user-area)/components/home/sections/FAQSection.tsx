@@ -195,22 +195,6 @@ const FAQSection = () => {
               </button>
             </div>
           )}
-
-          {/* CTA */}
-          <div className="mt-16 text-center">
-            <p className="text-slate-600 mb-4">Still have questions?</p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="https://wa.me/919442424492"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 gold-gradient text-black font-semibold rounded-xl hover:shadow-lg hover:shadow-gold-500/25 transition-all duration-300"
-              >
-                Chat with Us on WhatsApp
-                <PiWhatsappLogoBold />
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </section>

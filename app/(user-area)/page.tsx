@@ -54,11 +54,12 @@ export default function HomePage() {
       {/* Journey Steps - How EMI Works */}
       <JourneySteps />
 
+      {/* Trust Indicators - Stats & Badges */}
+      <TrustIndicators />
+
       {/* Testimonials Section - TripXplo Diaries */}
       <Testimonials />
 
-      {/* Trust Indicators - Stats & Badges */}
-      <TrustIndicators />
 
       {/* FAQ Section */}
       <FAQSection />

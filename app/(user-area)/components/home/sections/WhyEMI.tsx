@@ -116,29 +116,6 @@ const WhyEMI = () => {
               <p className="text-slate-600 text-sm leading-relaxed">
                 {benefit.description}
               </p>
-
-              {/* Decorative arrow */}
-              <div
-                className={cn(
-                  "mt-4 flex items-center font-medium text-sm opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300",
-                  benefit.hoverColor
-                )}
-              >
-                Learn more
-                <svg
-                  className="w-4 h-4 ml-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </div>
             </div>
           ))}
         </div>
