@@ -23,12 +23,8 @@ const faqs = [
       "We understand plans can change. Our cancellation policy varies by package and how close it is to the travel date. Generally, you can get a full refund if cancelled 30+ days before travel. Check our Cancellation & Refund Policy for details.",
   },
   {
-    question: "Are flights included in the package?",
-    answer:
-      "Flight inclusion varies by package. Some packages include domestic flights, while others cover only accommodation, transfers, and activities. Each package clearly mentions what's included - look for the 'Inclusions' section.",
-  },
-  {
-    question: "How are TripXplo packages different from other online travel sites?",
+    question:
+      "How are TripXplo packages different from other online travel sites?",
     answer:
       "Our packages offer a comprehensive range of services including travel, sightseeing, breakfast, adventures, and accommodation. Additionally, we have a network of well-trained Trip Captains across India who guide our customers, ensuring they feel at home and can travel with ease.",
   },
@@ -36,6 +32,58 @@ const faqs = [
     question: "How do I make EMI payments?",
     answer:
       "After your initial booking payment, you'll receive monthly payment reminders via email and SMS. Pay easily through UPI, debit/credit card, or net banking on our secure payment portal. Auto-debit options are also available.",
+  },
+  {
+    question: "What is Tripxplo?",
+    answer:
+      "TripXplo, registered as Tripmilestone Tours Pvt. Ltd, was founded in 2020 by a team of young travel enthusiasts. A Travel Company for travellers that have big destinations in mind and huge milestones to traverse yet low on pocket.",
+  },
+  {
+    question:
+      "What are the different modes of payment for booking a trip on TripXplo?",
+    answer:
+      "We provide various payment options for a seamless booking experience:",
+    listItems: ["Debit/Credit Cards", "UPI", "Net Banking", "NEFT Transfer"],
+  },
+  {
+    question: "What is included in the tour package?",
+    answer:
+      "The inclusions and exclusions of a tour package may vary depending on the specific package you choose. Generally, our tour packages include accommodation, transportation, sightseeing, and meals (as specified in the itinerary). Additional activities or services may be available at an extra cost.",
+  },
+  {
+    question: "Is the price of the tour package per person or per group?",
+    answer:
+      "The price of the tour package is generally per person, based on double occupancy. Single occupancy and group rates are also available, with pricing varying depending on the package you choose.",
+  },
+  {
+    question: "What is TripXplo's cancellation policy?",
+    answer:
+      "Our cancellation policy varies depending on the type of tour package and the booking date. Generally:",
+    listItems: [
+      "Cancellations made more than 30 days before the tour date are eligible for a full refund.",
+      "Cancellations made between 15-30 days before the tour date are eligible for a 50% refund.",
+      "Cancellations made within 15 days before the tour date are not eligible for a refund.",
+    ],
+  },
+  {
+    question: "What is your refund policy?",
+    answer:
+      "All refunds are processed within 21 days from the day of cancellation of the trip.",
+  },
+  {
+    question: "Can I make changes to the tour itinerary after booking?",
+    answer:
+      "We understand that plans may change and we will try our best to accommodate any changes to the itinerary. However, please note that any changes made after the booking may incur additional charges.",
+  },
+  {
+    question: "Is travel insurance included in the tour package?",
+    answer:
+      "No, travel insurance is not included in the tour package. We recommend purchasing travel insurance separately to cover any unexpected events or accidents during your trip.",
+  },
+  {
+    question: "Can I request a vegetarian/vegan/gluten-free meal?",
+    answer:
+      "Yes, you can request a specific type of meal during the booking process or inform us in advance. We will do our best to accommodate your dietary preferences.",
   },
 ];
 
@@ -108,6 +156,10 @@ const FAQItem = ({
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [showAll, setShowAll] = useState(false);
+
+  const displayedFaqs = showAll ? faqs : faqs.slice(0, 6);
+  const remainingCount = faqs.length - 6;
 
   return (
     <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
@@ -153,7 +205,7 @@ const FAQSection = () => {
 
           {/* FAQ List */}
           <div className="max-w-4xl mx-auto space-y-4">
-            {faqs.map((faq, index) => (
+            {displayedFaqs.map((faq, index) => (
               <FAQItem
                 key={index}
                 question={faq.question}
@@ -165,23 +217,43 @@ const FAQSection = () => {
             ))}
           </div>
 
+          {/* View More / Show Less Button */}
+          {remainingCount > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="mt-8 text-center"
+            >
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="px-8 py-3 rounded-full border-2 border-gold-500 text-gold-600 font-bold hover:bg-gold-500 hover:text-white transition-all duration-300 shadow-sm hover:shadow-gold-200"
+              >
+                {showAll ? "Show Less" : `View ${remainingCount} More FAQs`}
+              </button>
+            </motion.div>
+          )}
+
           {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-10 text-center"
+            className="mt-16 text-center"
           >
             <p className="text-slate-600 mb-4">Still have questions?</p>
-            <a
-              href="https://wa.me/919442424492"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 gold-gradient text-black font-semibold rounded-xl hover:shadow-lg hover:shadow-gold-500/25 transition-all duration-300"
-            >
-              Chat with Us on WhatsApp<PiWhatsappLogoBold/>
-            </a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="https://wa.me/919442424492"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 gold-gradient text-black font-semibold rounded-xl hover:shadow-lg hover:shadow-gold-500/25 transition-all duration-300"
+              >
+                Chat with Us on WhatsApp
+                <PiWhatsappLogoBold />
+              </a>
+            </div>
           </motion.div>
         </div>
       </div>
