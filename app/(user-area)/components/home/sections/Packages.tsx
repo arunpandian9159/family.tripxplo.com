@@ -10,8 +10,8 @@ const Packages = () => {
   return (
     <section className="py-20 lg:py-28 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-1/2 left-0 w-72 h-72 bg-[#d1fbd2]/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute top-1/3 right-0 w-80 h-80 bg-[#15ab8b]/10 rounded-full blur-3xl translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-1/2 left-0 w-72 h-72 bg-gold-100/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-1/3 right-0 w-80 h-80 bg-gold-500/10 rounded-full blur-3xl translate-x-1/2 pointer-events-none" />
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         {/* Section Header */}
@@ -21,7 +21,7 @@ const Packages = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-2 bg-[#d1fbd2] text-[#0f8a6f] text-sm font-semibold rounded-full mb-4"
+            className="inline-block px-4 py-2 bg-gold-100 text-gold-700 text-sm font-semibold rounded-full mb-4"
           >
             Popular Destinations
           </motion.span>
@@ -33,7 +33,7 @@ const Packages = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4"
           >
-            Top <span className="text-[#15ab8b]">EMI</span> Packages
+            Top <span className="text-gold-600">EMI</span> Packages
           </motion.h2>
 
           <motion.p
@@ -66,7 +66,7 @@ const Packages = () => {
           className="text-center mt-12"
         >
           <Link href="/destinations">
-            <button className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#15ab8b] text-[#15ab8b] font-bold rounded-xl hover:bg-[#15ab8b] hover:text-white transition-all duration-300">
+            <button className="inline-flex items-center gap-2 px-8 py-4 border-2 border-gold-500 text-gold-600 font-bold rounded-xl hover:gold-gradient hover:text-white transition-all duration-300">
               View All Packages
               <ArrowRight className="w-5 h-5" />
             </button>

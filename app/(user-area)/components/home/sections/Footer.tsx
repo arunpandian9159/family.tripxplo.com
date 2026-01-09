@@ -119,14 +119,14 @@ const Footer = () => {
             <div className="space-y-3">
               <a
                 href="mailto:vacations@tripxplo.com"
-                className="flex items-center gap-3 text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                className="flex items-center gap-3 text-sm text-slate-400 hover:text-gold-400 transition-colors"
               >
                 <Mail className="w-4 h-4" />
                 vacations@tripxplo.com
               </a>
               <a
                 href="tel:+919442424492"
-                className="flex items-center gap-3 text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                className="flex items-center gap-3 text-sm text-slate-400 hover:text-gold-400 transition-colors"
               >
                 <Phone className="w-4 h-4" />
                 +91 94424 24492
@@ -166,7 +166,7 @@ const Footer = () => {
                     onClick={() =>
                       handleDestinationClick(link.name, link.destinationId)
                     }
-                    className="text-sm text-slate-400 hover:text-emerald-400 transition-colors inline-flex items-center gap-1 group"
+                    className="text-sm text-slate-400 hover:text-gold-400 transition-colors inline-flex items-center gap-1 group"
                   >
                     {link.name}
                     <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -186,7 +186,7 @@ const Footer = () => {
                 <li key={link.name}>
                   {link.isModal ? (
                     <AlertDialog>
-                      <AlertDialogTrigger className="text-sm text-slate-400 hover:text-emerald-400 transition-colors inline-flex items-center gap-1 group">
+                      <AlertDialogTrigger className="text-sm text-slate-400 hover:text-gold-400 transition-colors inline-flex items-center gap-1 group">
                         {link.name}
                         <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                       </AlertDialogTrigger>
@@ -221,7 +221,7 @@ const Footer = () => {
 
                             <div className="space-y-6">
                               {/* Intro */}
-                              <div className="prose pemerald-sm">
+                              <div className="prose pgold-sm">
                                 <p className="text-slate-600 leading-relaxed">
                                   At TripXplo, we are not just selling packages,
                                   we are crafting memories. We are looking for
@@ -265,7 +265,7 @@ const Footer = () => {
                                 </p>
                                 <a
                                   href="mailto:careers@tripxplo.com"
-                                  className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-50 text-emerald-600 rounded-xl font-semibold hover:bg-emerald-100 transition-colors border border-emerald-200"
+                                  className="inline-flex items-center gap-2 px-6 py-3 bg-gold-50 text-gold-600 rounded-xl font-semibold hover:bg-gold-100 transition-colors border border-gold-200"
                                 >
                                   <Mail className="w-5 h-5" />
                                   hello@tripxplo.com
@@ -284,9 +284,9 @@ const Footer = () => {
                             <div className="mt-4 space-y-3">
                               <a
                                 href="mailto:vacations@tripxplo.com"
-                                className="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl hover:bg-emerald-100 transition-colors"
+                                className="flex items-center gap-3 p-3 bg-gold-50 rounded-xl hover:bg-gold-100 transition-colors"
                               >
-                                <Mail className="w-5 h-5 text-emerald-500" />
+                                <Mail className="w-5 h-5 text-gold-500" />
                                 <div>
                                   <p className="text-sm font-medium text-slate-700">
                                     Email Us
@@ -298,9 +298,9 @@ const Footer = () => {
                               </a>
                               <a
                                 href="tel:+919442424492"
-                                className="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl hover:bg-emerald-100 transition-colors"
+                                className="flex items-center gap-3 p-3 bg-gold-50 rounded-xl hover:bg-gold-100 transition-colors"
                               >
-                                <Phone className="w-5 h-5 text-emerald-500" />
+                                <Phone className="w-5 h-5 text-gold-500" />
                                 <div>
                                   <p className="text-sm font-medium text-slate-700">
                                     Call Us
@@ -310,8 +310,8 @@ const Footer = () => {
                                   </p>
                                 </div>
                               </a>
-                              <div className="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl">
-                                <MapPin className="w-5 h-5 text-emerald-500" />
+                              <div className="flex items-center gap-3 p-3 bg-gold-50 rounded-xl">
+                                <MapPin className="w-5 h-5 text-gold-500" />
                                 <div>
                                   <p className="text-sm font-medium text-slate-700">
                                     Visit Us
@@ -334,7 +334,7 @@ const Footer = () => {
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-sm text-slate-400 hover:text-emerald-400 transition-colors inline-flex items-center gap-1 group"
+                      className="text-sm text-slate-400 hover:text-gold-400 transition-colors inline-flex items-center gap-1 group"
                     >
                       {link.name}
                       <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -355,7 +355,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-emerald-400 transition-colors inline-flex items-center gap-1 group"
+                    className="text-sm text-slate-400 hover:text-gold-400 transition-colors inline-flex items-center gap-1 group"
                   >
                     {link.name}
                     <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -375,7 +375,7 @@ const Footer = () => {
             </p>
             <p className="text-sm text-slate-500 flex items-center gap-2">
               Made with
-              <span className="text-emerald-500 animate-pulse">❤️</span>
+              <span className="text-gold-500 animate-pulse">❤️</span>
               in India 🇮🇳
             </p>
           </div>

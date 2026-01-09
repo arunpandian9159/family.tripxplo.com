@@ -12,6 +12,8 @@ const buttonVariants = cva(
         default: "bg-slate-900 text-white hover:bg-slate-800 shadow-sm",
         primary:
           "bg-gradient-to-r from-gold-600 to-gold-500 text-white hover:from-gold-700 hover:to-gold-600 shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30",
+        goldGradient:
+          "gold-gradient text-white shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30",
         secondary:
           "bg-gradient-to-r from-gold-600 to-gold-500 text-white hover:from-gold-700 hover:to-gold-600 shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30",
         destructive: "bg-red-500 text-white hover:bg-red-600 shadow-sm",
@@ -22,12 +24,11 @@ const buttonVariants = cva(
         glass:
           "bg-white/80 backdrop-blur-md border border-white/40 text-slate-700 hover:bg-white/90 shadow-sm",
         // Legacy variants
-        exploreButton:
-          "bg-gradient-to-r from-gold-600 to-gold-500 text-white hover:opacity-90",
+        exploreButton: "gold-gradient text-white hover:opacity-90",
         search:
-          "bg-gold-600 text-white hover:bg-gold-700 rounded-b-xl rounded-t-none",
+          "gold-gradient text-white hover:opacity-90 rounded-b-xl rounded-t-none",
         explore:
-          "bg-gradient-to-r from-gold-600 to-gold-500 text-white hover:opacity-90 -mb-1 rounded-b-lg rounded-t-none",
+          "gold-gradient text-white hover:opacity-90 -mb-1 rounded-b-lg rounded-t-none",
       },
       size: {
         default: "h-11 px-5 py-2",

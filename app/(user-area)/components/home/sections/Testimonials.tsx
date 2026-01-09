@@ -89,14 +89,14 @@ const CustomerStories = () => {
     <div className="bg-black py-20 relative overflow-hidden">
       {/* Background blobs for subtle effect */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-700/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-700/10 rounded-full blur-[100px] pointer-events-none" />
 
       <Container>
         {/* Header */}
         <div className="text-center mb-12 relative z-10">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight mb-6 drop-shadow-xl">
             TripXplo Diaries{" "}
-            <span className="text-emerald-700 animate-pulse">♥</span>
+            <span className="text-gold-700 animate-pulse">♥</span>
           </h2>
           <p className="text-slate-400 text-lg mb-8">
             Real stories from our happy travellers
@@ -123,7 +123,7 @@ const CustomerStories = () => {
 
             {/* Happy Travelers (Replaced Facebook) */}
             <div className="flex items-center gap-3 bg-white/5 px-5 py-3 rounded-2xl backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors">
-              <Users className="text-2xl text-emerald-700" />
+              <Users className="text-2xl text-gold-700" />
               <div className="flex flex-col items-start leading-none gap-1">
                 <div className="flex text-yellow-400 text-sm gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -196,7 +196,7 @@ const CustomerStories = () => {
                       </h3>
 
                       {/* Tag */}
-                      <span className="inline-block px-3 py-1 bg-emerald-700 rounded-full text-[10px] font-bold text-white uppercase tracking-widest shadow-lg shadow-emerald-700/30">
+                      <span className="inline-block px-3 py-1 gold-gradient rounded-full text-[10px] font-bold text-black uppercase tracking-widest shadow-lg shadow-gold-700/30">
                         @TripXplo
                       </span>
                     </div>

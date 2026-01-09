@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import SearchBox from "../search-packages/SearchBox";
-import DestinationCarousel from "../DestinationCarousel";
+import DestinationCarousel from "../3dImageCarousel";
 import { MapPin, Calendar, Users } from "lucide-react";
 
 const HeroSection = () => {
@@ -67,7 +67,7 @@ const HeroSection = () => {
             <p className="text-lg lg:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8 animate-slide-up italic leading-relaxed">
               Luxury shouldn't be a lump sum. We've redesigned travel to fit
               into your{" "}
-              <span className="text-forest-700 font-semibold">
+              <span className="text-gold-700 font-semibold">
                 monthly budget
               </span>
               .
@@ -84,7 +84,7 @@ const HeroSection = () => {
                   key={index}
                   className="flex items-center gap-2 text-slate-600"
                 >
-                  <item.icon className="w-5 h-5 text-forest-700" />
+                  <item.icon className="w-5 h-5 text-gold-700" />
                   <span className="text-sm font-medium">{item.label}</span>
                 </div>
               ))}

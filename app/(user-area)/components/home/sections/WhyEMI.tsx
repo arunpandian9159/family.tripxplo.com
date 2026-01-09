@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 const benefits = [
   {
@@ -14,16 +15,18 @@ const benefits = [
     bgLight: "bg-blue-50",
     iconBg: "bg-blue-100",
     iconColor: "text-blue-500",
+    hoverColor: "group-hover:text-blue-600",
   },
   {
     image: "/no-last-minute-rush.png",
     title: "No Last Minute Rush",
     description:
       "Book ahead and enjoy stress-free planning. Pay in easy EMIs over time.",
-    gradient: "from-orange-500 to-amber-500",
-    bgLight: "bg-orange-50",
-    iconBg: "bg-orange-100",
-    iconColor: "text-orange-500",
+    gradient: "from-gold-400 to-gold-600",
+    bgLight: "bg-gold-50",
+    iconBg: "bg-gold-100",
+    iconColor: "text-gold-600",
+    hoverColor: "group-hover:text-gold-700",
   },
   {
     image: "/secure-accomodation.png",
@@ -34,6 +37,7 @@ const benefits = [
     bgLight: "bg-[#d1fbd2]",
     iconBg: "bg-[#15ab8b]/20",
     iconColor: "text-[#15ab8b]",
+    hoverColor: "group-hover:text-emerald-700",
   },
   {
     image: "/rewards.png",
@@ -44,6 +48,7 @@ const benefits = [
     bgLight: "bg-purple-50",
     iconBg: "bg-purple-100",
     iconColor: "text-purple-500",
+    hoverColor: "group-hover:text-purple-600",
   },
 ];
 
@@ -62,7 +67,7 @@ const WhyEMI = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-2 bg-[#d1fbd2] text-[#0f8a6f] text-sm font-semibold rounded-full mb-4"
+            className="inline-block px-4 py-2 bg-gold-100 text-gold-700 text-sm font-semibold rounded-full mb-4"
           >
             Why Choose Us
           </motion.span>
@@ -74,7 +79,7 @@ const WhyEMI = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4"
           >
-            Why <span className="text-[#15ab8b]">Family EMI</span> Packages?
+            Why <span className="text-gold-600">Family EMI</span> Packages?
           </motion.h2>
 
           <motion.p
@@ -119,7 +124,12 @@ const WhyEMI = () => {
               </div>
 
               {/* Content */}
-              <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-[#15ab8b] transition-colors">
+              <h3
+                className={cn(
+                  "text-xl font-bold text-slate-800 mb-3 transition-colors",
+                  benefit.hoverColor
+                )}
+              >
                 {benefit.title}
               </h3>
 
@@ -128,7 +138,12 @@ const WhyEMI = () => {
               </p>
 
               {/* Decorative arrow */}
-              <div className="mt-4 flex items-center text-[#15ab8b] font-medium text-sm opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
+              <div
+                className={cn(
+                  "mt-4 flex items-center font-medium text-sm opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300",
+                  benefit.hoverColor
+                )}
+              >
                 Learn more
                 <svg
                   className="w-4 h-4 ml-1"
@@ -156,16 +171,16 @@ const WhyEMI = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-4 bg-gradient-to-r from-[#15ab8b] to-[#1ec9a5] text-white px-8 py-4 rounded-2xl shadow-lg">
+          <div className="inline-flex items-center gap-4 gold-gradient text-black px-8 py-4 rounded-2xl shadow-lg shadow-gold-500/20">
             <div className="text-left">
-              <p className="text-sm text-white opacity-90">
+              <p className="text-sm text-black opacity-90">
                 Start your journey today
               </p>
-              <p className="text-xl font-bold text-white">
+              <p className="text-xl font-bold text-black">
                 EMI from ₹2,999/month
               </p>
             </div>
-            <button className="bg-white text-[#15ab8b] px-6 py-2 rounded-xl font-bold hover:bg-slate-50 transition-colors">
+            <button className="bg-white text-gold-700 px-6 py-2 rounded-xl font-bold hover:bg-slate-50 transition-colors">
               Explore
             </button>
           </div>

@@ -199,7 +199,7 @@ const PopularEMIPackages = () => {
                   {/* Offer Badge */}
                   {pkg.offer?.offerPer && pkg.offer.offerPer > 0 && (
                     <div className="absolute top-3 left-3">
-                      <div className="flex items-center gap-1 px-2 py-1 bg-emerald-500 rounded-full text-white text-xs font-semibold">
+                      <div className="flex items-center gap-1 px-2 py-1 gold-gradient rounded-full text-white text-xs font-semibold">
                         <Sparkles className="w-3 h-3" />
                         {pkg.offer.offerPer}% OFF
                       </div>
@@ -216,7 +216,7 @@ const PopularEMIPackages = () => {
 
                   {/* Destinations */}
                   <div className="flex items-center gap-1.5 mb-3">
-                    <MapPin className="w-4 h-4 text-[#15ab8b] shrink-0" />
+                    <MapPin className="w-4 h-4 text-gold-600 shrink-0" />
                     <div className="flex flex-wrap gap-1">
                       {pkg.destination?.slice(0, 2).map((dest, i) => (
                         <span
@@ -251,7 +251,7 @@ const PopularEMIPackages = () => {
                             </span>
                           </>
                         ) : (
-                          <span className="text-sm font-medium text-[#15ab8b]">
+                          <span className="text-sm font-medium text-gold-600">
                             View Details
                           </span>
                         )}
@@ -259,15 +259,15 @@ const PopularEMIPackages = () => {
                       {/* EMI Display */}
                       {displayPrice > 0 && (
                         <div className="flex items-center gap-1 mt-1">
-                          <CreditCard className="w-3 h-3 text-[#15ab8b]" />
-                          <span className="text-xs font-semibold text-[#15ab8b]">
+                          <CreditCard className="w-3 h-3 text-gold-600" />
+                          <span className="text-xs font-semibold text-gold-600">
                             EMI ₹{formatIndianNumber(emiPrice)}/mo
                           </span>
                         </div>
                       )}
                     </div>
 
-                    <div className="px-3 py-1.5 bg-[#d1fbd2] text-[#15ab8b] text-xs font-semibold rounded-lg group-hover:bg-[#15ab8b] group-hover:text-white transition-colors">
+                    <div className="px-3 py-1.5 bg-gold-100 text-gold-700 text-xs font-semibold rounded-lg group-hover:gold-gradient group-hover:text-white transition-colors">
                       View
                     </div>
                   </div>
