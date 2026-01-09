@@ -27,6 +27,32 @@ const config = {
         "2xl": "1536px",
       },
       colors: {
+        // Gold color palette - primary theme color
+        gold: {
+          50: "#fffbeb",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#fbbf24",
+          500: "#f59e0b",
+          600: "#d97706",
+          700: "#b45309",
+          800: "#92400e",
+          900: "#78350f",
+        },
+        // Dark green for search bar container
+        forest: {
+          700: "#2d4739",
+          800: "#1f3327",
+          900: "#15231b",
+        },
+        // Cream/beige background colors
+        cream: {
+          50: "#fefce8",
+          100: "#f7f5e9",
+          200: "#f0ead6",
+        },
+        // Keeping emerald for compatibility but using gold as primary
         emerald: {
           50: "#ecfdf5",
           100: "#d1fae5",
@@ -40,9 +66,9 @@ const config = {
           900: "#145341",
         },
         // App specific color aliases
-        "app-primary": "#1EC089",
-        "app-secondary": "#1EC089",
-        "app-emerald": "#1EC089",
+        "app-primary": "#B8860B",
+        "app-secondary": "#D4AF37",
+        "app-gold": "#B8860B",
         // Semantic colors
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -127,8 +153,8 @@ const config = {
           "50%": { transform: "translateY(-12px)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px 0 rgba(30, 192, 137, 0.4)" },
-          "50%": { boxShadow: "0 0 35px 8px rgba(30, 192, 137, 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px 0 rgba(184, 134, 11, 0.4)" },
+          "50%": { boxShadow: "0 0 35px 8px rgba(184, 134, 11, 0.6)" },
         },
         "slide-up": {
           from: { opacity: "0", transform: "translateY(20px)" },
@@ -151,8 +177,8 @@ const config = {
           "100%": { backgroundPosition: "200% 0" },
         },
         wave: {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(30, 192, 137, 0.5)" },
-          "50%": { boxShadow: "0 0 0 20px rgba(30, 192, 137, 0)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(184, 134, 11, 0.5)" },
+          "50%": { boxShadow: "0 0 0 20px rgba(184, 134, 11, 0)" },
         },
         "bounce-subtle": {
           "0%, 100%": { transform: "translateY(0)" },
@@ -180,18 +206,21 @@ const config = {
       },
       boxShadow: {
         glass: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
+        "glow-gold": "0 0 40px -8px rgba(184, 134, 11, 0.35)",
         "glow-emerald": "0 0 40px -8px rgba(30, 192, 137, 0.35)",
         card: "0 4px 20px -2px rgba(0, 0, 0, 0.06)",
         "card-hover": "0 12px 40px -8px rgba(0, 0, 0, 0.12)",
-        button: "0 4px 14px -2px rgba(30, 192, 137, 0.25)",
+        button: "0 4px 14px -2px rgba(184, 134, 11, 0.25)",
+        "button-gold": "0 4px 14px -2px rgba(184, 134, 11, 0.25)",
         "button-emerald": "0 4px 14px -2px rgba(30, 192, 137, 0.25)",
         // Legacy shadows
         pkgShadow: "4px 8px 25.8px 0px rgba(0, 0, 0, 0.06)",
         "pkg-imgShadow": "2px 4px 13.2px 0px rgba(0, 0, 0, 0.06)",
         goldShadow: "7px 3px 13px 0px rgba(0, 0, 0, 0.22)",
-        bookingOverviewShadow: "4px 8px 39.7px 0px rgba(30, 192, 137, 0.15)",
+        bookingOverviewShadow: "4px 8px 39.7px 0px rgba(184, 134, 11, 0.15)",
       },
       backgroundImage: {
+        "gradient-gold": "linear-gradient(135deg, #B8860B 0%, #D4AF37 100%)",
         "gradient-emerald": "linear-gradient(135deg, #1EC089 0%, #34D399 100%)",
         "gradient-sunset":
           "linear-gradient(135deg, #FF8F78 0%, #1EC089 50%, #ED4242 100%)",

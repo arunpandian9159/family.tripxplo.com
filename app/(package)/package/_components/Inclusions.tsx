@@ -27,7 +27,7 @@ const Inclusions = ({ inclusions }: { inclusions: Inclusion[] }) => {
         return (
           <div
             key={inc?._id || index}
-            className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 text-center gap-3 hover:shadow-md hover:border-emerald-200 transition-all duration-300"
+            className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100 text-center gap-3 hover:shadow-md hover:border-green-200 transition-all duration-300"
           >
             <div className="relative w-10 h-10 p-2 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">
               {image ? (
@@ -38,10 +38,10 @@ const Inclusions = ({ inclusions }: { inclusions: Inclusion[] }) => {
                   className="object-contain p-1.5"
                 />
               ) : (
-                <Check className="w-full h-full text-emerald-500" />
+                <Check className="w-full h-full text-green-500" />
               )}
             </div>
-            <span className="text-xs font-semibold text-emerald-800 line-clamp-2 leading-tight">
+            <span className="text-xs font-semibold text-green-800 line-clamp-2 leading-tight">
               {name}
             </span>
           </div>

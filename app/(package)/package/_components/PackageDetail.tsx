@@ -35,7 +35,7 @@ const SectionHeader = ({
   icon: Icon,
   title,
   subtitle,
-  iconBg = "from-emerald-500 to-emerald-700",
+  iconBg = "from-gold-500 to-gold-700",
   action,
 }: {
   icon: React.ComponentType<any>;
@@ -71,9 +71,9 @@ const SectionDivider = () => (
     <div className="relative flex justify-center">
       <div className="bg-white px-4">
         <div className="flex gap-1.5">
-          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-gold-300 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-gold-400 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-gold-300 rounded-full" />
         </div>
       </div>
     </div>
@@ -187,26 +187,26 @@ const PackageDetail = ({ pack }: PropsType) => {
 
                 {/* Meals Included Badges */}
                 {hasAllMeals ? (
-                  <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
-                    <UtensilsCrossed size={16} className="text-emerald-600" />
-                    <span className="text-sm font-medium text-emerald-700">
+                  <div className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg">
+                    <UtensilsCrossed size={16} className="text-green-600" />
+                    <span className="text-sm font-medium text-green-700">
                       All Meals Included
                     </span>
                   </div>
                 ) : (
                   <>
                     {hasBreakfast && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
-                        <Coffee size={16} className="text-emerald-600" />
-                        <span className="text-sm font-medium text-emerald-700">
+                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg">
+                        <Coffee size={16} className="text-green-600" />
+                        <span className="text-sm font-medium text-green-700">
                           Breakfast Included
                         </span>
                       </div>
                     )}
                     {hasDinner && (
-                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
-                        <Utensils size={16} className="text-emerald-600" />
-                        <span className="text-sm font-medium text-emerald-700">
+                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg">
+                        <Utensils size={16} className="text-green-600" />
+                        <span className="text-sm font-medium text-green-700">
                           Dinner Included
                         </span>
                       </div>
@@ -298,7 +298,7 @@ const PackageDetail = ({ pack }: PropsType) => {
                 <SectionHeader
                   icon={CheckCircle2}
                   title="What's Included"
-                  iconBg="from-emerald-500 to-green-500"
+                  iconBg="from-green-500 to-green-600"
                 />
                 <Inclusions inclusions={pack?.inclusionDetail} />
               </div>
@@ -308,7 +308,7 @@ const PackageDetail = ({ pack }: PropsType) => {
                 <SectionHeader
                   icon={XCircle}
                   title="Not Included"
-                  iconBg="from-emerald-700 to-red-500"
+                  iconBg="from-red-500 to-red-600"
                 />
                 <Exclusions exclusions={pack?.exclusionDetail} />
               </div>

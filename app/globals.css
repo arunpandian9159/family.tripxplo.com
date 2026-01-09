@@ -10,6 +10,19 @@
 
 @layer base {
   :root {
+    /* Primary - Gold Palette */
+    --gold-gradient: linear-gradient(135deg, #ffb047 0%, #ffdca4 50%, #e5a043 100%);
+    --gold-50: 255 251 235;
+    --gold-100: 254 243 199;
+    --gold-200: 253 230 138;
+    --gold-300: 252 211 77;
+    --gold-400: 251 191 36;
+    --gold-500: 245 158 11;
+    --gold-600: 217 119 6;
+    --gold-700: 180 83 9;
+    --gold-800: 146 64 14;
+    --gold-900: 120 53 15;
+
     /* Secondary - Emerald/Teal Palette */
     --emerald-50: 236 253 245;
     --emerald-100: 209 250 229;
@@ -35,25 +48,25 @@
     --slate-900: 15 23 42;
 
     /* Semantic Colors */
-    --background: 0 0% 100%;
+    --background: 47 33% 96%;
     --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 160 73% 44%;
+    --primary: 43 74% 49%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 160 55% 44%;
+    --secondary: 43 61% 44%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 210 40% 96%;
+    --muted: 47 33% 96%;
     --muted-foreground: 215 16% 47%;
-    --accent: 210 40% 96%;
+    --accent: 47 33% 96%;
     --accent-foreground: 222 47% 11%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 160 73% 44%;
+    --ring: 43 74% 49%;
     --radius: 0.75rem;
 
     /* Spacing Scale */
@@ -78,7 +91,8 @@
       0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl:
       0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-glow: 0 0 40px -8px rgb(30 192 137 / 0.3);
+    --shadow-glow: 0 0 40px -8px rgb(184 134 11 / 0.3);
+    --shadow-glow-gold: 0 0 40px -8px rgb(184 134 11 / 0.3);
     --shadow-glow-emerald: 0 0 40px -8px rgb(30 192 137 / 0.3);
   }
 
@@ -170,8 +184,8 @@
   }
 
   /* Gradient Text */
-  .gradient-text-emerald {
-    @apply bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent;
+  .gradient-text-gold {
+    @apply bg-gradient-to-r from-gold-600 to-gold-500 bg-clip-text text-transparent;
   }
 
   .gradient-text-emerald {
@@ -179,8 +193,12 @@
   }
 
   /* Gradient Backgrounds */
-  .gradient-emerald {
-    @apply bg-gradient-to-r from-emerald-500 to-emerald-400;
+  .gold-gradient {
+    background: var(--gold-gradient);
+  }
+
+  .gradient-gold {
+    @apply bg-gradient-to-r from-gold-600 to-gold-500;
   }
 
   .gradient-emerald {
@@ -188,7 +206,7 @@
   }
 
   .gradient-sunset {
-    @apply bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600;
+    @apply bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600;
   }
 
   .gradient-ocean {
@@ -202,7 +220,7 @@
 
   /* Focus Ring */
   .focus-ring {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2;
   }
 
   /* Card Hover Effect */
@@ -224,12 +242,12 @@
 
   /* Primary Button */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-gold-600 to-gold-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:shadow-gold-500/25 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   /* Secondary Button */
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-gold-600 to-gold-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:shadow-gold-500/25 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   /* Ghost Button */
@@ -239,7 +257,7 @@
 
   /* Input Base Style */
   .input-base {
-    @apply w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200;
+    @apply w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 transition-all duration-200;
   }
 
   /* Card Base */
@@ -252,8 +270,8 @@
     @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
   }
 
-  .badge-emerald {
-    @apply badge bg-emerald-100 text-emerald-700;
+  .badge-gold {
+    @apply badge bg-gold-100 text-gold-700;
   }
 
   .badge-emerald {
@@ -294,11 +312,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 20px 0 rgb(30 192 137 / 0.4);
+    box-shadow: 0 0 20px 0 rgb(184 134 11 / 0.4);
   }
 
   50% {
-    box-shadow: 0 0 30px 5px rgb(30 192 137 / 0.6);
+    box-shadow: 0 0 30px 5px rgb(184 134 11 / 0.6);
   }
 }
 
@@ -362,11 +380,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgb(30 192 137 / 0.5);
+    box-shadow: 0 0 0 0 rgb(184 134 11 / 0.5);
   }
 
   50% {
-    box-shadow: 0 0 0 20px rgb(30 192 137 / 0);
+    box-shadow: 0 0 0 20px rgb(184 134 11 / 0);
   }
 }
 
@@ -422,11 +440,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 15px 0 rgb(30 192 137 / 0.3);
+    box-shadow: 0 0 15px 0 rgb(184 134 11 / 0.3);
   }
 
   50% {
-    box-shadow: 0 0 30px 5px rgb(30 192 137 / 0.5);
+    box-shadow: 0 0 30px 5px rgb(184 134 11 / 0.5);
   }
 }
 

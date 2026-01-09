@@ -24,12 +24,12 @@ const Exclusions = ({ exclusions }: { exclusions: Exclusion[] }) => {
         return (
           <div
             key={exc?._id || i}
-            className="group flex items-start gap-3 p-3 bg-gradient-to-br from-emerald-50 to-red-50 rounded-xl border border-emerald-300 hover:shadow-sm hover:border-emerald-400 transition-all duration-300"
+            className="group flex items-start gap-3 p-3 bg-gradient-to-br from-red-50 to-rose-50 rounded-xl border border-red-200 hover:shadow-sm hover:border-red-300 transition-all duration-300"
           >
             <div className="flex-shrink-0 p-1.5 bg-white rounded-lg shadow-sm mt-0.5">
-              <X size={14} className="text-emerald-700" />
+              <X size={14} className="text-red-600" />
             </div>
-            <span className="text-sm text-emerald-900 font-medium leading-relaxed">
+            <span className="text-sm text-red-800 font-medium leading-relaxed">
               {name}
             </span>
           </div>

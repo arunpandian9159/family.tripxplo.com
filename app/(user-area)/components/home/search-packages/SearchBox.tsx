@@ -112,26 +112,26 @@ const SearchBox = () => {
       {/* Family Type Badge - shown when detected/selected */}
       {mounted && familyTypeName && (
         <div className="w-full flex justify-center mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-full shadow-sm">
-            <Sparkles className="w-4 h-4 text-emerald-500" />
-            <span className="text-sm font-medium text-emerald-700">
-              {isFamilyTypeSelected ? "Selected" : "Detected"}:
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-gold-50 to-amber-50 border border-gold-200 rounded-full shadow-sm">
+            <Sparkles className="w-4 h-4 text-gold-600" />
+            <span className="text-sm font-medium text-gold-700">
+              Family Type:
             </span>
-            <span className="text-sm font-semibold text-emerald-800">
+            <span className="text-sm font-semibold text-gold-800">
               {familyTypeName}
             </span>
           </div>
         </div>
       )}
 
-      {/* Main Search Card - overflow-visible allows dropdowns to show */}
+      {/* Main Search Card - White container */}
       <div className="w-full bg-white rounded-3xl shadow-xl border border-slate-100 p-3 lg:p-4 relative overflow-visible">
         <div className="flex flex-col lg:flex-row items-stretch gap-3 lg:gap-0 overflow-visible">
           {/* Destination */}
           <div className="flex-1 relative group min-w-0 overflow-visible">
             <div className="flex items-center h-14 lg:h-16 px-4 rounded-2xl bg-slate-50/50 hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-emerald-100 transition-colors">
-                <MapPin className="w-5 h-5 text-emerald-500" />
+              <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-red-100 transition-colors">
+                <MapPin className="w-5 h-5 text-red-500" />
               </div>
               <SearchDestination
                 className="flex-1 ml-3"
@@ -181,20 +181,18 @@ const SearchBox = () => {
 
           {/* Search Button */}
           <div className="lg:ml-3 mt-2 lg:mt-0">
-            <Button
+            <button
               onClick={handleNextPage}
               disabled={disable}
-              variant="primary"
-              size="lg"
-              className={`w-full lg:w-auto h-14 lg:h-16 px-8 rounded-2xl shadow-lg transition-all duration-300 ${
+              className={`gold-gradient w-full lg:w-auto h-14 lg:h-16 px-8 rounded-2xl shadow-lg transition-all duration-300 text-slate-800 font-semibold inline-flex items-center justify-center gap-2 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
                 isReadyToSearch
-                  ? "animate-slow-glow ring-2 ring-emerald-200"
-                  : "shadow-emerald-500/25"
+                  ? "animate-slow-glow ring-2 ring-gold-200"
+                  : "shadow-gold-500/25"
               }`}
             >
               <Search className="w-5 h-5" />
               <span className="ml-2">Search</span>
-            </Button>
+            </button>
           </div>
         </div>
       </div>
@@ -208,8 +206,8 @@ const SearchBox = () => {
             onClick={() => handleQuickTag(dest)}
             className={`px-4 py-2 border rounded-full transition-all font-medium ${
               mounted && destinationName === dest.name
-                ? "bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/25"
-                : "bg-white border-slate-200 text-slate-600 hover:border-emerald-300 hover:text-emerald-600 hover:shadow-sm"
+                ? "gold-gradient border-transparent text-slate-800 shadow-md shadow-gold-500/25"
+                : "bg-white border-gold-300 text-slate-600 hover:border-gold-500 hover:text-gold-700 hover:shadow-sm"
             }`}
           >
             {dest.name}

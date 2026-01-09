@@ -11,23 +11,23 @@ const buttonVariants = cva(
       variant: {
         default: "bg-slate-900 text-white hover:bg-slate-800 shadow-sm",
         primary:
-          "bg-gradient-to-r from-emerald-500 to-emerald-400 text-white hover:from-emerald-600 hover:to-emerald-500 shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30",
+          "bg-gradient-to-r from-gold-600 to-gold-500 text-white hover:from-gold-700 hover:to-gold-600 shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30",
         secondary:
-          "bg-gradient-to-r from-emerald-500 to-emerald-400 text-white hover:from-emerald-600 hover:to-emerald-500 shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30",
+          "bg-gradient-to-r from-gold-600 to-gold-500 text-white hover:from-gold-700 hover:to-gold-600 shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30",
         destructive: "bg-red-500 text-white hover:bg-red-600 shadow-sm",
         outline:
           "border-2 border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300",
         ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
-        link: "text-emerald-500 underline-offset-4 hover:underline",
+        link: "text-gold-600 underline-offset-4 hover:underline",
         glass:
           "bg-white/80 backdrop-blur-md border border-white/40 text-slate-700 hover:bg-white/90 shadow-sm",
         // Legacy variants
         exploreButton:
-          "bg-gradient-to-r from-emerald-500 to-emerald-400 text-white hover:opacity-90",
+          "bg-gradient-to-r from-gold-600 to-gold-500 text-white hover:opacity-90",
         search:
-          "bg-emerald-500 text-white hover:bg-emerald-600 rounded-b-xl rounded-t-none",
+          "bg-gold-600 text-white hover:bg-gold-700 rounded-b-xl rounded-t-none",
         explore:
-          "bg-gradient-to-r from-emerald-500 to-emerald-400 text-white hover:opacity-90 -mb-1 rounded-b-lg rounded-t-none",
+          "bg-gradient-to-r from-gold-600 to-gold-500 text-white hover:opacity-90 -mb-1 rounded-b-lg rounded-t-none",
       },
       size: {
         default: "h-11 px-5 py-2",
@@ -44,12 +44,11 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
-  extends
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
@@ -71,7 +70,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       ...props
     },
-    ref,
+    ref
   ) => {
     const Comp = asChild ? Slot : "button";
 
@@ -96,12 +95,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
       </Comp>
     );
-  },
+  }
 );
 Button.displayName = "Button";
 
 // Icon Button - simplified variant
-interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IconButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: React.ReactNode;
   variant?: "default" | "ghost" | "outline" | "primary" | "secondary";
   size?: "sm" | "default" | "lg";
@@ -111,7 +111,7 @@ interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   (
     { icon, variant = "ghost", size = "default", label, className, ...props },
-    ref,
+    ref
   ) => {
     const sizeMap = {
       sm: "icon-sm" as const,
@@ -131,7 +131,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         {icon}
       </Button>
     );
-  },
+  }
 );
 IconButton.displayName = "IconButton";
 
