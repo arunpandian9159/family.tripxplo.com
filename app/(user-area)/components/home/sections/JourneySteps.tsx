@@ -1,7 +1,4 @@
-"use client";
-
 import React from "react";
-import { motion } from "framer-motion";
 import { Search, Lock, Calendar, Plane } from "lucide-react";
 
 const steps = [
@@ -48,36 +45,18 @@ const JourneySteps = () => {
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-2 bg-gold-500/10 text-gold-400 text-sm font-semibold rounded-full mb-4 border border-gold-500/20"
-          >
+          <span className="inline-block px-4 py-2 bg-gold-500/10 text-gold-400 text-sm font-semibold rounded-full mb-4 border border-gold-500/20">
             How It Works
-          </motion.span>
+          </span>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-serif italic text-white mb-4"
-          >
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif italic text-white mb-4">
             Your Journey Starts with a <br />{" "}
             <span className="text-gold-400">Single Payment</span>
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-slate-400"
-          >
+          <p className="text-lg text-slate-400">
             Four simple steps to turn your dream vacation into reality.
-          </motion.p>
+          </p>
         </div>
 
         {/* Steps Grid */}
@@ -87,12 +66,8 @@ const JourneySteps = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
             {steps.map((step, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
                 className="flex flex-col items-center text-center group"
               >
                 {/* Number + Icon Circle */}
@@ -123,7 +98,7 @@ const JourneySteps = () => {
                 <p className="text-sm text-slate-400 leading-relaxed max-w-[240px]">
                   {step.description}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
 import { Sun } from "lucide-react";
 
 const destinations = [
@@ -52,47 +51,38 @@ const DestinationCarousel = () => {
       {/* Background Glow */}
       <div className="absolute inset-0 bg-gold-100/50 blur-[60px] rounded-full scale-75 animate-pulse-slow pointer-events-none" />
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -20, scale: 1.05 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="absolute inset-0 flex items-center justify-center"
-        >
-          {/* Weather Info Overlay */}
-          <div className="absolute top-0 z-10 flex flex-col items-center drop-shadow-lg pt-4 md:pt-6">
-            <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] tracking-wider mb-1 md:mb-2">
-              {destinations[currentIndex].name}
-            </h2>
+      <div className="absolute inset-0 flex items-center justify-center">
+        {/* Weather Info Overlay */}
+        <div className="absolute top-0 z-10 flex flex-col items-center drop-shadow-lg pt-4 md:pt-6">
+          <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] tracking-wider mb-1 md:mb-2">
+            {destinations[currentIndex].name}
+          </h2>
 
-            <div className="flex flex-row items-center gap-2 md:gap-3">
-              <Sun className="w-8 h-8 md:w-10 md:h-10 text-yellow-400 fill-yellow-400 animate-[spin_10s_linear_infinite]" />
-              <div className="flex flex-col items-start ml-0.5 md:ml-1">
-                <span className="text-xs md:text-sm font-bold text-[#0F4C81] opacity-90">
-                  {destinations[currentIndex].location}
-                </span>
-                <span className="text-xl md:text-2xl font-black text-[#0F4C81] leading-none">
-                  {destinations[currentIndex].temp}
-                </span>
-              </div>
+          <div className="flex flex-row items-center gap-2 md:gap-3">
+            <Sun className="w-8 h-8 md:w-10 md:h-10 text-yellow-400 fill-yellow-400 animate-[spin_10s_linear_infinite]" />
+            <div className="flex flex-col items-start ml-0.5 md:ml-1">
+              <span className="text-xs md:text-sm font-bold text-[#0F4C81] opacity-90">
+                {destinations[currentIndex].location}
+              </span>
+              <span className="text-xl md:text-2xl font-black text-[#0F4C81] leading-none">
+                {destinations[currentIndex].temp}
+              </span>
             </div>
           </div>
+        </div>
 
-          {/* 3D Image */}
-          <div className="relative w-full h-full drop-shadow-2xl">
-            <Image
-              src={destinations[currentIndex].image}
-              alt={destinations[currentIndex].name}
-              fill
-              className="object-contain"
-              priority
-              sizes="(max-width: 768px) 100vw, 600px"
-            />
-          </div>
-        </motion.div>
-      </AnimatePresence>
+        {/* 3D Image */}
+        <div className="relative w-full h-full drop-shadow-2xl">
+          <Image
+            src={destinations[currentIndex].image}
+            alt={destinations[currentIndex].name}
+            fill
+            className="object-contain"
+            priority
+            sizes="(max-width: 768px) 100vw, 600px"
+          />
+        </div>
+      </div>
 
       {/* Progress Indicators */}
       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-2">

@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { MapPin, ArrowRight } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -69,11 +68,7 @@ const DestinationCard = ({
   onClick: () => void;
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+    <div
       onClick={onClick}
       className={`group relative cursor-pointer overflow-hidden rounded-2xl ${
         isFeatured ? "lg:row-span-2 h-full" : ""
@@ -141,7 +136,7 @@ const DestinationCard = ({
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -175,53 +170,35 @@ const DestinationShowcase = () => {
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-2 bg-gold-100 text-gold-700 text-sm font-semibold rounded-full mb-4"
-          >
+          <span className="inline-block px-4 py-2 bg-gold-100 text-gold-700 text-sm font-semibold rounded-full mb-4">
             Dream Destinations
-          </motion.span>
+          </span>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4"
-          >
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
             Explore <span className="text-gold-600">Family-Friendly</span>{" "}
             Destinations
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-slate-600"
-          >
+          <p className="text-lg text-slate-600">
             Handpicked destinations perfect for creating unforgettable family
             memories
-          </motion.p>
+          </p>
         </div>
 
         {/* Destinations Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5">
           {/* Featured destination - takes up left column on lg */}
           <div className="lg:col-span-1">
-          {featured && (
-            <DestinationCard
-              destination={featured}
-              index={0}
-              isFeatured={true}
-              onClick={() =>
-                handleDestinationClick(featured.name, featured.destinationId)
-              }
-            />
-          )}
+            {featured && (
+              <DestinationCard
+                destination={featured}
+                index={0}
+                isFeatured={true}
+                onClick={() =>
+                  handleDestinationClick(featured.name, featured.destinationId)
+                }
+              />
+            )}
           </div>
           {/* Other destinations - 2x2 grid on the right */}
           <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
@@ -242,20 +219,14 @@ const DestinationShowcase = () => {
         </div>
 
         {/* View All CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center mt-10"
-        >
+        <div className="text-center mt-10">
           <Link href="/packages">
             <button className="inline-flex items-center gap-2 px-8 py-4 border-2 border-gold-500 text-gold-600 font-bold rounded-xl hover:gold-gradient hover:border-transparent hover:text-black transition-all duration-300">
               View All Destinations
               <ArrowRight className="w-5 h-5" />
             </button>
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
 import { Shield, Award, Users, MapPin, Star, CheckCircle } from "lucide-react";
 
 interface StatItem {
@@ -67,7 +66,25 @@ const AnimatedCounter = ({
 
 const TrustIndicators = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section className="py-12 lg:py-16 bg-gradient-to-b from-cream-100 to-white relative overflow-hidden">
@@ -89,14 +106,7 @@ const TrustIndicators = () => {
           className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12"
         >
           {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="text-center group"
-            >
+            <div key={stat.label} className="text-center group">
               <div className="inline-flex items-center justify-center w-12 h-12 mb-3 rounded-xl bg-gold-100 text-gold-600 group-hover:scale-110 transition-transform duration-300">
                 <stat.icon className="w-6 h-6" />
               </div>
@@ -108,18 +118,12 @@ const TrustIndicators = () => {
                 />
               </div>
               <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Trust Badges Row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-wrap justify-center items-center gap-4 lg:gap-8"
-        >
+        <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-8">
           {trustBadges.map((badge, index) => (
             <div
               key={badge.label}
@@ -131,16 +135,10 @@ const TrustIndicators = () => {
               </span>
             </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Payment Partners */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="mt-10 text-center"
-        >
+        <div className="mt-10 text-center">
           <p className="text-xs text-slate-400 uppercase tracking-wider mb-4">
             Trusted Payment Partners
           </p>
@@ -154,7 +152,7 @@ const TrustIndicators = () => {
             {/* UPI */}
             <div className="text-slate-600 font-bold text-lg">UPI</div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
