@@ -9,6 +9,7 @@ import { LogIn, UserCircleIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import AuthModal from "../home/AuthModal";
 
 const DesktopNavBar = () => {
@@ -17,7 +18,7 @@ const DesktopNavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalView, setAuthModalView] = useState<"signin" | "register">(
-    "signin",
+    "signin"
   );
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const DesktopNavBar = () => {
           "hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled
             ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-slate-100"
-            : "bg-white border-b border-slate-200",
+            : "bg-white border-b border-slate-200"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
@@ -83,16 +84,26 @@ const DesktopNavBar = () => {
                     href="/account"
                   />
                 ) : (
-                  <button
-                    onClick={handleLoginClick}
-                    className={cn(
-                      "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
-                      "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
-                    )}
-                  >
-                    <LogIn className="w-5 h-5 text-slate-500" />
-                    <span className="hidden xl:inline">Login</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      onClick={handleLoginClick}
+                      variant="goldGradient"
+                      size="sm"
+                    >
+                      <LogIn className="w-4 h-4 mr-2" />
+                      Login
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setAuthModalView("register");
+                        setIsAuthModalOpen(true);
+                      }}
+                      variant="goldGradient"
+                      size="sm"
+                    >
+                      Sign In
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>

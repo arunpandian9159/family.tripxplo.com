@@ -337,7 +337,7 @@ export default function OptionsBox({
         "w-10 h-10 md:w-9 md:h-9 rounded-xl flex items-center justify-center transition-all",
         disabled
           ? "bg-slate-100 text-slate-300 cursor-not-allowed"
-          : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 active:scale-95"
+          : "bg-amber-50 text-amber-600 hover:bg-amber-100 active:scale-95"
       )}
     >
       {children}
@@ -406,8 +406,8 @@ export default function OptionsBox({
           {/* Show detected/selected family type */}
           {mounted && detectedFamilyType && (
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-emerald-500" />
-              <p className="text-xs font-medium text-emerald-600">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <p className="text-xs font-medium text-amber-600">
                 {isApplied ? "Selected" : "Detected"}: {detectedFamilyType}
               </p>
             </div>
@@ -562,7 +562,9 @@ export default function OptionsBox({
             <div className="flex items-center justify-center gap-4">
               <div className="text-center">
                 <p className="font-medium text-slate-800">Rooms</p>
-                <p className="text-xs text-slate-400">Max {guests} guests per room</p>
+                <p className="text-xs text-slate-400">
+                  Max {guests} guests per room
+                </p>
               </div>
               <div className="flex items-center gap-2">
                 <CounterButton
@@ -595,7 +597,7 @@ export default function OptionsBox({
           {/* Apply Button */}
           <Button
             onClick={() => handleApply()}
-            variant="primary"
+            variant="goldGradient"
             className="w-full mt-4"
           >
             Apply

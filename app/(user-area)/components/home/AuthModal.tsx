@@ -360,7 +360,7 @@ export default function AuthModal({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3.5 sm:py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
+                    className="w-full py-3.5 sm:py-3.5 gold-gradient hover:opacity-90 active:scale-[0.98] text-white font-semibold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation min-h-[48px]"
                   >
                     {loading ? (
                       <>
@@ -578,7 +578,7 @@ export default function AuthModal({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 sm:py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 active:from-emerald-700 active:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-3 touch-manipulation min-h-[48px]"
+                    className="w-full py-3 sm:py-3 gold-gradient hover:opacity-90 active:scale-[0.98] text-white font-semibold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-3 touch-manipulation min-h-[48px]"
                   >
                     {loading ? (
                       <>

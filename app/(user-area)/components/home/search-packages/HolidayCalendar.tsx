@@ -33,7 +33,7 @@ export function HolidayCalendar({
   className,
 }: HolidayCalendarProps) {
   const [currentMonth, setCurrentMonth] = React.useState<Date>(
-    selected || new Date(),
+    selected || new Date()
   );
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -105,25 +105,24 @@ export function HolidayCalendar({
               !isCurrentMonth && "text-slate-300",
               isCurrentMonth && !holiday && "text-slate-700 hover:bg-slate-50",
               // Holiday styling
-              holiday && isCurrentMonth && "bg-emerald-50 hover:bg-emerald-100",
+              holiday && isCurrentMonth && "bg-amber-50 hover:bg-amber-100",
               // Selected state
               isSelected &&
                 !holiday &&
-                "bg-emerald-500 text-white hover:bg-emerald-600",
-              isSelected && holiday && "ring-2 ring-emerald-500 ring-offset-1",
+                "gold-gradient text-white hover:opacity-95",
+              isSelected && holiday && "ring-2 ring-gold-500 ring-offset-1",
               // Today indicator
               isTodayDate && !isSelected && !holiday && "bg-slate-100",
               // Disabled state
-              isDisabled &&
-                "opacity-40 cursor-not-allowed hover:bg-transparent",
+              isDisabled && "opacity-40 cursor-not-allowed hover:bg-transparent"
             )}
           >
             {/* Day number */}
             <span
               className={cn(
                 "text-sm font-semibold leading-none",
-                holiday && isCurrentMonth && "text-emerald-600",
-                isSelected && !holiday && "text-white",
+                holiday && isCurrentMonth && "text-amber-600",
+                isSelected && !holiday && "text-white"
               )}
             >
               {format(currentDay, "d")}
@@ -133,14 +132,14 @@ export function HolidayCalendar({
             {holiday && isCurrentMonth && (
               <span
                 className={cn(
-                  "text-[9px] leading-[1.2] text-emerald-700 font-medium mt-0.5 line-clamp-3 w-full break-words hyphens-auto",
-                  isSelected && "text-emerald-800",
+                  "text-[9px] leading-[1.2] text-amber-700 font-medium mt-0.5 line-clamp-3 w-full break-words hyphens-auto",
+                  isSelected && "text-amber-800"
                 )}
               >
                 {holiday.name}
               </span>
             )}
-          </button>,
+          </button>
         );
 
         day = addDays(day, 1);
@@ -149,7 +148,7 @@ export function HolidayCalendar({
       rows.push(
         <div key={day.toISOString()} className="flex justify-between gap-0.5">
           {week}
-        </div>,
+        </div>
       );
     }
 

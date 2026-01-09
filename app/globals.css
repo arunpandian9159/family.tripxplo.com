@@ -11,7 +11,7 @@
 @layer base {
   :root {
     /* Primary - Gold Palette */
-    --gold-gradient: linear-gradient(135deg, #ffb047 0%, #ffdca4 50%, #e5a043 100%);
+    --gold-gradient: linear-gradient(135deg, #fda838 0%, #ffd38b 50%, #f7a53b 100%);
     --gold-50: 255 251 235;
     --gold-100: 254 243 199;
     --gold-200: 253 230 138;

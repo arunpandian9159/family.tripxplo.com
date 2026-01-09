@@ -6,11 +6,11 @@ export default function PackagesLoading() {
       {/* Mobile view */}
 
       <div className="flex w-full h-[40px]  justify-center items-center">
-        <div className="w-[20px] h-[20px] border-4 border-[#1EC089] rounded-full animate-bounce"></div>
-        <div className="w-[30px] h-[30px] border-4 border-[#1EC089] rounded-full animate-bounce"></div>
-        <div className="w-[20px] h-[20px] border-4 border-[#1EC089] rounded-full animate-bounce"></div>
-        <div className="w-[30px] h-[30px] border-4 border-[#1EC089] rounded-full animate-bounce"></div>
-        <div className="w-[20px] h-[20px] border-4 border-[#1EC089] rounded-full animate-bounce"></div>
+        <div className="w-[20px] h-[20px] border-4 border-[#ffb047] rounded-full animate-bounce"></div>
+        <div className="w-[30px] h-[30px] border-4 border-[#ffb047] rounded-full animate-bounce"></div>
+        <div className="w-[20px] h-[20px] border-4 border-[#ffb047] rounded-full animate-bounce"></div>
+        <div className="w-[30px] h-[30px] border-4 border-[#ffb047] rounded-full animate-bounce"></div>
+        <div className="w-[20px] h-[20px] border-4 border-[#ffb047] rounded-full animate-bounce"></div>
       </div>
     </>
   );

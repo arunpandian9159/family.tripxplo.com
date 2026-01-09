@@ -175,7 +175,7 @@ const GlobalHeader = () => {
                     onClick={handleLoginClick}
                     className={cn(
                       "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
-                      "bg-gradient-to-r from-gold-600 to-gold-700 text-white hover:shadow-lg hover:shadow-gold-500/25 hover:scale-[1.02] active:scale-100"
+                      "gold-gradient text-orange-900 hover:shadow-lg hover:shadow-gold-500/25 hover:scale-[1.02] active:scale-100"
                     )}
                   >
                     <LogIn className="w-5 h-5" />

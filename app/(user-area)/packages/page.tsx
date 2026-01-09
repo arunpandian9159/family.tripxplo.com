@@ -237,7 +237,7 @@ const PackagesPage = () => {
       <div className="relative pt-20 lg:pt-28 pb-12 lg:pb-16 overflow-hidden">
         {/* Back Button */}
         <div className="absolute top-0 left-0 right-0 z-20 p-4 md:p-6">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-[88rem] mx-auto">
             <button
               onClick={() => router.back()}
               className="flex items-center gap-2 px-3 py-2 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-xl text-white transition-all duration-300"

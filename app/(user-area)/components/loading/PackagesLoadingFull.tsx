@@ -9,14 +9,14 @@ export default function PackagesLoadingFull() {
       {/* Animated Logo Container */}
       <div className="relative">
         {/* Outer ring */}
-        <div className="w-24 h-24 rounded-full border-4 border-emerald-100 animate-pulse" />
+        <div className="w-24 h-24 rounded-full border-4 border-gold-100 animate-pulse" />
 
         {/* Spinning ring */}
-        <div className="absolute inset-0 w-24 h-24 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin" />
+        <div className="absolute inset-0 w-24 h-24 rounded-full border-4 border-transparent border-t-gold-500 animate-spin" />
 
         {/* Center Icon */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gold-500 to-gold-400 flex items-center justify-center shadow-lg shadow-gold-500/30">
             <Plane className="w-7 h-7 text-white animate-pulse" />
           </div>
         </div>
@@ -35,7 +35,7 @@ export default function PackagesLoadingFull() {
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce"
+            className="w-2 h-2 rounded-full bg-gold-400 animate-bounce"
             style={{ animationDelay: `${i * 0.15}s` }}
           />
         ))}
