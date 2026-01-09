@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Building, CarFront, MapPin, Calendar, Heart } from "lucide-react";
 import { LuDices } from "react-icons/lu";
+import { BsCashCoin } from "react-icons/bs";
 import Image from "next/image";
 import { PackageType } from "@/app/types/package";
 import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
@@ -16,6 +17,8 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addToWishlist } from "@/app/store/features/wishlistSlice";
 import { initializePackage } from "@/app/store/features/packageSlice";
+import { GiCash } from "react-icons/gi";
+import { FaCashRegister } from "react-icons/fa6";
 
 const FilterCardList = ({
   package: pkg,
@@ -291,6 +294,52 @@ const FilterCardList = ({
                 </svg>
               </button>
             </div>
+
+            {/* EMI Section */}
+            <div className="flex items-center justify-between px-4 py-3 mt-4 bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-100 rounded-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                  <svg
+                    className="w-4 h-4 text-teal-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-bold text-teal-700 uppercase tracking-wider">
+                    Easy EMI Available
+                  </span>
+                  <span className="text-sm font-bold text-slate-800">
+                    EMI starts at{" "}
+                    <span className="text-teal-600">
+                      ₹{formatIndianNumber(Math.round(price / 12))}/mo
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5 bg-teal-600 text-white px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wide shadow-md">
+                No Cost EMI
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -443,6 +492,26 @@ const FilterCardList = ({
                 </span>
                 <span className="text-xs font-bold text-slate-700">
                   {pkg.activityCount}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* EMI Section */}
+          <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-teal-50 to-emerald-50 border-t border-teal-100 rounded-2xl">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                <BsCashCoin size={16} className="text-teal-600" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold text-teal-700 uppercase tracking-wider">
+                  Easy EMI Available
+                </span>
+                <span className="text-sm font-bold text-slate-800">
+                  EMI starts at{" "}
+                  <span className="text-teal-600">
+                    ₹{formatIndianNumber(Math.round(price / 12))}/mo
+                  </span>
                 </span>
               </div>
             </div>
