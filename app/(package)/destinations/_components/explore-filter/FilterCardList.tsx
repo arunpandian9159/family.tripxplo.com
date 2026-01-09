@@ -425,7 +425,7 @@ const FilterCardList = ({
               </div>
             </div>
             <div className="flex flex-col items-center justify-center text-center gap-1 border-l border-r border-slate-200">
-              <CarFront size={16} className="text-gold-600" />
+              <CarFront size={16} className="text-green-600" />
               <div className="flex flex-col">
                 <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
                   Transfers
@@ -436,7 +436,7 @@ const FilterCardList = ({
               </div>
             </div>
             <div className="flex flex-col items-center justify-center text-center gap-1">
-              <LuDices size={16} className="text-amber-500" />
+              <LuDices size={16} className="text-red-500" />
               <div className="flex flex-col">
                 <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
                   Activities

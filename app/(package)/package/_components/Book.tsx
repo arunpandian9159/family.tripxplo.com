@@ -84,7 +84,7 @@ export default function Book({
       <div className="hidden lg:block sticky top-24">
         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
           {/* Header with gradient */}
-          <div className="relative px-6 py-5 bg-gradient-to-r from-gold-600 to-gold-700 text-white overflow-hidden">
+          <div className="relative px-6 py-5 bg-gradient-to-r from-gold-500 to-gold-400 text-white overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
@@ -162,7 +162,7 @@ export default function Book({
           <div className="px-6 pb-6">
             <button
               onClick={handlePackageClick}
-              className="w-full py-4 bg-gradient-to-r from-gold-600 to-gold-700 hover:from-gold-700 hover:to-gold-600 text-white font-bold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full py-4 gold-gradient text-white font-bold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 active:scale-[0.98] flex items-center justify-center gap-2"
             >
               <Zap size={18} />
               Book Now
@@ -285,7 +285,7 @@ export default function Book({
           {/* Book Button */}
           <button
             onClick={handlePackageClick}
-            className="flex-1 max-w-[180px] py-3.5 bg-gradient-to-r from-gold-600 to-gold-700 text-white font-bold rounded-xl shadow-lg shadow-gold-500/25 active:scale-[0.98] transition-transform"
+            className="flex-1 max-w-[180px] py-3.5 gold-gradient text-white font-bold rounded-xl shadow-lg shadow-gold-500/25 active:scale-[0.98] transition-transform"
           >
             Book Now
           </button>

@@ -94,7 +94,7 @@ const PackagesPage = () => {
       <div className="relative pt-20 lg:pt-28 pb-12 lg:pb-16 overflow-hidden">
         {/* Back Button */}
         <div className="absolute top-0 left-0 right-0 z-20 p-4 md:p-6">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-[88rem] mx-auto">
             <button
               onClick={() => router.back()}
               className="flex items-center gap-2 px-3 py-2 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-xl text-white transition-all duration-300"
@@ -131,7 +131,7 @@ const PackagesPage = () => {
             <div className="animate-slide-up">
               <div className="flex items-center gap-2 mb-3">
                 {destination && (
-                  <Badge variant="emerald" size="lg">
+                  <Badge variant="gold" size="lg">
                     <MapPin className="w-3 h-3 mr-1" />
                     {destination}
                   </Badge>
@@ -214,8 +214,8 @@ const PackagesPage = () => {
         ) : (
           !isLoading && (
             <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-50 to-emerald-50 flex items-center justify-center mb-6">
-                <Package className="w-12 h-12 text-emerald-500" />
+              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-gold-50 to-amber-50 flex items-center justify-center mb-6">
+                <Package className="w-12 h-12 text-gold-600" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">
                 We'll update the package details shortly ✈️
@@ -227,7 +227,7 @@ const PackagesPage = () => {
                 href="https://crm.tripxplo.com/travel-inquiry"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-8 py-4 gold-gradient text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-gold-500/30 hover:shadow-xl hover:shadow-gold-500/40 active:scale-[0.98]"
               >
                 Fill Travel Inquiry Form
                 <svg
@@ -262,7 +262,7 @@ const PackagesPage = () => {
         {packageListHasNext && !isLoading && (
           <div className="flex justify-center mt-12">
             <div className="flex items-center gap-2 text-slate-500">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
               <span className="text-sm">Loading more packages...</span>
             </div>
           </div>

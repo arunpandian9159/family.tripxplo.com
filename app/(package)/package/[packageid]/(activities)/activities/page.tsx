@@ -307,7 +307,7 @@ const Page = () => {
           {/* Timeline Content */}
           <div className="relative mt-8">
             {/* Timeline Line */}
-            <div className="absolute left-5 lg:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-200 via-emerald-400 to-emerald-200 rounded-full" />
+            <div className="absolute left-5 lg:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-gold-200 via-gold-400 to-gold-200 rounded-full" />
 
             {/* Days */}
             {activity?.length > 0 ? (
@@ -317,7 +317,7 @@ const Page = () => {
                     {/* Day Header */}
                     <div className="flex items-start gap-4 lg:gap-6 mb-4">
                       {/* Timeline Node */}
-                      <div className="relative z-10 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl shadow-lg shadow-emerald-500/25 flex-shrink-0">
+                      <div className="relative z-10 flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-gold-500 to-gold-700 rounded-xl shadow-lg shadow-gold-500/25 flex-shrink-0">
                         <span className="text-white font-bold text-sm lg:text-base">
                           {data?.day}
                         </span>
@@ -330,7 +330,7 @@ const Page = () => {
                             Day {data?.day}
                           </h3>
                           {data?.fullStartDate && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded-md">
+                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-gold-50 text-gold-600 text-xs font-semibold rounded-md">
                               <Clock className="w-3 h-3" />
                               {data.fullStartDate}
                             </span>

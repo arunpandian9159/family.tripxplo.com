@@ -168,14 +168,14 @@ const PackageDetail = ({ pack }: PropsType) => {
               <div className="flex flex-wrap gap-2 mb-6">
                 {/* Without Flight/Train Badge */}
                 {(isWithoutFlight || isWithoutTrain) && (
-                  <div className="inline-flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg">
+                  <div className="inline-flex items-center gap-2 px-3 py-2 bg-sky-50 border border-sky-200 rounded-lg">
                     {isWithoutFlight && (
-                      <Plane size={16} className="text-amber-600" />
+                      <Plane size={16} className="text-sky-600" />
                     )}
                     {isWithoutTrain && (
-                      <Train size={16} className="text-amber-600" />
+                      <Train size={16} className="text-sky-600" />
                     )}
-                    <span className="text-sm font-medium text-amber-700">
+                    <span className="text-sm font-medium text-sky-700">
                       {isWithoutFlight && isWithoutTrain
                         ? "Land Package Only"
                         : isWithoutFlight

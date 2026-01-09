@@ -66,10 +66,10 @@ export default function IternaryStory({
       {/* Itinerary Preview Card */}
       <div className="bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-emerald-50 to-white">
+        <div className="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-gold-50 to-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl text-white shadow-lg shadow-emerald-500/25">
+              <div className="p-2.5 bg-gradient-to-br from-gold-500 to-gold-700 rounded-xl text-white shadow-lg shadow-gold-500/25">
                 <Calendar size={20} />
               </div>
               <div>
@@ -202,7 +202,7 @@ export default function IternaryStory({
         <div className="px-6 pb-6">
           <Link
             href={`${location}/activities`}
-            className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30 active:scale-[0.98]"
+            className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-500 text-white font-semibold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 active:scale-[0.98]"
           >
             <MapPin size={18} />
             View Full Itinerary

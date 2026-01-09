@@ -95,7 +95,7 @@ export default function HotelData({
         {/* Card Header */}
         <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 bg-emerald-500 text-white text-sm font-bold rounded-lg">
+            <div className="flex items-center justify-center w-8 h-8 bg-gold-500 text-white text-sm font-bold rounded-lg">
               {index}
             </div>
             <div>
@@ -108,7 +108,7 @@ export default function HotelData({
           </div>
           <button
             onClick={openHotelModal}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white hover:from-emerald-600 hover:to-emerald-500 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-gold-500 to-gold-400 text-white hover:from-gold-600 hover:to-gold-500 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
           >
             <ArrowRightLeft size={14} />
             Change Hotel
