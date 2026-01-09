@@ -78,7 +78,7 @@ const HeroSection = () => {
               {[
                 { icon: MapPin, label: "200+ Destinations" },
                 { icon: Calendar, label: "Flexible EMI" },
-                { icon: Users, label: "No Cost EMI" },
+                { icon: Users, label: "Prepaid EMI" },
               ].map((item, index) => (
                 <div
                   key={index}

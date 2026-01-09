@@ -109,7 +109,7 @@ const FilterCardList = ({
           onClick={handleViewDetails}
         >
           {/* List View - Image Section */}
-          <div className="relative w-full sm:w-[280px] md:w-[320px] aspect-[4/3] sm:aspect-[4/5] md:aspect-auto md:h-full min-h-[280px] overflow-hidden flex-shrink-0">
+          <div className="relative w-full sm:w-[280px] md:w-[320px] aspect-[4/3] sm:aspect-[4/5] md:aspect-auto md:h-full min-h-[325px] overflow-hidden flex-shrink-0">
             <Image
               src={
                 pkg.packageImg?.[0]
@@ -183,15 +183,41 @@ const FilterCardList = ({
                   </div>
                 </div>
 
-                {/* Starts From Badge */}
-                {pkg.startFrom && (
-                  <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-gold-50 to-amber-50 text-gold-700 px-3 py-1.5 rounded-lg border border-gold-200/50 shadow-sm">
-                    <div className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
-                    <span className="text-xs font-bold">
-                      Starts @ {pkg.startFrom}
-                    </span>
-                  </div>
-                )}
+                {/* Starts From Badge + Meal Type + Room Type */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {pkg.startFrom && (
+                    <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-gold-50 to-amber-50 text-gold-700 px-3 py-1.5 rounded-lg border border-gold-200/50 shadow-sm">
+                      <div className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
+                      <span className="text-xs font-bold">
+                        Starts @ {pkg.startFrom}
+                      </span>
+                    </div>
+                  )}
+                  {listMealPlan && (
+                    <div className="flex items-center gap-1.5 bg-amber-50 px-2.5 py-1.5 rounded-lg border border-amber-200/50 shadow-sm">
+                      <Utensils className="w-3 h-3 text-amber-500" />
+                      <span className="text-[10px] font-bold text-amber-700 uppercase tracking-tight">
+                        {listMealPlan}
+                      </span>
+                    </div>
+                  )}
+                  {listRoomType && (
+                    <div className="flex items-center gap-1.5 bg-yellow-50 px-2.5 py-1.5 rounded-lg border border-yellow-200/50 shadow-sm">
+                      <Star className="w-3 h-3 text-yellow-500" />
+                      <span className="text-[10px] font-bold text-yellow-700 uppercase tracking-tight">
+                        {listRoomType}
+                      </span>
+                    </div>
+                  )}
+                  {listHasAC && (
+                    <div className="flex items-center gap-1.5 bg-cyan-50 px-2.5 py-1.5 rounded-lg border border-cyan-200/50 shadow-sm">
+                      <Snowflake className="w-3 h-3 text-cyan-500" />
+                      <span className="text-[10px] font-bold text-cyan-700 uppercase tracking-tight">
+                        AC
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Wishlist Button */}
@@ -211,7 +237,7 @@ const FilterCardList = ({
               </button>
             </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 py-3 border-t border-slate-100 mb-3">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 py-3 border-t border-slate-100">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                   <Building size={18} className="text-blue-500" />
@@ -266,34 +292,6 @@ const FilterCardList = ({
               </div>
             </div>
 
-            {/* Quick Stats Row (List View) */}
-            <div className="flex items-center gap-2 mb-4 bg-slate-50/50 p-2 rounded-lg border border-slate-100 flex-wrap">
-              {listMealPlan && (
-                <div className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">
-                  <Utensils className="w-3 h-3 text-amber-500" />
-                  <span className="text-[10px] font-bold text-slate-600 uppercase tracking-tight">
-                    {listMealPlan}
-                  </span>
-                </div>
-              )}
-              {listHasAC && (
-                <div className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">
-                  <Snowflake className="w-3 h-3 text-cyan-500" />
-                  <span className="text-[10px] font-bold text-slate-600 uppercase tracking-tight">
-                    AC Rooms
-                  </span>
-                </div>
-              )}
-              {listRoomType && (
-                <div className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">
-                  <Star className="w-3 h-3 text-yellow-500" />
-                  <span className="text-[10px] font-bold text-slate-600 uppercase tracking-tight">
-                    {listRoomType}
-                  </span>
-                </div>
-              )}
-            </div>
-
             {/* EMI Section + Price Row */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-end justify-between gap-4 pt-3 border-t border-slate-100 mt-auto">
               {/* EMI Section */}
@@ -304,7 +302,7 @@ const FilterCardList = ({
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[9px] font-bold text-teal-600 uppercase tracking-wider">
-                      No Cost EMI
+                      Prepaid EMI
                     </span>
                     <span className="text-base font-bold text-slate-800">
                       ₹{formatIndianNumber(Math.round(price / 12))}
@@ -313,10 +311,6 @@ const FilterCardList = ({
                       </span>
                     </span>
                   </div>
-                </div>
-                <div className="flex items-center gap-1 bg-teal-600 text-white px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide shadow-md">
-                  <CheckCircle2 className="w-3 h-3" />
-                  0% Interest
                 </div>
               </div>
 
@@ -571,7 +565,7 @@ const FilterCardList = ({
               </div>
               <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-teal-600 uppercase tracking-wider">
-                  No Cost EMI
+                  Prepaid EMI
                 </span>
                 <span className="text-sm font-bold text-slate-800">
                   ₹{formatIndianNumber(Math.round(price / 12))}
@@ -580,10 +574,6 @@ const FilterCardList = ({
                   </span>
                 </span>
               </div>
-            </div>
-            <div className="flex items-center gap-1 text-teal-600">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span className="text-[10px] font-bold">0% Interest</span>
             </div>
           </div>
 
