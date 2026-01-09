@@ -10,6 +10,7 @@ import CTABanner from "./components/home/sections/CTABanner";
 import Footer from "./components/home/sections/Footer";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import WhatsappIcon from "@/components/ui/whatsappicon";
 
 export default function HomePage() {
   return (
@@ -64,6 +65,9 @@ export default function HomePage() {
 
       {/* Call to Action Banner */}
       <CTABanner />
+
+      {/* WhatsApp Floating Button */}
+      <WhatsappIcon />
 
       {/* Footer */}
       <Footer />

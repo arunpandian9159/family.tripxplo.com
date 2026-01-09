@@ -3,70 +3,57 @@
 import React from "react";
 import Link from "next/link";
 import { Sparkles, Phone, ArrowRight } from "lucide-react";
+import { Section } from "@/components/ui/section";
+import { Container } from "@/components/ui/container";
+import { FaWhatsapp } from "react-icons/fa6";
 
 const CTABanner = () => {
   return (
-    <section className="py-16 lg:py-20 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 gold-gradient" />
+    <Section padding="md" className="bg-white">
+      <Container>
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-6 md:p-8">
+          {/* Background Glow */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/4" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gold-600/15 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/4" />
 
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-white/5 rounded-full blur-xl pointer-events-none" />
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+            {/* Left Content */}
+            <div className="text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold-500/20 rounded-full mb-3">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-500"></span>
+                </span>
+                <span className="text-gold-300 text-xs font-semibold">
+                  20% Off Limited Time
+                </span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                Ready to Create Family Memories?
+              </h2>
+              <p className="text-slate-400 text-sm md:text-base max-w-md">
+                Start your dream vacation today with easy EMI payments. No
+                interest, no hidden charges, just amazing experiences.
+              </p>
+            </div>
 
-      {/* Decorative icons */}
-      <div className="absolute top-10 right-[15%] hidden lg:block">
-        <span className="text-4xl opacity-30">✈️</span>
-      </div>
-      <div className="absolute bottom-10 left-[20%] hidden lg:block">
-        <span className="text-3xl opacity-30">🌴</span>
-      </div>
-
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-black/80 text-sm font-medium mb-6">
-            <Sparkles className="w-4 h-4" />
-            Limited Time Offer
-          </div>
-
-          {/* Heading */}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
-            Ready to Create Family Memories?
-          </h2>
-
-          {/* Subtext */}
-          <p className="text-lg lg:text-xl text-black/80 mb-8 max-w-2xl mx-auto">
-            Start your dream vacation today with easy EMI payments. No interest,
-            no hidden charges, just amazing experiences.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/destinations">
-              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all duration-300 shadow-lg hover:shadow-xl">
-                Start Planning
-                <ArrowRight className="w-5 h-5" />
+            {/* Right Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <Link href="/packages">
+                <button className="group px-6 py-3 gold-gradient rounded-xl text-white font-semibold shadow-lg shadow-gold-600/25 hover:shadow-gold-600/40 transition-all hover:scale-105 active:scale-100 flex items-center gap-2">
+                  Explore Packages
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+              </Link>
+              <button className="px-6 py-3 bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl text-white font-medium transition-all flex items-center gap-2">
+                <FaWhatsapp className="w-4 h-4 text-gold-400" />
+                Chat Now
               </button>
-            </Link>
-
-            <a
-              href="tel:+919442424492"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/20 backdrop-blur-sm text-black font-semibold rounded-xl hover:bg-white/30 transition-all duration-300 border border-white/30"
-            >
-              <Phone className="w-5 h-5" />
-              Talk to Expert
-            </a>
+            </div>
           </div>
-
-          {/* Trust text */}
-          <p className="mt-8 text-sm text-black/60">
-            Trusted by 5,000+ families • 4.9 ★ Google Rating
-          </p>
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 };
 
