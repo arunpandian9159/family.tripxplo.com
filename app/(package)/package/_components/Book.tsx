@@ -175,7 +175,7 @@ export default function Book({
                 <span className="text-xs">Secure Payment</span>
               </div>
               <div className="flex items-center gap-1.5 text-slate-400">
-                <span className="text-xs">•</span>
+                <span className="text-xs">₹</span>
                 <span className="text-xs">No Hidden Charges</span>
               </div>
             </div>
@@ -183,16 +183,16 @@ export default function Book({
         </div>
 
         {/* Additional Info Card */}
-        <div className="mt-4 p-4 bg-gold-50 rounded-xl border border-gold-100">
+        <div className="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-gold-100 rounded-lg">
-              <Gift size={16} className="text-gold-600" />
+            <div className="p-2 bg-emerald-100 rounded-lg">
+              <Gift size={16} className="text-emerald-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gold-800">
+              <p className="text-sm font-medium text-emerald-800">
                 No Last Minute Rush
               </p>
-              <p className="text-xs text-gold-600 mt-0.5">
+              <p className="text-xs text-emerald-600 mt-0.5">
                 Reserve with Just ₹1 Rupee!
               </p>
             </div>

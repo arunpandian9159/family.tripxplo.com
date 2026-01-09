@@ -91,7 +91,7 @@ const CabCard = ({
   };
 
   const typeColor = getVehicleTypeColor(
-    cab?.vehicleName || cab?.vehicleCompany || "",
+    cab?.vehicleName || cab?.vehicleCompany || ""
   );
 
   // Get AC type label
@@ -105,13 +105,13 @@ const CabCard = ({
     <div
       className={`relative bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${
         isSelected
-          ? "border-emerald-400 shadow-lg shadow-emerald-500/10"
+          ? "border-amber-400 shadow-lg shadow-amber-500/10"
           : "border-slate-200 hover:border-slate-300 hover:shadow-lg"
       }`}
     >
       {/* Selected Badge */}
       {isSelected && (
-        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-full">
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 gold-gradient text-white text-[10px] font-bold rounded-full">
           <Check size={10} />
           Selected
         </div>
@@ -204,9 +204,9 @@ const CabCard = ({
               </span>
             </div>
           )}
-          <div className="flex items-center gap-1 px-2 py-1 bg-emerald-50 rounded-full">
-            <Shield size={10} className="text-emerald-500" />
-            <span className="text-[10px] text-emerald-600 font-medium">
+          <div className="flex items-center gap-1 px-2 py-1 bg-amber-50 rounded-full">
+            <Shield size={10} className="text-amber-500" />
+            <span className="text-[10px] text-amber-600 font-medium">
               Insured
             </span>
           </div>
@@ -224,7 +224,7 @@ const CabCard = ({
             {priceDiff !== 0 ? (
               <span
                 className={`text-lg font-bold ${
-                  priceDiff > 0 ? "text-emerald-500" : "text-emerald-500"
+                  priceDiff > 0 ? "text-amber-500" : "text-amber-500"
                 }`}
               >
                 {priceDiff > 0 ? "+" : "-"}₹{Math.abs(Math.ceil(priceDiff))}
@@ -240,7 +240,7 @@ const CabCard = ({
           {!isSelected && (
             <button
               onClick={onSelect}
-              className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-emerald-500/20 transition-all press-effect"
+              className="px-4 py-2 gold-gradient text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-amber-500/20 transition-all press-effect"
             >
               Select Cab
             </button>
@@ -272,7 +272,7 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
       changeVehicleAndCalculatePrice({
         newVehicle: cab,
         prevVehicle: vehicle,
-      }),
+      })
     );
 
     // Restore scroll position after modal closes and state updates
@@ -299,7 +299,7 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
               </DialogTitle>
               <p className="text-sm text-slate-500 mt-0.5">
                 Current:{" "}
-                <span className="text-emerald-500 font-semibold">
+                <span className="text-amber-600 font-semibold">
                   {vehicle?.vehicleName}
                 </span>
                 {" · "}
@@ -319,8 +319,8 @@ const ChangeCabModal: React.FC<ChangeCabModalProps> = ({
         <div className="overflow-y-auto p-6 max-h-[calc(90vh-80px)]">
           {isLoading || loading ? (
             <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mb-4">
-                <Loader2 className="h-7 w-7 animate-spin text-emerald-500" />
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center mb-4">
+                <Loader2 className="h-7 w-7 animate-spin text-amber-500" />
               </div>
               <p className="text-slate-600 font-semibold">Loading Vehicles</p>
               <p className="text-slate-400 text-sm mt-1">

@@ -65,23 +65,23 @@ const MEAL_PLANS_CONFIG: Record<
   cp: {
     label: "Continental Plan",
     shortLabel: "Breakfast",
-    color: "text-amber-600",
-    bg: "bg-amber-50",
-    border: "border-amber-200",
+    color: "text-emerald-600",
+    bg: "bg-emerald-50",
+    border: "border-emerald-200",
   },
   map: {
     label: "Modified American",
     shortLabel: "Half Board",
-    color: "text-orange-600",
-    bg: "bg-orange-50",
-    border: "border-orange-200",
+    color: "text-teal-600",
+    bg: "bg-teal-50",
+    border: "border-teal-200",
   },
   ap: {
     label: "American Plan",
     shortLabel: "Full Board",
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
-    border: "border-emerald-200",
+    color: "text-amber-600",
+    bg: "bg-amber-50",
+    border: "border-amber-200",
   },
   ep: {
     label: "European Plan",
@@ -155,18 +155,16 @@ const MealPlanDropdown = ({
                     index < mealPlans.length - 1
                       ? "border-b border-slate-50"
                       : ""
-                  } ${isSelected ? "bg-emerald-50" : ""}`}
+                  } ${isSelected ? "bg-amber-50" : ""}`}
                 >
                   <span
                     className={`text-xs font-medium ${
-                      isSelected ? "text-emerald-600" : "text-slate-600"
+                      isSelected ? "text-amber-600" : "text-slate-600"
                     }`}
                   >
                     {planConfig.shortLabel}
                   </span>
-                  {isSelected && (
-                    <Check size={12} className="text-emerald-500" />
-                  )}
+                  {isSelected && <Check size={12} className="text-amber-500" />}
                 </button>
               );
             })}
@@ -193,7 +191,7 @@ const MealDot = ({
   return (
     <div
       className={`px-2.5 py-1 rounded-full flex items-center justify-center text-[10px] font-semibold transition-all ${
-        isIncluded ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-400"
+        isIncluded ? "gold-gradient text-white" : "bg-slate-100 text-slate-400"
       }`}
     >
       {labels[type]}
@@ -211,13 +209,13 @@ const RoomCard = ({
   onSelect: (mealPlan: HotelMealType) => void;
 }) => {
   const [selectedMealPlan, setSelectedMealPlan] = useState<HotelMealType>(
-    {} as HotelMealType,
+    {} as HotelMealType
   );
   const [mealPlanPrice, setMealPlanPrice] = useState(0);
 
   useEffect(() => {
     const prevHotelMp = room.mealPlan?.find((data) =>
-      prevHotel?.mealPlan?.includes(data.mealPlan),
+      prevHotel?.mealPlan?.includes(data.mealPlan)
     );
     if (prevHotelMp) {
       setSelectedMealPlan(prevHotelMp);
@@ -266,13 +264,13 @@ const RoomCard = ({
     <div
       className={`relative bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${
         isSelected
-          ? "border-emerald-400 shadow-lg shadow-emerald-500/10"
+          ? "border-amber-400 shadow-lg shadow-amber-500/10"
           : "border-slate-200 hover:border-slate-300 hover:shadow-lg"
       }`}
     >
       {/* Selected Badge */}
       {isSelected && (
-        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-full">
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 gold-gradient text-white text-[10px] font-bold rounded-full">
           <Check size={10} />
           Selected
         </div>
@@ -366,7 +364,7 @@ const RoomCard = ({
             {mealPlanPrice !== 0 ? (
               <span
                 className={`text-lg font-bold ${
-                  mealPlanPrice > 0 ? "text-emerald-500" : "text-emerald-500"
+                  mealPlanPrice > 0 ? "text-amber-500" : "text-amber-500"
                 }`}
               >
                 {mealPlanPrice > 0 ? "+" : "-"}₹
@@ -383,7 +381,7 @@ const RoomCard = ({
           {!isSelected && (
             <button
               onClick={() => onSelect(selectedMealPlan)}
-              className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-emerald-500/20 transition-all press-effect"
+              className="px-4 py-2 gold-gradient text-white text-xs font-bold rounded-xl shadow-sm hover:shadow-md hover:shadow-amber-500/20 transition-all press-effect"
             >
               Select Room
             </button>
@@ -408,7 +406,7 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
   useEffect(() => {
     if (rooms?.length > 0) {
       setFilteredRooms(
-        rooms.filter((room: HotelRoom) => room.mealPlan?.length > 0),
+        rooms.filter((room: HotelRoom) => room.mealPlan?.length > 0)
       );
     }
   }, [rooms]);
@@ -425,7 +423,7 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
           hotelRoom: room,
           hotel: newHotel,
           prevHotel: hotel,
-        }),
+        })
       );
     } else {
       // Same hotel - only change room
@@ -434,7 +432,7 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
           mealPlan: mealPlan,
           hotelRoom: room,
           prevHotel: hotel,
-        }),
+        })
       );
     }
 
@@ -461,7 +459,7 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
                 Select Room Type
               </DialogTitle>
               <p className="text-sm text-slate-500 mt-0.5">
-                <span className="text-emerald-500 font-semibold">
+                <span className="text-amber-600 font-semibold">
                   {newHotel?.hotelName || hotel?.hotelName}
                 </span>
                 {" · "}
@@ -483,8 +481,8 @@ const ChangeRoomModal: React.FC<ChangeRoomModalProps> = ({
         <div className="overflow-y-auto p-6 max-h-[calc(90vh-80px)]">
           {isLoading || loading ? (
             <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mb-4">
-                <Loader2 className="h-7 w-7 animate-spin text-emerald-500" />
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center mb-4">
+                <Loader2 className="h-7 w-7 animate-spin text-amber-500" />
               </div>
               <p className="text-slate-600 font-semibold">Loading Rooms</p>
               <p className="text-slate-400 text-sm mt-1">
