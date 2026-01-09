@@ -103,8 +103,13 @@ const WhyEMI = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
-              className={`group relative ${benefit.bgLight} rounded-2xl p-6 lg:p-8 hover:shadow-xl transition-all duration-500 border border-slate-100 hover:border-transparent overflow-hidden`}
+              className={`group relative ${benefit.bgLight} rounded-2xl p-6 lg:p-8 hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 border border-slate-100 hover:border-transparent overflow-hidden hover:-translate-y-1`}
             >
+              {/* Number badge */}
+              <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center text-sm font-bold text-slate-400 group-hover:text-gold-600 transition-colors">
+                0{index + 1}
+              </div>
+
               {/* Hover gradient overlay */}
               <div
                 className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
