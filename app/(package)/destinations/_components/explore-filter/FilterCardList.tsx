@@ -133,7 +133,7 @@ const FilterCardList = ({
                 {/* Destinations with Nights */}
                 <div className="mb-3">
                   <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <MapPin className="w-4 h-4 text-gold-600 flex-shrink-0 mt-0.5" />
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-wrap items-center gap-1.5">
                         {pkg.destination
@@ -186,8 +186,8 @@ const FilterCardList = ({
                   className={cn(
                     "flex-shrink-0 p-2 rounded-full transition-all duration-300",
                     isWishlisted
-                      ? "bg-emerald-50 text-emerald-500 hover:bg-emerald-100"
-                      : "bg-slate-50 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50",
+                      ? "bg-gold-50 text-gold-600 hover:bg-gold-100"
+                      : "bg-slate-50 text-slate-400 hover:text-gold-600 hover:bg-gold-50"
                   )}
                 >
                   <Heart
@@ -196,7 +196,7 @@ const FilterCardList = ({
                   />
                 </button>
                 {pkg.startFrom && (
-                  <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md">
+                  <div className="inline-flex items-center gap-1.5 bg-gold-50 text-gold-700 px-2.5 py-1 rounded-md">
                     <MapPin className="w-3 h-3 animate-pulse" />
                     <span className="text-xs font-semibold">
                       Starts @{pkg.startFrom}
@@ -222,8 +222,8 @@ const FilterCardList = ({
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                  <CarFront size={18} className="text-emerald-500" />
+                <div className="w-10 h-10 rounded-xl bg-gold-50 flex items-center justify-center flex-shrink-0">
+                  <CarFront size={18} className="text-gold-600" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">
@@ -273,7 +273,7 @@ const FilterCardList = ({
                   e.stopPropagation();
                   handleViewDetails();
                 }}
-                className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-sm font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98] flex items-center gap-2"
+                className="px-6 py-3 gold-gradient text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-all shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30 active:scale-[0.98] flex items-center gap-2"
               >
                 View Details
                 <svg
@@ -347,8 +347,8 @@ const FilterCardList = ({
               className={cn(
                 "p-2 rounded-full backdrop-blur-md transition-all duration-300 shadow-sm",
                 isWishlisted
-                  ? "bg-white text-emerald-500"
-                  : "bg-black/20 text-white hover:bg-white hover:text-emerald-500",
+                  ? "bg-white text-gold-600"
+                  : "bg-black/20 text-white hover:bg-white hover:text-gold-600"
               )}
             >
               <Heart
@@ -376,7 +376,7 @@ const FilterCardList = ({
           <div className="flex flex-col gap-2">
             {/* Destinations List */}
             <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-1" />
+              <MapPin className="w-4 h-4 text-gold-600 flex-shrink-0 mt-1" />
               <p className="text-sm text-slate-600 font-medium leading-relaxed">
                 {pkg.destination
                   ?.filter((d) => d.noOfNight > 0)
@@ -401,8 +401,8 @@ const FilterCardList = ({
             {/* Starts From Badge */}
             {pkg.startFrom && (
               <div className="ml-6">
-                <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-100/50">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="inline-flex items-center gap-1.5 bg-gold-50 text-gold-700 px-2.5 py-1 rounded-md border border-gold-100/50">
+                  <div className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse" />
                   <span className="text-xs font-semibold">
                     Starts @ {pkg.startFrom}
                   </span>
@@ -425,7 +425,7 @@ const FilterCardList = ({
               </div>
             </div>
             <div className="flex flex-col items-center justify-center text-center gap-1 border-l border-r border-slate-200">
-              <CarFront size={16} className="text-emerald-500" />
+              <CarFront size={16} className="text-gold-600" />
               <div className="flex flex-col">
                 <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
                   Transfers
@@ -472,7 +472,7 @@ const FilterCardList = ({
                 e.stopPropagation();
                 handleViewDetails();
               }}
-              className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-xs font-bold uppercase tracking-wide rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-lg shadow-emerald-500/20 active:scale-[0.98] flex items-center gap-2"
+              className="px-5 py-2.5 gold-gradient text-white text-xs font-bold uppercase tracking-wide rounded-xl hover:opacity-90 transition-all shadow-lg shadow-gold-500/20 active:scale-[0.98] flex items-center gap-2"
             >
               View Details
               <svg

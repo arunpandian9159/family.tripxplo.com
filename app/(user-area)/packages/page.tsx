@@ -249,14 +249,14 @@ const PackagesPage = () => {
         </div>
 
         {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700" />
+        <div className="absolute inset-0 gold-gradient" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent" />
 
         {/* Decorative Elements */}
         <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-10 w-48 h-48 bg-emerald-600/20 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-10 w-48 h-48 bg-gold-400/20 rounded-full blur-2xl" />
 
-        <Container className="relative z-10">
+        <Container size="2xl" className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="animate-slide-up">
               <div className="flex items-center gap-2 mb-3">
@@ -300,7 +300,7 @@ const PackagesPage = () => {
         </Container>
       </div>
 
-      <Container className="py-8">
+      <Container size="2xl" className="py-8">
         {/* Search Bar */}
         <div className="mb-6">
           <div className="relative w-full">
@@ -310,7 +310,7 @@ const PackagesPage = () => {
               placeholder="Search packages or destinations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-12 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all shadow-sm"
+              className="w-full pl-12 pr-12 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/20 focus:border-gold-500 transition-all shadow-sm"
             />
             {searchQuery && (
               <button
@@ -335,7 +335,7 @@ const PackagesPage = () => {
                   className={cn(
                     "px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 whitespace-nowrap",
                     activeFilter === category.value
-                      ? "bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm"
+                      ? "bg-gold-50 border-gold-200 text-gold-700 shadow-sm"
                       : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
                   )}
                 >
@@ -379,7 +379,7 @@ const PackagesPage = () => {
                         className={cn(
                           "w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors",
                           sortBy === option.value
-                            ? "text-emerald-600 font-medium bg-emerald-50"
+                            ? "text-gold-600 font-medium bg-gold-50"
                             : "text-slate-700"
                         )}
                       >
@@ -398,7 +398,7 @@ const PackagesPage = () => {
                 className={cn(
                   "p-2 rounded-lg transition-all",
                   viewMode === "grid"
-                    ? "bg-emerald-500 text-white"
+                    ? "gold-gradient text-white"
                     : "text-slate-400 hover:text-slate-600"
                 )}
               >
@@ -409,7 +409,7 @@ const PackagesPage = () => {
                 className={cn(
                   "p-2 rounded-lg transition-all",
                   viewMode === "list"
-                    ? "bg-emerald-500 text-white"
+                    ? "gold-gradient text-white"
                     : "text-slate-400 hover:text-slate-600"
                 )}
               >
@@ -435,11 +435,11 @@ const PackagesPage = () => {
               </span>
             )}
             {activeFilter !== "all" && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-sm">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-gold-50 text-gold-700 rounded-full text-sm">
                 {FILTER_CATEGORIES.find((c) => c.value === activeFilter)?.label}
                 <button
                   onClick={() => setActiveFilter("all")}
-                  className="ml-1 hover:text-emerald-900"
+                  className="ml-1 hover:text-gold-900"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -451,7 +451,7 @@ const PackagesPage = () => {
                 setActiveFilter("all");
                 setSortBy("default");
               }}
-              className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+              className="text-sm text-gold-600 hover:text-gold-700 font-medium"
             >
               Clear all
             </button>
@@ -507,7 +507,7 @@ const PackagesPage = () => {
             {hasMore && !loadingMore && (
               <div className="flex justify-center mt-12">
                 <div className="flex items-center gap-2 text-slate-500">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
                   <span className="text-sm">Scroll for more packages...</span>
                 </div>
               </div>

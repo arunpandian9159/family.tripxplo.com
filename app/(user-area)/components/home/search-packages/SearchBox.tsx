@@ -130,8 +130,8 @@ const SearchBox = () => {
           {/* Destination */}
           <div className="flex-1 relative group min-w-0 overflow-visible">
             <div className="flex items-center h-14 lg:h-16 px-4 rounded-2xl bg-slate-50/50 hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-red-100 transition-colors">
-                <MapPin className="w-5 h-5 text-red-500" />
+              <div className="w-10 h-10 rounded-xl bg-gold-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-gold-100 transition-colors">
+                <MapPin className="w-5 h-5 text-gold-600" />
               </div>
               <SearchDestination
                 className="flex-1 ml-3"
@@ -148,8 +148,8 @@ const SearchBox = () => {
           {/* Date */}
           <div className="flex-1 relative group min-w-0 overflow-visible">
             <div className="flex items-center h-14 lg:h-16 px-4 rounded-2xl bg-slate-50/50 hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-emerald-100 transition-colors">
-                <Calendar className="w-5 h-5 text-emerald-500" />
+              <div className="w-10 h-10 rounded-xl bg-gold-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-gold-100 transition-colors">
+                <Calendar className="w-5 h-5 text-gold-600" />
               </div>
               <DateBox
                 className="flex-1 ml-3"
@@ -168,8 +168,8 @@ const SearchBox = () => {
           {/* Guests */}
           <div className="flex-1 relative group min-w-0 overflow-visible">
             <div className="flex items-center h-14 lg:h-16 px-4 rounded-2xl bg-slate-50/50 hover:bg-slate-50 transition-colors">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-blue-100 transition-colors">
-                <Users className="w-5 h-5 text-blue-500" />
+              <div className="w-10 h-10 rounded-xl bg-gold-50 flex items-center justify-center flex-shrink-0 group-focus-within:bg-gold-100 transition-colors">
+                <Users className="w-5 h-5 text-gold-600" />
               </div>
               <OptionsBox
                 className="flex-1 ml-3"

@@ -4,7 +4,7 @@ import React from "react";
 interface ContainerProps {
   children: React.ReactNode;
   className?: string;
-  size?: "sm" | "md" | "lg" | "xl" | "full";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 }
 
 const sizeClasses = {
@@ -12,6 +12,7 @@ const sizeClasses = {
   md: "max-w-5xl",
   lg: "max-w-6xl",
   xl: "max-w-7xl",
+  "2xl": "max-w-[88rem]",
   full: "max-w-full",
 };
 
@@ -25,7 +26,7 @@ export function Container({
       className={cn(
         "mx-auto w-full px-4 sm:px-6 lg:px-8",
         sizeClasses[size],
-        className,
+        className
       )}
     >
       {children}

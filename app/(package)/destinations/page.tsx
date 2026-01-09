@@ -126,7 +126,7 @@ const PackagesPage = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
         )}
 
-        <Container className="relative z-10">
+        <Container size="2xl" className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="animate-slide-up">
               <div className="flex items-center gap-2 mb-3">
@@ -172,7 +172,7 @@ const PackagesPage = () => {
         </Container>
       </div>
 
-      <Container className="py-8">
+      <Container size="2xl" className="py-8">
         {/* Filter Bar */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-3 overflow-x-auto no-scrollbar w-full lg:w-auto">
