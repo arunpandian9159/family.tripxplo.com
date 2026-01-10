@@ -1,4 +1,4 @@
-import { Activity, Vehicle } from "./pack";
+import { Activity, Vehicle, Inclusion, Exclusion } from "./pack";
 import { HotelMeal } from "./pack";
 
 export interface BookingPayloadType {
@@ -18,13 +18,15 @@ export interface BookingPayloadType {
   checkStartDate: string;
   checkEndDate: string;
   vehicleDetail: Vehicle[];
+  inclusionDetail?: Inclusion[];
+  exclusionDetail?: Exclusion[];
   // Price fields
   finalPackagePrice?: number;
   totalPackagePrice?: number;
   gstPrice?: number;
   gstPer?: number;
   couponDiscount?: number;
-  
+
   // EMI fields
   emiMonths?: number;
   emiAmount?: number;

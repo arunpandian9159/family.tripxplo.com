@@ -55,13 +55,13 @@ export const API_ENDPOINTS = {
     CANCEL: (id: string) => `bookings/${id}/cancel`,
   },
 
-  // Payment
-  PAYMENT: {
-    INITIALIZE: "payment/initialize",
-    PROCESS: "payment/process",
-    VERIFY: "payment/verify",
-    STATUS: (paymentId: string) => `payment/${paymentId}/status`,
-    EMI_PAY: "emi/pay",
+  // EMI / Payment (Migrated to EMI)
+  EMI: {
+    INITIALIZE: "emi/initialize",
+    PROCESS: "emi/process",
+    VERIFY: "emi/verify",
+    PAY: "emi/pay",
+    STATUS: (bookingId: string) => `emi/status/${bookingId}`,
   },
 
   // Utility

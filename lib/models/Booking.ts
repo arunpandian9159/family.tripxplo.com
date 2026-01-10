@@ -8,6 +8,19 @@ interface IDestinationRef {
 
 interface IHotelMeal {
   hotelRoomId: string;
+  hotelId?: string;
+  hotelName?: string;
+  image?: string;
+  hotelRoomType?: string;
+  viewPoint?: string[];
+  location?: {
+    address?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    lat?: string;
+    lon?: string;
+  };
   mealPlan: "ep" | "cp" | "map" | "ap";
   noOfNight: number;
   startDateWise: number;
@@ -25,12 +38,17 @@ interface IHotelMeal {
   totalExtraAdultPrice: number;
   gstExtraAdultPrice: number;
   isAddOn: boolean;
+  review?: number;
+  isAc?: boolean;
 }
 
 interface IActivityEvent {
   slot: number;
   activityType: "free" | "allocated" | "travel";
   activityId?: string;
+  name?: string;
+  image?: string;
+  description?: string;
   timePeriod: "morning" | "noon" | "evening" | "noon-evening" | "full-day";
   price: number;
 }
@@ -91,13 +109,15 @@ export interface IBooking extends Document {
   noRoomCount: number;
   offer: number;
   hotelMeal: IHotelMeal[];
-  vehicleDetail: string[];
+  vehicleDetail: any[];
   period: IPeriod[];
-  activity: IActivity[];
+  activity: any[];
   bonusRedeemCoin: number;
   vehicleCount: number;
   hotelCount: number;
   activityCount: number;
+  inclusionDetail: any[];
+  exclusionDetail: any[];
   additionalFees: number;
   marketingPer: number;
   transPer: number;
@@ -177,6 +197,19 @@ const BookingSchema = new mongoose.Schema<IBooking>(
       type: [
         {
           hotelRoomId: { type: String },
+          hotelId: { type: String },
+          hotelName: { type: String },
+          image: { type: String },
+          hotelRoomType: { type: String },
+          viewPoint: { type: [String], default: [] },
+          location: {
+            address: { type: String },
+            city: { type: String },
+            state: { type: String },
+            country: { type: String },
+            lat: { type: String },
+            lon: { type: String },
+          },
           mealPlan: {
             type: String,
             enum: ["ep", "cp", "map", "ap"],
@@ -198,11 +231,13 @@ const BookingSchema = new mongoose.Schema<IBooking>(
           totalExtraAdultPrice: { type: Number, default: 0 },
           gstExtraAdultPrice: { type: Number, default: 0 },
           isAddOn: { type: Boolean, default: false },
+          review: { type: Number },
+          isAc: { type: Boolean },
         },
       ],
       default: [],
     },
-    vehicleDetail: { type: [String], default: [] },
+    vehicleDetail: { type: [mongoose.Schema.Types.Mixed as any], default: [] },
     period: {
       type: [{ startDate: String, endDate: String }],
       default: [],
@@ -223,6 +258,9 @@ const BookingSchema = new mongoose.Schema<IBooking>(
                 default: "allocated",
               },
               activityId: { type: String, default: null },
+              name: { type: String },
+              image: { type: String },
+              description: { type: String },
               timePeriod: {
                 type: String,
                 enum: [
@@ -245,6 +283,14 @@ const BookingSchema = new mongoose.Schema<IBooking>(
     vehicleCount: { type: Number, default: 0 },
     hotelCount: { type: Number, default: 0 },
     activityCount: { type: Number, default: 0 },
+    inclusionDetail: {
+      type: [mongoose.Schema.Types.Mixed as any],
+      default: [],
+    },
+    exclusionDetail: {
+      type: [mongoose.Schema.Types.Mixed as any],
+      default: [],
+    },
     additionalFees: { type: Number, default: 0 },
     marketingPer: { type: Number, default: 0 },
     transPer: { type: Number, default: 0 },
