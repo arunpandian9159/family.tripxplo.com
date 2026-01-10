@@ -16,7 +16,7 @@ import {
   Calendar,
   Check,
   Wallet,
-  Info,
+  Receipt,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { formatIndianCurrency } from "@/lib/utils";
@@ -67,7 +67,6 @@ export default function Book({
 
   // EMI State
   const [selectedEMIMonths, setSelectedEMIMonths] = useState(6);
-  const [showCustomSlider, setShowCustomSlider] = useState(false);
 
   // Calculate EMI based on selected months
   const emiAmount = useMemo(() => {
@@ -76,7 +75,6 @@ export default function Book({
 
   const handleQuickEMISelect = (months: number) => {
     setSelectedEMIMonths(months);
-    setShowCustomSlider(false);
   };
 
   const handleCustomEMIChange = (value: number) => {
@@ -149,7 +147,7 @@ export default function Book({
                     </span>
                   </div>
                   <p className="text-sm text-slate-400 mt-1">
-                    for {selectedEMIMonths} months • 0% Interest
+                    for {selectedEMIMonths} months
                   </p>
                 </div>
                 <div className="flex flex-col items-center gap-1">
@@ -166,18 +164,10 @@ export default function Book({
 
           {/* Quick EMI Duration Selection */}
           <div className="px-6 py-4 bg-slate-50 border-b border-slate-100">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                <Calendar size={12} />
-                EMI Duration
-              </p>
-              <button
-                onClick={() => setShowCustomSlider(!showCustomSlider)}
-                className="text-xs text-gold-600 font-medium hover:text-gold-700 transition-colors"
-              >
-                {showCustomSlider ? "Hide" : "Custom"}
-              </button>
-            </div>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 mb-3">
+              <Calendar size={12} />
+              EMI Duration
+            </p>
 
             {/* Quick Select Buttons */}
             <div className="grid grid-cols-3 gap-2">
@@ -186,7 +176,7 @@ export default function Book({
                   key={option.months}
                   onClick={() => handleQuickEMISelect(option.months)}
                   className={`relative p-3 rounded-xl border-2 transition-all duration-200 ${
-                    selectedEMIMonths === option.months && !showCustomSlider
+                    selectedEMIMonths === option.months
                       ? "border-gold-400 bg-white shadow-md shadow-gold-200/50"
                       : "border-slate-200 bg-white hover:border-gold-200"
                   }`}
@@ -199,7 +189,7 @@ export default function Book({
                   <div className="flex flex-col items-center gap-1">
                     <span
                       className={`text-lg font-bold ${
-                        selectedEMIMonths === option.months && !showCustomSlider
+                        selectedEMIMonths === option.months
                           ? "text-gold-600"
                           : "text-slate-700"
                       }`}
@@ -212,7 +202,7 @@ export default function Book({
                       )}
                     </span>
                   </div>
-                  {selectedEMIMonths === option.months && !showCustomSlider && (
+                  {selectedEMIMonths === option.months && (
                     <div className="absolute top-1.5 right-1.5 w-4 h-4 bg-gold-500 rounded-full flex items-center justify-center">
                       <Check size={10} className="text-white" />
                     </div>
@@ -221,14 +211,8 @@ export default function Book({
               ))}
             </div>
 
-            {/* Custom Slider - Collapsible */}
-            <div
-              className={`overflow-hidden transition-all duration-300 ${
-                showCustomSlider
-                  ? "max-h-32 opacity-100 mt-4"
-                  : "max-h-0 opacity-0"
-              }`}
-            >
+            {/* Custom Slider - Always Visible */}
+            <div className="mt-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs text-slate-400">3 months</span>
                 <div className="px-3 py-1 bg-gold-100 rounded-full">
@@ -247,27 +231,48 @@ export default function Book({
             </div>
           </div>
 
-          {/* Total Package Price - Secondary */}
-          <div className="px-6 py-4 border-b border-slate-100">
-            <div className="flex items-center justify-between">
+          {/* Price Breakdown */}
+          <div className="p-6 space-y-3">
+            {/* Travelers */}
+            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
               <div className="flex items-center gap-2">
-                <Info size={14} className="text-slate-400" />
-                <span className="text-sm text-slate-500">Total Package</span>
+                <Users size={14} className="text-slate-400" />
+                <span className="text-sm text-slate-600">Travelers</span>
               </div>
-              <div className="text-right">
-                <span className="text-lg font-bold text-slate-800">
-                  {formatIndianCurrency(safePrice)}
-                </span>
-                <span className="text-xs text-slate-400 ml-1">incl. taxes</span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between mt-2 text-xs text-slate-400">
-              <span>
-                {formatIndianCurrency(safePerPerson)}/person • {safeAdult} Adult
-                {safeAdult > 1 ? "s" : ""}
+              <span className="text-sm font-semibold text-slate-800">
+                {safeAdult} Adult{safeAdult > 1 ? "s" : ""}
                 {safeChild > 0
                   ? `, ${safeChild} Child${safeChild > 1 ? "ren" : ""}`
                   : ""}
+              </span>
+            </div>
+
+            {/* Breakdown */}
+            <div className="space-y-2 py-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-slate-500">Base Price</span>
+                <span className="text-sm font-medium text-slate-700">
+                  {formatIndianCurrency(safePackagePrice)}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-slate-500">
+                  Taxes & Fees ({safeGstPer}%)
+                </span>
+                <span className="text-sm font-medium text-slate-700">
+                  {formatIndianCurrency(safeGstPrice)}
+                </span>
+              </div>
+            </div>
+
+            {/* Total */}
+            <div className="flex items-center justify-between pt-3 border-t-2 border-dashed border-slate-200">
+              <div className="flex items-center gap-2">
+                <Receipt size={16} className="text-slate-400" />
+                <span className="font-bold text-slate-900">Total Amount</span>
+              </div>
+              <span className="text-2xl font-black text-slate-900">
+                {formatIndianCurrency(safePrice)}
               </span>
             </div>
           </div>
@@ -294,7 +299,7 @@ export default function Book({
               </div>
               <div className="flex items-center gap-1.5 text-slate-400">
                 <Sparkles size={14} className="text-gold-500" />
-                <span className="text-xs">0% Interest</span>
+                <span className="text-xs">No Hidden Charges</span>
               </div>
             </div>
           </div>
