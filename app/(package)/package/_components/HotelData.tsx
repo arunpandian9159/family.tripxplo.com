@@ -172,7 +172,7 @@ export default function HotelData({
                         // 1. Try to use dynamic calculation based on Search Date + Day Offset
                         // This fixes the "Wrong Day" issue if the backend returns old static dates
                         const searchDateStr = useSelector(
-                          (state: any) => state.searchPackage.date,
+                          (state: any) => state.searchPackage.date
                         );
 
                         // Check if we have necessary data for dynamic calculation
@@ -187,14 +187,14 @@ export default function HotelData({
                             const checkInDate = new Date(tripStartDate);
                             checkInDate.setDate(
                               tripStartDate.getDate() +
-                                (hotel.startDateWise - 1),
+                                (hotel.startDateWise - 1)
                             );
 
                             // Calculate Check-out: CheckIn + Nights
                             // OR TripStart + (EndOffset - 1) if endDateWise is reliable
                             const checkOutDate = new Date(checkInDate);
                             checkOutDate.setDate(
-                              checkInDate.getDate() + (hotel.noOfNight || 1),
+                              checkInDate.getDate() + (hotel.noOfNight || 1)
                             );
 
                             const startStr = checkInDate.toLocaleDateString(
@@ -203,11 +203,11 @@ export default function HotelData({
                                 weekday: "short",
                                 month: "short",
                                 day: "numeric",
-                              },
+                              }
                             );
                             const endStr = checkOutDate.toLocaleDateString(
                               "en-US",
-                              { month: "short", day: "numeric" },
+                              { month: "short", day: "numeric" }
                             );
 
                             return `${startStr} — ${endStr}`;

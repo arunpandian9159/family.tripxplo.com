@@ -262,7 +262,7 @@ const Booking = () => {
 
       {/* Content */}
       <div className="section-container py-12">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           {/* Success Hero */}
           <div className="text-center mb-10 animate-fade-in">
             <div className="w-20 h-20 bg-gold-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-gold-500/20">
@@ -283,22 +283,6 @@ const Booking = () => {
           </div>
 
           <BookingDetails pack={data} events={events} />
-
-          {/* Action Buttons */}
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => router.push("/mybookings")}
-              className="px-8 py-4 gold-gradient text-white font-bold rounded-2xl hover:opacity-90 transition-all shadow-xl shadow-gold-500/20 active:scale-[0.98]"
-            >
-              Go to My Bookings
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="px-8 py-4 bg-white text-slate-700 border border-slate-200 font-bold rounded-2xl hover:bg-slate-50 transition-all active:scale-[0.98]"
-            >
-              Print Receipt
-            </button>
-          </div>
 
           <p className="text-center text-slate-400 text-sm mt-8">
             An email confirmation has been sent to your registered email

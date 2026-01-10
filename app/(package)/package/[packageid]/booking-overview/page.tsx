@@ -200,9 +200,9 @@ export default function PackageBooking() {
     }
 
     setIsProcessing(true);
+    const perRoomBase = roomCapacityData.perRoom || 2;
     const extraAdult =
-      roomCapacityData.totalAdults -
-      roomCapacityData.totalRooms * roomCapacityData.perRoom;
+      roomCapacityData.totalAdults - roomCapacityData.totalRooms * perRoomBase;
     const noAdult =
       extraAdult > 0
         ? roomCapacityData?.totalAdults - extraAdult
@@ -228,6 +228,8 @@ export default function PackageBooking() {
       checkStartDate: pack?.checkStartDate || "",
       checkEndDate: pack?.checkEndDate || "",
       vehicleDetail: pack?.vehicleDetail || [],
+      inclusionDetail: pack?.inclusionDetail || [],
+      exclusionDetail: pack?.exclusionDetail || [],
       // Price fields
       finalPackagePrice: actualPayAmount,
       totalPackagePrice: pack?.totalPackagePrice || 0,
@@ -429,9 +431,12 @@ export default function PackageBooking() {
                     <div className="flex items-center gap-2 text-sm text-slate-600">
                       <UserRound size={14} className="text-gold-500" />
                       <span>
-                        {roomCapacityData?.totalAdults} Adults
+                        {roomCapacityData?.totalAdults} Adult
+                        {roomCapacityData?.totalAdults !== 1 ? "s" : ""}
                         {roomCapacityData?.totalChilds > 0 &&
-                          `, ${roomCapacityData?.totalChilds} Child`}
+                          `, ${roomCapacityData?.totalChilds} Child${
+                            roomCapacityData?.totalChilds !== 1 ? "ren" : ""
+                          }`}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-slate-600">
