@@ -9,13 +9,13 @@ import {
   ErrorMessages,
 } from "@/lib/api-response";
 
-// GET /api/v1/emi/status/[id] - Get EMI status for a booking
+// GET /api/v1/emi/status/[id] - Get EMI status for a booking or payment
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id: bookingId } = await params;
+    const { id } = await params;
     const userId = getUserIdFromRequest(request);
 
     if (!userId) {
@@ -28,12 +28,19 @@ export async function GET(
 
     await connectDB();
 
-    if (!bookingId) {
-      return errorResponse(
-        "Booking ID is required",
-        ErrorCodes.VALIDATION_ERROR,
-        400
-      );
+    let bookingId = id;
+
+    // If ID is a payment ID, resolve it to booking ID
+    if (id.startsWith("pay_")) {
+      const payment = global.paymentStore?.get(id);
+      if (!payment || payment.userId !== userId) {
+        return errorResponse(
+          ErrorMessages[ErrorCodes.PAYMENT_NOT_FOUND],
+          ErrorCodes.PAYMENT_NOT_FOUND,
+          404
+        );
+      }
+      bookingId = payment.orderId;
     }
 
     const booking = await Booking.findOne({ bookingId, userId });
@@ -42,7 +49,7 @@ export async function GET(
       return errorResponse(
         ErrorMessages[ErrorCodes.ORDER_NOT_FOUND],
         ErrorCodes.ORDER_NOT_FOUND,
-        404
+        400
       );
     }
 
@@ -54,7 +61,6 @@ export async function GET(
     const paidCount = emiDetails.paidCount;
     const totalTenure = emiDetails.totalTenure;
     const totalAmount = emiDetails.totalAmount;
-    const monthlyAmount = emiDetails.monthlyAmount;
 
     const remainingAmount =
       totalAmount -
@@ -66,6 +72,20 @@ export async function GET(
       (s: any) => s.status === "pending"
     );
 
+    // If we searched by paymentId, we can include payment-specific info
+    let paymentInfo = {};
+    if (id.startsWith("pay_")) {
+      const payment = global.paymentStore?.get(id);
+      if (payment) {
+        paymentInfo = {
+          paymentId: payment.paymentId,
+          amount: payment.amount,
+          status: payment.status,
+          currentEmiNumber: payment.installmentNumber,
+        };
+      }
+    }
+
     return successResponse(
       {
         bookingId: booking.bookingId,
@@ -76,6 +96,13 @@ export async function GET(
             : paidCount > 0
             ? "partially_paid"
             : "not_started",
+        ...paymentInfo, // Include payment specific info if requested by paymentId
+        orderId: booking.bookingId, // For compatibility with existing payment page
+        amount: nextInstallment?.amount || emiDetails.monthlyAmount, // For compatibility
+        emiMonths: totalTenure,
+        emiAmount: emiDetails.monthlyAmount,
+        totalAmount: totalAmount,
+        currentEmiNumber: paidCount + 1,
         progress: {
           paidCount,
           totalTenure,

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import connectDB from "@/lib/db";
 import Booking from "@/lib/models/Booking";
-import { getUserIdFromRequest } from "@/lib/auth";
+import { getUserIdFromRequest, generateId } from "@/lib/auth";
 import {
   successResponse,
   errorResponse,
@@ -19,7 +19,7 @@ interface EmiInitializeBody {
 
 /**
  * POST /api/v1/emi/initialize
- * Description: Creates an EMI installment plan for an existing booking.
+ * Description: Creates an EMI installment plan for an existing booking and returns payment URL for first installment.
  * Auth: Required
  */
 export async function POST(request: NextRequest) {
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const body = await parseBody<EmiInitializeBody>(request);
+    const body = await parseBody<any>(request);
 
     if (!body) {
       return errorResponse(
@@ -46,22 +46,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { valid, missing } = validateRequired(
-      body as unknown as Record<string, unknown>,
-      ["bookingId", "tenureMonths"]
-    );
+    // Accept both bookingId and orderId (alias used in some clients)
+    const bookingId = body.bookingId || body.orderId;
 
-    if (!valid) {
+    if (!bookingId) {
       return errorResponse(
-        `Missing required fields: ${missing.join(", ")}`,
+        "Missing required field: bookingId or orderId",
         ErrorCodes.VALIDATION_ERROR,
         400
       );
     }
 
+    const tenureMonths = body.tenureMonths || 6;
+
     // Find booking
     const booking = await Booking.findOne({
-      bookingId: body.bookingId,
+      bookingId: bookingId,
       userId,
     });
 
@@ -73,84 +73,112 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if EMI already exists
-    if (booking.emiDetails?.isEmiBooking) {
-      return errorResponse(
-        "EMI schedule already initialized",
-        "EMI_ALREADY_EXISTS",
-        400
-      );
-    }
-
-    // Validate tenure
-    const allowedTenures = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-    if (!allowedTenures.includes(body.tenureMonths)) {
-      return errorResponse(
-        "Selected tenure is not supported. Must be between 3 to 16 months.",
-        "INVALID_TENURE",
-        400
-      );
-    }
-
-    // Use price from booking or request
-    const finalPrice = body.totalAmount || booking.finalPrice;
-    const emiMonths = body.tenureMonths;
-    const emiAmount = body.emiAmount || Math.floor(finalPrice / emiMonths);
-    const totalAmount = body.totalAmount || finalPrice;
-
-    const schedule = [];
-    const bookingDate = new Date();
-
-    for (let i = 1; i <= emiMonths; i++) {
-      const dueDate = new Date(bookingDate);
-      dueDate.setDate(dueDate.getDate() + (i - 1) * 30); // 30 day cycles
-
-      // Adjust the last installment for rounding
-      let currentAmount = emiAmount;
-      if (i === emiMonths) {
-        currentAmount = totalAmount - emiAmount * (emiMonths - 1);
+    // Initialize or Update EMI schedule if not already paid
+    if (
+      !booking.emiDetails?.isEmiBooking ||
+      booking.emiDetails.paidCount === 0
+    ) {
+      // Validate tenure
+      const allowedTenures = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+      if (!allowedTenures.includes(tenureMonths)) {
+        return errorResponse(
+          "Selected tenure is not supported. Must be between 3 to 16 months.",
+          "INVALID_TENURE",
+          400
+        );
       }
 
-      schedule.push({
-        installmentNumber: i,
-        amount: currentAmount,
-        dueDate,
-        status: "pending",
-      });
+      // Use price from booking or request
+      const finalPrice = body.totalAmount || booking.finalPrice;
+      const emiMonths = tenureMonths;
+      const emiAmount = body.emiAmount || Math.floor(finalPrice / emiMonths);
+      const totalAmount = body.totalAmount || finalPrice;
+
+      const schedule = [];
+      const bookingDate = new Date();
+
+      for (let i = 1; i <= emiMonths; i++) {
+        const dueDate = new Date(bookingDate);
+        dueDate.setDate(dueDate.getDate() + (i - 1) * 30); // 30 day cycles
+
+        // Adjust the last installment for rounding
+        let currentAmount = emiAmount;
+        if (i === emiMonths) {
+          currentAmount = totalAmount - emiAmount * (emiMonths - 1);
+        }
+
+        schedule.push({
+          installmentNumber: i,
+          amount: currentAmount,
+          dueDate,
+          status: "pending",
+        });
+      }
+
+      // Update booking with EMI details
+      booking.emiDetails = {
+        isEmiBooking: true,
+        totalTenure: emiMonths,
+        monthlyAmount: emiAmount,
+        totalAmount: totalAmount,
+        paidCount: 0,
+        nextDueDate: schedule[0].dueDate,
+        schedule: schedule as any,
+      };
+
+      booking.markModified("emiDetails");
+      await booking.save();
     }
 
-    // Update booking with EMI details
-    booking.emiDetails = {
-      isEmiBooking: true,
-      totalTenure: emiMonths,
-      monthlyAmount: emiAmount,
-      totalAmount: totalAmount,
-      paidCount: 0,
-      nextDueDate: schedule[0].dueDate,
-      schedule: schedule as any,
-    };
+    // Always return payment URL for the first unpaid installment
+    const firstUnpaid = booking.emiDetails.schedule.find(
+      (s: any) => s.status === "pending"
+    );
 
-    booking.markModified("emiDetails");
-    await booking.save();
+    if (!firstUnpaid) {
+      return errorResponse("All installments already paid", "ALL_PAID", 400);
+    }
+
+    // Initialize payment session
+    const paymentId = `pay_${generateId()}`;
+    if (!global.paymentStore) {
+      global.paymentStore = new Map();
+    }
+
+    global.paymentStore.set(paymentId, {
+      paymentId,
+      orderId: booking.bookingId,
+      amount: firstUnpaid.amount,
+      currency: "INR",
+      status: "created",
+      userId,
+      createdAt: new Date(),
+      isEmi: true,
+      installmentNumber: firstUnpaid.installmentNumber,
+      emiMonths: booking.emiDetails.totalTenure,
+      emiAmount: booking.emiDetails.monthlyAmount,
+      totalAmount: booking.emiDetails.totalAmount,
+    });
+
+    const origin = new URL(request.url).origin;
+    const paymentUrl = `${origin}/payment/${paymentId}`;
 
     return successResponse(
       {
         bookingId: booking.bookingId,
+        paymentId,
+        paymentUrl,
+        amount: firstUnpaid.amount,
+        installmentNumber: firstUnpaid.installmentNumber,
         emiDetails: {
           totalTenure: booking.emiDetails.totalTenure,
           monthlyAmount: booking.emiDetails.monthlyAmount,
           totalAmount: booking.emiDetails.totalAmount,
           paidCount: booking.emiDetails.paidCount,
           nextDueDate: booking.emiDetails.nextDueDate,
-          schedule: booking.emiDetails.schedule.map((s: any) => ({
-            installmentNumber: s.installmentNumber,
-            amount: s.amount,
-            dueDate: s.dueDate,
-            status: s.status,
-          })),
         },
       },
-      "EMI schedule initialized successfully",
+      "EMI initialized and payment session created",
       201
     );
   } catch (error) {
