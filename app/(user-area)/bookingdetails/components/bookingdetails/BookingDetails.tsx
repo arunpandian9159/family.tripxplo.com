@@ -19,6 +19,7 @@ import {
   Sparkles,
   CreditCard,
   Receipt,
+  ArrowRight,
 } from "lucide-react";
 import Image from "next/image";
 import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
@@ -71,6 +72,19 @@ interface BookingDetailsProps {
     totalEmiAmount?: number;
     currentEmiNumber?: number;
     paidEmis?: number;
+    emiDetails?: {
+      totalTenure: number;
+      monthlyAmount: number;
+      totalAmount: number;
+      paidCount: number;
+      nextDueDate: string;
+      schedule: {
+        installmentNumber: number;
+        dueDate: string;
+        amount: number;
+        status: string;
+      }[];
+    };
   };
 }
 
@@ -169,422 +183,250 @@ const BookingDetails = ({ events, pack }: BookingDetailsProps) => {
     }
   };
 
+  // EMI schedule from pack
+  const emiSchedule = pack?.emiDetails?.schedule || [];
+  const nextPendingEmi = emiSchedule.find((s: any) => s.status === "pending");
+
   return (
     <div className="animate-fade-in">
-      {/* Main Card */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        {/* Booking ID Header */}
-        <div className="px-5 py-4 bg-slate-50 border-b border-slate-100">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-slate-500 text-sm font-medium">
-                Booking ID:
-              </span>
-              <span className="text-slate-900 font-semibold">
-                {pack?.bookingId || "N/A"}
-              </span>
-            </div>
-            <button
-              onClick={copyBookingId}
-              className="p-2 rounded-lg hover:bg-slate-200 transition-colors"
-            >
-              {copied ? (
-                <Check className="w-4 h-4 text-emerald-500" />
-              ) : (
-                <Copy className="w-4 h-4 text-slate-400" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Package Info Section */}
-        <div className="p-5">
-          <div className="flex gap-4">
-            {/* Image */}
-            <div className="relative w-28 h-24 flex-shrink-0 rounded-xl overflow-hidden">
-              <Image
-                src={imageUrl}
-                fill
-                className="object-cover"
-                alt={pack?.packageName || "package image"}
-                unoptimized
-              />
-              {/* Plan Badge */}
-              {pack?.planName && plan && (
-                <div
-                  className={cn(
-                    "absolute top-2 left-2 px-2 py-0.5 rounded-full text-white text-[10px] font-bold",
-                    plan.gradient
-                  )}
-                >
-                  {pack.planName}
-                </div>
-              )}
-            </div>
-
-            {/* Details */}
-            <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-lg text-slate-900 line-clamp-2 mb-2">
-                {pack?.packageName}
-              </h3>
-
-              {/* Features Row */}
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex items-center gap-1.5 text-slate-500">
-                  <div className="w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center">
-                    <Building size={12} className="text-blue-500" />
-                  </div>
-                  <span className="text-xs font-medium">
-                    {hotelCount} Hotel{hotelCount !== 1 ? "s" : ""}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 text-slate-500">
-                  <div className="w-6 h-6 rounded-md bg-emerald-50 flex items-center justify-center">
-                    <Utensils size={12} className="text-emerald-500" />
-                  </div>
-                  <span className="text-xs font-medium">
-                    {activityCount} Activity
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 text-slate-500">
-                  <div className="w-6 h-6 rounded-md bg-amber-50 flex items-center justify-center">
-                    <CarFront size={12} className="text-amber-500" />
-                  </div>
-                  <span className="text-xs font-medium">
-                    {vehicleCount} Cab{vehicleCount !== 1 ? "s" : ""}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Price */}
-            <div className="text-right flex-shrink-0">
-              <span className="text-xs text-slate-400">Total</span>
-              <div className="text-xl font-bold text-slate-900">
-                {formatIndianCurrency(
-                  pack?.finalPrice || pack?.totalPackagePrice || 0
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="h-px bg-slate-100 mx-5" />
-
-        {/* Trip Details */}
-        <div className="p-5 space-y-3">
-          {/* Destinations */}
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gold-50 flex items-center justify-center flex-shrink-0">
-              <MapPin size={16} className="text-gold-500" />
-            </div>
-            <div className="flex-1">
-              <div className="flex flex-wrap items-center gap-2">
-                {destinations.length > 0 ? (
-                  destinations.map((dest: any, i: number) => (
-                    <span
-                      key={i}
-                      className="text-sm font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full"
-                    >
-                      {dest.name}
-                      <span className="text-gold-500 ml-1">
-                        ({dest.nights}N)
-                      </span>
-                    </span>
-                  ))
-                ) : (
-                  <span className="text-sm text-slate-500">
-                    {pack?.noOfNight}N / {pack?.noOfDays}D Trip
-                  </span>
-                )}
-              </div>
-            </div>
-            <span className="px-3 py-1 bg-gold-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              {pack?.noOfNight}N/{pack?.noOfDays}D
-            </span>
-          </div>
-
-          {/* Guests */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
-              <Users size={16} className="text-purple-500" />
-            </div>
-            <span className="text-sm font-medium text-slate-700">
-              {totalAdults} Adult{totalAdults !== 1 && "s"}
-              {totalChildren > 0 &&
-                ` + ${totalChildren} Child${totalChildren !== 1 ? "ren" : ""}`}
-            </span>
-          </div>
-
-          {/* Travel Date */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-              <CalendarDays size={16} className="text-blue-500" />
-            </div>
-            <span className="text-sm font-medium text-slate-700">
-              {pack?.fullStartDate || "Date TBD"}
-              {pack?.fullEndDate && ` - ${pack.fullEndDate}`}
-            </span>
-          </div>
-        </div>
-
-        {/* EMI Section */}
-        {hasEmi && (
-          <>
-            <div className="h-px bg-slate-100 mx-5" />
-            <div className="p-5">
-              <div className="p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl" />
-                <div className="absolute top-2 right-2">
-                  <Sparkles size={14} className="text-gold-400 animate-pulse" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* LEFT COLUMN: PRIMARY MANAGEMENT */}
+        <div className="lg:col-span-2 space-y-8">
+          
+          {/* Main Package Card */}
+          <div className="bg-white rounded-[2.5rem] p-4 border border-slate-100 shadow-sm">
+             <div className="flex flex-col md:flex-row gap-8">
+                <div className="relative w-full md:w-64 h-56 rounded-[2rem] overflow-hidden shadow-2xl shadow-slate-200">
+                   <Image src={imageUrl} fill className="object-cover transition-transform hover:scale-105 duration-700" alt={pack?.packageName || "package"} unoptimized />
+                   <div className={cn("absolute top-4 left-4 px-4 py-1.5 rounded-full text-white text-[10px] font-black uppercase tracking-widest shadow-lg backdrop-blur-md", status?.bg)}>
+                      {pack?.status}
+                   </div>
                 </div>
 
-                <div className="relative">
-                  {/* EMI Header */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="p-1.5 bg-gold-500/20 rounded-lg">
-                      <Wallet size={14} className="text-gold-400" />
-                    </div>
-                    <span className="text-xs font-semibold text-gold-300 uppercase tracking-wider">
-                      Prepaid EMI Plan
-                    </span>
-                  </div>
-
-                  {/* EMI Amount */}
-                  <div className="flex items-end justify-between mb-4">
-                    <div>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-gold-300 to-amber-400 bg-clip-text text-transparent">
-                          {formatIndianCurrency(emiAmount)}
-                        </span>
-                        <span className="text-slate-400 text-sm">/month</span>
+                <div className="flex-1 py-4 pr-4">
+                   <div className="flex justify-between items-start mb-4">
+                      <div>
+                         <h3 className="text-3xl font-black text-slate-900 leading-tight mb-2 tracking-tight">
+                            {pack?.packageName}
+                         </h3>
+                         <div className="flex items-center gap-2">
+                            <MapPin size={14} className="text-gold-500" />
+                            <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">{pack?.startFrom || "Location TBD"}</span>
+                         </div>
                       </div>
-                      <p className="text-xs text-slate-400 mt-0.5">
-                        for {emiMonths} months
-                      </p>
-                    </div>
-                    <div className="px-3 py-1.5 bg-gold-500/20 rounded-lg border border-gold-500/30">
-                      <span className="text-xs font-bold text-gold-300">
-                        {paidEmis}/{emiMonths} Paid
-                      </span>
-                    </div>
-                  </div>
+                   </div>
 
-                  {/* Progress Bar */}
+                   <div className="grid grid-cols-3 gap-6 mt-8 pt-8 border-t border-slate-50">
+                      <div>
+                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Duration</p>
+                         <p className="text-lg font-bold text-slate-800">{pack?.noOfNight}N/{pack?.noOfDays}D</p>
+                      </div>
+                      <div>
+                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Guests</p>
+                         <p className="text-lg font-bold text-slate-800">{totalAdults} Adult{totalAdults > 1 ? 's' : ''}</p>
+                      </div>
+                      <div>
+                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Booking ID</p>
+                         <div className="flex items-center gap-2 cursor-pointer group" onClick={copyBookingId}>
+                            <p className="text-lg font-bold text-gold-600 group-hover:underline">{pack?.bookingId?.slice(0, 8)}</p>
+                            <Copy size={12} className="text-slate-300 group-hover:text-gold-500" />
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+
+          {/* EMI Management Hub */}
+          {hasEmi && (
+            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+               <div className="p-8 border-b border-slate-50 flex items-center justify-between bg-gradient-to-r from-white to-gold-50/20">
                   <div>
-                    <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
-                      <span>EMI Progress</span>
-                      <span>
-                        {remainingEmis > 0
-                          ? `${remainingEmis} EMIs remaining`
-                          : "All EMIs paid!"}
-                      </span>
-                    </div>
-                    <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-gold-400 to-amber-500 rounded-full transition-all duration-500"
-                        style={{ width: `${(paidEmis / emiMonths) * 100}%` }}
-                      />
-                    </div>
+                     <h4 className="text-xl font-black text-slate-900 tracking-tight">Financial Timeline</h4>
+                     <p className="text-sm text-slate-500 font-medium">Monthly prepaid installments schedule</p>
                   </div>
+                  <div className="px-4 py-2 bg-slate-900 rounded-2xl text-white">
+                     <span className="text-xs font-black uppercase tracking-tighter">{paidEmis} / {emiMonths} Settled</span>
+                  </div>
+               </div>
+               
+               <div className="p-0">
+                  <div className="overflow-x-auto">
+                     <table className="w-full text-left">
+                        <thead>
+                           <tr className="bg-slate-50/30">
+                              <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Installment</th>
+                              <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Schedule</th>
+                              <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Amount</th>
+                              <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center">Status</th>
+                           </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-50">
+                           {emiSchedule.map((item: any, i: number) => (
+                             <tr key={i} className={cn("group transition-colors hover:bg-slate-50/50", item.status === 'pending' && "bg-amber-50/10")}>
+                                <td className="px-8 py-6 text-sm font-black text-slate-300 group-hover:text-slate-900">{item.installmentNumber.toString().padStart(2, '0')}</td>
+                                <td className="px-8 py-6 text-sm font-bold text-slate-600">
+                                   {new Date(item.dueDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                </td>
+                                <td className="px-8 py-6 text-sm font-black text-slate-900">{formatIndianCurrency(item.amount)}</td>
+                                <td className="px-8 py-6 text-center">
+                                   <span className={cn(
+                                     "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border",
+                                     item.status === 'paid' ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
+                                     item.status === 'pending' ? "bg-amber-50 text-amber-600 border-amber-100" :
+                                     "bg-red-50 text-red-600 border-red-100"
+                                   )}>
+                                      {item.status === 'paid' ? <CheckCircle2 size={10}/> : <Clock size={10}/>}
+                                      {item.status}
+                                   </span>
+                                </td>
+                             </tr>
+                           ))}
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
 
-                  {/* EMI Details */}
-                  <div className="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-slate-700">
-                    <div>
-                      <p className="text-[10px] text-slate-500 uppercase">
-                        Per EMI
-                      </p>
-                      <p className="text-sm font-semibold text-white">
-                        {formatIndianCurrency(emiAmount)}
-                      </p>
+               {nextPendingEmi && (
+                 <div className="m-8 p-6 bg-slate-900 rounded-[2rem] flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-slate-400">
+                    <div className="flex items-center gap-4">
+                       <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10">
+                          <Wallet className="text-gold-400" size={24}/>
+                       </div>
+                       <div>
+                          <p className="text-white font-black text-lg">Next EMI # {nextPendingEmi.installmentNumber}</p>
+                          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Due on {new Date(nextPendingEmi.dueDate).toLocaleDateString()}</p>
+                       </div>
                     </div>
-                    <div>
-                      <p className="text-[10px] text-slate-500 uppercase">
-                        Total Package
-                      </p>
-                      <p className="text-sm font-semibold text-white">
-                        {formatIndianCurrency(totalEmiAmount)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    <button className="w-full sm:w-auto px-10 py-4 gold-gradient text-white text-sm font-black rounded-2xl shadow-xl shadow-gold-500/20 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
+                       Pay {formatIndianCurrency(nextPendingEmi.amount)}
+                    </button>
+                 </div>
+               )}
             </div>
-          </>
-        )}
+          )}
 
-        {/* Divider */}
-        <div className="h-px bg-slate-100 mx-5" />
-
-        {/* Timeline Section */}
-        <div className="p-5">
-          <h4 className="text-sm font-semibold text-slate-900 mb-4">
-            Booking Timeline
-          </h4>
-
-          <div className="relative">
-            {events.map((event: any, index: number) => {
-              const isCompleted = event.status === "completed";
-              const isFailed = event.status === "failed";
-              const isActive = event.status === "active";
-              const isLast = index === events.length - 1;
-
-              return (
-                <div key={index} className="flex gap-4">
-                  {/* Timeline Line & Dot */}
-                  <div className="flex flex-col items-center">
-                    {/* Dot */}
-                    <div
-                      className={cn(
-                        "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all",
-                        isCompleted && "bg-gold-500",
-                        isFailed && "bg-red-500",
-                        isActive && "bg-amber-500 animate-pulse",
-                        !isCompleted && !isFailed && !isActive && "bg-slate-200"
-                      )}
-                    >
-                      {isCompleted && (
-                        <CheckCircle2 className="w-4 h-4 text-white" />
-                      )}
-                      {isFailed && (
-                        <AlertCircle className="w-4 h-4 text-white" />
-                      )}
-                      {isActive && (
-                        <Loader2 className="w-4 h-4 text-white animate-spin" />
-                      )}
-                      {!isCompleted && !isFailed && !isActive && (
-                        <Circle className="w-4 h-4 text-slate-400" />
-                      )}
-                    </div>
-
-                    {/* Line */}
-                    {!isLast && (
-                      <div
-                        className={cn(
-                          "w-0.5 h-12 my-1",
-                          isCompleted
-                            ? "bg-gold-500"
-                            : isFailed
-                            ? "bg-red-300"
-                            : "bg-slate-200 border-l-2 border-dashed border-slate-300"
-                        )}
-                      />
-                    )}
+          {/* Booking Progress */}
+          <div className="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm">
+             <h4 className="text-xl font-black text-slate-900 mb-8 flex items-center gap-3">
+                <Sparkles size={20} className="text-gold-500" />
+                Trip Lifecycle
+             </h4>
+             <div className="relative pl-6">
+                {events.map((event: any, index: number) => (
+                  <div key={index} className="flex gap-6 pb-12 relative group last:pb-0">
+                     {!(index === events.length - 1) && (
+                       <div className={cn("absolute left-[11px] top-8 w-[2px] h-full transition-all duration-500", 
+                          event.status === 'completed' ? "bg-gold-500" : "bg-slate-100")}/>
+                     )}
+                     <div className={cn("relative z-10 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 border-4 border-white shadow-md transition-all duration-500", 
+                        event.status === 'completed' ? "bg-gold-500 scale-125 shadow-gold-500/30" : "bg-slate-200")}>
+                        {event.status === 'completed' && <Check size={10} className="text-white"/>}
+                     </div>
+                     <div className="pt-0.5">
+                        <h5 className={cn("text-sm font-black tracking-tight", event.status === 'completed' ? "text-slate-900" : "text-slate-400")}>
+                           {event.heading}
+                        </h5>
+                        <p className="text-xs text-slate-500 mt-1 font-medium">{event.subHeading}</p>
+                     </div>
                   </div>
-
-                  {/* Content */}
-                  <div className={cn("pb-6", isLast && "pb-0")}>
-                    <h5
-                      className={cn(
-                        "font-semibold text-sm",
-                        isCompleted && "text-gold-600",
-                        isFailed && "text-red-600",
-                        isActive && "text-amber-600",
-                        !isCompleted &&
-                          !isFailed &&
-                          !isActive &&
-                          "text-slate-400"
-                      )}
-                    >
-                      {event.heading}
-                    </h5>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      {event.subHeading}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+                ))}
+             </div>
           </div>
         </div>
 
-        {/* Balance Amount Alert (if applicable and no EMI) */}
-        {!hasEmi && pack?.balanceAmount && pack.balanceAmount > 0 && (
-          <div className="mx-5 mb-5 p-4 bg-amber-50 border border-amber-200 rounded-xl">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-amber-800">
-                  Balance Amount Due
-                </p>
-                <p className="text-xs text-amber-600 mt-0.5">
-                  Pay before your travel date
-                </p>
-              </div>
-              <div className="text-xl font-bold text-amber-800">
-                {formatIndianCurrency(pack.balanceAmount)}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* RIGHT COLUMN: SUMMARY SIDEBAR */}
+        <div className="space-y-8">
+           
+           {/* Price Breakdown Sidebar */}
+           <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm sticky top-8">
+              <h4 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Pricing Summary</h4>
+              
+              <div className="space-y-5">
+                 <div className="flex justify-between items-center bg-slate-50/50 p-4 rounded-2xl">
+                    <span className="text-slate-500 text-sm font-bold">Package Value</span>
+                    <span className="text-slate-900 font-black tracking-tight">{formatIndianCurrency(pack?.totalPackagePrice || 0)}</span>
+                 </div>
 
-        {/* Next EMI Due (if EMI) */}
-        {hasEmi && remainingEmis > 0 && (
-          <div className="mx-5 mb-5 p-4 bg-gold-50 border border-gold-200 rounded-xl">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-gold-100 rounded-lg">
-                  <CreditCard size={16} className="text-gold-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gold-800">
-                    Next EMI Due
-                  </p>
-                  <p className="text-xs text-gold-600 mt-0.5">
-                    EMI {paidEmis + 1} of {emiMonths}
-                  </p>
-                </div>
+                 {hasEmi ? (
+                   <div className="space-y-4">
+                      <div className="flex justify-between items-center px-4">
+                         <span className="text-slate-500 text-xs font-bold uppercase">Total EMI Paid</span>
+                         <span className="text-emerald-600 font-black">{formatIndianCurrency(paidEmis * emiAmount)}</span>
+                      </div>
+                      <div className="flex justify-between items-center px-4">
+                         <span className="text-slate-500 text-xs font-bold uppercase">Balance Pay</span>
+                         <span className="text-gold-600 font-black">{formatIndianCurrency(totalEmiAmount - (paidEmis * emiAmount))}</span>
+                      </div>
+                      <div className="h-px bg-slate-50 my-4" />
+                      <div className="p-5 bg-slate-900 rounded-[2rem] text-center shadow-xl shadow-slate-200 relative overflow-hidden group">
+                         <div className="absolute top-0 right-0 w-24 h-24 bg-gold-500/10 rounded-full blur-xl group-hover:bg-gold-500/20 transition-all" />
+                         <p className="text-gold-400 text-[10px] font-black uppercase tracking-widest mb-1">Current Monthly</p>
+                         <h2 className="text-3xl font-black text-white tracking-tighter">{formatIndianCurrency(emiAmount)}</h2>
+                      </div>
+                   </div>
+                 ) : (
+                   <div className="p-5 bg-emerald-500 rounded-[2rem] text-center text-white shadow-xl shadow-emerald-200">
+                      <p className="text-emerald-100 text-[10px] font-black uppercase tracking-widest mb-1">Full Amount Paid</p>
+                      <h2 className="text-3xl font-black tracking-tighter">{formatIndianCurrency(pack?.finalPrice || 0)}</h2>
+                   </div>
+                 )}
               </div>
-              <div className="text-xl font-bold text-gold-700">
-                {formatIndianCurrency(emiAmount)}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
 
-      {/* Status Banner */}
-      <div
-        className={cn(
-          "mt-4 p-4 rounded-xl flex items-center justify-center gap-3",
-          status?.bgLight || "bg-slate-50"
-        )}
-      >
-        {pack?.status === "confirmed" && (
-          <>
-            <CheckCircle2 className="w-5 h-5 text-gold-500" />
-            <span className="text-sm font-semibold text-gold-700">
-              Your booking is confirmed! Have a great trip.
-            </span>
-          </>
-        )}
-        {pack?.status === "waiting" && (
-          <>
-            <Loader2 className="w-5 h-5 text-amber-500 animate-spin" />
-            <span className="text-sm font-semibold text-amber-700">
-              Payment received. Waiting for hotel confirmation.
-            </span>
-          </>
-        )}
-        {pack?.status === "pending" && (
-          <>
-            <Clock className="w-5 h-5 text-amber-500" />
-            <span className="text-sm font-semibold text-amber-700">
-              {hasEmi
-                ? "EMI payment pending. Complete payment to confirm booking."
-                : "Payment pending. Complete payment to confirm booking."}
-            </span>
-          </>
-        )}
-        {pack?.status === "failed" && (
-          <>
-            <AlertCircle className="w-5 h-5 text-red-500" />
-            <span className="text-sm font-semibold text-red-700">
-              Booking failed. Please try again.
-            </span>
-          </>
-        )}
+              {/* Inclusions Detail */}
+              <div className="mt-10 border-t border-slate-50 pt-8">
+                 <h4 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Confirmed Inclusions</h4>
+                 <div className="space-y-4">
+                    <div className="flex items-center justify-between group">
+                       <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100/50 transition-transform group-hover:scale-110">
+                             <Building size={16} className="text-blue-500" />
+                          </div>
+                          <span className="text-sm font-bold text-slate-700">Premium Hotels</span>
+                       </div>
+                       <span className="text-xs font-black text-slate-400">{hotelCount} Units</span>
+                    </div>
+                    <div className="flex items-center justify-between group">
+                       <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center border border-emerald-100/50 transition-transform group-hover:scale-110">
+                             <Utensils size={16} className="text-emerald-500" />
+                          </div>
+                          <span className="text-sm font-bold text-slate-700">Planned Meals</span>
+                       </div>
+                       <span className="text-xs font-black text-slate-400">Included</span>
+                    </div>
+                    <div className="flex items-center justify-between group">
+                       <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center border border-amber-100/50 transition-transform group-hover:scale-110">
+                             <CarFront size={16} className="text-amber-500" />
+                          </div>
+                          <span className="text-sm font-bold text-slate-700">Private Transfers</span>
+                       </div>
+                       <span className="text-xs font-black text-slate-400">{vehicleCount} Cabs</span>
+                    </div>
+                 </div>
+              </div>
+
+              {/* Cancellation Policy Sidebar */}
+              <div className="mt-10 pt-8 border-t border-slate-50">
+                 <div className="p-6 bg-red-50/50 rounded-[2rem] border border-red-100/50">
+                    <div className="flex items-center gap-3 mb-4">
+                       <AlertCircle size={20} className="text-red-500" />
+                       <h5 className="text-sm font-black text-red-900 uppercase tracking-tighter">Cancellation Policy</h5>
+                    </div>
+                    <p className="text-[11px] text-red-700/80 font-bold leading-relaxed mb-6">
+                       Standard 20% processing fee applied on refunded amount for cancellations made before travel.
+                    </p>
+                    <button className="w-full py-4 bg-white border-2 border-red-100 text-red-500 text-[10px] font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all uppercase tracking-widest group">
+                       Request Cancellation
+                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                 </div>
+              </div>
+           </div>
+
+        </div>
       </div>
     </div>
   );

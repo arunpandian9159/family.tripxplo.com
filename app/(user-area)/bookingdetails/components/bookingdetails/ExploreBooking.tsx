@@ -100,11 +100,18 @@ const Booking = () => {
   }
 
   // Check if this is an EMI booking
-  const hasEmi = data?.emiMonths && data.emiMonths > 0;
-  const emiMonths = data?.emiMonths || 6;
-  const emiAmount = data?.emiAmount || 0;
-  const paidEmis = data?.paidEmis || data?.currentEmiNumber || 1;
-  const remainingEmis = emiMonths - paidEmis;
+  const hasEmi =
+    data?.isEmiBooking ||
+    (data?.emiMonths && data.emiMonths > 0) ||
+    (data?.emiDetails && data.emiDetails.totalTenure > 0);
+  const emiMonths = data?.emiMonths || data?.emiDetails?.totalTenure || 6;
+  const emiAmount = data?.emiAmount || data?.emiDetails?.monthlyAmount || 0;
+  const paidEmis =
+    data?.paidEmis ||
+    data?.emiDetails?.paidCount ||
+    data?.currentEmiNumber ||
+    0;
+  const remainingEmis = Math.max(0, emiMonths - paidEmis);
 
   // Build events based on booking status
   const getEvents = () => {
@@ -255,7 +262,7 @@ const Booking = () => {
 
       {/* Content */}
       <div className="section-container py-8">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-50 text-gold-600 rounded-full text-sm font-medium mb-4">
               {hasEmi ? (

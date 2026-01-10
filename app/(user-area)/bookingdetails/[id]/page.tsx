@@ -1,5 +1,5 @@
 import React from "react";
-import ExploreBooking from "./components/bookingdetails/ExploreBooking";
+import ExploreBooking from "../components/bookingdetails/ExploreBooking";
 
 const YourComponent = () => {
   return (

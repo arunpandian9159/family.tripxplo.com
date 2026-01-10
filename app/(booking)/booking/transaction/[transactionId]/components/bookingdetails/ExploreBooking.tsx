@@ -100,11 +100,18 @@ const Booking = () => {
   }
 
   // Check if this is an EMI booking
-  const hasEmi = data?.emiMonths && data.emiMonths > 0;
-  const emiMonths = data?.emiMonths || 6;
-  const emiAmount = data?.emiAmount || 0;
-  const paidEmis = data?.paidEmis || data?.currentEmiNumber || 1;
-  const remainingEmis = emiMonths - paidEmis;
+  const hasEmi =
+    data?.isEmiBooking ||
+    (data?.emiMonths && data.emiMonths > 0) ||
+    (data?.emiDetails && data.emiDetails.totalTenure > 0);
+  const emiMonths = data?.emiMonths || data?.emiDetails?.totalTenure || 6;
+  const emiAmount = data?.emiAmount || data?.emiDetails?.monthlyAmount || 0;
+  const paidEmis =
+    data?.paidEmis ||
+    data?.emiDetails?.paidCount ||
+    data?.currentEmiNumber ||
+    0;
+  const remainingEmis = Math.max(0, emiMonths - paidEmis);
 
   // Build events based on booking status
   const getEvents = () => {
@@ -254,30 +261,49 @@ const Booking = () => {
       </div>
 
       {/* Content */}
-      <div className="section-container py-8">
+      <div className="section-container py-12">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-50 text-gold-600 rounded-full text-sm font-medium mb-4">
-              {hasEmi ? (
-                <>
-                  <Wallet className="w-4 h-4" />
-                  Prepaid EMI Booking
-                </>
-              ) : (
-                <>
-                  <Receipt className="w-4 h-4" />
-                  Your Package Booking
-                </>
-              )}
+          {/* Success Hero */}
+          <div className="text-center mb-10 animate-fade-in">
+            <div className="w-20 h-20 bg-gold-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-gold-500/20">
+              <Receipt className="w-10 h-10 text-white" />
             </div>
-            <p className="text-slate-500">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
+              Booking Confirmed!
+            </h2>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-50 text-gold-600 rounded-full text-sm font-semibold mb-6">
+              <Wallet className="w-4 h-4" />
+              Confirmation # {data?.id?.toUpperCase() || "N/A"}
+            </div>
+            <p className="text-slate-600 text-lg max-w-md mx-auto">
               {hasEmi
-                ? "Review your EMI schedule and booking details below"
-                : "Review your booking timeline and details below"}
+                ? "Your first installment has been received. You can now track your EMI schedule in your dashboard."
+                : "Full payment received. Your trip details are being finalized."}
             </p>
           </div>
 
           <BookingDetails pack={data} events={events} />
+
+          {/* Action Buttons */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => router.push("/mybookings")}
+              className="px-8 py-4 gold-gradient text-white font-bold rounded-2xl hover:opacity-90 transition-all shadow-xl shadow-gold-500/20 active:scale-[0.98]"
+            >
+              Go to My Bookings
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="px-8 py-4 bg-white text-slate-700 border border-slate-200 font-bold rounded-2xl hover:bg-slate-50 transition-all active:scale-[0.98]"
+            >
+              Print Receipt
+            </button>
+          </div>
+
+          <p className="text-center text-slate-400 text-sm mt-8">
+            An email confirmation has been sent to your registered email
+            address.
+          </p>
         </div>
       </div>
     </div>
