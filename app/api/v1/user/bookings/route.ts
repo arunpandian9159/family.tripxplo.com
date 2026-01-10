@@ -54,7 +54,6 @@ export async function GET(request: NextRequest) {
       // Core IDs
       bookingId: booking.bookingId,
       bookingNumber: `TRP${booking._id.toString().slice(-8).toUpperCase()}`,
-      packageRootId: booking.packageRootId,
 
       // Package info
       packageName: booking.packageName,
@@ -109,6 +108,7 @@ export async function GET(request: NextRequest) {
             totalAmount: booking.emiDetails.totalAmount,
             paidCount: booking.emiDetails.paidCount,
             nextDueDate: booking.emiDetails.nextDueDate,
+            schedule: booking.emiDetails.schedule || [],
           }
         : undefined,
     }));

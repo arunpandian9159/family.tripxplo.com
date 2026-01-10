@@ -1,6 +1,14 @@
 import { NextRequest } from "next/server";
+import mongoose from "mongoose";
 import connectDB from "@/lib/db";
 import Booking from "@/lib/models/Booking";
+import Package from "@/lib/models/Package";
+import Vehicle from "@/lib/models/Vehicle";
+import Activity from "@/lib/models/Activity";
+import HotelRoom from "@/lib/models/HotelRoom";
+import Hotel from "@/lib/models/Hotel";
+import Inclusion from "@/lib/models/Inclusion";
+import Exclusion from "@/lib/models/Exclusion";
 import { getUserIdFromRequest } from "@/lib/auth";
 import {
   successResponse,
@@ -51,6 +59,130 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       };
       return statusMap[status] || status;
     };
+
+    // Hydrate booking status with package details if needed
+    let hotelMeal = booking.hotelMeal || [];
+    let activity = booking.activity || [];
+    let vehicleDetail = booking.vehicleDetail || [];
+    let inclusionDetail = (booking as any).inclusionDetail || [];
+    let exclusionDetail = (booking as any).exclusionDetail || [];
+
+    // Try to get missing details from the original package
+    if (booking.packageRootId) {
+      const pkg = await (Package as any).findById(booking.packageRootId).lean();
+      if (pkg) {
+        // Hydrate hotels
+        const hotelRoomIds = hotelMeal.map((hm: any) => hm.hotelRoomId);
+        const rooms = await (HotelRoom as any)
+          .find({ hotelRoomId: { $in: hotelRoomIds } })
+          .lean();
+        const hotelIds = rooms.map((r: any) => r.hotelId);
+        const hotels = await (Hotel as any)
+          .find({ hotelId: { $in: hotelIds } })
+          .lean();
+
+        hotelMeal = hotelMeal.map((bm: any) => {
+          const room = rooms.find((r: any) => r.hotelRoomId === bm.hotelRoomId);
+          const hotelDetail = room
+            ? hotels.find((h: any) => h.hotelId === room.hotelId)
+            : null;
+
+          return {
+            ...bm,
+            hotelName: bm.hotelName || hotelDetail?.hotelName,
+            image: bm.image || hotelDetail?.image,
+            hotelRoomType: bm.hotelRoomType || room?.hotelRoomType,
+            viewPoint: bm.viewPoint || hotelDetail?.viewPoint,
+            location: bm.location || hotelDetail?.location,
+            review: bm.review || hotelDetail?.review,
+            isAc: bm.isAc !== undefined ? bm.isAc : room?.isAc,
+            hotelId: bm.hotelId || hotelDetail?.hotelId,
+          };
+        });
+
+        // Hydrate activities
+        // Get all activity IDs from the package template to fetch their details
+        const activityIds = (pkg.activity || []).flatMap((a: any) =>
+          (a.event || []).map((e: any) => e.activityId)
+        );
+        const allActivities = await (Activity as any)
+          .find({ activityId: { $in: activityIds } })
+          .lean();
+
+        activity = activity.map((ba: any) => {
+          return {
+            ...ba,
+            event: (ba.event || []).map((be: any) => {
+              const pe = allActivities.find(
+                (a: any) => a.activityId === be.activityId
+              );
+              if (pe) {
+                return {
+                  ...be,
+                  name: be.name || pe.name,
+                  image: be.image || pe.image,
+                  description: be.description || pe.description,
+                };
+              }
+              return be;
+            }),
+          };
+        });
+
+        // Hydrate vehicles
+        const vehicleIds = vehicleDetail.map((bv: any) =>
+          typeof bv === "string" ? bv : bv.vehicleId || bv._id
+        );
+
+        // Filter valid ObjectIds to avoid Mongoose casting errors for UUIDs
+        const validObjectIds = vehicleIds.filter((id: string) =>
+          mongoose.Types.ObjectId.isValid(id)
+        );
+
+        const allVehicles = await (Vehicle as any)
+          .find({
+            $or: [
+              { vehicleId: { $in: vehicleIds } },
+              { _id: { $in: validObjectIds } },
+            ],
+          })
+          .lean();
+
+        vehicleDetail = vehicleDetail.map((bv: any) => {
+          const vId = typeof bv === "string" ? bv : bv.vehicleId || bv._id;
+          const pv = allVehicles.find(
+            (v: any) => v.vehicleId === vId || v._id?.toString() === vId
+          );
+          if (pv) {
+            return {
+              ...pv,
+              ...(typeof bv === "object" ? bv : {}),
+            };
+          }
+          return bv;
+        });
+
+        // Hydrate inclusions/exclusions if they are empty
+        if (
+          inclusionDetail.length === 0 &&
+          pkg.inclusion &&
+          pkg.inclusion.length > 0
+        ) {
+          inclusionDetail = await (Inclusion as any)
+            .find({ inclusionId: { $in: pkg.inclusion } })
+            .lean();
+        }
+        if (
+          exclusionDetail.length === 0 &&
+          pkg.exclusion &&
+          pkg.exclusion.length > 0
+        ) {
+          exclusionDetail = await (Exclusion as any)
+            .find({ exclusionId: { $in: pkg.exclusion } })
+            .lean();
+        }
+      }
+    }
 
     // Return booking data in format expected by frontend components
     return successResponse(
@@ -120,9 +252,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         discountValue: booking.discountValue || 0,
 
         // Detailed booking info
-        hotelMeal: booking.hotelMeal || [],
-        vehicleDetail: booking.vehicleDetail || [],
-        activity: booking.activity || [],
+        hotelMeal,
+        vehicleDetail,
+        activity,
+        inclusionDetail,
+        exclusionDetail,
         period: booking.period || [],
 
         // Meta

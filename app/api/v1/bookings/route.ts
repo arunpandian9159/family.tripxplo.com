@@ -29,6 +29,12 @@ interface CreateBookingBody {
   couponDiscount?: number;
   couponCode?: string;
   redeemCoin?: number;
+  // Detailed items from frontend
+  hotelMeal?: any[];
+  vehicleDetail?: any[];
+  activity?: any[];
+  inclusionDetail?: any[];
+  exclusionDetail?: any[];
   // EMI fields
   emiMonths?: number;
   emiAmount?: number;
@@ -75,19 +81,53 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get package details
-    const pkg = await Package.findOne({ packageId: body.packageId }).lean();
-    if (!pkg) {
+    // Get package details with populated names
+    const packages = await Package.aggregate([
+      { $match: { packageId: body.packageId } },
+      {
+        $lookup: {
+          from: "plan",
+          localField: "planId",
+          foreignField: "planId",
+          as: "planDetails",
+        },
+      },
+      {
+        $lookup: {
+          from: "destination",
+          localField: "destination.destinationId",
+          foreignField: "destinationId",
+          as: "destinationDetails",
+        },
+      },
+    ]);
+
+    if (!packages || packages.length === 0) {
       return errorResponse(
         ErrorMessages[ErrorCodes.PACKAGE_NOT_FOUND],
         ErrorCodes.PACKAGE_NOT_FOUND,
         404
       );
     }
+    const pkg = packages[0];
+
+    // Populate destination with names
+    const populatedDestination = pkg.destination.map((d: any) => {
+      const detail = pkg.destinationDetails.find(
+        (dd: any) => dd.destinationId === d.destinationId
+      );
+      return {
+        ...d,
+        destinationName: detail ? detail.destinationName : "",
+      };
+    });
 
     // Generate booking ID
     const bookingId = generateId();
     const bookingNumber = `TRP${Date.now().toString().slice(-8)}`;
+
+    const planName =
+      pkg.planDetails?.[0]?.planName || pkg.planName || "Standard";
 
     // Use price from frontend if provided, otherwise calculate
     // Frontend sends the actual calculated price including all components
@@ -106,37 +146,50 @@ export async function POST(request: NextRequest) {
       finalPrice = totalAmount;
     }
 
+    // Initialize EMI Details (Required)
+    const emiMonths = body.emiMonths || 3; // Fallback to 3 if not provided but validated above
+    const totalEmiAmount = body.totalEmiAmount || finalPrice;
+    const emiAmount = body.emiAmount || Math.floor(totalEmiAmount / emiMonths);
+
+    // Ensure finalPrice is the total amount (contract value)
+    const totalContractValue = totalEmiAmount;
+
     const newBooking = new Booking({
       bookingId,
       packageRootId: pkg._id.toString(),
       packageName: pkg.packageName,
       userId,
       planId: pkg.planId,
+      planName: planName,
       interestId: pkg.interestId,
-      destination: pkg.destination,
+      destination: populatedDestination,
       startFrom: pkg.startFrom,
       packageImg: pkg.packageImg,
       noOfDays: pkg.noOfDays,
       noOfNight: pkg.noOfNight,
-      noOfAdult: pkg.noOfAdult,
-      noOfChild: pkg.noOfChild,
+      noOfAdult: body.adults,
+      noOfChild: body.children || 0,
       noAdult: body.adults,
       noChild: body.children || 0,
       checkStartDate: body.travelDate,
       totalPackagePrice: totalAmount,
-      finalPrice: finalPrice,
+      finalPrice: totalContractValue,
       gstPrice: body.gstPrice || 0,
       gstPer: body.gstPer || 0,
       discountPrice: body.couponDiscount || 0,
       couponCode: body.couponCode || null,
       redeemCoin: body.redeemCoin || 0,
       status: "pending",
+      // Detailed info
+      hotelMeal: body.hotelMeal || [],
+      vehicleDetail: body.vehicleDetail || [],
+      activity: body.activity || [],
+      inclusionDetail: body.inclusionDetail || [],
+      exclusionDetail: body.exclusionDetail || [],
+      hotelCount: body.hotelMeal?.length || 0,
+      activityCount: body.activity?.length || 0,
+      vehicleCount: body.vehicleDetail?.length || 0,
     });
-
-    // Initialize EMI Details (Required)
-    const emiMonths = body.emiMonths || 3; // Fallback to 3 if not provided but validated above
-    const emiAmount = body.emiAmount || Math.floor(finalPrice / emiMonths);
-    const totalEmiAmount = body.totalEmiAmount || finalPrice;
 
     const schedule = [];
     const bookingDate = new Date();
