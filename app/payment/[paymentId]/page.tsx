@@ -12,9 +12,13 @@ import {
   ArrowLeft,
   Shield,
   Lock,
-  IndianRupee,
   Loader2,
   XCircle,
+  Calendar,
+  Sparkles,
+  Zap,
+  Clock,
+  Receipt,
 } from "lucide-react";
 import { formatIndianCurrency } from "@/lib/utils";
 import toast from "react-hot-toast";
@@ -25,6 +29,11 @@ interface PaymentDetails {
   amount: number;
   currency: string;
   status: string;
+  // EMI fields
+  emiMonths?: number;
+  emiAmount?: number;
+  totalAmount?: number;
+  currentEmiNumber?: number;
 }
 
 type PaymentMethod = "upi" | "card" | "netbanking" | "wallet";
@@ -75,7 +84,7 @@ export default function PaymentPage() {
       });
 
       if (response.success) {
-        toast.success("Payment successful!");
+        toast.success("EMI Payment successful!");
         // Redirect to booking confirmation
         router.push(`/booking/transaction/${paymentDetails.orderId}`);
       } else {
@@ -93,7 +102,7 @@ export default function PaymentPage() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-emerald-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto mb-4" />
           <p className="text-slate-600">Loading payment details...</p>
         </div>
       </div>
@@ -113,7 +122,7 @@ export default function PaymentPage() {
           </p>
           <button
             onClick={() => router.back()}
-            className="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-xl hover:bg-emerald-600 transition-colors"
+            className="px-6 py-3 gold-gradient text-white font-semibold rounded-xl hover:opacity-90 transition-colors"
           >
             Go Back
           </button>
@@ -121,6 +130,12 @@ export default function PaymentPage() {
       </div>
     );
   }
+
+  // Default EMI values if not provided
+  const emiMonths = paymentDetails.emiMonths || 6;
+  const emiAmount = paymentDetails.emiAmount || paymentDetails.amount;
+  const totalAmount = paymentDetails.totalAmount || emiAmount * emiMonths;
+  const currentEmiNumber = paymentDetails.currentEmiNumber || 1;
 
   const paymentMethods = [
     {
@@ -150,7 +165,7 @@ export default function PaymentPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-emerald-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gold-50/30 to-amber-50/20">
       {/* Header */}
       <div className="bg-white border-b border-slate-100 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -161,13 +176,16 @@ export default function PaymentPage() {
             >
               <ArrowLeft className="w-5 h-5 text-slate-600" />
             </button>
-            <div>
-              <h1 className="text-lg font-bold text-slate-900">
-                Secure Payment
-              </h1>
+            <div className="flex-1">
+              <h1 className="text-lg font-bold text-slate-900">EMI Payment</h1>
               <p className="text-xs text-slate-500">
                 Order #{paymentDetails.orderId}
               </p>
+            </div>
+            <div className="px-3 py-1.5 bg-gold-100 rounded-full">
+              <span className="text-xs font-bold text-gold-700">
+                EMI {currentEmiNumber} of {emiMonths}
+              </span>
             </div>
           </div>
         </div>
@@ -175,10 +193,80 @@ export default function PaymentPage() {
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="lg:flex lg:gap-8">
-          {/* Payment Methods */}
+          {/* Left Column - EMI Info & Payment Methods */}
           <div className="lg:flex-1">
+            {/* EMI Progress Card */}
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 mb-6 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-gold-500/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl" />
+              <div className="absolute top-3 right-3">
+                <Sparkles size={18} className="text-gold-400 animate-pulse" />
+              </div>
+
+              <div className="relative">
+                {/* EMI Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gold-500/20 rounded-full border border-gold-500/30 mb-4">
+                  <Wallet size={14} className="text-gold-400" />
+                  <span className="text-xs font-semibold text-gold-300 uppercase tracking-wider">
+                    Prepaid EMI Payment
+                  </span>
+                </div>
+
+                {/* Current EMI Amount */}
+                <div className="mb-4">
+                  <p className="text-sm text-slate-400 mb-1">
+                    Current EMI Amount
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-black bg-gradient-to-r from-gold-300 via-yellow-200 to-gold-400 bg-clip-text text-transparent">
+                      {formatIndianCurrency(emiAmount)}
+                    </span>
+                    <span className="text-slate-400">
+                      EMI {currentEmiNumber}/{emiMonths}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
+                    <span>Payment Progress</span>
+                    <span>
+                      {currentEmiNumber} of {emiMonths} EMIs
+                    </span>
+                  </div>
+                  <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-gold-400 to-amber-500 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${(currentEmiNumber / emiMonths) * 100}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* EMI Summary */}
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-700">
+                  <div>
+                    <p className="text-xs text-slate-500">Monthly EMI</p>
+                    <p className="text-lg font-bold text-white">
+                      {formatIndianCurrency(emiAmount)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500">Total Package</p>
+                    <p className="text-lg font-bold text-white">
+                      {formatIndianCurrency(totalAmount)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment Methods */}
             <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 mb-6">
-              <h2 className="text-lg font-bold text-slate-900 mb-4">
+              <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <CreditCard size={20} className="text-gold-500" />
                 Select Payment Method
               </h2>
 
@@ -188,8 +276,8 @@ export default function PaymentPage() {
                     key={method.id}
                     className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
                       selectedMethod === method.id
-                        ? "border-emerald-500 bg-emerald-50"
-                        : "border-slate-200 hover:border-slate-300"
+                        ? "border-gold-400 bg-gold-50"
+                        : "border-slate-200 hover:border-gold-200"
                     }`}
                   >
                     <input
@@ -203,7 +291,7 @@ export default function PaymentPage() {
                     <div
                       className={`p-2.5 rounded-lg ${
                         selectedMethod === method.id
-                          ? "bg-emerald-500 text-white"
+                          ? "bg-gold-500 text-white"
                           : "bg-slate-100 text-slate-600"
                       }`}
                     >
@@ -216,7 +304,7 @@ export default function PaymentPage() {
                       <p className="text-sm text-slate-500">{method.desc}</p>
                     </div>
                     {selectedMethod === method.id && (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                      <CheckCircle2 className="w-5 h-5 text-gold-500" />
                     )}
                   </label>
                 ))}
@@ -224,38 +312,46 @@ export default function PaymentPage() {
             </div>
 
             {/* Security Badge */}
-            <div className="bg-emerald-50 rounded-xl p-4 flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <Shield className="w-5 h-5 text-emerald-600" />
+            <div className="bg-gold-50 rounded-xl p-4 flex items-center gap-3 border border-gold-200">
+              <div className="p-2 bg-gold-100 rounded-lg">
+                <Shield className="w-5 h-5 text-gold-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-emerald-800">
+                <p className="text-sm font-medium text-gold-800">
                   100% Secure Payments
                 </p>
-                <p className="text-xs text-emerald-600">
+                <p className="text-xs text-gold-600">
                   Your payment information is encrypted and secure
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Order Summary */}
+          {/* Right Column - Order Summary */}
           <div className="lg:w-[360px] mt-6 lg:mt-0">
             <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden sticky top-24">
               {/* Header */}
-              <div className="px-6 py-5 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white">
-                <div className="flex items-center gap-2 mb-2">
-                  <Lock className="w-4 h-4 text-emerald-200" />
-                  <span className="text-xs font-medium text-emerald-100 uppercase tracking-wider">
-                    Payment Summary
-                  </span>
+              <div className="px-6 py-5 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl" />
+                <div className="absolute top-3 right-3">
+                  <Sparkles size={14} className="text-gold-400 animate-pulse" />
                 </div>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold">
-                    {formatIndianCurrency(paymentDetails.amount)}
-                  </span>
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Wallet className="w-4 h-4 text-gold-400" />
+                    <span className="text-xs font-medium text-gold-300 uppercase tracking-wider">
+                      EMI Payment
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-black bg-gradient-to-r from-gold-300 via-yellow-200 to-gold-400 bg-clip-text text-transparent">
+                      {formatIndianCurrency(emiAmount)}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    EMI {currentEmiNumber} of {emiMonths}
+                  </p>
                 </div>
-                <p className="text-xs text-emerald-100 mt-1">Total Payable</p>
               </div>
 
               {/* Details */}
@@ -267,9 +363,9 @@ export default function PaymentPage() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-500">Currency</span>
+                  <span className="text-sm text-slate-500">EMI Duration</span>
                   <span className="text-sm font-medium text-slate-800">
-                    {paymentDetails.currency}
+                    {emiMonths} Months
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -283,12 +379,40 @@ export default function PaymentPage() {
                   </span>
                 </div>
 
-                <div className="pt-4 border-t border-slate-200">
+                {/* EMI Schedule */}
+                <div className="p-3 bg-gold-50 rounded-xl border border-gold-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Calendar size={14} className="text-gold-600" />
+                    <span className="text-xs font-semibold text-gold-700 uppercase">
+                      EMI Schedule
+                    </span>
+                  </div>
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-900">Amount</span>
-                    <span className="text-xl font-bold text-slate-900 flex items-center">
-                      <IndianRupee className="w-5 h-5" />
-                      {paymentDetails.amount.toLocaleString("en-IN")}
+                    <span className="text-sm text-gold-700">
+                      {emiMonths} EMIs of
+                    </span>
+                    <span className="text-sm font-bold text-gold-700">
+                      {formatIndianCurrency(emiAmount)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-slate-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-slate-500">
+                      Total Package Value
+                    </span>
+                    <span className="text-sm font-medium text-slate-800">
+                      {formatIndianCurrency(totalAmount)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Receipt size={16} className="text-gold-500" />
+                      <span className="font-bold text-slate-900">Pay Now</span>
+                    </div>
+                    <span className="text-xl font-black text-slate-900">
+                      {formatIndianCurrency(emiAmount)}
                     </span>
                   </div>
                 </div>
@@ -299,8 +423,9 @@ export default function PaymentPage() {
                 <button
                   onClick={handlePayment}
                   disabled={processing}
-                  className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="relative w-full py-4 overflow-hidden gold-gradient text-white font-bold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
                 >
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                   {processing ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
@@ -308,17 +433,47 @@ export default function PaymentPage() {
                     </>
                   ) : (
                     <>
-                      <Lock className="w-4 h-4" />
-                      Pay {formatIndianCurrency(paymentDetails.amount)}
+                      <Zap size={18} />
+                      Pay EMI - {formatIndianCurrency(emiAmount)}
                     </>
                   )}
                 </button>
+
+                <div className="flex items-center justify-center gap-4 mt-4">
+                  <div className="flex items-center gap-1.5 text-slate-400">
+                    <Lock size={12} className="text-green-500" />
+                    <span className="text-xs">Secure</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-slate-400">
+                    <Shield size={12} className="text-gold-500" />
+                    <span className="text-xs">Encrypted</span>
+                  </div>
+                </div>
 
                 <p className="text-xs text-slate-400 text-center mt-4">
                   By proceeding, you agree to our Terms of Service
                 </p>
               </div>
             </div>
+
+            {/* Next EMI Info */}
+            {currentEmiNumber < emiMonths && (
+              <div className="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-slate-200 rounded-lg">
+                    <Clock size={16} className="text-slate-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-700">
+                      Next EMI Due
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      {formatIndianCurrency(emiAmount)} on next month
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

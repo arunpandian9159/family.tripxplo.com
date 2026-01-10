@@ -24,4 +24,9 @@ export interface BookingPayloadType {
   gstPrice?: number;
   gstPer?: number;
   couponDiscount?: number;
+  
+  // EMI fields
+  emiMonths?: number;
+  emiAmount?: number;
+  totalEmiAmount?: number;
 }
