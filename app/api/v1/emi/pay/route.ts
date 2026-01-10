@@ -10,40 +10,12 @@ import {
 } from "@/lib/api-response";
 import { parseBody, validateRequired } from "@/lib/api-middleware";
 
-interface InitializePaymentBody {
-  amount: number;
-  orderId: string;
-  currency?: string;
+interface EmiPayBody {
+  bookingId: string;
+  installmentNumber: number;
 }
 
-// In-memory payment store (in production, use a proper database)
-// This is shared across requests via global scope
-declare global {
-  // eslint-disable-next-line no-var
-  var paymentStore: Map<
-    string,
-    {
-      paymentId: string;
-      orderId: string;
-      amount: number;
-      currency: string;
-      status: "created" | "processing" | "completed" | "failed";
-      transactionId?: string;
-      paymentMethod?: string;
-      userId: string;
-      createdAt: Date;
-      // EMI metadata
-      isEmi?: boolean;
-      installmentNumber?: number;
-    }
-  >;
-}
-
-if (!global.paymentStore) {
-  global.paymentStore = new Map();
-}
-
-// POST /api/v1/payment/initialize - Initialize payment
+// POST /api/v1/emi/pay - Initiate payment for an EMI installment
 export async function POST(request: NextRequest) {
   try {
     const userId = getUserIdFromRequest(request);
@@ -58,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const body = await parseBody<InitializePaymentBody>(request);
+    const body = await parseBody<EmiPayBody>(request);
 
     if (!body) {
       return errorResponse(
@@ -70,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     const { valid, missing } = validateRequired(
       body as unknown as Record<string, unknown>,
-      ["amount", "orderId"]
+      ["bookingId", "installmentNumber"]
     );
 
     if (!valid) {
@@ -81,8 +53,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify booking exists
-    const booking = await Booking.findOne({ bookingId: body.orderId, userId });
+    // Find booking
+    const booking = await Booking.findOne({
+      bookingId: body.bookingId,
+      userId,
+    });
     if (!booking) {
       return errorResponse(
         ErrorMessages[ErrorCodes.ORDER_NOT_FOUND],
@@ -91,29 +66,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (booking.isPrepaid) {
+    if (!booking.emiDetails?.isEmiBooking) {
+      return errorResponse("Not an EMI booking", "NOT_EMI_BOOKING", 400);
+    }
+
+    // Find installment
+    const installment = booking.emiDetails.schedule.find(
+      (s: any) => s.installmentNumber === body.installmentNumber
+    );
+
+    if (!installment) {
       return errorResponse(
-        ErrorMessages[ErrorCodes.ORDER_ALREADY_PAID],
-        ErrorCodes.ORDER_ALREADY_PAID,
+        "Invalid installment number",
+        "INVALID_INSTALLMENT",
         400
       );
     }
 
-    const paymentId = `pay_${generateId()}`;
-    const currency = body.currency || "INR";
+    if (installment.status === "paid") {
+      return errorResponse("Installment already paid", "ALREADY_PAID", 400);
+    }
 
-    // Store payment info
+    // Initialize payment entry
+    const paymentId = `pay_${generateId()}`;
+    const currency = "INR";
+
+    // Store payment info in global store (as per current implementation)
+    // In production, this would be a separate Payment model
+    if (!global.paymentStore) {
+      global.paymentStore = new Map();
+    }
+
     global.paymentStore.set(paymentId, {
       paymentId,
-      orderId: body.orderId,
-      amount: body.amount,
+      orderId: body.bookingId,
+      amount: installment.amount,
       currency,
       status: "created",
       userId,
       createdAt: new Date(),
+      // Track metadata for EMI
+      isEmi: true,
+      installmentNumber: body.installmentNumber,
     });
 
-    // In production, integrate with payment gateway (Razorpay, Stripe, etc.)
     const paymentUrl = `${
       process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
     }/payment/${paymentId}`;
@@ -122,16 +118,17 @@ export async function POST(request: NextRequest) {
       {
         paymentId,
         paymentUrl,
-        orderId: body.orderId,
-        amount: body.amount,
+        orderId: body.bookingId,
+        amount: installment.amount,
         currency,
+        installmentNumber: body.installmentNumber,
         status: "created",
       },
-      "Payment initialized successfully",
+      "EMI Payment initialized successfully",
       201
     );
   } catch (error) {
-    console.error("Initialize payment error:", error);
+    console.error("EMI Pay error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,

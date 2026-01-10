@@ -28,7 +28,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       return errorResponse(
         ErrorMessages[ErrorCodes.UNAUTHORIZED],
         ErrorCodes.UNAUTHORIZED,
-        401,
+        401
       );
     }
 
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       return errorResponse(
         ErrorMessages[ErrorCodes.BOOKING_NOT_FOUND],
         ErrorCodes.BOOKING_NOT_FOUND,
-        404,
+        404
       );
     }
 
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       return errorResponse(
         ErrorMessages[ErrorCodes.ALREADY_CANCELLED],
         ErrorCodes.ALREADY_CANCELLED,
-        400,
+        400
       );
     }
 
@@ -59,15 +59,31 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       return errorResponse(
         "Cannot cancel completed booking",
         "BOOKING_COMPLETED",
-        400,
+        400
       );
     }
 
     // Calculate refund
     let refundAmount = 0;
     if (booking.isPrepaid) {
-      // 80% refund if cancelled
-      refundAmount = booking.finalPrice * 0.8;
+      if (booking.emiDetails?.isEmiBooking) {
+        // For EMI, refund is based on actual amount paid
+        const paidAmount = booking.emiDetails.schedule
+          .filter((s: any) => s.status === "paid")
+          .reduce((acc: number, s: any) => acc + s.amount, 0);
+        refundAmount = paidAmount * 0.8;
+
+        // Mark remaining installments as failed/cancelled
+        booking.emiDetails.schedule.forEach((s: any) => {
+          if (s.status === "pending") {
+            s.status = "failed"; // Or "cancelled" if we had that state
+          }
+        });
+        booking.markModified("emiDetails");
+      } else {
+        // 80% refund if cancelled (Regular)
+        refundAmount = booking.finalPrice * 0.8;
+      }
     }
 
     booking.status = "cancel";
@@ -91,18 +107,20 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           paymentStatus: booking.isPrepaid ? "refunded" : "pending",
           createdAt: booking.createdAt,
           destinations: booking.destination,
+          isEmiBooking: booking.emiDetails?.isEmiBooking || false,
+          paidEmis: booking.emiDetails?.paidCount || 0,
         },
         refundAmount,
         cancellationReason: body?.reason,
       },
-      "Booking cancelled successfully",
+      "Booking cancelled successfully"
     );
   } catch (error) {
     console.error("Cancel booking error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,
-      500,
+      500
     );
   }
 }

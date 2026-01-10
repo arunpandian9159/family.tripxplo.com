@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         ErrorMessages[ErrorCodes.UNAUTHORIZED],
         ErrorCodes.UNAUTHORIZED,
-        401,
+        401
       );
     }
 
@@ -36,20 +36,20 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         "Invalid request body",
         ErrorCodes.VALIDATION_ERROR,
-        400,
+        400
       );
     }
 
     const { valid, missing } = validateRequired(
       body as unknown as Record<string, unknown>,
-      ["paymentId", "paymentMethod"],
+      ["paymentId", "paymentMethod"]
     );
 
     if (!valid) {
       return errorResponse(
         `Missing required fields: ${missing.join(", ")}`,
         ErrorCodes.VALIDATION_ERROR,
-        400,
+        400
       );
     }
 
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         ErrorMessages[ErrorCodes.PAYMENT_NOT_FOUND],
         ErrorCodes.PAYMENT_NOT_FOUND,
-        404,
+        404
       );
     }
 
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         "Unauthorized payment access",
         ErrorCodes.UNAUTHORIZED,
-        401,
+        401
       );
     }
 
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         "Payment already completed",
         "PAYMENT_ALREADY_COMPLETED",
-        400,
+        400
       );
     }
 
@@ -91,31 +91,80 @@ export async function POST(request: NextRequest) {
     global.paymentStore.set(body.paymentId, payment);
 
     // Update booking payment status
-    await Booking.updateOne(
-      { bookingId: payment.orderId, userId },
-      {
-        $set: {
-          isPrepaid: true,
-          status: "waiting",
-          paymentDate: new Date().toISOString(),
-        },
-      },
-    );
+    const booking = await Booking.findOne({
+      bookingId: payment.orderId,
+      userId,
+    });
+
+    if (booking && booking.emiDetails?.isEmiBooking) {
+      // Handle EMI Payment (Only supported)
+      const isEmiPayment = (payment as any).isEmi;
+      const installmentNumber = (payment as any).installmentNumber;
+
+      if (!isEmiPayment) {
+        return errorResponse(
+          "Only EMI payments are supported",
+          "EMI_ONLY",
+          400
+        );
+      }
+
+      const schedule = booking.emiDetails.schedule;
+      const installment = schedule.find(
+        (s: any) => s.installmentNumber === installmentNumber
+      );
+
+      if (installment && installment.status !== "paid") {
+        installment.status = "paid";
+        installment.transactionId = transactionId;
+        installment.paymentId = body.paymentId;
+        installment.paidAt = new Date();
+
+        booking.emiDetails.paidCount += 1;
+
+        // Update next due date
+        const nextPending = schedule.find(
+          (s: any) =>
+            s.status === "pending" && s.installmentNumber > installmentNumber
+        );
+        if (nextPending) {
+          booking.emiDetails.nextDueDate = nextPending.dueDate;
+        }
+
+        // If first EMI is paid, mark booking as confirmed/waiting
+        if (installmentNumber === 1 || booking.emiDetails.paidCount === 1) {
+          booking.isPrepaid = true;
+          booking.status = "waiting";
+          booking.paymentDate = new Date().toISOString();
+        }
+
+        booking.markModified("emiDetails");
+        await booking.save();
+      }
+    } else if (booking) {
+      return errorResponse(
+        "Booking is not an EMI booking",
+        "NOT_EMI_BOOKING",
+        400
+      );
+    }
 
     return successResponse(
       {
         success: true,
         transactionId,
         status: "completed",
+        isEmiPayment: (payment as any).isEmi,
+        installmentNumber: (payment as any).installmentNumber,
       },
-      "Payment processed successfully",
+      "Payment processed successfully"
     );
   } catch (error) {
     console.error("Process payment error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,
-      500,
+      500
     );
   }
 }

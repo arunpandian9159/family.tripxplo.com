@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       return errorResponse(
         ErrorMessages[ErrorCodes.UNAUTHORIZED],
         ErrorCodes.UNAUTHORIZED,
-        401,
+        401
       );
     }
 
@@ -99,6 +99,18 @@ export async function GET(request: NextRequest) {
 
       // Meta
       createdAt: booking.createdAt,
+
+      // EMI Details
+      emiDetails: booking.emiDetails
+        ? {
+            isEmiBooking: booking.emiDetails.isEmiBooking,
+            totalTenure: booking.emiDetails.totalTenure,
+            monthlyAmount: booking.emiDetails.monthlyAmount,
+            totalAmount: booking.emiDetails.totalAmount,
+            paidCount: booking.emiDetails.paidCount,
+            nextDueDate: booking.emiDetails.nextDueDate,
+          }
+        : undefined,
     }));
 
     return paginatedResponse(
@@ -106,14 +118,14 @@ export async function GET(request: NextRequest) {
       total,
       page,
       limit,
-      "Bookings retrieved successfully",
+      "Bookings retrieved successfully"
     );
   } catch (error) {
     console.error("Get user bookings error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,
-      500,
+      500
     );
   }
 }

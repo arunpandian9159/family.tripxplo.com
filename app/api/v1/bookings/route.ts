@@ -29,6 +29,10 @@ interface CreateBookingBody {
   couponDiscount?: number;
   couponCode?: string;
   redeemCoin?: number;
+  // EMI fields
+  emiMonths?: number;
+  emiAmount?: number;
+  totalEmiAmount?: number;
 }
 
 // POST /api/v1/bookings - Create a new booking
@@ -40,7 +44,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         ErrorMessages[ErrorCodes.UNAUTHORIZED],
         ErrorCodes.UNAUTHORIZED,
-        401,
+        401
       );
     }
 
@@ -52,20 +56,22 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         "Invalid request body",
         ErrorCodes.VALIDATION_ERROR,
-        400,
+        400
       );
     }
 
     const { valid, missing } = validateRequired(
       body as unknown as Record<string, unknown>,
-      ["packageId", "travelDate", "adults"],
+      ["packageId", "travelDate", "adults", "emiMonths"]
     );
 
     if (!valid) {
       return errorResponse(
-        `Missing required fields: ${missing.join(", ")}`,
+        `Missing required fields: ${missing.join(
+          ", "
+        )}. All bookings must be EMI-based.`,
         ErrorCodes.VALIDATION_ERROR,
-        400,
+        400
       );
     }
 
@@ -75,7 +81,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         ErrorMessages[ErrorCodes.PACKAGE_NOT_FOUND],
         ErrorCodes.PACKAGE_NOT_FOUND,
-        404,
+        404
       );
     }
 
@@ -127,6 +133,42 @@ export async function POST(request: NextRequest) {
       status: "pending",
     });
 
+    // Initialize EMI Details (Required)
+    const emiMonths = body.emiMonths || 3; // Fallback to 3 if not provided but validated above
+    const emiAmount = body.emiAmount || Math.floor(finalPrice / emiMonths);
+    const totalEmiAmount = body.totalEmiAmount || finalPrice;
+
+    const schedule = [];
+    const bookingDate = new Date();
+
+    for (let i = 1; i <= emiMonths; i++) {
+      const dueDate = new Date(bookingDate);
+      dueDate.setDate(dueDate.getDate() + (i - 1) * 30); // 30 day cycles
+
+      // Adjust the last installment for rounding
+      let currentAmount = emiAmount;
+      if (i === emiMonths) {
+        currentAmount = totalEmiAmount - emiAmount * (emiMonths - 1);
+      }
+
+      schedule.push({
+        installmentNumber: i,
+        amount: currentAmount,
+        dueDate,
+        status: "pending",
+      });
+    }
+
+    newBooking.emiDetails = {
+      isEmiBooking: true,
+      totalTenure: emiMonths,
+      monthlyAmount: emiAmount,
+      totalAmount: totalEmiAmount,
+      paidCount: 0,
+      nextDueDate: schedule[0].dueDate,
+      schedule: schedule as any,
+    };
+
     await newBooking.save();
 
     return successResponse(
@@ -149,18 +191,24 @@ export async function POST(request: NextRequest) {
           redeemCoin: body.redeemCoin || 0,
           status: "pending",
           paymentStatus: "pending",
+          isEmiBooking: true,
+          emiDetails: {
+            monthlyAmount: newBooking.emiDetails.monthlyAmount,
+            totalTenure: newBooking.emiDetails.totalTenure,
+            paidCount: newBooking.emiDetails.paidCount,
+          },
           createdAt: new Date(),
         },
       },
       "Booking created successfully",
-      201,
+      201
     );
   } catch (error) {
     console.error("Create booking error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,
-      500,
+      500
     );
   }
 }
