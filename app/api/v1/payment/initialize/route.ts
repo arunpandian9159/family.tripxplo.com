@@ -35,6 +35,9 @@ declare global {
       // EMI metadata
       isEmi?: boolean;
       installmentNumber?: number;
+      emiMonths?: number;
+      emiAmount?: number;
+      totalAmount?: number;
     }
   >;
 }

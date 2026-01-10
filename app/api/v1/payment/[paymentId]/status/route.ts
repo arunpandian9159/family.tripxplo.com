@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return errorResponse(
         ErrorMessages[ErrorCodes.UNAUTHORIZED],
         ErrorCodes.UNAUTHORIZED,
-        401,
+        401
       );
     }
 
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return errorResponse(
         ErrorMessages[ErrorCodes.PAYMENT_NOT_FOUND],
         ErrorCodes.PAYMENT_NOT_FOUND,
-        404,
+        404
       );
     }
 
@@ -42,15 +42,20 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         amount: payment.amount,
         currency: payment.currency,
         status: payment.status,
+        // EMI fields
+        emiMonths: payment.emiMonths,
+        emiAmount: payment.emiAmount,
+        totalAmount: payment.totalAmount,
+        currentEmiNumber: payment.installmentNumber,
       },
-      "Payment status retrieved successfully",
+      "Payment status retrieved successfully"
     );
   } catch (error) {
     console.error("Get payment status error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,
-      500,
+      500
     );
   }
 }

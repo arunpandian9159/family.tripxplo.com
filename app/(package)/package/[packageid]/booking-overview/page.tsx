@@ -41,7 +41,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import api from "../../../../utils/api/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { PackType } from "@/app/types/pack";
@@ -108,6 +108,8 @@ const SectionDivider = () => (
 
 export default function PackageBooking() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const emiMonthsParam = searchParams.get("emiMonths");
   const [packageCoupons, setPackageCoupons] = useState<Coupon[]>([]);
   const [showCouponsModal, setShowCouponsModal] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -137,6 +139,12 @@ export default function PackageBooking() {
 
   // EMI State
   const [selectedEMIMonths, setSelectedEMIMonths] = useState(6);
+
+  useEffect(() => {
+    if (emiMonthsParam) {
+      setSelectedEMIMonths(parseInt(emiMonthsParam));
+    }
+  }, [emiMonthsParam]);
 
   const { currentPackageId } = useAppSelector((store) => store.packageDetails);
   const roomCapacityData: Room = useSelector(

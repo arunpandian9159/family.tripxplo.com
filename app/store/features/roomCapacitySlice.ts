@@ -58,13 +58,14 @@ const selectRoomSlice = createSlice({
   reducers: {
     initialLoad(state) {
       if (state.room.initiallyLoaded) return;
-      state.room.totalRooms = 0;
-      state.room.totalAdults = 0;
-      state.room.totalChilds = 0;
-      state.room.children611 = 0;
+      state.room.totalRooms = 1;
+      state.room.totalAdults = 2;
+      state.room.totalChilds = 2;
+      state.room.children611 = 2;
       state.room.children25 = 0;
       state.room.infants = 0;
-      state.room.familyTypeName = "";
+      state.room.familyTypeName =
+        "Fantastic Four - 2 Adults + 2 Children (5 yrs to 11 yrs)";
       state.room.isFamilyTypeSelected = false;
       state.room.initiallyLoaded = true;
     },

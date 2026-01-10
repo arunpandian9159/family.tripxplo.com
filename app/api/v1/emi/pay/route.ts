@@ -108,6 +108,9 @@ export async function POST(request: NextRequest) {
       // Track metadata for EMI
       isEmi: true,
       installmentNumber: body.installmentNumber,
+      emiMonths: booking.emiDetails.totalTenure,
+      emiAmount: booking.emiDetails.monthlyAmount,
+      totalAmount: booking.emiDetails.totalAmount,
     });
 
     const origin = new URL(request.url).origin;

@@ -87,10 +87,11 @@ export default function Book({
     } else {
       if (!isLoading && isAuthenticated) {
         dispatch(setUser(user));
-        router.push(`${packageId}/booking-overview`);
+        router.push(
+          `${packageId}/booking-overview?emiMonths=${selectedEMIMonths}`
+        );
       }
     }
-
   }
 
   async function handleLoginSuccess() {
@@ -99,7 +100,7 @@ export default function Book({
     if (result.data?.result) {
       dispatch(setUser(result.data.result));
     }
-    router.push(`${packageId}/booking-overview`);
+    router.push(`${packageId}/booking-overview?emiMonths=${selectedEMIMonths}`);
   }
 
   return (

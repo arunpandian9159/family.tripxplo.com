@@ -29,7 +29,7 @@ export default function EMISlider({
         min={min}
         max={max}
         step={step}
-        className="w-full cursor-pointer [&>span:first-child]:h-2 [&>span:first-child]:bg-slate-200 [&>span:first-child]:cursor-pointer [&>span:first-child>span]:bg-gradient-to-r [&>span:first-child>span]:from-gold-400 [&>span:first-child>span]:to-amber-500 [&>span:last-child]:h-6 [&>span:last-child]:w-6 [&>span:last-child]:border-2 [&>span:last-child]:border-gold-500 [&>span:last-child]:bg-white [&>span:last-child]:shadow-xl [&>span:last-child]:shadow-gold-500/30 [&>span:last-child]:cursor-pointer"
+        className="w-full cursor-pointer [&>span:first-child]:h-2 [&>span:first-child]:bg-slate-200 [&>span:first-child]:cursor-pointer [&>span:first-child>span]:bg-gradient-to-r [&>span:first-child>span]:from-gold-400 [&>span:first-child>span]:to-amber-500 [&>span:last-child]:h-6 [&>span:last-child]:w-6 [&>span:last-child]:rounded-full [&>span:last-child]:border-2 [&>span:last-child]:border-gold-500 [&>span:last-child]:bg-white [&>span:last-child]:shadow-xl [&>span:last-child]:shadow-gold-500/30 [&>span:last-child]:cursor-pointer [&>span:last-child]:focus:outline-none [&>span:last-child]:focus-visible:ring-0 [&>span:last-child]:focus-visible:ring-offset-0"
       />
 
       {/* Range Labels */}

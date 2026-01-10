@@ -53,10 +53,10 @@ export default function OptionsBox({
   };
 
   const [warningTxt, setWarningTxt] = useState("");
-  const [rooms, setRooms] = useState(0);
-  const [adults, setAdults] = useState(0);
+  const [rooms, setRooms] = useState(1);
+  const [adults, setAdults] = useState(2);
   // New age category states
-  const [children611, setChildren611] = useState(0); // Children 6-11 years
+  const [children611, setChildren611] = useState(2); // Children 6-11 years
   const [children25, setChildren25] = useState(0); // Child below 5 (2-5 years)
   const [infants, setInfants] = useState(0); // Infants under 2 years
 
@@ -87,7 +87,7 @@ export default function OptionsBox({
 
     // Initialize with Family theme defaults
     setAdults(2);
-    setChildren611(0);
+    setChildren611(2);
     setChildren25(0);
     setInfants(0);
     setRooms(1);
@@ -300,7 +300,7 @@ export default function OptionsBox({
   useEffect(() => {
     if (!roomInitiallyLoaded) {
       setAdults(2);
-      setChildren611(0);
+      setChildren611(2);
       setChildren25(0);
       setInfants(0);
     }

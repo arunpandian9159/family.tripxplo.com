@@ -305,7 +305,10 @@ const FilterCardList = ({
                       Prepaid EMI
                     </span>
                     <span className="text-base font-bold text-slate-800">
-                      ₹{formatIndianNumber(Math.round(price / 12))}
+                      ₹
+                      {formatIndianNumber(
+                        Math.round(pkg.finalPackagePrice / 12)
+                      )}
                       <span className="text-[10px] text-slate-500 font-medium">
                         /month
                       </span>
@@ -568,7 +571,7 @@ const FilterCardList = ({
                   Prepaid EMI
                 </span>
                 <span className="text-sm font-bold text-slate-800">
-                  ₹{formatIndianNumber(Math.round(price / 12))}
+                  ₹{formatIndianNumber(Math.round(pkg.finalPackagePrice / 12))}
                   <span className="text-[10px] text-slate-500 font-medium">
                     /month
                   </span>
