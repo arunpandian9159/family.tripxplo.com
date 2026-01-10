@@ -33,7 +33,7 @@ interface InputAdultChild {
 }
 const initialState: Room = {
   room: {
-    perRoom: 0,
+    perRoom: 2,
     totalRooms: 0,
     totalAdults: 0,
     totalChilds: 0,
@@ -58,6 +58,7 @@ const selectRoomSlice = createSlice({
   reducers: {
     initialLoad(state) {
       if (state.room.initiallyLoaded) return;
+      state.room.perRoom = 2;
       state.room.totalRooms = 1;
       state.room.totalAdults = 2;
       state.room.totalChilds = 2;

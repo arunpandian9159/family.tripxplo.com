@@ -302,6 +302,12 @@ export const bookingsApi = {
     emiMonths?: number;
     emiAmount?: number;
     totalEmiAmount?: number;
+    // Rich details
+    hotelMeal?: any[];
+    vehicleDetail?: any[];
+    activity?: any[];
+    inclusionDetail?: any[];
+    exclusionDetail?: any[];
   }) =>
     apiRequest(API_ENDPOINTS.BOOKINGS.CREATE, {
       method: "POST",
@@ -320,38 +326,43 @@ export const bookingsApi = {
     }),
 };
 
-// Payment API
+// Payment/EMI API
 export const paymentApi = {
-  initialize: (data: { amount: number; orderId: string; currency?: string }) =>
-    apiRequest(API_ENDPOINTS.PAYMENT.INITIALIZE, {
+  initialize: (data: {
+    amount: number;
+    orderId: string;
+    currency?: string;
+    tenureMonths?: number;
+  }) =>
+    apiRequest(API_ENDPOINTS.EMI.INITIALIZE, {
       method: "POST",
       body: data,
       requireAuth: true,
     }),
 
   process: (data: { paymentId: string; paymentMethod: string }) =>
-    apiRequest(API_ENDPOINTS.PAYMENT.PROCESS, {
+    apiRequest(API_ENDPOINTS.EMI.PROCESS, {
       method: "POST",
       body: data,
       requireAuth: true,
     }),
 
   payEmi: (data: { bookingId: string; installmentNumber: number }) =>
-    apiRequest(API_ENDPOINTS.PAYMENT.EMI_PAY, {
+    apiRequest(API_ENDPOINTS.EMI.PAY, {
       method: "POST",
       body: data,
       requireAuth: true,
     }),
 
   verify: (data: { paymentId: string; transactionId: string }) =>
-    apiRequest(API_ENDPOINTS.PAYMENT.VERIFY, {
+    apiRequest(API_ENDPOINTS.EMI.VERIFY, {
       method: "POST",
       body: data,
       requireAuth: true,
     }),
 
-  getStatus: (paymentId: string) =>
-    apiRequest(API_ENDPOINTS.PAYMENT.STATUS(paymentId), { requireAuth: true }),
+  getStatus: (bookingId: string) =>
+    apiRequest(API_ENDPOINTS.EMI.STATUS(bookingId), { requireAuth: true }),
 };
 
 // Coupon API

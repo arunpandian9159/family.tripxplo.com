@@ -60,6 +60,12 @@ export const createBooking = async (body: BookingPayloadType) => {
       emiMonths: body.emiMonths,
       emiAmount: body.emiAmount,
       totalEmiAmount: body.totalEmiAmount,
+      // Pass rich details
+      hotelMeal: body.hotelMeal,
+      vehicleDetail: body.vehicleDetail,
+      activity: body.activity,
+      inclusionDetail: body.inclusionDetail,
+      exclusionDetail: body.exclusionDetail,
     });
 
     console.log("Booking API response:", bookingResponse);
@@ -101,16 +107,17 @@ export const createBooking = async (body: BookingPayloadType) => {
 
     console.log("Booking created:", booking);
 
-    // Step 2: Initialize payment for the first EMI installment
-    console.log("Initializing first EMI installment payment:", {
+    // Step 2: Initialize EMI for the booking
+    console.log("Initializing EMI schedule and first installment:", {
       bookingId: booking.id,
-      installmentNumber: 1,
+      tenureMonths: body.emiMonths,
     });
 
-    const paymentResponse = await paymentApi.payEmi({
-      bookingId: booking.id,
-      installmentNumber: 1,
-    });
+    const paymentResponse = await paymentApi.initialize({
+      orderId: booking.id, // This is bookingId
+      amount: body.emiAmount || 0, // Fallback, though server calculates it
+      tenureMonths: body.emiMonths || 3,
+    } as any);
 
     console.log("Payment API response:", paymentResponse);
 
