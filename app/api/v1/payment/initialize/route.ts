@@ -114,9 +114,8 @@ export async function POST(request: NextRequest) {
     });
 
     // In production, integrate with payment gateway (Razorpay, Stripe, etc.)
-    const paymentUrl = `${
-      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-    }/payment/${paymentId}`;
+    const origin = new URL(request.url).origin;
+    const paymentUrl = `${origin}/payment/${paymentId}`;
 
     return successResponse(
       {

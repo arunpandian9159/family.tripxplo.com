@@ -191,7 +191,7 @@ export const BookingOverview = ({
                         {v.vehicleName}
                       </h1>
                       <div className="flex flex-col  ">
-                        <h1 className="text-[12px] lg:text-[14px]  text-neutral-500 flex items-center gap-2 flex items-center gap-1  rounded-lg w-fit  font-medium mt-1 ">
+                        <h1 className="text-[12px] lg:text-[14px]  text-neutral-500 flex items-center gap-2 rounded-lg w-fit  font-medium mt-1 ">
                           <span className="p-1 rounded-md border-neural-100 shadow-sm border">
                             <Sofa size={10} className=" text-emerald-500" />
                           </span>{" "}
