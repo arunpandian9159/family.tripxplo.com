@@ -15,7 +15,7 @@ interface ProcessPaymentBody {
   paymentMethod: string;
 }
 
-// POST /api/v1/payment/process - Process payment
+// POST /api/v1/emi/process - Process EMI payment
 export async function POST(request: NextRequest) {
   try {
     const userId = getUserIdFromRequest(request);
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     payment.transactionId = transactionId;
     payment.status = "completed";
 
-    global.paymentStore.set(body.paymentId, payment);
+    global.paymentStore?.set(body.paymentId, payment);
 
     // Update booking payment status
     const booking = await Booking.findOne({
@@ -97,13 +97,13 @@ export async function POST(request: NextRequest) {
     });
 
     if (booking && booking.emiDetails?.isEmiBooking) {
-      // Handle EMI Payment (Only supported)
-      const isEmiPayment = (payment as any).isEmi;
-      const installmentNumber = (payment as any).installmentNumber;
+      // Handle EMI Payment
+      const isEmiPayment = payment.isEmi;
+      const installmentNumber = payment.installmentNumber;
 
       if (!isEmiPayment) {
         return errorResponse(
-          "Only EMI payments are supported",
+          "This endpoint is for EMI payments only",
           "EMI_ONLY",
           400
         );
@@ -154,13 +154,13 @@ export async function POST(request: NextRequest) {
         success: true,
         transactionId,
         status: "completed",
-        isEmiPayment: (payment as any).isEmi,
-        installmentNumber: (payment as any).installmentNumber,
+        isEmiPayment: payment.isEmi,
+        installmentNumber: payment.installmentNumber,
       },
-      "Payment processed successfully"
+      "EMI Payment processed successfully"
     );
   } catch (error) {
-    console.error("Process payment error:", error);
+    console.error("Process EMI payment error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,

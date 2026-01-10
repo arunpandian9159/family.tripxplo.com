@@ -13,7 +13,7 @@ interface VerifyPaymentBody {
   transactionId: string;
 }
 
-// POST /api/v1/payment/verify - Verify payment
+// POST /api/v1/emi/verify - Verify EMI payment
 export async function POST(request: NextRequest) {
   try {
     const userId = getUserIdFromRequest(request);
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         ErrorMessages[ErrorCodes.UNAUTHORIZED],
         ErrorCodes.UNAUTHORIZED,
-        401,
+        401
       );
     }
 
@@ -32,20 +32,20 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         "Invalid request body",
         ErrorCodes.VALIDATION_ERROR,
-        400,
+        400
       );
     }
 
     const { valid, missing } = validateRequired(
       body as unknown as Record<string, unknown>,
-      ["paymentId", "transactionId"],
+      ["paymentId", "transactionId"]
     );
 
     if (!valid) {
       return errorResponse(
         `Missing required fields: ${missing.join(", ")}`,
         ErrorCodes.VALIDATION_ERROR,
-        400,
+        400
       );
     }
 
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         ErrorMessages[ErrorCodes.PAYMENT_NOT_FOUND],
         ErrorCodes.PAYMENT_NOT_FOUND,
-        404,
+        404
       );
     }
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       return errorResponse(
         "Unauthorized payment access",
         ErrorCodes.UNAUTHORIZED,
-        401,
+        401
       );
     }
 
@@ -76,15 +76,17 @@ export async function POST(request: NextRequest) {
         verified,
         status: payment.status,
         orderId: payment.orderId,
+        isEmi: payment.isEmi,
+        installmentNumber: payment.installmentNumber,
       },
-      "Payment verification completed",
+      "EMI Payment verification completed"
     );
   } catch (error) {
-    console.error("Verify payment error:", error);
+    console.error("Verify EMI payment error:", error);
     return errorResponse(
       "Internal server error",
       ErrorCodes.INTERNAL_ERROR,
-      500,
+      500
     );
   }
 }
