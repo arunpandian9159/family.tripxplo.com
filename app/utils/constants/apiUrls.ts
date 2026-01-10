@@ -61,6 +61,7 @@ export const API_ENDPOINTS = {
     PROCESS: "payment/process",
     VERIFY: "payment/verify",
     STATUS: (paymentId: string) => `payment/${paymentId}/status`,
+    EMI_PAY: "emi/pay",
   },
 
   // Utility

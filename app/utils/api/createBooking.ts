@@ -56,6 +56,10 @@ export const createBooking = async (body: BookingPayloadType) => {
       couponDiscount: body.couponDiscount,
       couponCode: body.couponCode,
       redeemCoin: body.redeemCoin,
+      // Pass EMI fields
+      emiMonths: body.emiMonths,
+      emiAmount: body.emiAmount,
+      totalEmiAmount: body.totalEmiAmount,
     });
 
     console.log("Booking API response:", bookingResponse);
@@ -97,25 +101,15 @@ export const createBooking = async (body: BookingPayloadType) => {
 
     console.log("Booking created:", booking);
 
-    // Step 2: Initialize payment
-    // Use the finalPackagePrice from the frontend (which includes discounts)
-    // This ensures the payment page shows the same amount as the booking overview
-    const paymentAmount =
-      body.paymentType === "advance"
-        ? 1
-        : body.finalPackagePrice || booking.totalAmount || 10000;
-
-    console.log("Initializing payment:", {
-      amount: paymentAmount,
-      orderId: booking.id,
-      fromPayload: body.finalPackagePrice,
-      fromBooking: booking.totalAmount,
+    // Step 2: Initialize payment for the first EMI installment
+    console.log("Initializing first EMI installment payment:", {
+      bookingId: booking.id,
+      installmentNumber: 1,
     });
 
-    const paymentResponse = await paymentApi.initialize({
-      amount: paymentAmount,
-      orderId: booking.id,
-      currency: "INR",
+    const paymentResponse = await paymentApi.payEmi({
+      bookingId: booking.id,
+      installmentNumber: 1,
     });
 
     console.log("Payment API response:", paymentResponse);

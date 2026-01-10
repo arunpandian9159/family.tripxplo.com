@@ -50,7 +50,7 @@ export const clearTokens = (): void => {
 // Main API request function
 export async function apiRequest<T>(
   endpoint: string,
-  options: RequestOptions = {},
+  options: RequestOptions = {}
 ): Promise<ApiResponse<T>> {
   const { method = "GET", body, headers = {}, requireAuth = false } = options;
 
@@ -143,13 +143,13 @@ export const authApi = {
   }) =>
     apiRequest<{ user: unknown; token: string; refreshToken: string }>(
       API_ENDPOINTS.AUTH.REGISTER,
-      { method: "POST", body: data },
+      { method: "POST", body: data }
     ),
 
   login: (data: { email: string; password: string }) =>
     apiRequest<{ user: unknown; token: string; refreshToken: string }>(
       API_ENDPOINTS.AUTH.LOGIN,
-      { method: "POST", body: data },
+      { method: "POST", body: data }
     ),
 
   logout: () =>
@@ -161,7 +161,7 @@ export const authApi = {
   refresh: (refreshToken: string) =>
     apiRequest<{ token: string; refreshToken: string }>(
       API_ENDPOINTS.AUTH.REFRESH,
-      { method: "POST", body: { refreshToken } },
+      { method: "POST", body: { refreshToken } }
     ),
 };
 
@@ -169,17 +169,21 @@ export const authApi = {
 export const destinationsApi = {
   list: (params?: { page?: number; limit?: number }) =>
     apiRequest(
-      `${API_ENDPOINTS.DESTINATIONS.LIST}?${new URLSearchParams(params as Record<string, string>).toString()}`,
+      `${API_ENDPOINTS.DESTINATIONS.LIST}?${new URLSearchParams(
+        params as Record<string, string>
+      ).toString()}`
     ),
 
   featured: (limit?: number) =>
     apiRequest(
-      `${API_ENDPOINTS.DESTINATIONS.FEATURED}${limit ? `?limit=${limit}` : ""}`,
+      `${API_ENDPOINTS.DESTINATIONS.FEATURED}${limit ? `?limit=${limit}` : ""}`
     ),
 
   search: (query: string, params?: { page?: number; limit?: number }) =>
     apiRequest(
-      `${API_ENDPOINTS.DESTINATIONS.SEARCH}?q=${encodeURIComponent(query)}&${new URLSearchParams(params as Record<string, string>).toString()}`,
+      `${API_ENDPOINTS.DESTINATIONS.SEARCH}?q=${encodeURIComponent(
+        query
+      )}&${new URLSearchParams(params as Record<string, string>).toString()}`
     ),
 
   getById: (id: string) => apiRequest(API_ENDPOINTS.DESTINATIONS.BY_ID(id)),
@@ -189,17 +193,21 @@ export const destinationsApi = {
 export const packagesApi = {
   list: (params?: Record<string, string | number>) =>
     apiRequest(
-      `${API_ENDPOINTS.PACKAGES.LIST}?${new URLSearchParams(params as Record<string, string>).toString()}`,
+      `${API_ENDPOINTS.PACKAGES.LIST}?${new URLSearchParams(
+        params as Record<string, string>
+      ).toString()}`
     ),
 
   featured: (limit?: number) =>
     apiRequest(
-      `${API_ENDPOINTS.PACKAGES.FEATURED}${limit ? `?limit=${limit}` : ""}`,
+      `${API_ENDPOINTS.PACKAGES.FEATURED}${limit ? `?limit=${limit}` : ""}`
     ),
 
   search: (params?: Record<string, string | number>) =>
     apiRequest(
-      `${API_ENDPOINTS.PACKAGES.SEARCH}?${new URLSearchParams(params as Record<string, string>).toString()}`,
+      `${API_ENDPOINTS.PACKAGES.SEARCH}?${new URLSearchParams(
+        params as Record<string, string>
+      ).toString()}`
     ),
 
   getById: (id: string) => apiRequest(API_ENDPOINTS.PACKAGES.BY_ID(id)),
@@ -234,8 +242,10 @@ export const userApi = {
 
   getBookings: (params?: { page?: number; limit?: number }) =>
     apiRequest(
-      `${API_ENDPOINTS.USER.BOOKINGS}?${new URLSearchParams(params as Record<string, string>).toString()}`,
-      { requireAuth: true },
+      `${API_ENDPOINTS.USER.BOOKINGS}?${new URLSearchParams(
+        params as Record<string, string>
+      ).toString()}`,
+      { requireAuth: true }
     ),
 };
 
@@ -288,6 +298,10 @@ export const bookingsApi = {
     couponDiscount?: number;
     couponCode?: string | null;
     redeemCoin?: number;
+    // EMI fields
+    emiMonths?: number;
+    emiAmount?: number;
+    totalEmiAmount?: number;
   }) =>
     apiRequest(API_ENDPOINTS.BOOKINGS.CREATE, {
       method: "POST",
@@ -317,6 +331,13 @@ export const paymentApi = {
 
   process: (data: { paymentId: string; paymentMethod: string }) =>
     apiRequest(API_ENDPOINTS.PAYMENT.PROCESS, {
+      method: "POST",
+      body: data,
+      requireAuth: true,
+    }),
+
+  payEmi: (data: { bookingId: string; installmentNumber: number }) =>
+    apiRequest(API_ENDPOINTS.PAYMENT.EMI_PAY, {
       method: "POST",
       body: data,
       requireAuth: true,
