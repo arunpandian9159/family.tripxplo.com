@@ -48,6 +48,26 @@ interface IPeriod {
   endDate: string;
 }
 
+interface IEmiSchedule {
+  installmentNumber: number;
+  amount: number;
+  dueDate: Date;
+  status: "pending" | "paid" | "failed";
+  paymentId?: string;
+  transactionId?: string;
+  paidAt?: Date;
+}
+
+interface IEmiDetails {
+  isEmiBooking: boolean;
+  totalTenure: number;
+  monthlyAmount: number;
+  totalAmount: number;
+  paidCount: number;
+  nextDueDate: Date;
+  schedule: IEmiSchedule[];
+}
+
 export interface IBooking extends Document {
   bookingId: string;
   packageRootId: string;
@@ -116,6 +136,7 @@ export interface IBooking extends Document {
   redeemCoin: number;
   redeemAmount: number;
   balanceAmount: number;
+  emiDetails?: IEmiDetails;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -264,8 +285,31 @@ const BookingSchema = new mongoose.Schema<IBooking>(
     redeemCoin: { type: Number, default: 0 },
     redeemAmount: { type: Number, default: 0 },
     balanceAmount: { type: Number, default: 0 },
+    emiDetails: {
+      isEmiBooking: { type: Boolean, default: false },
+      totalTenure: { type: Number, default: 0 },
+      monthlyAmount: { type: Number, default: 0 },
+      totalAmount: { type: Number, default: 0 },
+      paidCount: { type: Number, default: 0 },
+      nextDueDate: { type: Date },
+      schedule: [
+        {
+          installmentNumber: { type: Number },
+          amount: { type: Number },
+          dueDate: { type: Date },
+          status: {
+            type: String,
+            enum: ["pending", "paid", "failed"],
+            default: "pending",
+          },
+          paymentId: { type: String },
+          transactionId: { type: String },
+          paidAt: { type: Date },
+        },
+      ],
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Indexes (bookingId already has unique: true which creates an index)
