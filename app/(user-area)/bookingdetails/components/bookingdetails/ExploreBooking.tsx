@@ -1,44 +1,46 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef, Suspense } from "react";
+import { ArrowLeft, Receipt, Loader2, Wallet } from "lucide-react";
+import { useRouter } from "next/navigation";
 import BookingDetails from "./BookingDetails";
-import Book from "./Book";
+import { useState, useEffect, useRef } from "react";
 import { bookingStatus } from "@/app/utils/api/bookingStatus";
-import { Receipt, Loader2 } from "lucide-react";
+import { formatIndianCurrency } from "@/lib/utils";
 
-const BookingContent = () => {
+const Booking = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [verified, setVerified] = useState(false);
   const [error, setError] = useState(false);
   const retryCount = useRef(0);
-  const maxRetries = 5;
+  const maxRetries = 10;
+
+  function clickBack() {
+    router.push("/mybookings");
+  }
 
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
 
     const getBookingDetails = async () => {
-      const bookingId = searchParams.get("id");
-
-      if (!bookingId) {
-        setError(true);
-        setLoading(false);
-        return;
-      }
-
       try {
-        const response = await bookingStatus(bookingId);
+        const urlSpilt = window.location.pathname.split("/");
+        const id = urlSpilt.pop();
+
+        if (!id) {
+          setError(true);
+          return;
+        }
+
+        const response = await bookingStatus(id);
 
         if (response?.data?.result) {
           setData(response.data.result);
-          setLoading(false);
+          setVerified(true);
         } else if (retryCount.current < maxRetries) {
           retryCount.current += 1;
           timer = setTimeout(getBookingDetails, 1000);
         } else {
           setError(true);
-          setLoading(false);
         }
       } catch (err) {
         if (retryCount.current < maxRetries) {
@@ -46,7 +48,6 @@ const BookingContent = () => {
           timer = setTimeout(getBookingDetails, 1000);
         } else {
           setError(true);
-          setLoading(false);
         }
       }
     };
@@ -56,12 +57,57 @@ const BookingContent = () => {
     return () => {
       if (timer) clearTimeout(timer);
     };
-  }, [searchParams]);
+  }, []);
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+        <div className="text-center animate-fade-in">
+          <div className="p-6 bg-red-50 rounded-full mb-6 mx-auto w-fit">
+            <Receipt className="w-12 h-12 text-red-400" />
+          </div>
+          <h2 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">
+            Booking Not Found
+          </h2>
+          <p className="text-slate-500 mb-8 max-w-sm mx-auto">
+            We couldn&apos;t fetch your booking details. Please try again later.
+          </p>
+          <button
+            onClick={clickBack}
+            className="px-6 py-3 gold-gradient text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30 active:scale-[0.98]"
+          >
+            Back to My Bookings
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Loading state
+  if (!verified) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+        <div className="text-center animate-fade-in">
+          <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto mb-4" />
+          <p className="text-slate-600 font-medium">
+            Loading booking details...
+          </p>
+          <p className="text-slate-400 text-sm mt-1">Please wait a moment</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if this is an EMI booking
+  const hasEmi = data?.emiMonths && data.emiMonths > 0;
+  const emiMonths = data?.emiMonths || 6;
+  const emiAmount = data?.emiAmount || 0;
+  const paidEmis = data?.paidEmis || data?.currentEmiNumber || 1;
+  const remainingEmis = emiMonths - paidEmis;
 
   // Build events based on booking status
   const getEvents = () => {
-    if (!data) return [];
-
     const events = [
       {
         heading:
@@ -69,19 +115,21 @@ const BookingContent = () => {
           (data?.status === "confirmed"
             ? "Confirmed"
             : data?.status === "pending"
-              ? "Pending"
-              : data?.status === "failed"
-                ? "Failed"
-                : "Processing"),
+            ? "Pending"
+            : data?.status === "failed"
+            ? "Failed"
+            : "Processing"),
         subHeading: data?.planName
           ? `${data.planName} Package`
+          : hasEmi
+          ? "Prepaid EMI Package"
           : "Package Booked",
         status:
           data?.status === "confirmed"
             ? "completed"
             : data?.status === "failed"
-              ? "failed"
-              : "active",
+            ? "failed"
+            : "active",
       },
     ];
 
@@ -90,6 +138,52 @@ const BookingContent = () => {
         heading: "Payment Failed",
         subHeading: "Please try booking again",
         status: "failed",
+      });
+    } else if (hasEmi) {
+      // EMI-specific timeline
+      if (paidEmis >= 1) {
+        events.push({
+          heading: `EMI ${paidEmis} Paid`,
+          subHeading: `${formatIndianCurrency(emiAmount)} received`,
+          status: "completed",
+        });
+      }
+
+      if (remainingEmis > 0) {
+        events.push({
+          heading: `Next EMI Due`,
+          subHeading: `${formatIndianCurrency(emiAmount)} - EMI ${
+            paidEmis + 1
+          } of ${emiMonths}`,
+          status: "active",
+        });
+
+        if (remainingEmis > 1) {
+          events.push({
+            heading: `${remainingEmis} EMIs Remaining`,
+            subHeading: `Total remaining: ${formatIndianCurrency(
+              emiAmount * remainingEmis
+            )}`,
+            status: "pending",
+          });
+        }
+      } else {
+        events.push({
+          heading: "All EMIs Paid",
+          subHeading: "Full payment completed",
+          status: "completed",
+        });
+      }
+
+      events.push({
+        heading: "Ready to Travel",
+        subHeading: data?.fullStartDate
+          ? `Travel on ${data.fullStartDate}`
+          : "Enjoy your trip!",
+        status:
+          data?.status === "confirmed" && remainingEmis === 0
+            ? "completed"
+            : "pending",
       });
     } else if (data?.balanceAmount > 0) {
       events.push({
@@ -100,8 +194,8 @@ const BookingContent = () => {
       });
       events.push({
         heading: "Balance Payment",
-        subHeading: `₹${data.balanceAmount.toLocaleString(
-          "en-IN",
+        subHeading: `${formatIndianCurrency(
+          data.balanceAmount
         )} due before travel`,
         status: "pending",
       });
@@ -123,65 +217,38 @@ const BookingContent = () => {
     return events;
   };
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
-        <div className="text-center animate-fade-in">
-          <Loader2 className="w-12 h-12 text-emerald-500 animate-spin mx-auto mb-4" />
-          <p className="text-slate-600 font-medium">
-            Loading booking details...
-          </p>
-          <p className="text-slate-400 text-sm mt-1">Please wait a moment</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error || !data) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
-        <div className="text-center animate-fade-in">
-          <div className="p-6 bg-red-50 rounded-full mb-6 mx-auto w-fit">
-            <Receipt className="w-12 h-12 text-red-400" />
-          </div>
-          <h2 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">
-            Booking Not Found
-          </h2>
-          <p className="text-slate-500 mb-8 max-w-sm mx-auto">
-            We couldn&apos;t fetch your booking details. Please try again later.
-          </p>
-          <button
-            onClick={() => router.push("/mybookings")}
-            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98]"
-          >
-            Back to My Bookings
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   const events = getEvents();
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-32 pt-16">
+    <div className="min-h-screen bg-slate-50 pb-24">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shadow-sm">
-        <div className="section-container py-8">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-br from-emerald-500 to-emerald-400 rounded-2xl shadow-lg shadow-emerald-500/20">
-              <Receipt className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+      <div className="sticky top-0 z-10 bg-white border-b border-slate-200 shadow-sm">
+        <div className="section-container">
+          <div className="flex items-center gap-4 py-4 md:py-5">
+            <button
+              onClick={clickBack}
+              className="p-2 -ml-2 rounded-xl hover:bg-slate-100 transition-colors"
+            >
+              <ArrowLeft className="w-6 h-6 text-gold-500" />
+            </button>
+            <div className="flex-1">
+              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gold-500 to-amber-500 bg-clip-text text-transparent">
                 Booking Details
               </h1>
-              <p className="text-slate-500 text-sm md:text-base mt-0.5">
-                Track your payment and booking status
+              <p className="text-slate-500 text-sm hidden sm:block">
+                {hasEmi
+                  ? "Track your EMI payments and booking status"
+                  : "Track your payment and booking status"}
               </p>
             </div>
+            {hasEmi && (
+              <div className="px-3 py-1.5 bg-gold-100 rounded-full flex items-center gap-1.5">
+                <Wallet size={14} className="text-gold-600" />
+                <span className="text-xs font-bold text-gold-700">
+                  {paidEmis}/{emiMonths} EMIs
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -190,36 +257,30 @@ const BookingContent = () => {
       <div className="section-container py-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full text-sm font-medium mb-4">
-              <Receipt className="w-4 h-4" />
-              Your Package Booking
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-50 text-gold-600 rounded-full text-sm font-medium mb-4">
+              {hasEmi ? (
+                <>
+                  <Wallet className="w-4 h-4" />
+                  Prepaid EMI Booking
+                </>
+              ) : (
+                <>
+                  <Receipt className="w-4 h-4" />
+                  Your Package Booking
+                </>
+              )}
             </div>
             <p className="text-slate-500">
-              Review your booking timeline and details below
+              {hasEmi
+                ? "Review your EMI schedule and booking details below"
+                : "Review your booking timeline and details below"}
             </p>
           </div>
 
-          <BookingDetails events={events} booking={data} />
+          <BookingDetails pack={data} events={events} />
         </div>
       </div>
-
-      {/* Footer Action */}
-      <Book booking={data} />
     </div>
-  );
-};
-
-const Booking = () => {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-          <Loader2 className="w-12 h-12 text-emerald-500 animate-spin" />
-        </div>
-      }
-    >
-      <BookingContent />
-    </Suspense>
   );
 };
 

@@ -1,9 +1,10 @@
 "use client";
-import { ArrowLeft, Receipt, Loader2 } from "lucide-react";
+import { ArrowLeft, Receipt, Loader2, Wallet } from "lucide-react";
 import { useRouter } from "next/navigation";
 import BookingDetails from "./BookingDetails";
 import { useState, useEffect, useRef } from "react";
 import { bookingStatus } from "@/app/utils/api/bookingStatus";
+import { formatIndianCurrency } from "@/lib/utils";
 
 const Booking = () => {
   const router = useRouter();
@@ -74,7 +75,7 @@ const Booking = () => {
           </p>
           <button
             onClick={clickBack}
-            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-500 transition-all shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-[0.98]"
+            className="px-6 py-3 gold-gradient text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30 active:scale-[0.98]"
           >
             Back to My Bookings
           </button>
@@ -88,7 +89,7 @@ const Booking = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
         <div className="text-center animate-fade-in">
-          <Loader2 className="w-12 h-12 text-emerald-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-gold-500 animate-spin mx-auto mb-4" />
           <p className="text-slate-600 font-medium">
             Loading booking details...
           </p>
@@ -97,6 +98,13 @@ const Booking = () => {
       </div>
     );
   }
+
+  // Check if this is an EMI booking
+  const hasEmi = data?.emiMonths && data.emiMonths > 0;
+  const emiMonths = data?.emiMonths || 6;
+  const emiAmount = data?.emiAmount || 0;
+  const paidEmis = data?.paidEmis || data?.currentEmiNumber || 1;
+  const remainingEmis = emiMonths - paidEmis;
 
   // Build events based on booking status
   const getEvents = () => {
@@ -107,19 +115,21 @@ const Booking = () => {
           (data?.status === "confirmed"
             ? "Confirmed"
             : data?.status === "pending"
-              ? "Pending"
-              : data?.status === "failed"
-                ? "Failed"
-                : "Processing"),
+            ? "Pending"
+            : data?.status === "failed"
+            ? "Failed"
+            : "Processing"),
         subHeading: data?.planName
           ? `${data.planName} Package`
+          : hasEmi
+          ? "Prepaid EMI Package"
           : "Package Booked",
         status:
           data?.status === "confirmed"
             ? "completed"
             : data?.status === "failed"
-              ? "failed"
-              : "active",
+            ? "failed"
+            : "active",
       },
     ];
 
@@ -128,6 +138,52 @@ const Booking = () => {
         heading: "Payment Failed",
         subHeading: "Please try booking again",
         status: "failed",
+      });
+    } else if (hasEmi) {
+      // EMI-specific timeline
+      if (paidEmis >= 1) {
+        events.push({
+          heading: `EMI ${paidEmis} Paid`,
+          subHeading: `${formatIndianCurrency(emiAmount)} received`,
+          status: "completed",
+        });
+      }
+
+      if (remainingEmis > 0) {
+        events.push({
+          heading: `Next EMI Due`,
+          subHeading: `${formatIndianCurrency(emiAmount)} - EMI ${
+            paidEmis + 1
+          } of ${emiMonths}`,
+          status: "active",
+        });
+
+        if (remainingEmis > 1) {
+          events.push({
+            heading: `${remainingEmis} EMIs Remaining`,
+            subHeading: `Total remaining: ${formatIndianCurrency(
+              emiAmount * remainingEmis
+            )}`,
+            status: "pending",
+          });
+        }
+      } else {
+        events.push({
+          heading: "All EMIs Paid",
+          subHeading: "Full payment completed",
+          status: "completed",
+        });
+      }
+
+      events.push({
+        heading: "Ready to Travel",
+        subHeading: data?.fullStartDate
+          ? `Travel on ${data.fullStartDate}`
+          : "Enjoy your trip!",
+        status:
+          data?.status === "confirmed" && remainingEmis === 0
+            ? "completed"
+            : "pending",
       });
     } else if (data?.balanceAmount > 0) {
       events.push({
@@ -138,8 +194,8 @@ const Booking = () => {
       });
       events.push({
         heading: "Balance Payment",
-        subHeading: `₹${data.balanceAmount.toLocaleString(
-          "en-IN",
+        subHeading: `${formatIndianCurrency(
+          data.balanceAmount
         )} due before travel`,
         status: "pending",
       });
@@ -173,16 +229,26 @@ const Booking = () => {
               onClick={clickBack}
               className="p-2 -ml-2 rounded-xl hover:bg-slate-100 transition-colors"
             >
-              <ArrowLeft className="w-6 h-6 text-emerald-500" />
+              <ArrowLeft className="w-6 h-6 text-gold-500" />
             </button>
-            <div>
-              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">
+            <div className="flex-1">
+              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gold-500 to-amber-500 bg-clip-text text-transparent">
                 Booking Details
               </h1>
               <p className="text-slate-500 text-sm hidden sm:block">
-                Track your payment and booking status
+                {hasEmi
+                  ? "Track your EMI payments and booking status"
+                  : "Track your payment and booking status"}
               </p>
             </div>
+            {hasEmi && (
+              <div className="px-3 py-1.5 bg-gold-100 rounded-full flex items-center gap-1.5">
+                <Wallet size={14} className="text-gold-600" />
+                <span className="text-xs font-bold text-gold-700">
+                  {paidEmis}/{emiMonths} EMIs
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -191,12 +257,23 @@ const Booking = () => {
       <div className="section-container py-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full text-sm font-medium mb-4">
-              <Receipt className="w-4 h-4" />
-              Your Package Booking
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold-50 text-gold-600 rounded-full text-sm font-medium mb-4">
+              {hasEmi ? (
+                <>
+                  <Wallet className="w-4 h-4" />
+                  Prepaid EMI Booking
+                </>
+              ) : (
+                <>
+                  <Receipt className="w-4 h-4" />
+                  Your Package Booking
+                </>
+              )}
             </div>
             <p className="text-slate-500">
-              Review your booking timeline and details below
+              {hasEmi
+                ? "Review your EMI schedule and booking details below"
+                : "Review your booking timeline and details below"}
             </p>
           </div>
 
