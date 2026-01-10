@@ -12,12 +12,15 @@ import {
   ArrowRight,
   AlertCircle,
   Loader2,
+  Copy,
+  CheckCircle2,
 } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { cn, formatIndianNumber } from "@/lib/utils";
 import { NEXT_PUBLIC_IMAGE_URL } from "@/app/utils/constants/apiUrls";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 interface Destination {
   destinationId: string;
@@ -40,6 +43,16 @@ interface BookingProps {
   fullStartDate?: string;
   fullEndDate?: string;
   status: string;
+  emiDetails?: {
+    totalTenure: number;
+    monthlyAmount: number;
+    schedule: {
+      installmentNumber: number;
+      amount: number;
+      status: string;
+      dueDate: string;
+    }[];
+  };
 }
 
 const statusConfig = {
@@ -97,9 +110,9 @@ const planConfig = {
     shadow: "shadow-slate-500/20",
   },
   Platinum: {
-    gradient: "bg-gradient-to-r from-emerald-700 via-red-400 to-emerald-600",
-    ring: "ring-emerald-600/50",
-    shadow: "shadow-emerald-700/20",
+    gradient: "bg-gradient-to-r from-red-700 via-red-400 to-red-600",
+    ring: "ring-red-600/50",
+    shadow: "shadow-red-700/20",
   },
 };
 
@@ -128,6 +141,36 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
   const plan = pkg?.planName
     ? planConfig[pkg.planName as keyof typeof planConfig]
     : null;
+
+  const emiSchedule = pkg?.emiDetails?.schedule || [];
+  const nextPendingEmi = emiSchedule.find((s: any) => s.status === "pending");
+  const emiAmount = pkg?.emiDetails?.monthlyAmount || 0;
+  const hasEmi = emiSchedule.length > 0;
+
+  const handlePayEmi = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!nextPendingEmi) {
+      toast.error("No pending EMI found");
+      return;
+    }
+
+    try {
+      const { paymentApi } = await import("@/lib/api-client");
+      const res = await paymentApi.payEmi({
+        bookingId: pkg.bookingId,
+        installmentNumber: nextPendingEmi.installmentNumber,
+      });
+
+      if (res.success && res.data && (res.data as any).paymentUrl) {
+        window.location.href = (res.data as any).paymentUrl;
+      } else {
+        toast.error(res.message || "Failed to initialize payment");
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      toast.error("An error occurred. Please try again.");
+    }
+  };
 
   return (
     <div
@@ -256,45 +299,64 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
           </div>
 
           {/* Price & Date Row */}
-          <div className="flex items-end justify-between mt-auto">
+          <div className="flex flex-wrap items-center justify-between gap-4 mt-auto">
             <div className="flex flex-col gap-1">
               {/* Travel Date */}
-              <div className="flex items-center gap-1.5 text-slate-500">
+              <div className="flex items-center gap-1.5 text-slate-500 px-1">
                 <CalendarDays className="w-4 h-4 text-gold-400" />
-                <span className="text-sm font-medium">
+                <span className="text-[11px] font-bold uppercase tracking-tight">
                   {pkg?.fullStartDate || "Date TBD"}
-                  {pkg?.fullEndDate && ` - ${pkg.fullEndDate}`}
                 </span>
               </div>
 
               {/* Price */}
               <div>
-                <span className="text-xs text-slate-400 font-medium">
+                <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none ml-1">
                   Total Amount
                 </span>
                 <div className="flex items-baseline gap-0.5">
                   <IndianRupee
-                    className="w-5 h-5 text-slate-900"
+                    className="w-4 h-4 text-slate-900"
                     strokeWidth={2.5}
                   />
-                  <span className="text-2xl font-bold text-slate-900">
+                  <span className="text-xl font-bold text-slate-900">
                     {formatIndianNumber(pkg?.finalPrice || 0)}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* View Details Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                pushPath(pkg?.bookingId);
-              }}
-              className="px-5 py-2.5 gold-gradient text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-all shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30 active:scale-[0.98] flex items-center gap-2"
-            >
-              View Details
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            {hasEmi && (
+              <div className="flex flex-col items-center px-4 mt-8 border-l border-slate-100">
+                <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none mb-1">
+                  Current Monthly
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl font-black text-slate-900">
+                    {formatIndianNumber(emiAmount)}
+                  </span>
+                  <button
+                    onClick={handlePayEmi}
+                    className="px-3 py-1 bg-emerald-500 text-white text-[12px] font-black uppercase rounded-lg hover:bg-emerald-600 transition-colors shadow-sm"
+                  >
+                    Pay Now
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2 ml-auto">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  pushPath(pkg?.bookingId);
+                }}
+                className="px-5 py-2.5 gold-gradient text-white text-[10px] font-black uppercase rounded-xl hover:opacity-90 transition-all shadow-md shadow-gold-500/20 hover:shadow-lg hover:shadow-gold-500/30 active:scale-[0.98] flex items-center gap-1.5"
+              >
+                View Details
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -302,7 +364,7 @@ export default function BookingDetails({ pkg }: { pkg: BookingProps }) {
       {/* Status Message Bar */}
       <div
         className={cn(
-          "px-4 sm:px-5 py-3 flex items-center justify-center gap-2 text-sm font-medium",
+          "px-4 sm:px-5 py-3 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-tight",
           status.bgLight,
           status.text,
           "border-t",
