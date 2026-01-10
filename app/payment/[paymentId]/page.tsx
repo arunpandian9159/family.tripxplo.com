@@ -24,7 +24,7 @@ import { formatIndianCurrency } from "@/lib/utils";
 import toast from "react-hot-toast";
 
 interface PaymentDetails {
-  paymentId: string;
+  paymentId?: string;
   orderId: string;
   amount: number;
   currency: string;
@@ -78,8 +78,32 @@ export default function PaymentPage() {
 
     setProcessing(true);
     try {
+      let finalPaymentId =
+        (paymentDetails as any).paymentId ||
+        (paymentId.startsWith("pay_") ? paymentId : null);
+
+      // If we don't have a paymentId (likely a booking ID URL), initialize a session
+      if (!finalPaymentId) {
+        console.log(
+          "No payment session found, initializing one for booking:",
+          paymentDetails.orderId
+        );
+        const payRes = await paymentApi.payEmi({
+          bookingId: paymentDetails.orderId,
+          installmentNumber: paymentDetails.currentEmiNumber || 1,
+        });
+
+        if (payRes.success && payRes.data) {
+          finalPaymentId = (payRes.data as any).paymentId;
+        } else {
+          toast.error(payRes.message || "Failed to initialize payment session");
+          setProcessing(false);
+          return;
+        }
+      }
+
       const response = await paymentApi.process({
-        paymentId: paymentDetails.paymentId,
+        paymentId: finalPaymentId,
         paymentMethod: selectedMethod,
       });
 
