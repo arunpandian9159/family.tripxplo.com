@@ -7,7 +7,7 @@ const testEmail = `test_emi_${Date.now()}@example.com`;
 const testPassword = "Password123!";
 
 async function runTests() {
-  console.log("--- Starting EMI-Only API Tests ---");
+  console.log("--- Starting Full EMI API Tests ---");
 
   // 1. Register
   console.log("\n1. Registering user...");
@@ -27,33 +27,10 @@ async function runTests() {
     process.exit(1);
   }
   token = regData.data.token;
-  console.log("Registration success, token received.");
+  console.log("Registration success.");
 
-  // 2. Attempt Regular Booking (Should Fail)
-  console.log("\n2. Attempting regular booking (non-EMI)...");
-  const failRes = await fetch(`${BASE_URL}/bookings`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      packageId: "GOKODFA-O2WM-3D2N6A",
-      travelDate: "2026-05-20",
-      adults: 2,
-      finalPackagePrice: 12000,
-    }),
-  });
-  const failData = await failRes.json();
-  if (!failData.success) {
-    console.log("Expected failure caught:", failData.error);
-  } else {
-    console.error("ERROR: Regular booking should have failed!");
-    process.exit(1);
-  }
-
-  // 3. Create EMI Booking (Should Success)
-  console.log("\n3. Creating EMI booking...");
+  // 2. Create EMI Booking
+  console.log("\n2. Creating EMI booking...");
   const bookingRes = await fetch(`${BASE_URL}/bookings`, {
     method: "POST",
     headers: {
@@ -75,11 +52,11 @@ async function runTests() {
     process.exit(1);
   }
   bookingId = bookingData.data.booking.id;
-  console.log("EMI booking created successfully, ID:", bookingId);
+  console.log("EMI booking created, ID:", bookingId);
 
-  // 4. Pay first installment
-  console.log("\n4. Paying first installment...");
-  const payRes = await fetch(`${BASE_URL}/emi/pay`, {
+  // 3. EMI Initialize (Get payment URL for first installment)
+  console.log("\n3. Calling emi/initialize...");
+  const initRes = await fetch(`${BASE_URL}/emi/initialize`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -87,15 +64,20 @@ async function runTests() {
     },
     body: JSON.stringify({
       bookingId: bookingId,
-      installmentNumber: 1,
+      tenureMonths: 6,
     }),
   });
-  const payData = await payRes.json();
-  paymentId = payData.data.paymentId;
+  const initData = await initRes.json();
+  if (!initData.success) {
+    console.error("EMI Initialize failed:", initData);
+    process.exit(1);
+  }
+  paymentId = initData.data.paymentId;
+  console.log("EMI Initialize success. Payment ID:", paymentId);
 
-  // 5. Process Payment
-  console.log("\n5. Processing payment...");
-  const processRes = await fetch(`${BASE_URL}/payment/process`, {
+  // 4. Process Payment
+  console.log("\n4. Processing payment (emi/process)...");
+  const processRes = await fetch(`${BASE_URL}/emi/process`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -107,11 +89,34 @@ async function runTests() {
     }),
   });
   const processData = await processRes.json();
-  if (processData.success) {
-    console.log("Payment processed successfully.");
+  if (!processData.success) {
+    console.error("Payment processing failed:", processData);
+    process.exit(1);
   }
+  const transactionId = processData.data.transactionId;
+  console.log("Payment processed. Transaction ID:", transactionId);
 
-  // 6. Check final status
+  // 5. Verify Payment
+  console.log("\n5. Verifying payment (emi/verify)...");
+  const verifyRes = await fetch(`${BASE_URL}/emi/verify`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      paymentId: paymentId,
+      transactionId: transactionId,
+    }),
+  });
+  const verifyData = await verifyRes.json();
+  if (!verifyData.success || !verifyData.data.verified) {
+    console.error("Verification failed:", verifyData);
+    process.exit(1);
+  }
+  console.log("Payment verified successfully.");
+
+  // 6. Check status
   console.log("\n6. Checking EMI status...");
   const statusRes = await fetch(`${BASE_URL}/emi/status/${bookingId}`, {
     method: "GET",
@@ -121,9 +126,59 @@ async function runTests() {
   });
   const statusData = await statusRes.json();
   console.log("Paid count:", statusData.data.progress.paidCount);
-  console.log("1st Installment Status:", statusData.data.schedule[0].status);
+  console.log("Current status:", statusData.data.status);
 
-  console.log("\n--- EMI-Only Tests Completed ---");
+  // 7. Pay next installment (emi/pay)
+  console.log("\n7. Paying next installment (emi/pay)...");
+  const payRes = await fetch(`${BASE_URL}/emi/pay`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      bookingId: bookingId,
+      installmentNumber: 2,
+    }),
+  });
+  const payData = await payRes.json();
+  if (!payData.success) {
+    console.error("emi/pay failed:", payData);
+    process.exit(1);
+  }
+  const nextPaymentId = payData.data.paymentId;
+  console.log("Next payment session created ID:", nextPaymentId);
+
+  // 8. Process next installment
+  console.log("\n8. Processing second installment...");
+  await fetch(`${BASE_URL}/emi/process`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      paymentId: nextPaymentId,
+      paymentMethod: "card",
+    }),
+  });
+
+  // 9. Final status check
+  console.log("\n9. Final status check...");
+  const finalStatusRes = await fetch(`${BASE_URL}/emi/status/${bookingId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const finalStatusData = await finalStatusRes.json();
+  console.log("Final paid count:", finalStatusData.data.progress.paidCount);
+  console.log(
+    "Next installment due:",
+    finalStatusData.data.nextInstallment?.installmentNumber
+  );
+
+  console.log("\n--- All EMI Tests Completed ---");
 }
 
 runTests().catch((err) => {

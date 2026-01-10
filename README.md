@@ -18,26 +18,26 @@ A modern full-stack travel package booking platform built with Next.js 16, featu
 
 ## 📑 Table of Contents
 
-- [Features](#-features)
-- [Tech Stack](#️-tech-stack)
-- [Installation](#-installation)
-- [Quick Start](#-quick-start)
-- [Configuration](#️-configuration)
-- [API Documentation](#-api-documentation)
-- [Authentication](#-authentication)
-- [Project Structure](#-project-structure)
-- [Using the API Client](#-using-the-api-client)
-- [Database Models](#️-database-models)
-- [API Response Format](#-api-response-format)
-- [Scripts](#-scripts)
-- [Deployment](#-deployment)
-- [Custom Hooks](#-custom-hooks)
-- [Key Libraries & Tools](#-key-libraries--tools)
-- [Troubleshooting](#-troubleshooting)
-- [Code Style](#-code-style)
-- [Security Considerations](#️-security-considerations)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [API Documentation](#api-documentation)
+- [Authentication](#authentication)
+- [Project Structure](#project-structure)
+- [Using the API Client](#using-the-api-client)
+- [Database Models](#database-models)
+- [API Response Format](#api-response-format)
+- [Scripts](#scripts)
+- [Deployment](#deployment)
+- [Custom Hooks](#custom-hooks)
+- [Key Libraries & Tools](#key-libraries--tools)
+- [Troubleshooting](#troubleshooting)
+- [Code Style](#code-style)
+- [Security Considerations](#security-considerations)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -61,6 +61,7 @@ A modern full-stack travel package booking platform built with Next.js 16, featu
 - **🛏️ Room Configuration** - Select room types with meal plans
 - **🚗 Cab/Vehicle Change** - Customize transportation options
 - **🎯 Activity Add-ons** - Browse and add activities to your package
+- **💳 EMI Payment System** - Flexible prepaid EMI plans (6/12 months) with automated schedules
 - **💰 Dynamic Pricing** - Real-time price quotes based on customizations
 
 ### Additional Features
@@ -69,6 +70,7 @@ A modern full-stack travel package booking platform built with Next.js 16, featu
 - **🔍 Advanced Search** - Filter by price, duration, destination, interests, and more
 - **📱 Responsive Design** - Fully responsive and optimized for all devices (mobile, tablet, desktop)
 - **🔄 State Persistence** - Redux with persist for seamless user experience across sessions
+- **📅 Holiday Hack Planner** - Smart calendar to optimize leaves for long weekends with PDF export
 - **🎓 Onboarding** - Interactive tutorials using Intro.js for new user guidance
 - **🖼️ Image Galleries** - Rich image displays with grid and slideshow views for packages and destinations
 - **📅 Timeline Views** - Visual timeline components for package itineraries
@@ -79,25 +81,26 @@ A modern full-stack travel package booking platform built with Next.js 16, featu
 
 ## 🛠️ Tech Stack
 
-| Category             | Technology                                                              |
-| -------------------- | ----------------------------------------------------------------------- |
-| **Framework**        | Next.js 16 (App Router)                                                 |
-| **Language**         | TypeScript 5                                                            |
-| **Frontend**         | React 19                                                                |
-| **Database**         | MongoDB with Mongoose 9 ODM                                             |
-| **Authentication**   | JWT + NextAuth.js + Google OAuth + Firebase                             |
-| **Styling**          | Tailwind CSS 3.4                                                        |
-| **State Management** | Redux Toolkit + Redux Persist                                           |
-| **Data Fetching**    | TanStack React Query 5                                                  |
-| **Form Handling**    | React Hook Form + Zod + Yup validation                                  |
-| **UI Components**    | Radix UI, Vaul (Drawer), Lucide Icons, FontAwesome, React Icons         |
-| **HTTP Client**      | Axios                                                                   |
-| **Carousel**         | Embla Carousel, Swiper                                                  |
-| **Date Handling**    | date-fns, React Day Picker                                              |
-| **Notifications**    | React Hot Toast, React Toastify                                         |
-| **Image Galleries**  | React Grid Gallery, React Slideshow Image                               |
-| **UI Enhancements**  | React Vertical Timeline, ReactJS Popup, Intro.js (Onboarding)           |
-| **Utilities**        | UUID, History, bcryptjs, class-variance-authority, clsx, tailwind-merge |
+| Category             | Technology                                                                   |
+| -------------------- | ---------------------------------------------------------------------------- |
+| **Framework**        | Next.js 16 (App Router)                                                      |
+| **Language**         | TypeScript 5                                                                 |
+| **Frontend**         | React 19                                                                     |
+| **Database**         | MongoDB with Mongoose 9 ODM                                                  |
+| **Authentication**   | JWT + NextAuth.js + Google OAuth + Firebase                                  |
+| **Styling**          | Tailwind CSS 3.4                                                             |
+| **State Management** | Redux Toolkit + Redux Persist                                                |
+| **Data Fetching**    | TanStack React Query 5                                                       |
+| **Form Handling**    | React Hook Form + Zod + Yup validation                                       |
+| **UI Components**    | Radix UI, Vaul (Drawer), Lucide Icons, FontAwesome, React Icons              |
+| **HTTP Client**      | Axios                                                                        |
+| **Carousel**         | Embla Carousel, Swiper                                                       |
+| **Date Handling**    | date-fns, React Day Picker                                                   |
+| **Notifications**    | React Hot Toast, React Toastify                                              |
+| **Image Galleries**  | React Grid Gallery, React Slideshow Image                                    |
+| **UI Enhancements**  | Framer Motion, React Vertical Timeline, ReactJS Popup, Intro.js (Onboarding) |
+| **PDF Generation**   | jsPDF, html2canvas                                                           |
+| **Utilities**        | UUID, History, bcryptjs, class-variance-authority, clsx, tailwind-merge      |
 
 ---
 
@@ -307,6 +310,14 @@ All API routes are available under `/api/v1/`. For detailed API documentation, s
 | `/payment/verify`            | POST   | Verify payment     | ✅   |
 | `/payment/:paymentId/status` | GET    | Get payment status | ✅   |
 
+#### EMI Management
+
+| Endpoint                 | Method | Description               | Auth |
+| ------------------------ | ------ | ------------------------- | ---- |
+| `/emi/initialize`        | POST   | Initialize EMI payment    | ✅   |
+| `/emi/pay`               | POST   | Pay EMI installment       | ✅   |
+| `/emi/status/:bookingId` | GET    | Get EMI status & schedule | ✅   |
+
 #### Utility
 
 | Endpoint            | Method | Description       | Auth |
@@ -322,7 +333,7 @@ All API routes are available under `/api/v1/`. For detailed API documentation, s
 
 The API uses JWT (JSON Web Tokens) for authentication. Include the access token in the `Authorization` header:
 
-```
+```http
 Authorization: Bearer <access_token>
 ```
 
@@ -336,7 +347,7 @@ Authorization: Bearer <access_token>
 
 ## 📁 Project Structure
 
-```
+```text
 HolidayPackage/
 ├── app/
 │   ├── api/v1/                     # API Routes
@@ -363,6 +374,8 @@ HolidayPackage/
 │   ├── (user-area)/                # User dashboard
 │   │   ├── account/                # User account settings
 │   │   ├── mybookings/             # Booking history
+│   │   ├── bookingdetails/         # Detailed booking management
+│   │   ├── holiday-hack/           # Smart leave planner
 │   │   ├── wishlists/              # Saved packages
 │   │   └── rewards/                # Rewards/coins
 │   ├── hooks/                      # Custom React hooks
@@ -436,7 +449,7 @@ const cart = await api.cart.get();
 | ------------- | ------------------------------------------- | ------------------------------------------------------------------- |
 | `User`        | User accounts with authentication & rewards | Email/password auth, Google OAuth, redeem coins, profile management |
 | `Package`     | Travel packages with configurations         | Destinations, hotels, vehicles, activities, pricing, offers         |
-| `Booking`     | User bookings with pricing & travelers      | Status tracking, payment integration, cancellation, refunds         |
+| `Booking`     | User bookings with pricing & travelers      | Status tracking, EMI schedules, payment integration, refunds        |
 | `Cart`        | Shopping cart items                         | Session persistence, item management, price calculations            |
 | `Transaction` | Payment transactions                        | Payment status, order tracking, verification                        |
 | `Destination` | Travel destinations                         | Featured destinations, search, categorization                       |
