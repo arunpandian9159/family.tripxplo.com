@@ -16,9 +16,11 @@ import {
 export default function IternaryStory({
   destinations,
   activity,
+  onViewFull,
 }: {
   destinations?: Destination[];
   activity?: Activity[];
+  onViewFull?: () => void;
 }) {
   const location =
     typeof window !== "undefined" ? window.location.pathname : "";
@@ -200,14 +202,25 @@ export default function IternaryStory({
 
         {/* Footer CTA */}
         <div className="px-6 pb-6">
-          <Link
-            href={`${location}/activities`}
-            className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-500 text-white font-semibold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 active:scale-[0.98]"
-          >
-            <MapPin size={18} />
-            View Full Itinerary
-            <ChevronRight size={18} />
-          </Link>
+          {onViewFull ? (
+            <button
+              onClick={onViewFull}
+              className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-500 text-white font-semibold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 active:scale-[0.98]"
+            >
+              <MapPin size={18} />
+              View Full Itinerary
+              <ChevronRight size={18} />
+            </button>
+          ) : (
+            <Link
+              href={`${location}/activities`}
+              className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-500 text-white font-semibold rounded-xl shadow-lg shadow-gold-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/30 active:scale-[0.98]"
+            >
+              <MapPin size={18} />
+              View Full Itinerary
+              <ChevronRight size={18} />
+            </Link>
+          )}
         </div>
       </div>
     </div>
