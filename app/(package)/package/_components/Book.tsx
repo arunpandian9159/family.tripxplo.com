@@ -82,18 +82,15 @@ export default function Book({
   };
 
   async function handlePackageClick() {
-    // TODO: Remove this bypass after development - Authentication temporarily disabled
-    // if (!isAuthenticated && !isLoading) {
-    //   setShowLoginModal(true);
-    // } else {
-    //   if (!isLoading && isAuthenticated) {
-    //     dispatch(setUser(user));
-    //     router.push(`${packageId}/booking-overview`);
-    //   }
-    // }
+    if (!isAuthenticated && !isLoading) {
+      setShowLoginModal(true);
+    } else {
+      if (!isLoading && isAuthenticated) {
+        dispatch(setUser(user));
+        router.push(`${packageId}/booking-overview`);
+      }
+    }
 
-    // TEMPORARY: Direct navigation for development testing
-    router.push(`${packageId}/booking-overview`);
   }
 
   async function handleLoginSuccess() {
